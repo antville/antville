@@ -55,14 +55,13 @@
 
     <property name="name" value="antville"/>
     <property name="year" value="1998-${year}"/>
-    <property name="version" value="1.5.0ɑ"/>
+    <property name="version" value="1.5"/>
     <property name="package.name" value="${name}-${version}"/>
 
     <property name="antville.src" value="https://code.google.com/p/antville"/>
-    <property name="helma.src" value="https://github.com/p3k/helma/trunk"/>
-    <property name="modules.src" value="https://github.com/p3k/helma-modules/trunk"/>
-    <property name="apps.src" value="https://github.com/p3k/helma-apps/trunk"/>
-    <property name="jala.src" value="https://github.com/p3k/helma-jala/trunk"/>
+    <property name="helma.src" value="https://github.com/p3k/helma.git"/>
+    <property name="apps.src" value="https://github.com/p3k/helma-apps.git"/>
+    <property name="jala.src" value="https://github.com/p3k/helma-jala.git"/>
 
     <property name="uikit.dir" location="./node_modules/uikit"/>
 
@@ -75,9 +74,8 @@
     <property name="work.dir" location="${build.dir}/work"/>
     <property name="source.dir" location="${work.dir}/src"/>
     <property name="export.dir" location="${work.dir}/export"/>
-    <property name="modules.dir" location="${work.dir}/modules"/>
-    <property name="apps.dir" location="${work.dir}/apps"/>
-    <property name="antville.dir" location="${apps.dir}/antville"/>
+    <property name="modules.dir" location="${export.dir}/helma/modules"/>
+    <property name="antville.dir" location="${export.dir}/antville"/>
     <property name="hopkit.dir" location="${helma.dir}/modules/jala/util/HopKit"/>
     <property name="trails.dir" location="${antville.dir}/trails"/>
 
@@ -97,7 +95,6 @@
     <exec dir="${source.dir}" executable="git">
       <arg line="clone ${antville.src}"/>
     </exec>
-    <mkdir dir="${apps.dir}"/>
     <exec dir="${source.dir}/antville" executable="git">
       <arg line="checkout-index -f -a --prefix=${antville.dir}/"/>
     </exec>
@@ -133,37 +130,38 @@
   </target>
 
   <target name="antclick" depends="export">
-    <!-- Export Helma, modules and apps to temporary directory -->
-    <exec dir="${export.dir}" executable="svn">
-      <arg line="--force export ${helma.src} helma"/>
+    <!-- Export the Helma and Jala repositories to a temporary directory -->
+    <exec dir="${source.dir}" executable="git">
+      <arg line="clone ${helma.src}"/>
     </exec>
-    <exec dir="${export.dir}" executable="svn">
-      <arg line="--force export ${modules.src} modules"/>
+    <exec dir="${source.dir}" executable="git">
+      <arg line="clone ${jala.src}"/>
     </exec>
-    <exec dir="${export.dir}" executable="svn">
-      <arg line="--force export ${jala.src} modules/jala"/>
+
+    <!-- Checkout each repostory index to the export directory -->
+    <mkdir dir="${export.dir}"/>
+    <exec dir="${source.dir}/helma" executable="git">
+      <arg line="checkout-index -f -a --prefix=${export.dir}/helma/"/>
     </exec>
-    <exec dir="${export.dir}" executable="svn">
-      <arg line="--force export ${apps.src} apps"/>
+    <exec dir="${source.dir}/helma-jala" executable="git">
+      <arg line="checkout-index -f -a --prefix=${export.dir}/helma/modules/jala/"/>
     </exec>
 
     <!-- Copy exported files to final destinations -->
     <copy todir="${work.dir}">
       <fileset dir="${export.dir}/helma" includes="lib/** licenses/**"/>
     </copy>
-    <copy todir="${modules.dir}">
-      <fileset dir="${export.dir}/modules" includes="core/** helma/** jala/**"/>
+    <copy todir="${work.dir}/apps/antville">
+      <fileset dir="${antville.dir}"/>
     </copy>
-    <copy todir="${apps.dir}">
-      <fileset dir="${export.dir}/apps" includes="manage/**"/>
+    <copy todir="${work.dir}/modules">
+      <fileset dir="${modules.dir}" includes="core/** helma/** jala/**"/>
     </copy>
-
-    <copy file="${export.dir}/helma/license.txt" tofile="${work.dir}/licenses/helma.txt"/>
 
     <!-- Copy extra files to final destinations -->
+    <copy file="${export.dir}/helma/license.txt" tofile="${work.dir}/licenses/helma.txt"/>
     <copy todir="${work.dir}">
-       <fileset dir="${extra.dir}" includes="start.bat apps.properties
-         server.properties launcher.jar"/>
+       <fileset dir="${extra.dir}" includes="start.bat apps.properties server.properties launcher.jar"/>
     </copy>
     <exec dir="${extra.dir}" executable="cp">
        <arg line="-p start.sh ${work.dir}"/>
@@ -183,14 +181,13 @@
 
     <!-- Delete unnecessary files -->
     <delete>
-      <fileset dir="${modules.dir}/helma" includes="*.jar Search.js Ssh.js Chart.js"/>
+      <fileset dir="${work.dir}/modules/helma" includes="*.jar Search.js Ssh.js Chart.js"/>
     </delete>
     <delete includeemptydirs="true">
-      <fileset dir="${modules.dir}/jala" includes="build.properties docs/**
-          lib/** licenses/** tests/** util/**"/>
+      <fileset dir="${work.dir}/modules/jala" includes="build.properties docs/** lib/** licenses/** tests/** util/**"/>
     </delete>
-
-    <delete dir="${antville.dir}/legal"/>
+    <delete dir="${work.dir}/apps/antville/legal"/>
+    <delete dir="${source.dir}"/>
     <delete dir="${export.dir}"/>
 
     <!-- Create the packages -->
@@ -268,18 +265,15 @@
 
   <target name="make-zip" depends="init">
     <mkdir dir="${dist.dir}"/>
-    <fixcrlf srcdir="${path}" eol="crlf" includes="**/*.txt, **/*.properties,
-    		**/*.hac, **/*.js, **/*.skin, **/*.xml, **/.bat"/>
+    <fixcrlf srcdir="${path}" eol="crlf" includes="**/*.txt, **/*.properties,	**/*.hac, **/*.js, **/*.skin, **/*.xml, **/.bat"/>
     <zip zipfile="${dist.dir}/${filename}.zip">
       <zipfileset dir="${path}" prefix="${filename}" includes="**"/>
     </zip>
   </target>
 
   <target name="release" depends="init">
-    <property name="antville.summary"
-           value="Helma application providing high performance, full featured weblog hosting"/>
-    <property name="antclick.summary"
-           value="The lightweight all-in-one package which contains everything you need to run Antville on your computer"/>
+    <property name="antville.summary" value="Helma application providing high performance, full featured weblog hosting"/>
+    <property name="antclick.summary" value="The lightweight all-in-one package which contains everything you need to run Antville on your computer"/>
     <antcall target="upload">
       <param name="file" value="${dist.dir}/${package.name}.tbz"/>
       <param name="summary" value="${antville.summary}"/>
@@ -311,10 +305,8 @@
   </target>
 
   <target name="upload" depends="file-exists" if="file.exists">
-    <taskdef classname="net.bluecow.googlecode.ant.GoogleCodeUploadTask"
-          classpath="${build.dir}/ant-googlecode-0.0.3.jar" name="gcupload"/>
-    <gcupload username="${google.username}" password="${google.password}" projectname="antville" filename="${file}"
-           targetfilename="${file}" summary="${summary}" labels="${labels}"/>
+    <taskdef classname="net.bluecow.googlecode.ant.GoogleCodeUploadTask" classpath="${build.dir}/ant-googlecode-0.0.3.jar" name="gcupload"/>
+    <gcupload username="${google.username}" password="${google.password}" projectname="antville" filename="${file}" targetfilename="${file}" summary="${summary}" labels="${labels}"/>
   </target>
 
   <target name="patch" depends="init">
@@ -326,8 +318,7 @@
       <equals arg1="${patch.confirm}" arg2="n" casesensitive="false" trim="true"/>
     </condition>
     <fail if="patch.abort">Build aborted by user.</fail>
-    <java dir="${helma.dir}" classpath="${helma.dir}/launcher.jar" classname="helma.main.launcher.Commandline"
-        fork="true">
+    <java dir="${helma.dir}" classpath="${helma.dir}/launcher.jar" classname="helma.main.launcher.Commandline" fork="true">
       <arg value="antville.patch"/>
       <arg value="${patch}"/>
     </java>
