@@ -158,6 +158,7 @@ $(function() {
          <th><% gettext Created %></th>
          <th><% gettext Reference %></th>
          <th></th>
+         <th></th>
       </tr>
    </thead>
    <tbody>
@@ -288,6 +289,9 @@ $(function() {
       <a href='<% param.href %>'><% param.reference %></a>
       <% if <% param.linkCount %> is 0 then '' else <% param.linkCount prefix="<span class='uk-text-muted uk-text-nowrap'><i class='uk-icon uk-icon-link'></i> " suffix=</span> %> %>
    </td>
+   <td class='uk-text-right uk-text-muted'>
+      <% if <% param.alert %> is true then "<i class='uk-ionc uk-icon-warning'></i>" %>
+   </td>
    <td class='uk-text-nowrap uk-text-right'>
       <% admin.link delete "<i class='uk-icon-trash-o'></i>" <% param.item %> %>
       <% admin.link block "<i class='uk-icon-ban'></i>" <% param.item %> %>
@@ -339,6 +343,7 @@ $(function() {
    </td>
    <td class='uk-text-right uk-text-nowrap;'>
       <% item.link delete "<i class='uk-icon-trash-o'></i>" %>
+      <% admin.link block "<i class='uk-icon-ban'></i>" <% item.self %> %>
       <% item.link edit "<i class='uk-icon-pencil'></i>" %>
    </td>
 </tr>
