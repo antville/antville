@@ -401,6 +401,11 @@ User.prototype.edit_action = function () {
   res.handlers.site.renderSkin('Site#page');
 };
 
+User.prototype.block_action = function () {
+  this.status = User.BLOCKED;
+  res.redirect(req.data.http_referer);
+};
+
 User.prototype.getConfirmText = function () {
   return gettext('You are about to delete the account {0}.',
       this.getTitle());

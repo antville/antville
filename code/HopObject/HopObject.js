@@ -182,7 +182,13 @@ HopObject.prototype.delete_action = function() {
     text: this.getConfirmText(req.action),
     extra: this.getConfirmExtra(req.action) || String.EMPTY
   });
-  res.handlers.site.renderSkin('Site#page');
+
+  if (req.data.http_get_remainder === 'safemode') {
+    res.skinpath = root.layout.getSkinPath();
+    res.handlers.site.renderSkin('$Site#page');
+  } else {
+    res.handlers.site.renderSkin('Site#page');
+  }
   return;
 };
 

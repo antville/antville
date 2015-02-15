@@ -250,6 +250,52 @@
    <Query role="example" searchTerms="cat" />
 </OpenSearchDescription>
 
+<% #page %>
+<!DOCTYPE html>
+<html <% site.locale prefix='lang=' %>>
+   <head>
+      <meta charset='utf-8'>
+      <title><% response.title %></title>
+      <link rel='icon' type='image/x-icon' href='<% image /favicon.png url %>'>
+      <link rel='shortcut icon' type='image/x-icon' href='<% image /favicon.png url %>'>
+      <link rel='search' type='application/opensearchdescription+xml' href='<% site.href search.xml %>' title='<% site.title %>'>
+      <link rel='alternate' type='application/rss+xml' title='Stories and comments of <% site.title %>' href='<% site.href rss.xml %>'>
+      <link rel='alternate' type='application/rss+xml' title='Stories of <% site.title %>' href='<% site.href stories.xml %>'>
+      <link rel='alternate' type='application/rss+xml' title='Comments of <% site.title %>' href='<% site.href comments.xml %>'>
+      <link rel='alternate' type='application/rss+xml' title='Sites of <% root.title %>' href='<% root.href updates.xml %>'>
+      <link rel='stylesheet' type='text/css' href='<% root.href main.css %>'>
+      <script type='text/javascript' src='<% root.href main.js %>'></script>
+   </head>
+   <body class='uk-container-center av-page'>
+   <body class='uk-container-center av-page'>
+      <% site.skin $Site#header %>
+      <div class='uk-grid'>
+         <div class='uk-width-7-10'>
+            <% response.message prefix="<div class='uk-alert' data-uk-alert>" suffix=</div> %>
+            <% response.body %>
+         </div>
+         <div class='uk-width-3-10'>
+            <div class='uk-margin-large-left av-border-left'>
+               <% membership.status %>
+               <ul class='uk-nav uk-nav-side'>
+                  <li class='uk-nav-divider'/>
+                  <% site.skin Site#navigation %>
+                  <li class='uk-nav-divider'/>
+                  <li class='uk-margin-left'>
+                     <% site.skin Site#search %>
+                  </li>
+                  <li class='uk-nav-header'/>
+                  <li class='uk-margin-left uk-text-small'>
+                     <% site.calendar %>
+                  </li>
+               </ul>
+            </div>
+         </div>
+      </div>
+      <% site.skin $Site#footer %>
+   </body>
+</html>
+
 <% #header %>
 <header class='av-header'>
    <div class='av-header-bg'>
