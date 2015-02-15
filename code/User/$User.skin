@@ -17,7 +17,7 @@
    <% gettext 'Have a lot of fun!' %>
 </p>
 <p>
-   <% image /ant.png %>
+   <% image /favicon.png width=50 height=auto %>
 </p>
 
 <% #subscriptions %>

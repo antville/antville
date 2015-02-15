@@ -167,6 +167,7 @@ Images.Default = new function() {
 
   function isSprite(name) {
     return !{
+      'favicon.png': true,
       'big.gif': true,
       'dot.gif': true,
       'marquee.gif': true,
@@ -179,8 +180,9 @@ Images.Default = new function() {
   add('ant.png', 'Ant');
   add('ant-icon.png', 'Tiny Ant');
   add('big.gif', String.EMPTY);
-  add('bullet.gif', '*');
+  add('bullet.gif', '•');
   add('dot.gif', String.EMPTY);
+  add('favicon.png', String.EMPTY);
   add('headbg.gif', String.EMPTY);
   add('helma.png', 'Helma Object Publisher');
   add('hop.gif', 'Helma Object Publisher');
@@ -197,7 +199,7 @@ Images.Default = new function() {
   add('spritesheet.png', 'Antville Sprite Sheet');
   add('status.gif', 'status');
   add('webloghead.gif', 'Antville');
-  add('xmlbutton.gif', 'XML version of this page');
+  add('xmlbutton.gif', 'RSS Feed');
   return images;
 }
 

@@ -245,7 +245,7 @@
    <ShortName><% site.title %></ShortName>
    <Description>Search the site <% site.href %></Description>
    <Tags>antville search</Tags>
-   <Image height="16" width="16" type="image/vnd.microsoft.icon"><% image /ant-icon.png url %></Image>
+   <Image height="16" width="16" type="image/vnd.microsoft.icon"><% image /favicon.png url %></Image>
    <Url type="text/html" template="<% site.href search %>?q={searchTerms}" />
    <Query role="example" searchTerms="cat" />
 </OpenSearchDescription>
@@ -521,6 +521,15 @@ h1 a, .uk-table a {
 .av-sprite {
   display: inline-block;
   vertical-align: middle;
+}
+
+.av-ant {
+   display: inline-block;
+   margin: 0 0 -2px -2px;
+   width: 15px;
+   height: 15px;
+   background: url(/static/img/ant.svg);
+   background-size: 15px 15px;
 }
 
 .av-border-left {
