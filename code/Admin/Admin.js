@@ -545,36 +545,6 @@ Admin.prototype.users_action = function() {
   return;
 }
 
-Admin.prototype.update_action = function () {
-  var action = req.data.action;
-  switch (req.data.type) {
-    case 'site':
-    var site = Site.getById(req.data.id);
-    if (site && site.getPermission(action)) {
-      switch (action) {
-        case 'delete':
-        req.postParams.proceed = true;
-        Site.prototype.delete_action.call(site);
-        break;
-      }
-    }
-    break;
-    case 'user':
-    var user = User.getById(req.data.id);
-    if (user) {
-      switch (action) {
-        case 'block':
-        if (user.status !== User.PRIVILEGED) {
-          user.status = User.BLOCKED;
-        }
-        break;
-      }
-    }
-    break;
-  }
-  res.redirect(req.data.http_referer);
-};
-
 /**
  *
  * @param {Object} data
@@ -709,6 +679,7 @@ Admin.prototype.renderActivity = function (item) {
     user: item.creator ? item.creator.name : item.name,
     href: item.href(item.constructor === User ? 'edit' : ''),
     linkCount: getLinkCount(item),
+    alert: getAlert(item)
     //site: item.site && item.site.name
   };
   param.warn = param.linkCount > 2 ? true : false;
@@ -724,7 +695,7 @@ Admin.prototype.renderActivity = function (item) {
       return item.getAbstract();
       case File:
       case User:
-      return item.name;
+      return item.email
       case Image:
       res.push();
       item.thumbnail_macro({'class': 'uk-thumbnail'}, 'thumbnail');
@@ -740,7 +711,7 @@ Admin.prototype.renderActivity = function (item) {
       case Root:
       case Site:
       res.push();
-      image_macro({}, '/ant-icon.png');
+      html.tag('i', {'class': 'av-ant'});
       return res.pop();
       case Comment:
       name = 'comment-o';
@@ -764,6 +735,15 @@ Admin.prototype.renderActivity = function (item) {
     return "<i class='uk-icon uk-icon-" + name + "'></i>";
   }
 
+  function getAlert(item) {
+    switch (item.constructor) {
+      case User:
+      return item.status !== User.BLOCKED && item.created - item.modified < 1;
+      case Site:
+      return item.status !== Site.DELETED && item.created - item.modified < 1;
+    }
+    return false;
+  }
 };
 
 /**
@@ -794,21 +774,6 @@ Admin.prototype.href = function (action, id) {
   switch (action) {
     case 'main':
     action = '.';
-    case 'delete':
-    case 'edit':
-    if (id) {
-      if (req.action === 'users' && (id === session.user._id)) {
-        return;
-      }
-      if (req.action === 'sites' && (id === root._id)) {
-        return;
-      }
-      action = req.action + '?action=' + action + '&id=' + id;
-      if (req.queryParams.page) {
-        action += '&page=' + req.queryParams.page;
-      }
-      action += '#' + id;
-    }
     break;
   }
   return root.href('admin') + '/' + action;
@@ -869,7 +834,7 @@ Admin.prototype.link_macro = function (param, action, text, target) {
       case 'block':
       var user = target.creator || target;
       if (user.status !== User.PRIVILEGED && user.status !== User.BLOCKED) {
-        var url = this.href('update') + '?action=block&type=user&id=' + user._id;
+        var url = user.href('block');
         return renderLink.call(global, param, url, text || String.EMPTY, this);
       }
       break;
@@ -877,11 +842,11 @@ Admin.prototype.link_macro = function (param, action, text, target) {
       case 'delete':
       var site = target.constructor === Site ? target : target.site;
       if (site && site.getPermission(action) && site.mode !== Site.DELETED) {
-        var url = this.href('update') + '?action=delete&type=site&id=' + site._id;
+        var url = site.href('delete') + '?safemode';
         return renderLink.call(global, param, url, text || String.EMPTY, this);
       }
     }
     return;
   }
   return HopObject.prototype.link_macro.call(this, param, action, text);
-}
+};
