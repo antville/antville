@@ -316,9 +316,7 @@ $(function() {
       <% item.notes prefix="<span title='" suffix="' data-uk-tooltip><i class='uk-icon-info-circle uk-text-muted'></i></span>" %>
    </td>
    <td class='uk-text-right uk-text-nowrap'>
-      <% if <% item.mode %> is deleted then '' else
-         <% item.link delete "<i class='uk-icon-trash-o'></i>" <% item.id %> %>
-      %>
+      <% admin.link delete "<i class='uk-icon-trash-o'></i>" <% item.self %> %>
       <% item.link edit "<i class='uk-icon-pencil'></i>" <% item.id %> %>
    </td>
 </tr>
