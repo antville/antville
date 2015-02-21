@@ -163,8 +163,6 @@ User.isBlacklisted = function(data) {
       app.log(ex);
     }
   }
-  //return false;
-
   // We only get here if botscout.com does not already blacklist the ip or email address
   url = ['http://www.stopforumspam.com/api?f=json', '&email=', email];
   if (ip.match(/^(?:\d{1,3}\.){3}\d{1,3}$/)) {
