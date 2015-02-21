@@ -322,8 +322,8 @@
 
 <% #javascript %>
 $(function () {
-   // Unhide links triggering JavaScript
-   $('a[href="javascript:"]').css('display', 'initial');
+   // Unhide hidden links triggering JavaScript
+   $('a[href="javascript:"]:hidden').css('display', 'inline-block');
 
    // Injecting main.css if necessary for compatibility reasons
    if (!document.querySelector('link[href$=main\\.css]')) {
