@@ -217,6 +217,14 @@
     </exec>
   </target>
 
+  <target name="server" depends="init">
+    <concat destfile="code/Global/0.node.js">
+      <header>module = {};</header>
+      <fileset file="node_modules/JSON/json2.js"/>
+      <fileset file="node_modules/less/dist/less-rhino-1.7.5.js"/>
+    </concat>
+  </target>
+
   <target name="docs" depends="init">
     <exec dir="${build.dir}/jsdoc/toolkit" executable="${build.dir}/jsdoc/jsrunwrapper.sh">
       <arg line='-D="title:${docs.title}" -q -r=2 -p -t=../templates/codeview

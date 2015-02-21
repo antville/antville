@@ -1,3 +1,494 @@
+module = {};/*
+    http://www.JSON.org/json2.js
+    2011-02-23
+
+    Public Domain.
+
+    NO WARRANTY EXPRESSED OR IMPLIED. USE AT YOUR OWN RISK.
+
+    See http://www.JSON.org/js.html
+
+
+    This code should be minified before deployment.
+    See http://javascript.crockford.com/jsmin.html
+
+    USE YOUR OWN COPY. IT IS EXTREMELY UNWISE TO LOAD CODE FROM SERVERS YOU DO
+    NOT CONTROL.
+
+
+    This file creates a global JSON object containing two methods: stringify
+    and parse.
+
+        JSON.stringify(value, replacer, space)
+            value       any JavaScript value, usually an object or array.
+
+            replacer    an optional parameter that determines how object
+                        values are stringified for objects. It can be a
+                        function or an array of strings.
+
+            space       an optional parameter that specifies the indentation
+                        of nested structures. If it is omitted, the text will
+                        be packed without extra whitespace. If it is a number,
+                        it will specify the number of spaces to indent at each
+                        level. If it is a string (such as '\t' or '&nbsp;'),
+                        it contains the characters used to indent at each level.
+
+            This method produces a JSON text from a JavaScript value.
+
+            When an object value is found, if the object contains a toJSON
+            method, its toJSON method will be called and the result will be
+            stringified. A toJSON method does not serialize: it returns the
+            value represented by the name/value pair that should be serialized,
+            or undefined if nothing should be serialized. The toJSON method
+            will be passed the key associated with the value, and this will be
+            bound to the value
+
+            For example, this would serialize Dates as ISO strings.
+
+                Date.prototype.toJSON = function (key) {
+                    function f(n) {
+                        // Format integers to have at least two digits.
+                        return n < 10 ? '0' + n : n;
+                    }
+
+                    return this.getUTCFullYear()   + '-' +
+                         f(this.getUTCMonth() + 1) + '-' +
+                         f(this.getUTCDate())      + 'T' +
+                         f(this.getUTCHours())     + ':' +
+                         f(this.getUTCMinutes())   + ':' +
+                         f(this.getUTCSeconds())   + 'Z';
+                };
+
+            You can provide an optional replacer method. It will be passed the
+            key and value of each member, with this bound to the containing
+            object. The value that is returned from your method will be
+            serialized. If your method returns undefined, then the member will
+            be excluded from the serialization.
+
+            If the replacer parameter is an array of strings, then it will be
+            used to select the members to be serialized. It filters the results
+            such that only members with keys listed in the replacer array are
+            stringified.
+
+            Values that do not have JSON representations, such as undefined or
+            functions, will not be serialized. Such values in objects will be
+            dropped; in arrays they will be replaced with null. You can use
+            a replacer function to replace those with JSON values.
+            JSON.stringify(undefined) returns undefined.
+
+            The optional space parameter produces a stringification of the
+            value that is filled with line breaks and indentation to make it
+            easier to read.
+
+            If the space parameter is a non-empty string, then that string will
+            be used for indentation. If the space parameter is a number, then
+            the indentation will be that many spaces.
+
+            Example:
+
+            text = JSON.stringify(['e', {pluribus: 'unum'}]);
+            // text is '["e",{"pluribus":"unum"}]'
+
+
+            text = JSON.stringify(['e', {pluribus: 'unum'}], null, '\t');
+            // text is '[\n\t"e",\n\t{\n\t\t"pluribus": "unum"\n\t}\n]'
+
+            text = JSON.stringify([new Date()], function (key, value) {
+                return this[key] instanceof Date ?
+                    'Date(' + this[key] + ')' : value;
+            });
+            // text is '["Date(---current time---)"]'
+
+
+        JSON.parse(text, reviver)
+            This method parses a JSON text to produce an object or array.
+            It can throw a SyntaxError exception.
+
+            The optional reviver parameter is a function that can filter and
+            transform the results. It receives each of the keys and values,
+            and its return value is used instead of the original value.
+            If it returns what it received, then the structure is not modified.
+            If it returns undefined then the member is deleted.
+
+            Example:
+
+            // Parse the text. Values that look like ISO date strings will
+            // be converted to Date objects.
+
+            myData = JSON.parse(text, function (key, value) {
+                var a;
+                if (typeof value === 'string') {
+                    a =
+/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}(?:\.\d*)?)Z$/.exec(value);
+                    if (a) {
+                        return new Date(Date.UTC(+a[1], +a[2] - 1, +a[3], +a[4],
+                            +a[5], +a[6]));
+                    }
+                }
+                return value;
+            });
+
+            myData = JSON.parse('["Date(09/09/2001)"]', function (key, value) {
+                var d;
+                if (typeof value === 'string' &&
+                        value.slice(0, 5) === 'Date(' &&
+                        value.slice(-1) === ')') {
+                    d = new Date(value.slice(5, -1));
+                    if (d) {
+                        return d;
+                    }
+                }
+                return value;
+            });
+
+
+    This is a reference implementation. You are free to copy, modify, or
+    redistribute.
+*/
+
+/*jslint evil: true, strict: false, regexp: false */
+
+/*members "", "\b", "\t", "\n", "\f", "\r", "\"", JSON, "\\", apply,
+    call, charCodeAt, getUTCDate, getUTCFullYear, getUTCHours,
+    getUTCMinutes, getUTCMonth, getUTCSeconds, hasOwnProperty, join,
+    lastIndex, length, parse, prototype, push, replace, slice, stringify,
+    test, toJSON, toString, valueOf
+*/
+
+
+// Create a JSON object only if one does not already exist. We create the
+// methods in a closure to avoid creating global variables.
+
+var JSON;
+if (!JSON) {
+    JSON = {};
+}
+
+(function () {
+    "use strict";
+
+    var global = Function('return this')()
+      , JSON = global.JSON
+      ;
+
+    if (!JSON) {
+      JSON = {};
+    }
+
+    function f(n) {
+        // Format integers to have at least two digits.
+        return n < 10 ? '0' + n : n;
+    }
+
+    if (typeof Date.prototype.toJSON !== 'function') {
+
+        Date.prototype.toJSON = function (key) {
+
+            return isFinite(this.valueOf()) ?
+                this.getUTCFullYear()     + '-' +
+                f(this.getUTCMonth() + 1) + '-' +
+                f(this.getUTCDate())      + 'T' +
+                f(this.getUTCHours())     + ':' +
+                f(this.getUTCMinutes())   + ':' +
+                f(this.getUTCSeconds())   + 'Z' : null;
+        };
+
+        String.prototype.toJSON      =
+            Number.prototype.toJSON  =
+            Boolean.prototype.toJSON = function (key) {
+                return this.valueOf();
+            };
+    }
+
+    var cx = /[\u0000\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g,
+        escapable = /[\\\"\x00-\x1f\x7f-\x9f\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g,
+        gap,
+        indent,
+        meta = {    // table of character substitutions
+            '\b': '\\b',
+            '\t': '\\t',
+            '\n': '\\n',
+            '\f': '\\f',
+            '\r': '\\r',
+            '"' : '\\"',
+            '\\': '\\\\'
+        },
+        rep;
+
+
+    function quote(string) {
+
+// If the string contains no control characters, no quote characters, and no
+// backslash characters, then we can safely slap some quotes around it.
+// Otherwise we must also replace the offending characters with safe escape
+// sequences.
+
+        escapable.lastIndex = 0;
+        return escapable.test(string) ? '"' + string.replace(escapable, function (a) {
+            var c = meta[a];
+            return typeof c === 'string' ? c :
+                '\\u' + ('0000' + a.charCodeAt(0).toString(16)).slice(-4);
+        }) + '"' : '"' + string + '"';
+    }
+
+
+    function str(key, holder) {
+
+// Produce a string from holder[key].
+
+        var i,          // The loop counter.
+            k,          // The member key.
+            v,          // The member value.
+            length,
+            mind = gap,
+            partial,
+            value = holder[key];
+
+// If the value has a toJSON method, call it to obtain a replacement value.
+
+        if (value && typeof value === 'object' &&
+                typeof value.toJSON === 'function') {
+            value = value.toJSON(key);
+        }
+
+// If we were called with a replacer function, then call the replacer to
+// obtain a replacement value.
+
+        if (typeof rep === 'function') {
+            value = rep.call(holder, key, value);
+        }
+
+// What happens next depends on the value's type.
+
+        switch (typeof value) {
+        case 'string':
+            return quote(value);
+
+        case 'number':
+
+// JSON numbers must be finite. Encode non-finite numbers as null.
+
+            return isFinite(value) ? String(value) : 'null';
+
+        case 'boolean':
+        case 'null':
+
+// If the value is a boolean or null, convert it to a string. Note:
+// typeof null does not produce 'null'. The case is included here in
+// the remote chance that this gets fixed someday.
+
+            return String(value);
+
+// If the type is 'object', we might be dealing with an object or an array or
+// null.
+
+        case 'object':
+
+// Due to a specification blunder in ECMAScript, typeof null is 'object',
+// so watch out for that case.
+
+            if (!value) {
+                return 'null';
+            }
+
+// Make an array to hold the partial results of stringifying this object value.
+
+            gap += indent;
+            partial = [];
+
+// Is the value an array?
+
+            if (Object.prototype.toString.apply(value) === '[object Array]') {
+
+// The value is an array. Stringify every element. Use null as a placeholder
+// for non-JSON values.
+
+                length = value.length;
+                for (i = 0; i < length; i += 1) {
+                    partial[i] = str(i, value) || 'null';
+                }
+
+// Join all of the elements together, separated with commas, and wrap them in
+// brackets.
+
+                v = partial.length === 0 ? '[]' : gap ?
+                    '[\n' + gap + partial.join(',\n' + gap) + '\n' + mind + ']' :
+                    '[' + partial.join(',') + ']';
+                gap = mind;
+                return v;
+            }
+
+// If the replacer is an array, use it to select the members to be stringified.
+
+            if (rep && typeof rep === 'object') {
+                length = rep.length;
+                for (i = 0; i < length; i += 1) {
+                    if (typeof rep[i] === 'string') {
+                        k = rep[i];
+                        v = str(k, value);
+                        if (v) {
+                            partial.push(quote(k) + (gap ? ': ' : ':') + v);
+                        }
+                    }
+                }
+            } else {
+
+// Otherwise, iterate through all of the keys in the object.
+
+                for (k in value) {
+                    if (Object.prototype.hasOwnProperty.call(value, k)) {
+                        v = str(k, value);
+                        if (v) {
+                            partial.push(quote(k) + (gap ? ': ' : ':') + v);
+                        }
+                    }
+                }
+            }
+
+// Join all of the member texts together, separated with commas,
+// and wrap them in braces.
+
+            v = partial.length === 0 ? '{}' : gap ?
+                '{\n' + gap + partial.join(',\n' + gap) + '\n' + mind + '}' :
+                '{' + partial.join(',') + '}';
+            gap = mind;
+            return v;
+        }
+    }
+
+// If the JSON object does not yet have a stringify method, give it one.
+
+    if (typeof JSON.stringify !== 'function') {
+        JSON.stringify = function (value, replacer, space) {
+
+// The stringify method takes a value and an optional replacer, and an optional
+// space parameter, and returns a JSON text. The replacer can be a function
+// that can replace values, or an array of strings that will select the keys.
+// A default replacer method can be provided. Use of the space parameter can
+// produce text that is more easily readable.
+
+            var i;
+            gap = '';
+            indent = '';
+
+// If the space parameter is a number, make an indent string containing that
+// many spaces.
+
+            if (typeof space === 'number') {
+                for (i = 0; i < space; i += 1) {
+                    indent += ' ';
+                }
+
+// If the space parameter is a string, it will be used as the indent string.
+
+            } else if (typeof space === 'string') {
+                indent = space;
+            }
+
+// If there is a replacer, it must be a function or an array.
+// Otherwise, throw an error.
+
+            rep = replacer;
+            if (replacer && typeof replacer !== 'function' &&
+                    (typeof replacer !== 'object' ||
+                    typeof replacer.length !== 'number')) {
+                throw new Error('JSON.stringify');
+            }
+
+// Make a fake root object containing our value under the key of ''.
+// Return the result of stringifying the value.
+
+            return str('', {'': value});
+        };
+    }
+
+
+// If the JSON object does not yet have a parse method, give it one.
+
+    if (typeof JSON.parse !== 'function') {
+        JSON.parse = function (text, reviver) {
+
+// The parse method takes a text and an optional reviver function, and returns
+// a JavaScript value if the text is a valid JSON text.
+
+            var j;
+
+            function walk(holder, key) {
+
+// The walk method is used to recursively walk the resulting structure so
+// that modifications can be made.
+
+                var k, v, value = holder[key];
+                if (value && typeof value === 'object') {
+                    for (k in value) {
+                        if (Object.prototype.hasOwnProperty.call(value, k)) {
+                            v = walk(value, k);
+                            if (v !== undefined) {
+                                value[k] = v;
+                            } else {
+                                delete value[k];
+                            }
+                        }
+                    }
+                }
+                return reviver.call(holder, key, value);
+            }
+
+
+// Parsing happens in four stages. In the first stage, we replace certain
+// Unicode characters with escape sequences. JavaScript handles many characters
+// incorrectly, either silently deleting them, or treating them as line endings.
+
+            text = String(text);
+            cx.lastIndex = 0;
+            if (cx.test(text)) {
+                text = text.replace(cx, function (a) {
+                    return '\\u' +
+                        ('0000' + a.charCodeAt(0).toString(16)).slice(-4);
+                });
+            }
+
+// In the second stage, we run the text against regular expressions that look
+// for non-JSON patterns. We are especially concerned with '()' and 'new'
+// because they can cause invocation, and '=' because it can cause mutation.
+// But just to be safe, we want to reject all unexpected forms.
+
+// We split the second stage into 4 regexp operations in order to work around
+// crippling inefficiencies in IE's and Safari's regexp engines. First we
+// replace the JSON backslash pairs with '@' (a non-JSON character). Second, we
+// replace all simple value tokens with ']' characters. Third, we delete all
+// open brackets that follow a colon or comma or that begin the text. Finally,
+// we look to see that the remaining characters are only whitespace or ']' or
+// ',' or ':' or '{' or '}'. If that is so, then the text is safe for eval.
+
+            if (/^[\],:{}\s]*$/
+                    .test(text.replace(/\\(?:["\\\/bfnrt]|u[0-9a-fA-F]{4})/g, '@')
+                        .replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']')
+                        .replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
+
+// In the third stage we use the eval function to compile the text into a
+// JavaScript structure. The '{' operator is subject to a syntactic ambiguity
+// in JavaScript: it can begin a block or an object literal. We wrap the text
+// in parens to eliminate the ambiguity.
+
+                j = eval('(' + text + ')');
+
+// In the optional fourth stage, we recursively walk the new structure, passing
+// each name/value pair to a reviver function for possible transformation.
+
+                return typeof reviver === 'function' ?
+                    walk({'': j}, '') : j;
+            }
+
+// If the text is not JSON parseable, then a SyntaxError is thrown.
+
+            throw new SyntaxError('JSON.parse');
+        };
+    }
+
+    global.JSON = JSON;
+    module.exports = JSON;
+}());
 /* Less.js v1.7.5 RHINO | Copyright (c) 2009-2014, Alexis Sellier <self@cloudhead.net> */
 
 //
@@ -75,9 +566,9 @@ less.mode = 'rhino';
                 } else if (part === '' && result.length > 0) {
                     // skip
                 } else if (part !== '.') {
-            if (part.slice(-1)==='\\' || part.slice(-1)==='/') {
-              part = part.slice(0, -1);
-            }
+		    if (part.slice(-1)==='\\' || part.slice(-1)==='/') {
+		      part = part.slice(0, -1);
+		    }
                     result.push(part);
                 }
             }
@@ -3323,21 +3814,21 @@ tree.Anonymous = function (value, index, currentFileInfo, mapLines, rulesetLike)
 };
 tree.Anonymous.prototype = {
     type: "Anonymous",
-    eval: function () {
+    eval: function () { 
         return new tree.Anonymous(this.value, this.index, this.currentFileInfo, this.mapLines, this.rulesetLike);
     },
     compare: function (x) {
         if (!x.toCSS) {
             return -1;
         }
-
+        
         var left = this.toCSS(),
             right = x.toCSS();
-
+        
         if (left === right) {
             return 0;
         }
-
+        
         return left < right ? -1 : 1;
     },
     isRulesetLike: function() {
@@ -3403,7 +3894,7 @@ tree.Call.prototype = {
     // When evaluating a function call,
     // we either find the function in `tree.functions` [1],
     // in which case we call it, passing the  evaluated arguments,
-    // if this returns null or we cannot find the function, we
+    // if this returns null or we cannot find the function, we 
     // simply print it out as it appeared originally [2].
     //
     // The *functions.js* file contains the built-in functions.
@@ -3608,7 +4099,7 @@ tree.Color.prototype = {
         if (!x.rgb) {
             return -1;
         }
-
+        
         return (x.rgb[0] === this.rgb[0] &&
             x.rgb[1] === this.rgb[1] &&
             x.rgb[2] === this.rgb[2] &&
@@ -3638,7 +4129,7 @@ function toHex(v) {
 }
 
 function clamp(v, max) {
-    return Math.min(Math.max(v, 0), max);
+    return Math.min(Math.max(v, 0), max); 
 }
 
 })(require('../tree'));
@@ -3836,7 +4327,7 @@ tree.Dimension.prototype = {
         if (other instanceof tree.Dimension) {
             var a, b,
                 aValue, bValue;
-
+            
             if (this.unit.isEmpty() || other.unit.isEmpty()) {
                 a = this;
                 b = other;
@@ -3845,7 +4336,7 @@ tree.Dimension.prototype = {
                 b = other.unify();
                 if (a.unit.compare(b.unit) !== 0) {
                     return -1;
-                }
+                }                
             }
             aValue = a.value;
             bValue = b.value;
@@ -4445,10 +4936,10 @@ tree.Import.prototype = {
                 this.skip = this.skip();
             }
             if (this.skip) {
-                return [];
+                return []; 
             }
         }
-
+         
         if (this.options.inline) {
             //todo needs to reference css file not import
             var contents = new(tree.Anonymous)(this.root, 0, {filename: this.importedFilename}, true, true);
@@ -4588,7 +5079,7 @@ tree.Media.prototype = {
             env.mediaBlocks = [];
             env.mediaPath = [];
         }
-
+        
         var media = new(tree.Media)(null, [], this.index, this.currentFileInfo);
         if(this.debugInfo) {
             this.rules[0].debugInfo = this.debugInfo;
@@ -4607,14 +5098,14 @@ tree.Media.prototype = {
                 env.strictMath = false;
             }
         }
-
+        
         env.mediaPath.push(media);
         env.mediaBlocks.push(media);
-
+        
         env.frames.unshift(this.rules[0]);
         media.rules = [this.rules[0].eval(env)];
         env.frames.shift();
-
+        
         env.mediaPath.pop();
 
         return env.mediaPath.length === 0 ? media.evalTop(env) :
@@ -4623,7 +5114,7 @@ tree.Media.prototype = {
     variable: function (name) { return tree.Ruleset.prototype.variable.call(this.rules[0], name); },
     find: function () { return tree.Ruleset.prototype.find.apply(this.rules[0], arguments); },
     rulesets: function () { return tree.Ruleset.prototype.rulesets.apply(this.rules[0]); },
-    emptySelectors: function() {
+    emptySelectors: function() { 
         var el = new(tree.Element)('', '&', this.index, this.currentFileInfo),
             sels = [new(tree.Selector)([el], null, null, this.index, this.currentFileInfo)];
         sels[0].mediaEmpty = true;
@@ -4736,7 +5227,7 @@ tree.mixin.Call.prototype = {
     eval: function (env) {
         var mixins, mixin, args, rules = [], match = false, i, m, f, isRecursive, isOneFound, rule,
             candidates = [], candidate, conditionResult = [], defaultFunc = tree.defaultFunc,
-            defaultResult, defNone = 0, defTrue = 1, defFalse = 2, count, originalRuleset;
+            defaultResult, defNone = 0, defTrue = 1, defFalse = 2, count, originalRuleset; 
 
         args = this.arguments && this.arguments.map(function (a) {
             return { name: a.name, value: a.value.eval(env) };
@@ -4745,12 +5236,12 @@ tree.mixin.Call.prototype = {
         for (i = 0; i < env.frames.length; i++) {
             if ((mixins = env.frames[i].find(this.selector)).length > 0) {
                 isOneFound = true;
-
+                
                 // To make `default()` function independent of definition order we have two "subpasses" here.
                 // At first we evaluate each guard *twice* (with `default() == true` and `default() == false`),
                 // and build candidate list with corresponding flags. Then, when we know all possible matches,
                 // we make a final decision.
-
+                
                 for (m = 0; m < mixins.length; m++) {
                     mixin = mixins[m];
                     isRecursive = false;
@@ -4763,11 +5254,11 @@ tree.mixin.Call.prototype = {
                     if (isRecursive) {
                         continue;
                     }
-
-                    if (mixin.matchArgs(args, env)) {
+                    
+                    if (mixin.matchArgs(args, env)) {  
                         candidate = {mixin: mixin, group: defNone};
-
-                        if (mixin.matchCondition) {
+                        
+                        if (mixin.matchCondition) { 
                             for (f = 0; f < 2; f++) {
                                 defaultFunc.value(f);
                                 conditionResult[f] = mixin.matchCondition(args, env);
@@ -4779,16 +5270,16 @@ tree.mixin.Call.prototype = {
                                 }
 
                                 candidates.push(candidate);
-                            }
+                            }   
                         }
                         else {
                             candidates.push(candidate);
                         }
-
+                        
                         match = true;
                     }
                 }
-
+                
                 defaultFunc.reset();
 
                 count = [0, 0, 0];
@@ -4807,7 +5298,7 @@ tree.mixin.Call.prototype = {
                             index: this.index, filename: this.currentFileInfo.filename };
                     }
                 }
-
+                
                 for (m = 0; m < candidates.length; m++) {
                     candidate = candidates[m].group;
                     if ((candidate === defNone) || (candidate === defaultResult)) {
@@ -4825,7 +5316,7 @@ tree.mixin.Call.prototype = {
                         }
                     }
                 }
-
+                
                 if (match) {
                     if (!this.currentFileInfo || !this.currentFileInfo.reference) {
                         for (i = 0; i < rules.length; i++) {
@@ -4958,7 +5449,7 @@ tree.mixin.Definition.prototype = {
                         throw { type: 'Runtime', message: "wrong number of arguments for " + this.name +
                             ' (' + argsLength + ' for ' + this.arity + ')' };
                     }
-
+                    
                     frame.prependRule(new(tree.Rule)(name, val));
                     evaldArguments[i] = val;
                 }
@@ -5231,7 +5722,7 @@ tree.Rule.prototype = {
         if (typeof name !== "string") {
             // expand 'primitive' name directly to get
             // things faster (~10% for benchmark.less):
-            name = (name.length === 1)
+            name = (name.length === 1) 
                 && (name[0] instanceof tree.Keyword)
                     ? name[0].value : evalName(env, name);
             variable = false; // never treat expanded interpolation as new variable name
@@ -5242,7 +5733,7 @@ tree.Rule.prototype = {
         }
         try {
             evaldValue = this.value.eval(env);
-
+            
             if (!this.variable && evaldValue.type === "DetachedRuleset") {
                 throw { message: "Rulesets cannot be evaluated on a property.",
                         index: this.index, filename: this.currentFileInfo.filename };
@@ -5326,14 +5817,14 @@ tree.Ruleset.prototype = {
         }
     },
     eval: function (env) {
-        var thisSelectors = this.selectors, selectors,
+        var thisSelectors = this.selectors, selectors, 
             selCnt, selector, i, defaultFunc = tree.defaultFunc, hasOnePassingSelector = false;
 
         if (thisSelectors && (selCnt = thisSelectors.length)) {
             selectors = [];
             defaultFunc.error({
-                type: "Syntax",
-                message: "it is currently only allowed in parametric mixin guards,"
+                type: "Syntax", 
+                message: "it is currently only allowed in parametric mixin guards," 
             });
             for (i = 0; i < selCnt; i++) {
                 selector = thisSelectors[i].eval(env);
@@ -5342,7 +5833,7 @@ tree.Ruleset.prototype = {
                     hasOnePassingSelector = true;
                 }
             }
-            defaultFunc.reset();
+            defaultFunc.reset();  
         } else {
             hasOnePassingSelector = true;
         }
@@ -5359,7 +5850,7 @@ tree.Ruleset.prototype = {
         if(this.debugInfo) {
             ruleset.debugInfo = this.debugInfo;
         }
-
+        
         if (!hasOnePassingSelector) {
             rules.length = 0;
         }
@@ -5431,7 +5922,7 @@ tree.Ruleset.prototype = {
                 rsRules[i] = rule = rule.eval ? rule.eval(env) : rule;
             }
         }
-
+        
         // Evaluate everything else
         for (i = 0; i < rsRules.length; i++) {
             rule = rsRules[i];
@@ -5454,7 +5945,7 @@ tree.Ruleset.prototype = {
         // Pop the stack
         envFrames.shift();
         envSelectors.shift();
-
+        
         if (env.mediaBlocks) {
             for (i = mediaBlockCount; i < env.mediaBlocks.length; i++) {
                 env.mediaBlocks[i].bubbleSelectors(selectors);
@@ -5719,19 +6210,19 @@ tree.Ruleset.prototype = {
 
     joinSelector: function (paths, context, selector) {
 
-        var i, j, k,
-            hasParentSelector, newSelectors, el, sel, parentSel,
-            newSelectorPath, afterParentJoin, newJoinedSelector,
+        var i, j, k, 
+            hasParentSelector, newSelectors, el, sel, parentSel, 
+            newSelectorPath, afterParentJoin, newJoinedSelector, 
             newJoinedSelectorEmpty, lastSelector, currentElements,
             selectorsMultiplied;
-
+    
         for (i = 0; i < selector.elements.length; i++) {
             el = selector.elements[i];
             if (el.value === '&') {
                 hasParentSelector = true;
             }
         }
-
+    
         if (!hasParentSelector) {
             if (context.length > 0) {
                 for (i = 0; i < context.length; i++) {
@@ -5861,7 +6352,7 @@ tree.Ruleset.prototype = {
             }
         }
     },
-
+    
     mergeElementsOnToSelectors: function(elements, selectors) {
         var i, sel;
 
@@ -5974,9 +6465,9 @@ tree.Selector.prototype = {
         }
     },
     isJustParentSelector: function() {
-        return !this.mediaEmpty &&
-            this.elements.length === 1 &&
-            this.elements[0].value === '&' &&
+        return !this.mediaEmpty && 
+            this.elements.length === 1 && 
+            this.elements[0].value === '&' && 
             (this.elements[0].combinator.value === ' ' || this.elements[0].combinator.value === '');
     },
     eval: function (env) {
@@ -6062,7 +6553,7 @@ tree.URL.prototype = {
                 }
                 val.value = rootpath + val.value;
             }
-
+            
             val.value = ctx.normalizePath(val.value);
 
             // Add url args if enabled
@@ -6135,14 +6626,14 @@ tree.Variable.prototype = {
         if (name.indexOf('@@') === 0) {
             name = '@' + new(tree.Variable)(name.slice(1)).eval(env).value;
         }
-
+        
         if (this.evaluating) {
             throw { type: 'Name',
                     message: "Recursive variable definition for " + name,
                     filename: this.currentFileInfo.file,
                     index: this.index };
         }
-
+        
         this.evaluating = true;
 
         variable = tree.find(env.frames, function (frame) {
@@ -6151,7 +6642,7 @@ tree.Variable.prototype = {
                 return v.value.eval(env);
             }
         });
-        if (variable) {
+        if (variable) { 
             this.evaluating = false;
             return variable;
         } else {
@@ -7351,7 +7842,7 @@ tree.Variable.prototype = {
 
         if (fileInfo) {
             var inputSource = this._contentsMap[fileInfo.filename];
-
+            
             // remove vars/banner added to the top of the file
             if (this._contentsIgnoredCharsMap[fileInfo.filename]) {
                 // adjust the index
@@ -7442,7 +7933,7 @@ tree.Variable.prototype = {
 
 // wraps the source-map code in a less module
 (function() {
-    less.modules["source-map"] = function() {
+	less.modules["source-map"] = function() {
 
 /*
  * Copyright 2011 Mozilla Foundation and contributors
@@ -9378,6 +9869,6 @@ this.sourceMap = {
 };
 
 // footer to wrap "source-map" module
-    return this.sourceMap;
-    }();
+	return this.sourceMap;
+	}();
 })();
