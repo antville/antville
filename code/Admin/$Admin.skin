@@ -68,7 +68,7 @@
             <% gettext Interval %>
          </label>
          <div class='uk-form-controls'>
-            <% root.input creationDelay maxlength=3 class=uk-width-1-6 type=number min=1 %> <% gettext days %>
+            <% root.input creationDelay class=uk-width-1-6 type=number min=1 %> <% gettext days %>
          </div>
       </div>
    </fieldset>
