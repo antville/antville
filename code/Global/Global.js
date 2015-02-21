@@ -742,6 +742,14 @@ function value_macro(param, name, value) {
   return;
 }
 
+function href_macro(param) {
+  var href = path.href(req.action === 'main' ? String.EMPTY : req.action);
+  if (!href.startsWith('http')) {
+    href = req.servletRequest.rootURL + href;
+  }
+  return res.write(href);
+}
+
 /**
  * Renders either a skin or the URL of a random site, story or image.
  * The corresponding story and image collections will be retrieved either from res.handlers.site or
