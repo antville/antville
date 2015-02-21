@@ -34,7 +34,7 @@
    </head>
    <body>
       <span class='uk-margin-right uk-float-right'>
-         <% image /smallchaos.gif | link <% layout.skins.href %> %>
+         <% image /smallchaos.gif | link <% site.href %> %>
       </span>
       <% response.body %>
    </body>
