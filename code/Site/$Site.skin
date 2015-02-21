@@ -149,7 +149,6 @@
    </div>
 </form>
 <script>
-   $(function () {
       $('input#callbackMode').on('click', function(event) {
          $('input#callbackUrl').prop('disabled', !this.checked);
       });
@@ -175,7 +174,6 @@
                $(item).html($(item).html().replace(key, ''));
             });
          });
-   });
 </script>
 
 <% #admin %>
@@ -323,7 +321,10 @@
 </footer>
 
 <% #javascript %>
-document.addEventListener('DOMContentLoaded', function () {
+$(function () {
+   // Unhide links triggering JavaScript
+   $('a[href="javascript:"]').css('display', 'initial');
+
    // Injecting main.css if necessary for compatibility reasons
    if (!document.querySelector('link[href$=main\\.css]')) {
       var link = document.createElement('link');
@@ -383,6 +384,9 @@ a {
    color: @link-color;
    &:hover {
      color: @hover-color;
+   }
+   &[href='javascript:'] {
+      display: none;
    }
 }
 
@@ -614,7 +618,7 @@ h1 a, .uk-table a {
    max-width: 100%;
 }
 
-.av-tagged {
+.av-collage {
    padding: 0;
    .av-tagged-image {
       opacity: 0;
@@ -862,7 +866,8 @@ a.gs-title:hover {
 </form>
 
 <% #referrerTable %>
-<table class='uk-hidden uk-table uk-table-condensed uk-table-striped uk-table-hover av-referrers'>
+<% site.skin $Site#noscript %>
+<table class='uk-table uk-table-condensed uk-table-striped uk-table-hover av-referrers'>
    <thead>
       <tr>
          <th class='uk-text-right'><i class='uk-icon-bar-chart'></i></th>
@@ -871,37 +876,43 @@ a.gs-title:hover {
       </tr>
    </thead>
    <tbody>
-      <% site.skin $Site#referrer %>
       <% response.list %>
    </tbody>
 </table>
 <script type="text/javascript">
-$(function () {
+   $('.av-referrers').addClass('uk-hidden');
+   $('.av-referrer-control a').removeClass('uk-hidden');
+
    var query = new Antville.Query();
    var spamFilter = new Antville.Filter([<% site.spamfilter %>]);
    var searchFilter = new Antville.Filter(query.filter);
+
    var searchEngineFilters = [
-      new Antville.Filter("\/\/.*altavista.*\?", "q"),
-      new Antville.Filter("\/\/.*bing\..*\?", "q"),
-      new Antville.Filter("\/\/.*google\..*\?", "q"),
-      new Antville.Filter("\/\/.*search\.yahoo\..*\?", "p"),
-      new Antville.Filter("\/\/.*yandex\..*\?", "text")
+      new Antville.Filter("//.*altavista.*/\?", "q"),
+      new Antville.Filter("//.*bing\..*/\?", "q"),
+      new Antville.Filter("//.*google\..*/imgres\?", "imgurl"),
+      new Antville.Filter("//.*google\..*/\?.*q=[^&]", "q"),
+      new Antville.Filter("//.*search\.yahoo\..*/\?", "p"),
+      new Antville.Filter("//.*yandex\..*/\?", "text")
    ];
+
    var urlShortenerCounter = 0;
    var urlShortenerFilters = [
-      new Antville.Filter('\/\/bit\.ly/'),
-      new Antville.Filter('\/\/goo\.gl/'),
-      new Antville.Filter('\/\/owl\.ly/'),
-      new Antville.Filter('\/\/t\.co/'),
-      new Antville.Filter('\/\/tinyurl\.com/')
+      new Antville.Filter('//bit\.ly/'),
+      new Antville.Filter('//goo\.gl/'),
+      new Antville.Filter('//owl\.ly/'),
+      new Antville.Filter('//t\.co/'),
+      new Antville.Filter('//tinyurl\.com/'),
+      new Antville.Filter('//.*google\..*/url\?')
    ];
+
    $('.av-referrer-row').each(function (index) {
-      if (index < 1) return;
       var row = $(this);
       var ref = row.find('.av-referrer a');
       var url = ref.attr('href');
       var count = row.find('.av-referrer-count').html();
       var control = row.find('.av-referrer-control a');
+
       control.on('click', function (event) {
          event.preventDefault();
          var input = prompt("<% gettext 'Are you sure you want to add this URL to the referrer  filter? Edit it below to filter a pattern only.' %>", url);
@@ -909,15 +920,10 @@ $(function () {
             location.href = '<% site.href referrers %>?submit=1&permanent=' + encodeURIComponent(input);
          }
       });
+
       var referrer = new Antville.Referrer(url, url, count);
       ref.html(referrer.text);
-      for (var i = 0, filter; i < urlShortenerFilters.length; i += 1) {
-         filter = urlShortenerFilters[i];
-         if (filter.test(url)) {
-            urlShortenerCounter += parseInt(count, 10);
-            row.remove();
-         }
-      }
+
       if (spamFilter.test(url)) {
          if (query.includeSpam) {
             ref.addClass('uk-text-muted');
@@ -926,44 +932,66 @@ $(function () {
             row.remove();
          }
       }
+
       if (query.filter && !searchFilter.test(url)) {
          row.remove();
       }
+
       var re = new RegExp('[:/].*$');
+
       for (var i = 0, filter; i < searchEngineFilters.length; i += 1) {
          filter = searchEngineFilters[i];
          if (filter.test(url)) {
             var host = referrer.text.replace(re, '');
-            ref.html(referrer.compose('<i><% gettext "Search" %> ' + host + ':</i>', filter.key));
-            break;
+            ref.html(referrer.compose('<i><% gettext Search %>:</i>', filter.key));
+            return;
+         }
+      }
+
+      for (var i = 0, filter; i < urlShortenerFilters.length; i += 1) {
+         filter = urlShortenerFilters[i];
+         if (filter.test(url)) {
+            urlShortenerCounter += parseInt(count, 10);
+            var host = referrer.text.replace(re, '');
+            var url = referrer.url.replace(new RegExp('^(.+//[^/]+).*'), '$1');
+            ref.attr('href', url).html(host);
+            return;
          }
       }
    });
-   var firstRow = $('.av-referrer-row:first');
-   if (urlShortenerCounter > 0) {
-      firstRow.find('.av-referrer-count')
-         .html(urlShortenerCounter)
-         .end()
-         .find('.av-referrer')
-         .html('URL Shorteners')
-         .end()
-         .find('.av-referrer-control a')
-         .remove();
-      var rows = $('.av-referrer-row');
-      for (var i = 1, count; i < rows.length; i += 1) {
-         count = parseInt(rows.eq(i).find('.av-referrer-count').html(), 10);
-         if (count >= urlShortenerCounter) {
-            firstRow.insertAfter(rows.eq(i));
-            break;
-         }
-      }
-   } else {
-      firstRow.remove();
+
+   $('.av-referrer a').each(function (index) {
+      var html = $(this).html();
+      var countElement = $('.av-referrer-count').eq(index);
+      var count = 0;
+      $('.av-referrer a').each(function (index2) {
+         if (index2 <= index) return;
+         if ($(this).html() === html) {
+            count += parseInt($('.av-referrer-count').eq(index2).html(), 10);
+            $(this).parents('.av-referrer-row').addClass('av-delete');
    }
+      });
+      if (count) {
+         countElement.html(parseInt(countElement.html(), 10) + count);
+      }
+   });
+
+   $('.av-referrer-row.av-delete').remove();
+
+   var table = $('.av-referrers');
+   var rows = $('tbody > tr', table);
+   rows.sort(function (a, b) {
+      var countA = parseInt($('.av-referrer-count', a).text(), 10);
+      var countB = parseInt($('.av-referrer-count', b).text(), 10);
+      return countB - countA;
+   });
+   rows.each(function () {
+      table.append(this);
+   });
+
    if ($('.av-referrers tbody').children().length > 0) {
       $('.av-referrers').removeClass('uk-hidden');
    }
-});
 </script>
 
 <% #referrer %>
@@ -973,7 +1001,7 @@ $(function () {
       <% param.referrer | link %>
    </td>
    <td class='av-referrer-control uk-text-right'>
-      <a href='javascript:'><i class='uk-icon uk-icon-filter'></i></a>
+      <a href='javascript:' class='uk-hidden'><i class='uk-icon uk-icon-filter'></i></a>
    </td>
 </tr>
 
@@ -1035,7 +1063,11 @@ $(function () {
 <% gettext "The Management" %>
 
 <% #noscript %>
-<% gettext "Referrers and backlinks are processed in your browser to reduce spam. To see them, your browser needs to permit the execution of JavaScript." %>
+<noscript>
+   <div class='uk-margin-top'>
+      <i><% gettext 'Please enable JavaScript in your browser for improved functionality.' %></i>
+   </div>
+</noscript>
 
 <% #menuExt %>
 <script type="text/javascript" defer="defer">

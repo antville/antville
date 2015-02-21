@@ -16,7 +16,7 @@
       <% if <% image.tags count %> is 0 then '' else <% image.tags prefix="<i class='uk-text-muted uk-icon-tags' data-uk-tooltip title='" suffix="'></i>" %> %>
    </td>
    <td class='uk-text-right uk-text-nowrap'>
-      <a href='' class='av-clipboard-copy' data-text='<% gettext 'Press CTRL & C to copy to clipboard.' %>' data-value="<% image.macro %>"><i class='uk-icon-clipboard'></i></a>
+      <a href='javascript:' class='av-clipboard-copy' data-text='<% gettext 'Press CTRL & C to copy to clipboard.' %>' data-value="<% image.macro %>"><i class='uk-icon-clipboard'></i></a>
       <% image.link delete "<i class='uk-icon-trash-o'></i>" %>
       <% image.link edit "<i class='uk-icon-pencil'></i>" %>
    </td>
@@ -90,7 +90,7 @@
    <fieldset class='uk-margin-top'>
      <legend><% gettext Information %></legend>
       <div class='uk-form-row'>
-         <% image.macro | link 'javascript:' data-value=<% image.macro %> data-text=<% gettext "Press CTRL & C to copy to clipboard." %> class='av-clipboard-copy' %>
+         <% image.macro | link <% image.href %> data-value=<% image.macro %> data-text=<% gettext "Press CTRL & C to copy to clipboard." %> class='av-clipboard-copy' %>
       </div>
    </fieldset>
    <div class='uk-margin-top'>

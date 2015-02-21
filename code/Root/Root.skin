@@ -4,7 +4,6 @@
 <% #urlPreview %>
 <a id='av-site-url-preview'></a>
 <script type='text/javascript'>
-$(function () {
   $('#name').on('keyup', function (event) {
     var name = $(this).val();
     if (name) {
@@ -15,5 +14,4 @@ $(function () {
       $('#av-site-url-preview').html(name);
     }
   });
-});
 </script>

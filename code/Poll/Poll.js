@@ -287,6 +287,8 @@ Poll.prototype.input_macro = function(param, name) {
         return add(this);
       });
     }
+    // Always add one more empty choice which is only visible if JavaScript is disabled
+    add(new Choice());
     return;
   }
   return HopObject.prototype.input_macro.apply(this, arguments);

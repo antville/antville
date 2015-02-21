@@ -107,7 +107,6 @@
    </div>
 </form>
 <script type="text/javascript">
-$(function() {
    $("#creationScope").on('change', function() {
       var disabled = $(this).val() === "regular" ? false : true;
       $("#probationPeriod").attr("disabled", disabled);
@@ -118,7 +117,6 @@ $(function() {
       $("#phaseOutNotificationPeriod").attr("disabled", disabled);
       $("#phaseOutGracePeriod").attr("disabled", disabled);
    }).change();
-});
 </script>
 
 <% #activities %>

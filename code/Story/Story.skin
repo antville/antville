@@ -73,7 +73,7 @@
    <fieldset class='uk-margin-top'>
       <legend><% gettext Information %></legend>
       <div class='uk-form-row'>
-         <% story.macro | link 'javascript:' data-value=<% story.macro %> data-text=<% gettext "Press CTRL & C to copy to clipboard." %> class='av-clipboard-copy' %>
+         <% story.macro | link <% story.href %> data-value=<% story.macro %> data-text=<% gettext "Press CTRL & C to copy to clipboard." %> class='av-clipboard-copy' %>
          <div><% story.comments summary %></div>
          <div><% ngettext '{0} request' '{0} requests' <% story.requests default=0 %> %></div>
       </div>

@@ -22,7 +22,7 @@
       <% story.link mode <% if <% story.mode %> is hidden then eye-slash else eye prefix="<i class='uk-icon-" suffix="'></i>" %> %>
    </td>
    <td class='uk-text-nowrap uk-text-right'>
-      <a href='' data-value="<% story.macro %>" data-text='<% gettext "Press CTRL & C to copy to clipboard." %>' class='av-clipboard-copy'><i class='uk-icon-clipboard'></i></a>
+      <a href='javascript:' data-value="<% story.macro %>" data-text='<% gettext "Press CTRL & C to copy to clipboard." %>' class='av-clipboard-copy'><i class='uk-icon-clipboard'></i></a>
       <% story.link delete "<i class='uk-icon-trash-o'></i>" %>
       <% story.link edit "<i class='uk-icon-pencil'></i>" %>
    </td>

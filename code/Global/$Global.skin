@@ -28,28 +28,36 @@
 </li>
 
 <% #upload %>
-<div class="uk-hidden av-upload">
+<noscript>
    <input type="file" id="<% param.name %>" name="<% param.name %>">
+</noscript>
+<div class="av-upload uk-hidden">
+   <input type="file">
    <div class="uk-width-1-1 av-upload-controls">
-      <input class='uk-width-1-2' type="text" name="<% param.name %>_origin" id="<% param.name %>_origin" value="<% param.value %>"/>
+      <input class='uk-width-1-2' type="text" value="<% param.value %>">
       <button class='uk-button' id="<% param.name %>_control" name="<% param.name %>_control" type="button">
          <% gettext "Browse" suffix=… %>
       </button>
    </div>
 </div>
 <script>
-$(function () {
-   $('.av-upload input[type="file"]').on('change', function (event) {
-      $('#<% param.name %>_origin').val($(this).val());
-   });
-   $('.av-upload input[type="text"]').on('blur', function (event) {
-      $('#<% param.name %>').val('');
-   });
+   $('noscript').remove();
+   $('.av-upload').removeClass('uk-hidden');
+   $('.av-upload input[type="file"]')
+      .attr('id', '<% param.name %>')
+      .attr('name', '<% param.name %>')
+      .on('change', function (event) {
+         $('#<% param.name %>_origin').val($(this).val());
+      });
+   $('.av-upload input[type="text"]')
+      .attr('id', '<% param.name %>_origin')
+      .attr('name', '<% param.name %>_origin')
+      .on('blur', function (event) {
+         $('#<% param.name %>').val('');
+      });
    $('.av-upload button').on('click', function (event) {
       $('#<% param.name %>').click();
    });
-   $('.av-upload').removeClass('uk-hidden');
-});
 </script>
 
 <% #listItemFlag %>

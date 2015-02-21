@@ -78,7 +78,7 @@
       </label>
       <div class='uk-form-controls uk-form-password uk-width-1-2'>
          <input type="password" name="password" id="password" class='uk-width-1-1'>
-         <a href='' class='uk-form-password-toggle' data-uk-form-password="{
+         <a href='javascript:' class='uk-form-password-toggle' data-uk-form-password="{
             lblHide: '<% gettext Hide %>',
             lblShow: '<% gettext Show %>'
          }"><% gettext Show %></a>
@@ -94,8 +94,7 @@
    </div>
 </form>
 <script type="text/javascript">
-$(function () {
-   $("#submit").click(function (event) {
+   $("#submit").on('click', function (event) {
       var token = "<% session.token %>";
       var salt = "<% session.salt %>";
       var password = $("#password").val();
@@ -105,7 +104,6 @@ $(function () {
          $("#password").val("");
       }
    });
-});
 </script>
 
 <% #admin %>

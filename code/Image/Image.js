@@ -247,25 +247,29 @@ Image.prototype.getFormValue = function(name) {
  * @param {Object} data
  */
 Image.prototype.update = function(data) {
+  if (data.uploadError) {
+    app.log(data.uploadError);
+    throw Error(gettext('File size is exceeding the upload limit.'));
+  }
+
+  var mime = data.file;
   var origin = data.file_origin;
 
-  if (!origin) {
-    if (this.isTransient()) {
-      throw Error(gettext('There was nothing to upload. Please be sure to choose a file.'));
-    }
-  } else if (origin !== this.origin) {
-    var mime = data.file;
-    // Check if mime is not null to allow post requests with no file upload at all
-    if (!mime || mime.contentLength < 1) {
+  if (mime.contentLength < 1) {
+    if (origin && origin !== this.origin) {
       mime = getURL(origin);
       if (!mime) {
-        throw Error(gettext('Could not fetch the image from the given URL.'));
+        throw Error(gettext('Could not fetch the file from the given URL.'));
       }
+    } else if (this.isTransient()) {
+      throw Error(gettext('There was nothing to upload. Please be sure to choose a file.'));
     }
+  }
 
+  if (mime.contentLength > 0) {
     var extension = Image.getFileExtension(mime.contentType);
     if (!extension) {
-      throw Error(gettext('This does not seem to be a (valid) JPG, PNG or GIF image file.'));
+      throw Error(gettext('This does not seem to be a valid JPG, PNG or GIF image.'));
     }
 
     this.origin = origin;
@@ -276,6 +280,10 @@ Image.prototype.update = function(data) {
     if (!this.name) {
        var name = File.getName(data.name) || mimeName.split('.')[0];
        this.name = this.parent.images.getAccessName(name);
+    }
+
+    if (!data.description && origin) {
+      data.description = gettext('Source: {0}', origin);
     }
 
     var image = this.getConstraint(mime, data.maxWidth, data.maxHeight);

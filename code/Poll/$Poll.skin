@@ -13,7 +13,7 @@
       <% poll.link status <% if <% poll.status %> is open then "<i class='uk-icon-unlock'></i>" else "<i class='uk-icon-lock'></i>" %> %>
    </td>
    <td class='uk-text-right uk-text-nowrap'>
-      <a href='' class='av-clipboard-copy' data-text='<% gettext 'Press CTRL & C to copy to clipboard.' %>' data-value="<% poll.macro %>"><i class='uk-icon-clipboard'></i></a><span title='' data-uk-tooltip="{pos: 'right'}">
+      <a href='javascript:' class='av-clipboard-copy' data-text='<% gettext 'Press CTRL & C to copy to clipboard.' %>' data-value="<% poll.macro %>"><i class='uk-icon-clipboard'></i></a><span title='' data-uk-tooltip="{pos: 'right'}">
       <% poll.link delete "<i class='uk-icon-trash-o'></i>" %>
       <% poll.link edit "<i class='uk-icon-pencil'></i>" %>
    </td>
@@ -94,8 +94,8 @@ else
    </div>
    <legend class='uk-margin-top'><% gettext Choices %></legend>
    <% poll.input choices %>
-   <div class="uk-text-small uk-form-row">
-      <a href='' id="add">
+   <div class='uk-text-small uk-form-row uk-hidden' id='av-add-choice'>
+      <a href='javascript:'>
          <i class='uk-icon-plus'></i>
          <% gettext "Add Choice" %>
       </a>
@@ -103,7 +103,7 @@ else
    <fieldset class='uk-margin-top'>
      <legend><% gettext Information %></legend>
       <div class='uk-form-row'>
-         <% poll.macro | link 'javascript:' data-value=<% poll.macro %> data-text=<% gettext "Press CTRL & C to copy to clipboard." %> class='av-clipboard-copy' %>
+         <% poll.macro | link <% poll.href %> data-value=<% poll.macro %> data-text=<% gettext "Press CTRL & C to copy to clipboard." %> class='av-clipboard-copy' %>
       </div>
    </fieldset>
    <div class='uk-margin-top'>
@@ -120,16 +120,15 @@ else
    </div>
 </form>
 <script type="text/javascript">
-$(function() {
-   var index = $(".choice").length + 1;
-   $("#add").on('click', function (event) {
+   $('.av-choice:last').remove();
+   var index = $(".av-choice").length + 1;
+   $("#av-add-choice").removeClass('uk-hidden').find('a').on('click', function (event) {
       event.preventDefault();
-      var choice = $(".choice:last").clone();
+      var choice = $(".av-choice:last").clone();
       choice.find(".uk-form-label").text('#' + index);
       choice.find("input").attr("value", '');
-      $(".choice:last").after(choice);
-      $(".choice:last").find("input").focus();
+      $(".av-choice:last").after(choice);
+      $(".av-choice:last").find("input").focus();
       index += 1;
    });
-});
 </script>

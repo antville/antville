@@ -7,6 +7,7 @@
    <% layout.link import <% gettext Import %> prefix=' | ' %>
    <% layout.link export <% gettext Export %> prefix=' | ' %>
 </div>
+<% site.skin $Site#noscript %>
 <form class='uk-margin-top uk-form uk-form-stacked' id='prefs' method='post' action='<% response.action %>'>
    <div class='uk-form-row'>
       <div class='uk-form-label'>
@@ -22,9 +23,9 @@
          <% gettext 'Variables' %>
       </legend>
       <% layout.values %>
-      <div class='uk-margin-bottom'>
+      <div id='av-add-variable' class='uk-margin-bottom uk-hidden'>
          <div class='uk-form-label'>&#160;</div>
-         <a href='' class='uk-icon-button uk-icon-plus uk-text-middle' id='addVariable'></a>
+         <a href='javascript:' class='uk-icon-button uk-icon-plus uk-text-middle'></a>
       </div>
    </div>
    <div class='uk-margin-top'>
@@ -36,8 +37,7 @@
    </div>
 </form>
 <script type='text/javascript'>
-$(function() {
-   $('#addVariable').on('click', function (event) {
+   $('#av-add-variable').removeClass('uk-hidden').find('a').on('click', function (event) {
       event.preventDefault();
       var name = prompt('<% gettext "Please enter the name of the new variable:" %>');
       if (name) {
@@ -49,7 +49,6 @@ $(function() {
          $(variableRow).find('input').focus();
       }
    });
-});
 </script>
 
 <% #value %>

@@ -254,9 +254,60 @@ File.prototype.getFormValue = function(name) {
 File.prototype.update = function(data) {
   if (data.uploadError) {
     app.log(data.uploadError);
-    // Looks like the file uploaded has exceeded the upload limit ...
     throw Error(gettext('File size is exceeding the upload limit.'));
   }
+
+  var mime = data.file;
+  var origin = data.file_origin;
+
+  if (mime.contentLength < 1) {
+    if (origin && origin !== this.origin) {
+      mime = getURL(origin);
+      if (!mime) {
+        throw Error(gettext('Could not fetch the file from the given URL.'));
+      }
+    } else if (this.isTransient()) {
+      throw Error(gettext('There was nothing to upload. Please be sure to choose a file.'));
+    }
+  }
+
+  if (mime.contentLength > 0) {
+    this.origin = origin;
+    var mimeName = mime.normalizeFilename(mime.name);
+    this.contentLength = mime.contentLength;
+    this.contentType = mime.contentType;
+
+    if (!this.name) {
+       var name = File.getName(data.name) || mimeName.split('.')[0];
+       this.name = this.site.files.getAccessName(name);
+    }
+
+    if (!data.description && origin) {
+      data.description = gettext('Source: {0}', origin);
+    }
+
+    // Make the file persistent before proceeding with writing
+    // it to disk (also see Helma bug #607)
+    this.isTransient() && this.persist();
+
+    var extension = mimeName.substr(mimeName.lastIndexOf('.')) || String.EMPTY;
+    var fileName = this.name + extension;
+    if (fileName !== this.fileName) {
+      // Remove existing file if the file name has changed
+      this.getFile().remove();
+    }
+    this.fileName = fileName;
+    var file = this.getFile();
+    mime.writeToFile(file.getParent(), file.getName());
+  }
+
+  // FIXME: one day?
+  //this.setTags(data.tags || data.tag_array);
+  this.description = data.description;
+  this.touch();
+  return;
+
+
 
   if (!data.file_origin) {
     if (this.isTransient()) {
