@@ -82,7 +82,7 @@
     <property name="docs.infiles" location="${basedir}/code"/>
     <property name="docs.outfiles" location="${basedir}/docs"/>
 
-    <property name="i18n.scan" value="code compat extra"/>
+    <property name="i18n.scan" value="claustra code compat extra"/>
     <property name="i18n.destination" location="${basedir}/i18n"/>
     <property name="i18n.poDirectory" location="${i18n.destination}"/>
     <property name="i18n.template" location="${i18n.destination}/antville.pot"/>
