@@ -49,14 +49,6 @@ else
 <form class='uk-margin-top uk-form uk-form-stacked' method="post" action="<% response.action %>">
    <div class='uk-form-row'>
       <div class='uk-form-label'>
-         <% gettext Title %>
-      </div>
-      <div class='uk-form-controls'>
-         <% comment.input title class='uk-width-1-1' %>
-      </div>
-   </div>
-   <div class='uk-form-row'>
-      <div class='uk-form-label'>
          <% gettext Text %>
       </div>
       <div class='uk-form-controls'>
