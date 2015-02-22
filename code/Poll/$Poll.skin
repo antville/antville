@@ -93,13 +93,13 @@ else
    </div>
    <fieldset class='uk-margin-top'>
       <legend><% gettext Choices %></legend>
-   <% poll.input choices %>
-   <div class='uk-text-small uk-form-row uk-hidden' id='av-add-choice'>
-      <a href='javascript:'>
-         <i class='uk-icon-plus'></i>
-         <% gettext "Add Choice" %>
-      </a>
-   </div>
+      <% poll.input choices %>
+      <div class='uk-text-small uk-form-row uk-hidden' id='av-add-choice'>
+         <a href='javascript:'>
+            <i class='uk-icon-plus'></i>
+            <% gettext "Add Choice" %>
+         </a>
+      </div>
    </fieldset>
    <fieldset class='uk-margin-top'>
      <legend><% gettext Information %></legend>
@@ -121,7 +121,6 @@ else
    </div>
 </form>
 <script type="text/javascript">
-   $('.av-choice:last').remove();
    var index = $(".av-choice").length + 1;
    $("#av-add-choice").removeClass('uk-hidden').find('a').on('click', function (event) {
       event.preventDefault();
