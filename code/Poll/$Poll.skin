@@ -1,5 +1,4 @@
 <% #listItem %>
-<a name="<% poll.id %>" id="<% poll.id %>"></a>
 <tr>
    <td class='uk-text-right'><% poll.votes %></td>
    <td class='uk-width-1-2 av-overflow'>
@@ -13,7 +12,7 @@
       <% poll.link status <% if <% poll.status %> is open then "<i class='uk-icon-unlock'></i>" else "<i class='uk-icon-lock'></i>" %> %>
    </td>
    <td class='uk-text-right uk-text-nowrap'>
-      <a href='javascript:' class='av-clipboard-copy' data-text='<% gettext 'Press CTRL & C to copy to clipboard.' %>' data-value="<% poll.macro %>"><i class='uk-icon-clipboard'></i></a><span title='' data-uk-tooltip="{pos: 'right'}">
+      <a href='javascript:' class='av-clipboard-copy' data-text='<% gettext 'Press CTRL & C to copy to clipboard.' %>' data-value="<% poll.macro %>"><i class='uk-icon-clipboard'></i></a>
       <% poll.link delete "<i class='uk-icon-trash-o'></i>" %>
       <% poll.link edit "<i class='uk-icon-pencil'></i>" %>
    </td>
@@ -89,10 +88,11 @@ else
    <div class='uk-form-row'>
       <div class='uk-form-label'><% gettext Question %></div>
       <div class='uk-form-controls'>
-         <% poll.input question rows=3 class=uk-width-1-1 %>
+         <% poll.input question class=uk-width-1-1 %>
       </div>
    </div>
-   <legend class='uk-margin-top'><% gettext Choices %></legend>
+   <fieldset class='uk-margin-top'>
+      <legend><% gettext Choices %></legend>
    <% poll.input choices %>
    <div class='uk-text-small uk-form-row uk-hidden' id='av-add-choice'>
       <a href='javascript:'>

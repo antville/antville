@@ -43,7 +43,7 @@
 <div class='uk-article-meta'><% image.skin $HopObject#meta %></div>
 <form class='uk-margin-top uk-form uk-form-stacked' method="post" action="<% response.action %>" enctype="multipart/form-data">
    <div class='uk-form-row'>
-      <label class='uk-form-label' for=''>
+      <label class='uk-form-label' for='file'>
          <% gettext File %>
       </label>
       <div class='uk-form-controls'>
@@ -51,7 +51,7 @@
       </div>
    </div>
    <div class='uk-form-row uk-hidden av-name-row'>
-      <label class='uk-form-label' for=''>
+      <label class='uk-form-label' for='name'>
          <% gettext Name %>
          <i class='uk-icon-info-circle uk-text-muted' title='<% gettext "If you do not specify a name Antville will create one based on the filename." %>' data-uk-tooltip='{pos: "right"}'></i>
       </label>
@@ -60,7 +60,7 @@
       </div>
    </div>
    <div class='uk-form-row'>
-      <label class='uk-form-label' for=''>
+      <label class='uk-form-label' for='description'>
          <% gettext Description %>
       </label>
       <div class='uk-form-controls'>
@@ -68,7 +68,7 @@
       </div>
    </div>
    <div class='uk-form-row uk-hidden av-tags-row'>
-      <label class='uk-form-label' for=''>
+      <label class='uk-form-label' for='tags'>
          <% gettext Tags %>
          <i class='uk-icon-info-circle uk-text-muted' title='<% gettext 'Separated by commas' %>' data-uk-tooltip='{pos: "right"}'></i>
       </label>
@@ -77,7 +77,7 @@
       </div>
    </div>
    <div class='uk-form-row uk-hidden av-pixels-row'>
-      <label class='uk-form-label' for=''>
+      <label class='uk-form-label' for='maxWidth'>
          Pixels
          <i class='uk-icon-info-circle uk-text-muted' title='<% gettext "If you want to resize the image please specify your desired maximum width and/or maximum height in pixels. If you specify both the image will be resized to match both criterias, but the image ratio will be preserved. If the width or height of your image exceeds 100 pixels Antville automatically creates a thumbnail of it, too." %> ' data-uk-tooltip='{pos: "right"}'></i>
       </label>

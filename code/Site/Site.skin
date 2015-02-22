@@ -83,13 +83,13 @@ prefix="Last update: " default="None so far" %>)</span></li>
             <div class='uk-margin-large-left av-border-left'>
                <% membership.status %>
                <ul class='uk-nav uk-nav-side'>
-                  <li class='uk-nav-divider'/>
+                  <li class='uk-nav-divider'></li>
                   <% site.skin Site#navigation %>
-                  <li class='uk-nav-divider'/>
+                  <li class='uk-nav-divider'></li>
                   <li class='uk-margin-left'>
                      <% site.skin Site#search %>
                   </li>
-                  <li class='uk-nav-header'/>
+                  <li class='uk-nav-header'></li>
                   <li class='uk-margin-left uk-text-small'>
                      <% site.calendar %>
                   </li>

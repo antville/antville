@@ -711,7 +711,7 @@ Admin.prototype.renderActivity = function (item) {
       case Root:
       case Site:
       res.push();
-      html.tag('i', {'class': 'av-ant'});
+      html.element('i', String.EMPTY, {'class': 'av-ant'});
       return res.pop();
       case Comment:
       name = 'comment-o';

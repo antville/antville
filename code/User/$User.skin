@@ -50,7 +50,7 @@
       <% gettext 'Last modified by {0} on {1}' <% user.name %> <% this.modified short %> prefix=<br> %>
    %>
 </div>
-<form id='edit' class='uk-form uk-form-stacked uk-margin-top' method="post" action="<% response.action %>">
+<form id='edit' class='uk-form uk-form-stacked uk-margin-top' method="post">
    <input type="hidden" name="digest" id="digest">
    <input type="hidden" name="hash" id="hash">
    <div class='uk-form-row'>

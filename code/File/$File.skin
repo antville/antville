@@ -26,7 +26,7 @@
 <% site.skin $Site#noscript %>
 <form class='uk-margin-top uk-form uk-form-stacked' method="post" action="<% response.action %>" enctype="multipart/form-data">
    <div class='uk-form-row'>
-      <label class='uk-form-label' for='upload'>
+      <label class='uk-form-label' for='file'>
          <% gettext File %>
       </label>
       <div class='uk-form-controls'>

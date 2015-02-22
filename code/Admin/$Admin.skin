@@ -37,7 +37,7 @@
          </div>
       </div>
       <div class='uk-form-row'>
-         <label class='uk-form-label' for='quote'>
+         <label class='uk-form-label' for='quota'>
             <% gettext "Disk Quota" %>
          </label>
          <div class='uk-form-controls'>
@@ -79,7 +79,7 @@
             <% gettext Mode %>
          </label>
          <div class='uk-form-controls'>
-            <% root.select phaseOutMode label=enabled %>
+            <% root.select phaseOutMode %>
          </div>
       </div>
       <div class='uk-form-row'>

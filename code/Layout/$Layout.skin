@@ -8,7 +8,7 @@
    <% layout.link export <% gettext Export %> prefix=' | ' %>
 </div>
 <% site.skin $Site#noscript %>
-<form class='uk-margin-top uk-form uk-form-stacked' id='prefs' method='post' action='<% response.action %>'>
+<form class='uk-margin-top uk-form uk-form-stacked' id='prefs' method='post'>
    <div class='uk-form-row'>
       <div class='uk-form-label'>
          <% gettext 'Show Controls' %>
@@ -18,15 +18,19 @@
          <label for='sandbox'><% gettext enabled %></label>
       </div>
    </div>
-   <div class='uk-grid uk-form-row'>
-      <legend class='uk-width-1-1 uk-margin-top'>
-         <% gettext 'Variables' %>
-      </legend>
-      <% layout.values %>
-      <div id='av-add-variable' class='uk-margin-bottom uk-hidden'>
-         <div class='uk-form-label'>&#160;</div>
-         <a href='javascript:' class='uk-icon-button uk-icon-plus uk-text-middle'></a>
-      </div>
+   <div class='uk-form-row uk-margin-top'>
+      <fieldset>
+         <legend>
+            <% gettext 'Variables' %>
+         </legend>
+         <div class='uk-grid'>
+            <% layout.values %>
+         </div>
+         <div id='av-add-variable' class='uk-margin-bottom uk-hidden'>
+            <div class='uk-form-label'>&#160;</div>
+            <a href='javascript:' class='uk-icon-button uk-icon-plus uk-text-middle'></a>
+         </div>
+      </fieldset>
    </div>
    <div class='uk-margin-top'>
       <button class='uk-button uk-button-primary' type='submit' id='submit' name='save' value='1'>
@@ -63,7 +67,7 @@
 
 <% #import %>
 <h1><% response.title %></h1>
-<form class='uk-form' method="post" action="<% response.action %>" enctype="multipart/form-data">
+<form class='uk-form' method="post" enctype="multipart/form-data">
    <% layout.upload upload %>
    <div class='uk-margin-top'>
       <button class='uk-button uk-button-primary' type="submit" id="submit" name="submit" value="1">
