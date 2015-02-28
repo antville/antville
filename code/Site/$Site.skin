@@ -178,7 +178,8 @@
 <% #meta %>
 <meta name='description' content='<% response.description %>'>
 <meta property='og:type' content='<% response.type %>'>
-<meta property='og:locale' content='<% site.locale %>'>
+<% // Facebook is very picky with locales (e.g. complains about 'de' and 'en_AU') %>
+<% //site.locale prefix="<meta property='og:locale' content='" suffix="'>" %>
 <meta property='og:title' content='<% response.title %>'>
 <meta property='og:description' content='<% response.description %>'>
 <meta property='og:site_name' content='<% site.title %>'>
