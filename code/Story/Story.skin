@@ -87,56 +87,6 @@
       <a href='.' class="uk-button uk-button-link"><% gettext Cancel %></a>
    </div>
 </form>
-<script>
-(function ($) {
-   var form = $('form#av-story-editor');
-   var buffer = [];
-   form.find(':input, textarea').each(function () {
-      buffer.push($(this).val());
-   });
-   var raw = encodeURIComponent(buffer.join(' '));
-   $.post('<% stories.href render %>', raw)
-      .done(function (data) {
-         var html = $('<div>').html(data);
-         var assets = [];
-         html.find('[src]').each(function () {
-            var url = $(this).attr('src');
-            var re = new RegExp('\.(?:gif|jpg|jpeg|png)$');
-            if (url.toLowerCase().match(re)) {
-               assets.push(url);
-            }
-            re = new RegExp('^.+://.*(youtube.+)/embed/(.+)');
-            var match = url.toLowerCase().match(re);
-            if (match) {
-               form.append($('<input>').attr({
-                  hidden: true,
-                  name: 'og:video',
-                  value: 'https://' + match[1] + '/v/' + match[2]
-               }));
-               assets.push('https://img.' + match[1] + '/vi/' + match[2] + '/0.jpg');
-            }
-         });
-
-         $.each(assets, function (index, url) {
-            console.info(url);
-            var img = new Image;
-            img.src = url;
-            img.onload = function () {
-               form.append($('<input>').attr({
-                  hidden: true,
-                  name: 'og:image',
-                  value: url
-               }));
-               console.info('%ix%i %s', this.width, this.height, this.src);
-               assets.shift();
-               if (!assets.length) {
-                  console.info('READY.');
-               }
-            }
-         });
-      });
-})(jQuery);
-</script>
 
 <% #comment %>
 <% story.skin Story#date %>

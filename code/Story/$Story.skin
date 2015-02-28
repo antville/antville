@@ -61,6 +61,61 @@ else
    </div>
 </div>
 
+<% #extract %>
+<script type='text/javascript'>
+   $('form#av-story-editor').on('submit', function (event) {
+      var form = $(this);
+      if (form.data('is-processed')) {
+         return true;
+      }
+      event.preventDefault();
+      var buffer = [];
+      form.find(':input, textarea').each(function () {
+         buffer.push($(this).val());
+      });
+      var raw = encodeURIComponent(buffer.join(' '));
+      $.post('<% stories.href render %>', raw)
+         .done(function (data) {
+            var html = $('<div>').html(data);
+            var assets = [];
+            html.find('[src]').each(function () {
+               var url = $(this).attr('src');
+               var re = new RegExp('\.(?:gif|jpg|jpeg|png)$', 'i');
+               if (url.match(re)) {
+                  assets.push(url);
+               }
+               re = new RegExp('^.+://[^/]*(youtube)[^/]+/embed/([^/?]+)', 'i');
+               var match = url.match(re);
+               if (match) {
+                  form.append($('<input>').attr({
+                     hidden: true,
+                     name: 'og:video',
+                     value: 'https://' + match[1] + '.com/v/' + match[2]
+                  }));
+                  assets.push('https://img.' + match[1] + '.com/vi/' + match[2] + '/0.jpg');
+               }
+            });
+
+            $.each(assets, function (index, url) {
+               var img = new Image;
+               img.src = url;
+               img.onload = function () {
+                  form.append($('<input>').attr({
+                     hidden: true,
+                     name: 'og:image',
+                     value: url
+                  }));
+                  assets.shift();
+                  if (!assets.length) {
+                     form.data('is-processed', true);
+                     form.submit();
+                  }
+               }
+            });
+         });
+   });
+</script>
+
 <% #restore %>
 <script type="text/javascript">
 $(function() {
