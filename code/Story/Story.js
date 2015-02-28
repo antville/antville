@@ -161,9 +161,14 @@ Story.prototype.getPermission = function(action) {
 }
 
 Story.prototype.main_action = function() {
-  res.data.title = this.getTitle(10);
-  res.data.body = this.renderSkinAsString('Story#main');
-  this.site.renderSkin('Site#page');
+  var imgMatch = this.macro_filter(String(this.text)).match(/<img[^>]+src=['"]?([^'">\s]+)/);
+  this.site.renderPage({
+    type: 'article',
+    title: this.getTitle(10),
+    description: this.format_filter(this.getAbstract().replace(/\s+/g, String.SPACE), null, 'quotes'),
+    body: this.renderSkinAsString('Story#main'),
+    image: imgMatch ? imgMatch[1] : null
+  });
   this.site.log();
   this.count();
   this.log();
@@ -187,7 +192,7 @@ Story.prototype.getTitle = function(limit) {
     }
   }
   return String(res.meta[key]) || String.ELLIPSIS;
-}
+};
 
 Story.prototype.edit_action = function() {
   if (req.postParams.save) {

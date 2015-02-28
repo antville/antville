@@ -286,12 +286,27 @@ Site.prototype.getPermission = function(action) {
 }
 
 Site.prototype.main_action = function() {
-  res.data.body = this.renderSkinAsString(this.mode === Site.DELETED ? '$Site#deleted' : 'Site#main');
-  res.data.title = this.getTitle();
-  this.renderSkin('Site#page');
+  this.renderPage({
+    type: 'website',
+    title: this.getTitle(),
+    description: this.tagline || String.EMPTY,
+    body: this.renderSkinAsString(this.mode === Site.DELETED ? '$Site#deleted' : 'Site#main'),
+    image: (this.layout.images.get('favicon') || Images.Default['favicon.png']).getUrl(),
+    links: this.renderSkinAsString('$Site#links')
+  });
   this.log();
   return;
-}
+};
+
+// FIXME: Move
+Site.prototype.renderPage = function (parts) {
+  for (var key in parts) {
+    var existing = res.data[key] || String.EMPTY;
+    res.data[key] = existing + parts[key];
+  }
+  res.data.meta = this.renderSkinAsString('$Site#meta');
+  this.renderSkin('Site#page');
+};
 
 Site.prototype.edit_action = function() {
   if (req.postParams.save) {

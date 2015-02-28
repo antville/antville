@@ -175,6 +175,30 @@
          });
 </script>
 
+<% #meta %>
+<meta name='description' content='<% response.description %>'>
+<meta property='og:type' content='<% response.type %>'>
+<meta property='og:title' content='<% response.title %>'>
+<meta property='og:description' content='<% response.description %>'>
+<meta property='og:site_name' content='<% site.title %>'>
+<% response.image prefix="<meta property='og:image' content='" suffix="'>" %>
+<meta property='og:url' content='<% href %>'>
+<meta name='twitter:card' content='summary_large_image'>
+<meta name='twitter:site' content='@antville_org'>
+<meta name='twitter:title' content='<% response.title %>'>
+<meta name='twitter:description' content='<% response.description %>'>
+<% response.image prefix="<meta name='twitter:image:src' content='" suffix="'>" %>
+<meta itemprop='title name' content='<% response.title %>'>
+<meta itemprop='description' content='<% response.description %>'>
+<% response.image prefix="<meta itemprop='image primaryImageOfPage' content='" suffix="'>" %>
+
+<% #links %>
+<link rel='alternate' type='application/rss+xml' title='Stories and comments of <% site.title %>' href='<% site.href rss.xml %>'>
+<link rel='alternate' type='application/rss+xml' title='Stories of <% site.title %>' href='<% site.href stories.xml %>'>
+<link rel='alternate' type='application/rss+xml' title='Comments of <% site.title %>' href='<% site.href comments.xml %>'>
+<link rel='alternate' type='application/rss+xml' title='Sites of <% root.title %>' href='<% root.href updates.xml %>'>
+<link rel='search' type='application/opensearchdescription+xml' href='<% site.href search.xml %>' title='<% site.title %>'>
+
 <% #admin %>
 <a name='admin' id='admin'></a>
 <fieldset class='uk-margin-top'>
