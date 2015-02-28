@@ -167,7 +167,7 @@ Story.prototype.main_action = function() {
     title: this.getTitle(10),
     description: this.format_filter(this.getAbstract().replace(/\s+/g, String.SPACE), null, 'quotes'),
     body: this.renderSkinAsString('Story#main'),
-    image: imgMatch ? imgMatch[1] : null
+    image: imgMatch ? imgMatch[1] : String.EMPTY
   });
   this.site.log();
   this.count();
