@@ -53,6 +53,7 @@ Stories.prototype.getPermission = function(action) {
     case 'top':
     case 'closed':
     case 'create':
+    case 'render':
     case 'user':
     return Site.require(Site.OPEN) && session.user ||
         Membership.require(Membership.CONTRIBUTOR) ||
@@ -120,6 +121,14 @@ Stories.prototype.top_action = function() {
   this._parent.renderSkin('Site#page');
   return;
 }
+
+Stories.prototype.render_action = function () {
+  var content = String(req.postParams.http_post_remainder);
+  var story = new Story;
+  story.site = res.handlers.site;
+  var result = Story.prototype.macro_filter.call(story, content);
+  res.write(result);
+};
 
 /**
  *

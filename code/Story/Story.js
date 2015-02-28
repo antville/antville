@@ -161,14 +161,14 @@ Story.prototype.getPermission = function(action) {
 }
 
 Story.prototype.main_action = function() {
-  var imgMatch = this.macro_filter(String(this.text)).match(/<img[^>]+src=['"]?([^'">\s]+)/);
   this.site.renderPage({
     type: 'article',
     schema: 'http://schema.org/Article',
     title: this.getTitle(10),
     description: this.format_filter(this.getAbstract().replace(/\s+/g, String.SPACE), null, 'quotes'),
     body: this.renderSkinAsString('Story#main'),
-    image: imgMatch ? imgMatch[1] : String.EMPTY
+    images: this.getMetadata('og:image'),
+    videos: this.getMetadata('og:video')
   });
   this.site.log();
   this.count();
@@ -199,6 +199,11 @@ Story.prototype.edit_action = function() {
   if (req.postParams.save) {
     try {
       this.update(req.postParams);
+      console.log(req.postParams['og:image_array']);
+      (function (images, videos) {
+        this.setMetadata('og:image', images ? Array.prototype.slice.call(images) : null);
+        this.setMetadata('og:video', videos ? Array.prototype.slice.call(videos) : null);
+      }).call(this, req.postParams['og:image_array'], req.postParams['og:video_array']);
       delete session.data.backup;
       res.message = gettext('The story was successfully updated.');
       res.redirect(this.href(req.action));

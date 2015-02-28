@@ -183,15 +183,17 @@
 <meta property='og:title' content='<% response.title %>'>
 <meta property='og:description' content='<% response.description %>'>
 <meta property='og:site_name' content='<% site.title %>'>
-<% response.image prefix="<meta property='og:image' content='" suffix="'>" %>
+<% //response.images prefix="<meta property='og:image' content='" suffix="'>" %>
 <meta property='og:url' content='<% href %>'>
-<meta name='twitter:card' content='summary_large_image'>
+<meta name='twitter:card' content='summary'>
 <meta name='twitter:title' content='<% response.title %>'>
 <meta name='twitter:description' content='<% response.description %>'>
-<% response.image prefix="<meta name='twitter:image:src' content='" suffix="'>" %>
+<% //response.image prefix="<meta name='twitter:image:src' content='" suffix="'>" %>
 <meta itemprop='name' content='<% response.title %>'>
 <meta itemprop='description' content='<% response.description %>'>
-<% response.image prefix="<meta itemprop='image' content='" suffix="'>" %>
+<% //response.image prefix="<meta itemprop='image' content='" suffix="'>" %>
+<% response.images %>
+<% response.videos %>
 
 <% #links %>
 <link rel='alternate' type='application/rss+xml' title='Stories and comments of <% site.title %>' href='<% site.href rss.xml %>'>
