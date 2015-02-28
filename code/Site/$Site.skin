@@ -148,49 +148,49 @@
    </div>
 </form>
 <script>
-      $('input#callbackMode').on('click', function(event) {
-         $('input#callbackUrl').prop('disabled', !this.checked);
-      });
-      $('input#callbackUrl').prop('disabled', !$('input#callbackMode').prop('checked'));
+   $('input#callbackMode').on('click', function(event) {
+      $('input#callbackUrl').prop('disabled', !this.checked);
+   });
+   $('input#callbackUrl').prop('disabled', !$('input#callbackMode').prop('checked'));
 
-      // Group related <option> elements by inserting additional <optgroup> elements.
-      var groups = [];
-      var element = $('form#edit #timeZone');
-      element.find('option').each(function(index, item) {
-         var zone = $(item);
-         var parts = zone.html().split('/'); // E.g. Europe/Vienna
-         var group = parts[0];
-         if ($.inArray(group, groups) < 0) {
-            groups.push(group);
-         }
-      });
-      groups.sort();
-      $.each(groups, function(index, group) {
-         var key = group + '/'; // E.g. Europe/
-         element.find('option:contains(' + key + ')')
-            .wrapAll($('<optgroup>').attr('label', group))
-            .each(function(index, item) {
-               $(item).html($(item).html().replace(key, ''));
-            });
+   // Group related <option> elements by inserting additional <optgroup> elements.
+   var groups = [];
+   var element = $('form#edit #timeZone');
+   element.find('option').each(function(index, item) {
+      var zone = $(item);
+      var parts = zone.html().split('/'); // E.g. Europe/Vienna
+      var group = parts[0];
+      if ($.inArray(group, groups) < 0) {
+         groups.push(group);
+      }
+   });
+   groups.sort();
+   $.each(groups, function(index, group) {
+      var key = group + '/'; // E.g. Europe/
+      element.find('option:contains(' + key + ')')
+         .wrapAll($('<optgroup>').attr('label', group))
+         .each(function(index, item) {
+            $(item).html($(item).html().replace(key, ''));
          });
+      });
 </script>
 
 <% #meta %>
 <meta name='description' content='<% response.description %>'>
 <meta property='og:type' content='<% response.type %>'>
+<meta property='og:locale' content='<% site.locale %>'>
 <meta property='og:title' content='<% response.title %>'>
 <meta property='og:description' content='<% response.description %>'>
 <meta property='og:site_name' content='<% site.title %>'>
 <% response.image prefix="<meta property='og:image' content='" suffix="'>" %>
 <meta property='og:url' content='<% href %>'>
 <meta name='twitter:card' content='summary_large_image'>
-<meta name='twitter:site' content='@antville_org'>
 <meta name='twitter:title' content='<% response.title %>'>
 <meta name='twitter:description' content='<% response.description %>'>
 <% response.image prefix="<meta name='twitter:image:src' content='" suffix="'>" %>
-<meta itemprop='title name' content='<% response.title %>'>
+<meta itemprop='name' content='<% response.title %>'>
 <meta itemprop='description' content='<% response.description %>'>
-<% response.image prefix="<meta itemprop='image primaryImageOfPage' content='" suffix="'>" %>
+<% response.image prefix="<meta itemprop='image' content='" suffix="'>" %>
 
 <% #links %>
 <link rel='alternate' type='application/rss+xml' title='Stories and comments of <% site.title %>' href='<% site.href rss.xml %>'>
@@ -881,7 +881,7 @@ a.gs-title:hover {
          <label>
             <input type="checkbox" id="includeSpam" name="includeSpam" value="checked" <% request.includeSpam prefix='checked="' suffix='"' encoding="form" %> />
             <% gettext 'Disable filter' %>
-            <i class='uk-icon uk-icon-info-circle uk-text-muted' data-uk-tooltip="{pos: 'right'}"title='<% gettext "Edit the filter in the site settings." %>'></i>
+            <i class='uk-icon uk-icon-info-circle uk-text-muted' data-uk-tooltip="{pos: 'right'}" title='<% gettext "Edit the filter in the site settings." %>'></i>
          </label>
       </div>
    </div>
@@ -992,7 +992,7 @@ a.gs-title:hover {
          if ($(this).html() === html) {
             count += parseInt($('.av-referrer-count').eq(index2).html(), 10);
             $(this).parents('.av-referrer-row').addClass('av-delete');
-   }
+         }
       });
       if (count) {
          countElement.html(parseInt(countElement.html(), 10) + count);

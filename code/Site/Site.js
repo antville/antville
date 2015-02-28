@@ -288,6 +288,7 @@ Site.prototype.getPermission = function(action) {
 Site.prototype.main_action = function() {
   this.renderPage({
     type: 'website',
+    schema: 'http://schema.org/WebSite',
     title: this.getTitle(),
     description: this.tagline || String.EMPTY,
     body: this.renderSkinAsString(this.mode === Site.DELETED ? '$Site#deleted' : 'Site#main'),

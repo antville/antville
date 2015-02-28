@@ -164,6 +164,7 @@ Story.prototype.main_action = function() {
   var imgMatch = this.macro_filter(String(this.text)).match(/<img[^>]+src=['"]?([^'">\s]+)/);
   this.site.renderPage({
     type: 'article',
+    schema: 'http://schema.org/Article',
     title: this.getTitle(10),
     description: this.format_filter(this.getAbstract().replace(/\s+/g, String.SPACE), null, 'quotes'),
     body: this.renderSkinAsString('Story#main'),
