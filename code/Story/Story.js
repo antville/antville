@@ -196,10 +196,13 @@ Story.prototype.getTitle = function(limit) {
 };
 
 Story.prototype.edit_action = function() {
-  if (req.postParams.save) {
+  if (req.isPost()) {
+    /*console.log('status:', req.postParams.status);
+    console.log('mode:', req.postParams.mode);
+    console.log('comments:', req.postParams.commentMode);
+    res.abort();*/
     try {
       this.update(req.postParams);
-      console.log(req.postParams['og:image_array']);
       (function (images, videos) {
         this.setMetadata('og:image', images ? Array.prototype.slice.call(images) : null);
         this.setMetadata('og:video', videos ? Array.prototype.slice.call(videos) : null);

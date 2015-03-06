@@ -43,28 +43,20 @@ var aspects = {
   },
 
   fixStoryEditorParams: function(args, func, story) {
-    // IE6 sends the button text instead of the value; thus, we
-    // need to check for the "editableby" property as well :/
-    if (req.isPost() && req.postParams.save != 1) { // && req.postParams.editableby) {
-      if (req.postParams.publish) {
-        req.postParams.save = 1;
-      }
-      if (req.postParams.save != 1) {
-        req.postParams.save = 1;
-        req.postParams.status = Story.CLOSED;
-      } else if (req.postParams.editableby) {
+    var data = req.postParams;
+    // data.save === '1' means we are compatible already
+    if (req.isPost() && data.save !== '1') {
+      if (data.save) {
+        data.status = Story.CLOSED;
+      } else {
         var status = [Story.PUBLIC, Story.SHARED, Story.OPEN];
-        req.postParams.status = status[req.postParams.editableby] || req.postParams.editableBy;
+        data.status = status[data.editableby] || data.editableby || Story.PUBLIC;
       }
-      req.postParams.mode = (req.postParams.addToFront ?
-          Story.FEATURED : Story.HIDDEN);
-      req.postParams.commentMode = (req.postParams.discussions ?
-          Story.OPEN : Story.CLOSED);
+      data.mode = (data.addToFront ? Story.FEATURED : Story.HIDDEN);
+      data.commentMode = (data.discussions ? Story.OPEN : Story.CLOSED);
+      data.addToFront = data.discussions = data.editableby = data.publish = null;
+      data.save = 1;
     }
-    req.postParams.addToFront = null;
-    req.postParams.discussions = null;
-    req.postParams.editableby = null;
-    req.postParams.publish = null;
     return args;
   },
 

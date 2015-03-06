@@ -292,7 +292,7 @@ Site.prototype.main_action = function() {
     title: this.getTitle(),
     description: this.tagline || String.EMPTY,
     body: this.renderSkinAsString(this.mode === Site.DELETED ? '$Site#deleted' : 'Site#main'),
-    image: (this.layout.images.get('favicon') || Images.Default['favicon.png']).getUrl(),
+    images: [(this.layout.images.get('favicon') || Images.Default['favicon.png']).getUrl()],
     links: this.renderSkinAsString('$Site#links')
   });
   this.log();
