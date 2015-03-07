@@ -213,12 +213,13 @@ Layout.prototype.update = function(data) {
   }
   res.push();
   for (var key in data) {
-    if (key.startsWith('value_')) {
+    var prefix = 'av-value ';
+    if (key.startsWith(prefix)) {
       var value = data[key];
-      key = key.substr(6);
+      key = key.substr(prefix.length);
       res.write('<% value ');
       res.write(quote(key, '\\s'));
-      res.write(' ');
+      res.write(String.SPACE);
       res.write(quote(value, '\\s'));
       res.write(' %>\n');
     }
@@ -492,14 +493,34 @@ Layout.prototype.image_macro = function(param, name, mode) {
 Layout.prototype.values_macro = function() {
   var values = [];
   for (var key in res.meta.values) {
-    values.push({key: key, value: res.meta.values[key]});
+    values.push({
+      key: key,
+      value: res.meta.values[key]
+    });
   }
+
+  this.renderSkin('$Layout#value', {'class': 'uk-hidden'});
+
   values.sort(new String.Sorter('key'));
   for each (var pair in values) {
     this.renderSkin('$Layout#value', {
-      key: pair.key.capitalize(),
-      value: pair.value
+      title: pair.key.capitalize(),
+      name: 'av-value ' + pair.key,
+      value: pair.value,
+      type: getType(pair.key),
+      macro: '<% value ' + quote(pair.key, '\\s') + ' %>'
     });
+  }
+
+  function getType(name) {
+    var parts = name.split(String.SPACE);
+    var typePart = parts.pop();
+    switch (true) {
+      case name.endsWith('color'):
+      return 'color';
+      default:
+      return 'text';
+    }
   }
   return;
 }
