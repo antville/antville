@@ -19,14 +19,14 @@
       </div>
    </div>
    <div class='uk-form-row uk-margin-top'>
-      <fieldset>
+      <fieldset class='av-values'>
          <legend>
             <% gettext 'Variables' %>
          </legend>
          <div class='uk-grid'>
             <% layout.values %>
          </div>
-         <div id='av-add-variable' class='uk-margin-bottom uk-hidden'>
+         <div id='av-add-value' class='uk-margin-bottom uk-hidden'>
             <div class='uk-form-label'>&#160;</div>
             <a href='javascript:' class='uk-icon-button uk-icon-plus uk-text-middle'></a>
          </div>
@@ -41,27 +41,56 @@
    </div>
 </form>
 <script type='text/javascript'>
-   $('#av-add-variable').removeClass('uk-hidden').find('a').on('click', function (event) {
+   $('.av-values').on('mouseover', '.av-value-row', function () {
+      $(this).find('.av-value-remove').removeClass('uk-hidden');
+   }).on('mouseout', '.av-value-row', function () {
+      $(this).find('.av-value-remove').addClass('uk-hidden');
+   }).on('click', '.av-value-remove', function () {
+      $(this).parents('.av-value-row').remove();
+   });
+
+   $('#av-add-value').removeClass('uk-hidden')
+      .find('a')
+      .on('click', function (event) {
       event.preventDefault();
-      var name = prompt('<% gettext "Please enter the name of the new variable:" %>');
+      var name = prompt('<% gettext "Please enter the name of the new value:" %>');
       if (name) {
-         var key = 'value_' + name;
-         var variableRow = $('.av-variable-row').eq(0).clone();
-         variableRow.find('.uk-form-label').html(name);
-         variableRow.find('.uk-form-controls input').attr({name: key, 'id': key, value: ''});
-         $('.av-variable-row:last').after(variableRow);
-         $(variableRow).find('input').focus();
+         var key = 'av-value ' + name;
+         var valueRow = $('.av-value-row').eq(0).clone().removeClass('uk-hidden');
+         valueRow.find('.av-value-title').html(name);
+         valueRow.find('.uk-form-controls input').attr({
+            id: key.replace(new RegExp(' ', 'g'), '-'),
+            name: key,
+            value: '',
+            type: getType(key)
+         });
+         $('.av-value-row:last').after(valueRow);
+         $(valueRow).find('input').focus();
       }
    });
+
+   function getType(name) {
+      var parts = name.split(' ');
+      var typePart = parts.pop();
+      switch (typePart) {
+         case 'color':
+         case 'date':
+         case 'datetime':
+         case 'time':
+         return typePart;
+      }
+      return 'text';
+   }
 </script>
 
 <% #value %>
-<div class='uk-width-1-2 uk-margin-bottom av-variable-row'>
+<div class='uk-width-1-2 uk-margin-bottom av-value-row <% param.class %>'>
    <div class='uk-form-label'>
-      <% param.key %>
+      <span class='av-value-title'><% param.title %></span>
+      <a href='javascript:' class='av-value-remove uk-hidden'><i class='uk-icon-trash-o'></i></a>
    </div>
    <div class='uk-form-controls'>
-      <input class='uk-width-1-1' type='text' name='value_<% param.key %>' value='<% param.value %>'>
+      <input class='uk-width-1-1' type='<% param.type %>' name='<% param.name %>' value='<% param.value %>'>
    </div>
 </div>
 
