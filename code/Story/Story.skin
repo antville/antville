@@ -26,6 +26,8 @@
 </div>
 
 <% #edit %>
+<link rel='stylesheet' type='text/css' href='<% root.static ../../styles/editor.min.css %>'>
+<script type='text/javascript' src='<% root.static ../../scripts/editor.min.js %>'></script>
 <h1>
    <% response.title %>
    <% story.link . ' ' class='uk-icon-button uk-icon-link uk-text-middle' %>
@@ -46,7 +48,13 @@
          <% gettext Text %>
       </label>
       <div class='uk-form-controls'>
-         <% story.textarea rows=15 text class=uk-width-1-1 data-uk-htmleditor='' %>
+         <% story.textarea rows=15 text class=uk-width-1-1 data-uk-htmleditor="{
+            mode: 'tab',
+            markdown: true,
+            lblPreview: 'Preview',
+            lblCodeview: 'HTML',
+            lblMarkedview: 'Markdown'
+         }" %>
       </div>
    </div>
    <div class='uk-form-row'>
