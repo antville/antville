@@ -507,7 +507,8 @@ Layout.prototype.values_macro = function() {
       title: pair.key.capitalize(),
       name: 'av-value ' + pair.key,
       value: pair.value,
-      type: getType(pair.key)
+      type: getType(pair.key),
+      macro: '<% value ' + quote(pair.key, '\\s') + ' %>'
     });
   }
 

@@ -42,9 +42,9 @@
 </form>
 <script type='text/javascript'>
    $('.av-values').on('mouseover', '.av-value-row', function () {
-      $(this).find('.av-value-remove').removeClass('uk-hidden');
+      $(this).find('.av-value-controls').removeClass('uk-hidden');
    }).on('mouseout', '.av-value-row', function () {
-      $(this).find('.av-value-remove').addClass('uk-hidden');
+      $(this).find('.av-value-controls').addClass('uk-hidden');
    }).on('click', '.av-value-remove', function () {
       $(this).parents('.av-value-row').remove();
    });
@@ -56,7 +56,8 @@
       var name = prompt('<% gettext "Please enter the name of the new value:" %>');
       if (name) {
          var key = 'av-value ' + name;
-         var valueRow = $('.av-value-row').eq(0).clone().removeClass('uk-hidden');
+         var valueRow = $('.av-value-row').eq(0).clone()
+            .removeClass('uk-hidden')
          valueRow.find('.av-value-title').html(name);
          valueRow.find('.uk-form-controls input').attr({
             id: key.replace(new RegExp(' ', 'g'), '-'),
@@ -65,6 +66,7 @@
             type: getType(key)
          });
          $('.av-value-row:last').after(valueRow);
+         $(valueRow).find('.av-clipboard-copy').remove();
          $(valueRow).find('input').focus();
       }
    });
@@ -87,7 +89,10 @@
 <div class='uk-width-1-2 uk-margin-bottom av-value-row <% param.class %>'>
    <div class='uk-form-label'>
       <span class='av-value-title'><% param.title %></span>
-      <a href='javascript:' class='av-value-remove uk-hidden'><i class='uk-icon-trash-o'></i></a>
+      <span class='av-value-controls uk-hidden'>
+         <a href='javascript:' class='av-value-remove'><i class='uk-icon-trash-o'></i></a>
+         <a href='javascript:' class='av-clipboard-copy' data-text='<% gettext 'Press CTRL & C to copy to clipboard.' %>' data-value="<% param.macro %>"><i class='uk-icon-clipboard'></i></a>
+      </span>
    </div>
    <div class='uk-form-controls'>
       <input class='uk-width-1-1' type='<% param.type %>' name='<% param.name %>' value='<% param.value %>'>
