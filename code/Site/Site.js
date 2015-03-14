@@ -313,7 +313,6 @@ Site.prototype.renderPage = function (parts) {
         content: url
       });
     }).join('\n');
-    console.log(res.data.images);
   }
   if (parts.videos) {
     res.data.videos = parts.videos.map(function (url) {
@@ -322,7 +321,6 @@ Site.prototype.renderPage = function (parts) {
         content: url
       });
     }).join('\n');
-    console.log(res.data.videos);
   }
   res.data.meta = this.renderSkinAsString('$Site#meta');
   this.renderSkin('Site#page');

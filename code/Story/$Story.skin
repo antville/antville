@@ -61,6 +61,21 @@ else
    </div>
 </div>
 
+<% #wysiwyg %>
+<script type='text/javascript'>
+   var link = document.createElement('link');
+   link.rel = 'stylesheet';
+   link.type = 'text/css';
+   link.href = '<% root.static ../../styles/editor.min.css %>';
+   document.head.appendChild(link);
+   /* FIXME: Causes “Cannot read property 'replace' of undefined” in htmleditor.js:62
+   var script = document.createElement('script');
+   script.type = 'text/javascript';
+   script.src = '<% root.static ../../scripts/editor.min.js %>';
+   document.head.appendChild(script);
+   */
+</script>
+
 <% #extract %>
 <script type='text/javascript'>
    $('#av-story-editor :submit').on('click', function (event) {
@@ -112,7 +127,6 @@ else
          }
 
          $.each(assets, function (index, url) {
-            console.log(url);
             var img = new Image;
             img.src = url;
 

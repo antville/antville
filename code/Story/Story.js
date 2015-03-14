@@ -219,6 +219,7 @@ Story.prototype.edit_action = function() {
   res.data.action = this.href(req.action);
   res.data.title = gettext('Edit Story');
   res.data.body = this.renderSkinAsString('Story#edit');
+  res.data.body += this.renderSkinAsString('$Story#wysiwyg');
   res.data.body += this.renderSkinAsString('$Story#extract');
   this.site.renderSkin('Site#page');
   return;

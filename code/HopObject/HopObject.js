@@ -388,10 +388,19 @@ HopObject.prototype.input_macro = function(param, name) {
  * @param {Object} param
  * @param {String} name
  */
-HopObject.prototype.textarea_macro = function(param, name) {
+HopObject.prototype.textarea_macro = function(param, name, type) {
   param.name = name;
   param.id = name;
   param.value = this.getFormValue(name);
+  if (type === 'wysiwyg') {
+    param['data-uk-htmleditor'] = '{' +
+      "mode: 'tab', " +
+      'markdown: false, ' +
+      "lblPreview: '" + gettext('Preview') + "', " +
+      "lblCodeview: '" + gettext('HTML') + "', " +
+      "lblMarkedview: '" + gettext('Markdown') + "'" +
+    '}';
+  }
   return html.textArea(param);
 }
 
