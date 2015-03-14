@@ -398,7 +398,7 @@ $(function () {
 @link-color: <% value 'link color' default=#ff4040 %>;
 @hover-color: <% value 'hover color' default=@active-link-color %>;
 @muted-color: <% value 'muted color' default=@small-font-color %>;
-@muted-background: fadeout(@muted-color, 80%);
+@muted-background: fadeout(@muted-color, 90%);
 
 @text-font: normal @base-font-size <% value 'text font' default=@base-font %>;
 @title-font: <% value 'title font' default=@big-font %>;
@@ -474,7 +474,8 @@ hr {
 .uk-nav-side > li > a {
    color: @text-color;
    &:hover {
-      color: @hover-color;
+      background: @muted-background;
+      color: @text-color;
       text-shadow: none;
    }
 }
