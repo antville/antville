@@ -21,7 +21,7 @@
    <div class='uk-form-row uk-margin-top'>
       <fieldset class='av-values'>
          <legend>
-            <% gettext 'Variables' %>
+            <% gettext Settings %>
          </legend>
          <div class='uk-grid'>
             <% layout.values %>
@@ -53,7 +53,7 @@
       .find('a')
       .on('click', function (event) {
       event.preventDefault();
-      var name = prompt('<% gettext "Please enter the name of the new value:" %>');
+      var name = prompt('<% gettext "Please enter the name of the new setting:" %>');
       if (name) {
          var key = 'av-value ' + name;
          var valueRow = $('.av-value-row').eq(0).clone()
@@ -74,14 +74,10 @@
    function getType(name) {
       var parts = name.split(' ');
       var typePart = parts.pop();
-      switch (typePart) {
-         case 'color':
-         case 'date':
-         case 'datetime':
-         case 'time':
-         return typePart;
-      }
-      return 'text';
+      var types = {
+         color: 'color'
+      };
+      return types[typePart] || 'text';
    }
 </script>
 

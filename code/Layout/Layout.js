@@ -503,24 +503,42 @@ Layout.prototype.values_macro = function() {
 
   values.sort(new String.Sorter('key'));
   for each (var pair in values) {
+    var type = getType(pair.key);
     this.renderSkin('$Layout#value', {
       title: pair.key.capitalize(),
       name: 'av-value ' + pair.key,
-      value: pair.value,
-      type: getType(pair.key),
+      value: getValue(pair.value, type),
+      type: type,
       macro: '<% value ' + quote(pair.key, '\\s') + ' %>'
     });
+  }
+
+  function getValue(value, type) {
+    return {
+      color: getColor(value)
+    }[type] || value;
   }
 
   function getType(name) {
     var parts = name.split(String.SPACE);
     var typePart = parts.pop();
-    switch (true) {
-      case name.endsWith('color'):
-      return 'color';
-      default:
-      return 'text';
+    var types = {
+      color: 'color'
+    };
+    return types[typePart] || 'text';
+  }
+
+  function getColor(value) {
+    value = String(value).trim();
+    if (value.startsWith('#') && value.length === 4) {
+      var color = ['#'];
+      for (var i = 1, char; i < value.length; i += 1) {
+        char = value[i];
+        color.push(char, char);
+      }
+      return color.join(String.EMPTY);
     }
+    return value;
   }
   return;
 }

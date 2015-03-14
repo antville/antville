@@ -376,34 +376,44 @@ $(function () {
 
 // FIXME: compatibility
 
-@background-color: <% value 'background color' default=#fff %>;
+@base-font: <% value 'base font' default='Helvetica Neue, Helvetica, Arial, sans-serif' %>;
+@base-font-size: <% value 'base font size' default="'14px / 20px'" %>;
+@base-font-color: <% value 'base font color' default=#444 %>;
+
+@big-font: <% value 'big font' default=@base-font %>;
+@big-font-size: <% value 'big font size' default=inherit %>;
+@big-font-color: <% value 'big font color' default=@base-font-color %>;
+
+@small-font: <% value 'small font' default=@base-font %>;
+@small-font-size: <% value 'small font size' default=inherit %>;
+@small-font-color: <% value 'small font color' default=#999 %>;
+
+@active-link-color: <% value 'active link color' default=#d50000 %>;
+
+//
+
+@background: <% value 'background color' default=#fff %>;
+@text-color: <% value 'text color' default=@base-font-color %>;
+@title-color: <% value 'title color' default=@big-font-color %>;
 @link-color: <% value 'link color' default=#ff4040 %>;
-@hover-color: <% value 'active link color' default=#d50000 %>;
-
-@font-family: <% value 'base font' default='Helvetica Neue, Helvetica, Arial, sans-serif' %>;
-@font-size: <% value 'base font size' default="'14px / 20px'" %>;
-@font-color: <% value 'base font color' default=#444 %>;
-
-@font-family-large: <% value 'big font' default=@font-family %>;
-@font-size-large: <% value 'big font size' default=inherit %>;
-@font-color-large: <% value 'big font color' default=@font-color %>;
-
-@muted-color: average(@background-color, @font-color);
+@hover-color: <% value 'hover color' default=@active-link-color %>;
+@muted-color: <% value 'muted color' default=@small-font-color %>;
 @muted-background: fadeout(@muted-color, 80%);
 
-@font-family-small: <% value 'small font' default=@font-family %>;
-@font-size-small: <% value 'small font size' default=inherit %>;
-@font-color-small: <% value 'small font color' default=@muted-color %>;
+@text-font: normal @base-font-size <% value 'text font' default=@base-font %>;
+@title-font: <% value 'title font' default=@big-font %>;
 
 // Overwriting some classes defined by UIKit to go along with Antville’s layout
 
-html {
-   font: normal @font-size @font-family;
+html, html.uk-notouch, body {
+   background-color: @background;
+   color: @text-color;
+   font-family: @text-font;
 }
 
 h1, h2, h3, h4, h5, h6 {
-   color: @font-color-large;
-   font-family: @font-family-large;
+   color: @title-color;
+   font-family: @title-font;
 }
 
 a {
@@ -417,9 +427,9 @@ a {
 }
 
 em {
-   color: @font-color;
+   color: @text-color;
    small & {
-      color: @font-color-small;
+      color: @muted-color;
    }
 }
 
@@ -461,6 +471,14 @@ hr {
    border-top: none;
 }
 
+.uk-nav-side > li > a {
+   color: @text-color;
+   &:hover {
+      color: @hover-color;
+      text-shadow: none;
+   }
+}
+
 .uk-alert {
    background: @muted-background;
    border-color: @muted-color;
@@ -470,13 +488,13 @@ hr {
 
 .uk-icon-button {
    &:link, &:visited {
-      background-color: @background-color;
+      background-color: @background;
       color: @link-color;
       border-color: @link-color;
       text-shadow: initial;
    }
    &:hover {
-      background-color: @background-color;
+      background-color: @background;
       color: @hover-color;
       border-color: @hover-color;
       text-shadow: initial;
@@ -484,14 +502,15 @@ hr {
 }
 
 .uk-button {
+   text-shadow: initial !important;
+
    &, &:link, &:visited {
-      background-color: @background-color;
-      color: @font-color;
-      border-color: @font-color;
-      text-shadow: initial;
+      background-color: @background;
+      color: @text-color;
+      border-color: @text-color;
    }
    &:hover {
-      background-color: @background-color;
+      background-color: @background;
       color: @hover-color;
       border-color: @hover-color;
    }
@@ -505,7 +524,7 @@ hr {
       }
    }
    &.uk-button-primary {
-      background-color: @background-color;
+      background-color: @background;
       border-style: double;
       border-color: @link-color;
       color: @link-color;
@@ -520,20 +539,20 @@ hr {
 
 .uk-pagination {
    & > li > a {
-      background: @background-color;
+      background: @background;
       color: @link-color;
       border-color: @link-color;
       text-shadow: initial;
       &:hover {
-         background: @background-color;
+         background: @background;
          color: @hover-color;
          border-color: @hover-color;
       }
    }
    & > .uk-active > span {
-      background: @background-color;
-      border-color: @font-color-small;
-      color: @font-color-small;
+      background: @background;
+      border-color: @muted-color;
+      color: @muted-color;
       font-weight: bold;
    }
    & > .uk-disabled > span {
@@ -755,37 +774,37 @@ h1 a, .uk-table a {
 .jala-calendar {
    width: 100%;
    text-align: center;
-}
 
-.jala-calendar tbody th {
-   font-weight: normal;
-   color: @font-color;
-}
+   tbody th {
+      font-weight: normal;
+      color: @text-color;
+   }
 
-.jala-calendar-day {
-   width: 14.27%;
-   line-height: 1.2rem;
-   text-align: center;
-   a {
+   .jala-calendar-day {
+      width: 14.27%;
+      line-height: 1.2rem;
+      text-align: center;
+      a {
+         font-weight: bold;
+      }
+   }
+
+   .jala-calendar-selected {
+      border: 1px solid @muted-color;
+      border-radius: 4px;
       font-weight: bold;
    }
-}
 
-.jala-calendar-selected {
-   border: 1px solid @muted-color;
-   border-radius: 4px;
-   font-weight: bold;
-}
+   .jala-calendar-left {
+      text-align: center;
+      vertical-align: baseline;
+   }
 
-.jala-calendar-left {
-   text-align: center;
-   vertical-align: baseline;
-}
-
-.jala-calendar-right {
-   border: 0;
-   text-align: center;
-   vertical-align: baseline;
+   .jala-calendar-right {
+      border: 0;
+      text-align: center;
+      vertical-align: baseline;
+   }
 }
 
 // Overwriting some CSS classes for Google’s custom search
@@ -843,7 +862,7 @@ a.gs-title:hover {
 }
 
 .gsc-control-cse, .gsc-control-cse-en {
-   background: @background-color !important;
+   background: @background !important;
 }
 
 .gsc-webResult.gsc-result, .gsc-results .gsc-imageResult {
@@ -852,7 +871,7 @@ a.gs-title:hover {
 }
 
 .gs-webResult .gs-snippet, .gs-imageResult .gs-snippet, .gs-fileFormatType {
-   color: @font-color !important;
+   color: @text-color !important;
 }
 
 .gsc-results .gsc-cursor-box .gsc-cursor-page {
