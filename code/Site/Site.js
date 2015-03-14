@@ -299,33 +299,6 @@ Site.prototype.main_action = function() {
   return;
 };
 
-// FIXME: Move
-Site.prototype.renderPage = function (parts) {
-  for (var key in parts) {
-    res.data[key] = parts[key];
-  }
-  if (parts.images) {
-    res.data.images = parts.images.map(function (url) {
-      return html.tagAsString('meta', {
-        property: 'og:image',
-        name: 'twitter:image',
-        itemprop: 'image',
-        content: url
-      });
-    }).join('\n');
-  }
-  if (parts.videos) {
-    res.data.videos = parts.videos.map(function (url) {
-      return html.tagAsString('meta', {
-        property: 'og:video',
-        content: url
-      });
-    }).join('\n');
-  }
-  res.data.meta = this.renderSkinAsString('$Site#meta');
-  this.renderSkin('Site#page');
-};
-
 Site.prototype.edit_action = function() {
   if (req.postParams.save) {
     try {
@@ -453,9 +426,13 @@ Site.prototype.main_css_action = function() {
   res.contentType = 'text/css';
   res.dependsOn(String(Root.VERSION));
   res.dependsOn(this.layout.modified);
-  //HopObject.confirmConstructor(Skin);
-  //res.dependsOn((new Skin('Site', 'stylesheet')).getStaticFile().lastModified());
+  HopObject.confirmConstructor(Skin);
+  res.dependsOn((new Skin('Site', 'stylesheet')).getStaticFile().lastModified());
   res.digest();
+
+  // FIXME: This prevents the UIKit fonts from loading (wrong path)
+  //var file = new java.io.File(root.getStaticFile('../../styles/main.min.css'));
+  //res.writeln(Packages.org.apache.commons.io.FileUtils.readFileToString(file, 'utf-8'));
 
   res.push();
   this.renderSkin('$Site#stylesheet');
@@ -465,8 +442,6 @@ Site.prototype.main_css_action = function() {
   try {
     lessParser.parse(lessCss, function(error, tree) {
       if (error) throw error;
-      //var file = new java.io.File(root.getStaticFile('../../styles/main.min.css'));
-      //res.writeln(Packages.org.apache.commons.io.FileUtils.readFileToString(file, 'utf-8'));
       res.writeln(tree.toCSS());
     });
   } catch (ex) {
@@ -551,6 +526,32 @@ Site.prototype.search_xml_action = function() {
   this.renderSkin('$Site#opensearchdescription');
   return;
 }
+
+Site.prototype.renderPage = function (parts) {
+  for (var key in parts) {
+    res.data[key] = parts[key];
+  }
+  if (parts.images) {
+    res.data.images = parts.images.map(function (url) {
+      return html.tagAsString('meta', {
+        property: 'og:image',
+        name: 'twitter:image',
+        itemprop: 'image',
+        content: url
+      });
+    }).join('\n');
+  }
+  if (parts.videos) {
+    res.data.videos = parts.videos.map(function (url) {
+      return html.tagAsString('meta', {
+        property: 'og:video',
+        content: url
+      });
+    }).join('\n');
+  }
+  res.data.meta = this.renderSkinAsString('$Site#meta');
+  this.renderSkin('Site#page');
+};
 
 /**
  *

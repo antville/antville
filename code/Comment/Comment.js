@@ -226,7 +226,7 @@ Comment.prototype.getMacroHandler = function(name) {
   if (name === 'related') {
     var membership = this.creator.getMembership();
     if (!membership || membership.comments.size() < 2 || this.status === Comment.DELETED) {
-      return HopObject; // Work-around for issue 88
+      return new HopObject(); // Work-around for issue 88
     }
     return membership.comments;
   } else if (name === 'story') {

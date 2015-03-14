@@ -206,10 +206,10 @@
     </copy>
     <mkdir dir="static/scripts"/>
     <exec executable="node_modules/.bin/browserify" output="static/scripts/main.min.js">
-      <arg line="build/client/main.js -d -p [minifyify --map static/scripts/main.min.map.json --output static/scripts/main.min.map.json]"/>
+      <arg line="build/client/main.js -d -p [minifyify --map /static/scripts/main.min.map.json --output static/scripts/main.min.map.json]"/>
     </exec>
     <exec executable="node_modules/.bin/browserify" output="static/scripts/editor.min.js">
-      <arg line="build/client/editor.js -d -p [minifyify --map static/scripts/editor.min.map.json --output static/scripts/editor.min.map.json]"/>
+      <arg line="build/client/editor.js -d -p [minifyify --map /static/scripts/editor.min.map.json --output static/scripts/editor.min.map.json]"/>
     </exec>
     <mkdir dir="static/styles"/>
     <exec executable="node_modules/.bin/lessc" output="static/styles/main.min.css">
