@@ -426,9 +426,13 @@ Site.prototype.main_css_action = function() {
   res.contentType = 'text/css';
   res.dependsOn(String(Root.VERSION));
   res.dependsOn(this.layout.modified);
-  //HopObject.confirmConstructor(Skin);
-  //res.dependsOn((new Skin('Site', 'stylesheet')).getStaticFile().lastModified());
+  HopObject.confirmConstructor(Skin);
+  res.dependsOn((new Skin('Site', 'stylesheet')).getStaticFile().lastModified());
   res.digest();
+
+  // FIXME: This prevents the UIKit fonts from loading (wrong path)
+  //var file = new java.io.File(root.getStaticFile('../../styles/main.min.css'));
+  //res.writeln(Packages.org.apache.commons.io.FileUtils.readFileToString(file, 'utf-8'));
 
   res.push();
   this.renderSkin('$Site#stylesheet');
@@ -438,8 +442,6 @@ Site.prototype.main_css_action = function() {
   try {
     lessParser.parse(lessCss, function(error, tree) {
       if (error) throw error;
-      //var file = new java.io.File(root.getStaticFile('../../styles/main.min.css'));
-      //res.writeln(Packages.org.apache.commons.io.FileUtils.readFileToString(file, 'utf-8'));
       res.writeln(tree.toCSS());
     });
   } catch (ex) {
