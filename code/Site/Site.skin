@@ -118,13 +118,4 @@ function openPopup(img, width, height) {
 <% value 'text font' 'Helvetica, Arial, sans-serif' %>
 <% value 'title font' 'Helvetica, Arial, sans-serif' %>
 
-<% value 'background color' #000000 %>
-<% value 'title color' #ff0000 %>
-<% value 'text color' #00ff00 %>
-<% value 'muted color' #ffff00 %>
-<% value 'link color' #0000ff %>
-<% value 'hover color' #996633 %>
-<% value 'text font' 'brush script mt' %>
-<% value 'title font' 'comic sans ms' %>
-
 <% #stylesheet %>
