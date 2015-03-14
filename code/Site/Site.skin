@@ -109,59 +109,22 @@ function openPopup(img, width, height) {
 }
 
 <% #values %>
-<% value 'font' 'Helvetica, Arial, sans-serif' %>
-<% value 'background color' #fff %>
-<% value 'link color' #ff4040 %>
+<% value 'background color' #ffffff %>
+<% value 'title color' #ff0000 %>
+<% value 'text color' #444444 %>
+<% value 'muted color' #999999 %>
 <% value 'hover color' #d50000 %>
+<% value 'link color' #ff4040 %>
+<% value 'text font' 'Helvetica, Arial, sans-serif' %>
+<% value 'title font' 'Helvetica, Arial, sans-serif' %>
+
+<% value 'background color' #000000 %>
+<% value 'title color' #ff0000 %>
+<% value 'text color' #00ff00 %>
+<% value 'muted color' #ffff00 %>
+<% value 'link color' #0000ff %>
+<% value 'hover color' #996633 %>
+<% value 'text font' 'brush script mt' %>
+<% value 'title font' 'comic sans ms' %>
 
 <% #stylesheet %>
-/*
-html, body {
-   background-color: <% value 'background color' %>;
-   font-family: <% value font %>;
-}
-
-a {
-   color: <% value 'link color' %>;
-   &:hover {
-     color: <% value 'hover color' %>;
-   }
-}
-
-.av-poll-result-bar {
-   background-color: <% value "link color" %>;
-}
-
-.uk-button-primary {
-   border-color: <% value 'link color' %>;
-   color: <% value 'link color' %>;
-   &:hover {
-      border-color: <% value 'hover color' %>;
-      color: <% value 'hover color' %>;
-   }
-}
-
-.uk-pagination > .uk-active > span {
-   border-color: <% value 'link color' %>;
-   color: <% value 'link color' %>;
-}
-
-.uk-button-link, .uk-subnav > li > a {
-   color: <% value 'link color' %>;
-   &:hover {
-      color: <% value 'hover color' %>;
-   }
-}
-
-.uk-nav-side > li.uk-active > a {
-   color: <% value 'link color' %>;
-}
-
-.jala-calendar-selected {
-   border: 1px solid <% value "link color" %>;
-}
-
-.jala-calendar-selected, .jala-calendar-selected a {
-   color: <% value 'link color' %>;
-}
-*/
