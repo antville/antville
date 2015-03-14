@@ -552,8 +552,8 @@ hr {
    }
    & > .uk-active > span {
       background: @background;
-      border-color: @muted-color;
-      color: @muted-color;
+      border-color: @text-color;
+      color: @text-color;
       font-weight: bold;
    }
    & > .uk-disabled > span {
@@ -607,8 +607,6 @@ h1 a, .uk-table a {
 .uk-form select, .uk-form textarea, .uk-form input:not([type]), .uk-form input[type="text"], .uk-form input[type="password"], .uk-form input[type="datetime"], .uk-form input[type="datetime-local"], .uk-form input[type="date"], .uk-form input[type="month"], .uk-form input[type="time"], .uk-form input[type="week"], .uk-form input[type="number"], .uk-form input[type="email"], .uk-form input[type="url"], .uk-form input[type="search"], .uk-form input[type="tel"], .uk-form input[type="color"] {
    border-color: @muted-background;
 }
-
-// Here come the classes defining the default Antville layout
 
 .av-page {
    width: 900px; // FIXME: Could we use the `vw` unit already?
