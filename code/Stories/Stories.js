@@ -92,8 +92,7 @@ Stories.prototype.create_action = function() {
   HopObject.confirmConstructor(Story);
   var story = new Story();
   res.data.body = story.renderSkinAsString('Story#edit');
-  res.data.body += story.renderSkinAsString('$Story#wysiwyg');
-  res.data.body += story.renderSkinAsString('$Story#extract');
+  res.data.body += story.renderSkinAsString('$Story#editor');
   this._parent.renderSkin('Site#page');
   return;
 }

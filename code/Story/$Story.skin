@@ -61,47 +61,67 @@ else
    </div>
 </div>
 
-<% #wysiwyg %>
+<% #editor %>
 <script type='text/javascript'>
-   var link = document.createElement('link');
-   link.rel = 'stylesheet';
-   link.type = 'text/css';
-   link.href = '<% root.static ../../styles/editor.min.css %>';
-   document.head.appendChild(link);
-   /* FIXME: Causes “Cannot read property 'replace' of undefined” in htmleditor.js:62
-   var script = document.createElement('script');
-   script.type = 'text/javascript';
-   script.src = '<% root.static ../../scripts/editor.min.js %>';
-   document.head.appendChild(script);
-   */
-</script>
+   (function () {
+      var form = $('#av-story-form');
 
-<% #extract %>
-<script type='text/javascript'>
-   $('#av-story-editor :submit').on('click', function (event) {
-      event.preventDefault();
-      $(this.form).trigger('submit', this);
-   });
-
-   $('#av-story-editor').on('submit', function (event, submit) {
-      var form = $(this);
-      if (form.data('is-processed')) {
+      if (!document.querySelector(form.selector)) {
          return;
       }
 
-      event.preventDefault();
-      form.data('is-processed', true);
+      var editor;
+      var lastKeyPressed;
+      var submitElement;
+      var url = '<% site.href backup.js %>';
 
-      var buffer = [];
-      form.find(':input, textarea').each(function () {
-         buffer.push($(this).val());
-      });
+      var link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = '<% root.static ../../styles/editor.min.css %>';
+      document.head.appendChild(link);
 
-      var raw = encodeURIComponent(buffer.join(' '));
-      $.post('<% stories.href render %>', raw)
-         .done(parse);
+      /* FIXME: Causes “Cannot read property 'replace' of undefined” in htmleditor.js:62
+      var script = document.createElement('script');
+      script.type = 'text/javascript';
+      script.src = '<% root.static ../../scripts/editor.min.js %>';
+      document.head.appendChild(script);
+      */
 
-      function parse(data) {
+      var enableOnBeforeUnload = function () {
+         window.onbeforeunload = function (event) {
+            var message = "<% gettext 'You are going to discard unsaved content.' %>";
+            event.returnValue = message;
+            return message;
+         };
+      };
+
+      var disableOnBeforeUnload = function () {
+         window.onbeforeunload = null;
+      };
+
+      var update = function () {
+         window.onbeforeunload || enableOnBeforeUnload();
+         lastKeyPressed = new Date();
+      };
+
+      var scheduler = function () {
+         var now = new Date();
+         if (lastKeyPressed && (now - lastKeyPressed > 1000)) {
+            var data = {};
+            form.find('input:text').each(function () {
+               data[this.id] = $.trim(this.value);
+            });
+            if (editor) {
+               data.text = $.trim(editor.editor.getValue());
+            }
+            $.post(url, data);
+            lastKeyPressed = null;
+         }
+         setTimeout(scheduler, 100);
+      };
+
+      var parse = function (data) {
          var html = $('<div>').html(data);
          var assets = [];
          html.find('[src]').each(function () {
@@ -146,49 +166,66 @@ else
                assets.shift();
             };
          });
-      }
+      };
 
-      function resubmit() {
+      var resubmit = function () {
          // Turn the clicked (or default) submit button into a hidden value to be sure it is submitted again
-         submit || (submit = form.find(':submit:first'));
+         var submit = submitElement || form.find(':submit:first');
+         submitElement = null;
          form.append($('<input>').attr({
             hidden: true,
             name: submit.name,
             value: submit.value
          })).submit();
-      }
-   });
-</script>
+      };
 
-<% #restore %>
-<script type="text/javascript">
-$(function() {
-   var url = "<% site.href backup.js %>";
-   var input = $(".backup :input");
+      form.on('keyup', 'input:text', update)
+         .on('click', '.uk-button', disableOnBeforeUnload);
 
-   if (!"<% session.backup %>") {
-      $("#restore").hide();
-   } else {
-      $("#restore").click(function() {
-         $(this).hide();
-         $.getJSON(url, function(data) {
-            $.each(data, function(key, item) {
-               $("#" + key).val(item);
+      form
+         .on('click', ':submit', function (event) {
+            event.preventDefault();
+            $(this.form).trigger('submit', this);
+         })
+         .on('submit', function (event, submit) {
+            var form = $(this);
+            if (form.data('is-processed')) {
+               return;
+            }
+
+            event.preventDefault();
+            form.data('is-processed', true);
+            submitElement = submit;
+
+            var buffer = [];
+            form.find(':input, textarea').each(function () {
+               buffer.push($(this).val());
             });
-         });
-      });
-   }
 
-   input.blur(function() {
-      $("#restore").hide();
-      var data = {};
-      input.each(function() {
-         var ref = $(this);
-         data[ref.attr("id")] = $.trim(ref.val());
+            var raw = encodeURIComponent(buffer.join(' '));
+            $.post('<% stories.href render %>', raw)
+               .done(parse);
+         });
+
+      editor = UIkit.htmleditor(document.querySelector('#text'), {
+         mode: 'tab',
+         markdown: false,
+         lblPreview: '<% gettext Preview %>',
+         lblCodeview: '<% gettext HTML %>',
+         lblMarkedview: '<% gettext Markdown %>'
       });
-      $.post(url, data);
-      return;;
-   });
-   return;
-});
+
+      editor.editor.on('keyup', update);
+
+      if ('<% session.backup %>') {
+         $.getJSON(url, function (data) {
+            $.each(data, function (key, value) {
+               $('#' + key).val(value);
+            });
+            editor && editor.editor.setValue(data.text);
+         });
+      }
+
+      scheduler();
+   })();
 </script>

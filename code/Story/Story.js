@@ -197,10 +197,6 @@ Story.prototype.getTitle = function(limit) {
 
 Story.prototype.edit_action = function() {
   if (req.isPost()) {
-    /*console.log('status:', req.postParams.status);
-    console.log('mode:', req.postParams.mode);
-    console.log('comments:', req.postParams.commentMode);
-    res.abort();*/
     try {
       this.update(req.postParams);
       (function (images, videos) {
@@ -219,8 +215,7 @@ Story.prototype.edit_action = function() {
   res.data.action = this.href(req.action);
   res.data.title = gettext('Edit Story');
   res.data.body = this.renderSkinAsString('Story#edit');
-  res.data.body += this.renderSkinAsString('$Story#wysiwyg');
-  res.data.body += this.renderSkinAsString('$Story#extract');
+  res.data.body += this.renderSkinAsString('$Story#editor');
   this.site.renderSkin('Site#page');
   return;
 }
