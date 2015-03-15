@@ -32,6 +32,7 @@
 <% comment.skin Comment#content %>
 
 <% #edit %>
+<script type='text/javascript' src='<% root.static ../../scripts/editor.min.js %>'></script>
 <% if <% comment.creator %> is null then
    <% parent.skin <% parent.type suffix=#comment %> %>
 else
@@ -46,10 +47,10 @@ else
       <% gettext "Last modified by {0} on {1}" <% comment.modifier %> <% comment.modified short %> prefix=<div> suffix=</div> %>
    %>
 </div>
-<form class='uk-margin-top uk-form uk-form-stacked' method="post" action="<% response.action %>">
+<form id='av-story-form' class='uk-margin-large-top uk-form uk-form-stacked' method="post" action="<% response.action %>">
    <div class='uk-form-row'>
       <div class='uk-form-label'>
-         <% gettext Text %>
+         <% gettext Comment %>
       </div>
       <div class='uk-form-controls'>
          <% comment.textarea text class='uk-width-1-1' rows=10 %>
@@ -57,9 +58,6 @@ else
    </div>
    <div class='uk-margin-top'>
       <button type="submit" name="save" value="1" class='uk-button uk-button-primary'><% gettext Save %></button>
-      <button type="button" id="restore" value="1" class='uk-button'><% gettext Restore %></button>
       <a href='.' class="uk-button uk-button-link"><% gettext Cancel %></a>
    </div>
 </form>
-<% comment.skin $Story#restore %>
-<p class="backup"></p>

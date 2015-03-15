@@ -301,7 +301,9 @@ Story.prototype.comment_action = function() {
   res.data.action = this.href(req.action);
   res.data.title = gettext('Add Comment');
   HopObject.confirmConstructor(Comment);
-  res.data.body = (new Comment).renderSkinAsString('Comment#edit');
+  var comment = new Comment();
+  res.data.body = comment.renderSkinAsString('Comment#edit');
+  res.data.body += comment.renderSkinAsString('$Story#editor');
   this.site.renderSkin('Site#page');
   return;
 }
