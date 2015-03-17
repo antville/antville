@@ -434,29 +434,30 @@ Site.prototype.main_css_action = function() {
   //var file = new java.io.File(root.getStaticFile('../../styles/main.min.css'));
   //res.writeln(Packages.org.apache.commons.io.FileUtils.readFileToString(file, 'utf-8'));
 
-  res.push();
-  this.renderSkin('$Site#stylesheet');
-  this.renderSkin('Site#stylesheet');
-  var lessCss = res.pop();
+  var coreCss = this.renderSkinAsString('$Site#stylesheet');
+  var customCss = this.renderSkinAsString('Site#stylesheet');
+
+  lessParser.parse(coreCss, function (error, tree) {
+    if (error) throw error;
+    coreCss = tree.toCSS();
+  });
 
   try {
-    lessParser.parse(lessCss, function(error, tree) {
+    lessParser.parse(customCss, function(error, tree) {
       if (error) throw error;
-      res.writeln(tree.toCSS());
+      customCss = tree.toCSS();
     });
   } catch (ex) {
-    handleError(ex);
-    res.writeln(lessCss);
-  }
-
-  function handleError(error) {
-    res.writeln('/** ');
-    res.writeln(error)
+    var message = [ex.type, 'error in line', ex.line, 'column', ex.column, 'of', ex.filename + ':', ex.message/*, '/', ex.extract[1]*/].join(String.SPACE);
+    res.writeln('/**');
+    res.writeln('LESS parser got exception when rendering custom CSS.');
+    res.writeln(message)
     res.writeln('**/');
-    console.log(error);
-    return;
+    console.error(message);
   }
 
+  res.writeln(coreCss);
+  res.writeln(customCss);
   return;
 }
 
