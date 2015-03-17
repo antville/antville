@@ -614,7 +614,6 @@ Story.prototype.format_filter = function(value, param, mode) {
 
       default:
       value = format(value);
-      value = this.code_filter(value, param);
       value = this.url_filter(value, param);
       value = this.macro_filter(value, param);
       return value;
