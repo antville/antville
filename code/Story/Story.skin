@@ -11,11 +11,11 @@
 <% #content %>
 <article class='uk-article'>
    <% story.link main <% story.title prefix="<h1 class='uk-article-title'>" suffix="</h1>" default=' ' %> %>
-   <div class='uk-article-meta'>
+   <div class='uk-article-meta uk-margin-bottom'>
       <% gettext 'Posted by {0} at {1}' <% story.creator %> <% story.created time %> %>
       <% story.tags link prefix=<% gettext 'in' suffix=' ' %> %>
    </div>
-      <% story.text | story.format %>
+   <% story.text | story.format %>
 </article>
 
 <% #preview %>
