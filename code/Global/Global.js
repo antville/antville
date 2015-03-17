@@ -233,10 +233,18 @@ var console = function (type) {
   return function(text /*, text, … */) {
     var now = formatDate(new Date, 'yyyy/MM/dd HH:mm:ss');
     var argString = Array.prototype.join.call(arguments, String.SPACE);
-    writeln('\u001B[34m[' + now + '] [CONSOLE] ' + argString + '\u001B[0m');
+    var shellColors = {
+      debug: '\u001B[34m',
+      error: '\u001B[35m',
+      info: '\u001B[0m',
+      log: '\u001B[0m',
+      warn: '\u001B[31m'
+    };
+
+    writeln(shellColors[type] + '[' + now + '] [' + type.toUpperCase() + '] [console] ' + argString + '\u001B[0m');
 
     if (typeof res !== 'undefined') {
-      res.debug('<script>console.' + type + '("%c%s", "color: #39f", ' +
+      res.debug('<script>console.' + type + '("%c%s (Server)", "font-style: italic;", ' +
           JSON.stringify(argString) + ');</script>');
     }
   }
@@ -510,7 +518,7 @@ function file_macro(param, id, mode) {
   file = HopObject.getFromPath(id, 'files');
 
   if (!file) {
-    if (!id.contains('/')) {
+     if (res.contentType === 'text/html' && !id.contains('/')) {
       res.handlers.site.link_macro({
         'class': 'uk-icon-button uk-icon-file-o',
         'data-uk-tooltip': "{pos: 'right'}",
@@ -554,7 +562,7 @@ function image_macro(param, id, mode) {
   }
 
   if (!image) {
-     if (!id.contains('/')) {
+     if (res.contentType === 'text/html' && !id.contains('/')) {
       res.handlers.site.link_macro({
         'class': 'uk-icon-button uk-icon-picture-o',
         'data-uk-tooltip': "{pos: 'right'}",
