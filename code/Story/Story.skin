@@ -15,7 +15,7 @@
       <% gettext 'Posted by {0} at {1}' <% story.creator %> <% story.created time %> %>
       <% story.tags link prefix=<% gettext 'in' suffix=' ' %> %>
    </div>
-   <% story.text | story.format %>
+   <% story.text | story.format markdown %>
 </article>
 
 <% #preview %>
