@@ -8,5 +8,5 @@ require('codemirror/mode/xml/xml');
 require('codemirror/mode/gfm/gfm');
 require('./cm-skin-mode');
 
-window.marked = require('uikit/vendor/marked');
+window.marked = require('marked/lib/marked');
 require('uikit-bower/js/components/htmleditor');

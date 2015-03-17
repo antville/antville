@@ -7,6 +7,8 @@ require('jquery-collagePlus/extras/jquery.removeWhitespace');
 
 require('uikit-bower/js/uikit');
 require('uikit-bower/js/components/form-password');
+require('uikit-bower/js/components/tooltip');
+
 
 $(function() {
    // Extend jQuery with selectText() method.
