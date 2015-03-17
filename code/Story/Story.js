@@ -606,6 +606,7 @@ Story.prototype.format_filter = function(value, param, mode) {
 
       default:
       value = this.linebreak_filter(value, param, 'markdown');
+      value = this.code_filter(value, param);
       value = this.url_filter(value, param);
       value = this.macro_filter(value, param);
       value = this.markdown_filter(value, param);
@@ -628,6 +629,12 @@ Story.prototype.linebreak_filter = function (value, param, mode) {
     var parts = value.split(/(?:\n\n|\r\r|\r\n\r\n)+/);
     value = format('<p>' + parts.join('</p><p>') + '</p>');
   }
+  return value;
+};
+
+Story.prototype.code_filter = function (value, param) {
+  // FIXME: I am too lazy to write a filter so I abuse Helma’s format() method and restore the linebreaks afterwards.
+  value = format(value).replace(/<br\s?\/?>(?:\r\n|\n|\r)/g, '\n');
   return value;
 };
 

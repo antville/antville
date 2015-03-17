@@ -222,18 +222,14 @@ else
 
       editor.editor.on('keyup', update);
 
-      var code;
-
       editor.htmleditor.on('click', '.uk-htmleditor-button-code, .uk-htmleditor-button-preview', function (event) {
          if ($(event.currentTarget).hasClass('uk-htmleditor-button-preview')) {
             // FIXME: Should we really render the macros via AJAX call?
-            code = editor.editor.getValue();
-            $.post('<% stories.href render %>', encodeURIComponent(code))
+            var raw = encodeURIComponent(editor.editor.getValue());
+            $.post('<% stories.href render %>', raw)
                .done(function (data) {
-                  editor.editor.setValue(data);
+                  $('.uk-htmleditor-preview div').html(data);
                });
-         } else {
-            editor.editor.setValue(code);
          }
       });
 
