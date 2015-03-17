@@ -128,7 +128,7 @@ Stories.prototype.render_action = function () {
   var content = String(req.postParams.http_post_remainder);
   var story = new Story;
   story.site = res.handlers.site;
-  var result = Story.prototype.format_filter.call(story, content, {});
+  var result = Story.prototype.format_filter.call(story, content, {}, 'markdown');
   res.write(result);
 };
 
