@@ -399,6 +399,7 @@ $(function () {
 @hover-color: <% value 'hover color' default=@active-link-color %>;
 @muted-color: <% value 'muted color' default=@small-font-color %>;
 @muted-background: fadeout(@muted-color, 90%);
+@border-color: fadeout(@muted-color, 75%);
 
 @text-font: normal @base-font-size <% value 'text font' default=@base-font %>;
 @title-font: <% value 'title font' default=@big-font %>;
@@ -442,7 +443,7 @@ img {
 }
 
 hr {
-   border-top-color: @muted-background;
+   border-top-color: @border-color;
 }
 
 .uk-description-list-line {
@@ -594,18 +595,18 @@ h1 a, .uk-table a {
 }
 
 .uk-table th, .uk-table td, {
-   border-color: @muted-background;
+   border-color: @border-color;
 }
 
 .uk-form legend:after {
    content: '';
    display: block;
-   border-bottom: 1px solid @muted-background;
+   border-bottom: 1px solid @border-color;
    width: 100%;
 }
 
 .uk-form select, .uk-form textarea, .uk-form input:not([type]), .uk-form input[type="text"], .uk-form input[type="password"], .uk-form input[type="datetime"], .uk-form input[type="datetime-local"], .uk-form input[type="date"], .uk-form input[type="month"], .uk-form input[type="time"], .uk-form input[type="week"], .uk-form input[type="number"], .uk-form input[type="email"], .uk-form input[type="url"], .uk-form input[type="search"], .uk-form input[type="tel"], .uk-form input[type="color"] {
-   border-color: @muted-background;
+   border-color: @border-color;
 }
 
 .av-page {
@@ -627,7 +628,7 @@ h1 a, .uk-table a {
 }
 
 .av-border-left {
-   border-left: 1px solid @muted-background;
+   border-left: 1px solid @border-color;
 }
 
 .av-overflow {
@@ -886,7 +887,7 @@ a.gs-title:hover {
 }
 
 .gsc-above-wrapper-area {
-   border-bottom-color: @muted-background !important;
+   border-bottom-color: @border-color !important;
 }
 
 <% #referrers %>
