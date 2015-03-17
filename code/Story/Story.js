@@ -481,7 +481,7 @@ Story.prototype.getAbstract = function (param) {
  */
 Story.prototype.abstract_macro = function(param) {
   return res.write(this.getAbstract.call(this, param));
-}
+};
 
 /**
  *
@@ -605,15 +605,31 @@ Story.prototype.format_filter = function(value, param, mode) {
       break;
 
       default:
-      value = this.macro_filter(format(value), param);
+      value = this.linebreak_filter(value, param, 'markdown');
       value = this.url_filter(value, param);
-      var parts = value.split(/(?:\n\n|\r\r|\r\n\r\n)/);
-      value = '<p>' + parts.join('</p><p>') + '</p>';
+      value = this.macro_filter(value, param);
+      value = this.markdown_filter(value, param);
       return value;
     }
   }
   return String.EMTPY;
 }
+
+Story.prototype.linebreak_filter = function (value, param, mode) {
+  if (mode === 'markdown') {
+    // Adding two spaces before any linebreak if not already present;
+    // Markdown is going to transform two spaces into HTML linebreaks.
+    var parts = value.split(/\r\n|\n|\r/);
+    value = parts.map(function (line) {
+      return line.endsWith('  ') ? line : line + '  ';
+    });
+    return value.join('\n');
+  } else {
+    var parts = value.split(/(?:\n\n|\r\r|\r\n\r\n)+/);
+    value = format('<p>' + parts.join('</p><p>') + '</p>');
+  }
+  return value;
+};
 
 /**
  * Enables certain macros for being used in a story or comment – thus, any content object.
@@ -670,6 +686,10 @@ Story.prototype.url_filter = function(value, param, mode) {
     return res.pop();
   });
 }
+
+Story.prototype.markdown_filter = function (value, param) {
+  return marked(value);
+};
 
 /**
  * @returns {String}

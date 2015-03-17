@@ -70,6 +70,35 @@ else
          return;
       }
 
+      UIkit.plugin('htmleditor', 'antville', {
+         init: function (editor) {
+            var addAction = function (name, replace, mode) {
+               editor.off('action.' + name);
+               editor.on('action.' + name, function() {
+                  if (editor.getCursorMode() == 'markdown') {
+                     editor[mode == 'replaceLine' ? 'replaceLine' : 'replaceSelection'](replace);
+                  }
+               });
+            };
+
+            editor.addButtons({
+               file: {
+                  title: "<% gettext 'File Macro' %>",
+                  label: '<i class="uk-icon-file-o"></i>'
+               },
+               poll: {
+                  title: "<% gettext 'Poll Macro' %>",
+                  label: '<i class="uk-icon-bar-chart"></i>'
+               }
+            });
+
+            addAction('file', "\<% file '$1' %\>");
+            addAction('image', "\<% image '$1' %\>");
+            addAction('link', "\<% link 'https://' '$1' %\>");
+            addAction('poll', "\<% poll '$1' %\>");
+         }
+      });
+
       var editor;
       var lastKeyPressed;
       var submitElement;
@@ -164,6 +193,9 @@ else
 
             img.onerror = function () {
                assets.shift();
+               if (!assets.length) {
+                  resubmit();
+               }
             };
          });
       };
@@ -178,6 +210,32 @@ else
             value: submit.value
          })).submit();
       };
+
+      editor = UIkit.htmleditor(document.querySelector('#text'), {
+         mode: 'tab',
+         markdown: true,
+         lblPreview: '<% gettext Preview %>',
+         lblCodeview: '<% gettext HTML %>',
+         lblMarkedview: '<% gettext Markdown %>',
+         toolbar: ['bold', 'italic', 'strike', 'link', 'image', 'file', 'poll', 'blockquote', 'listUl', 'listOl']
+      });
+
+      editor.editor.on('keyup', update);
+
+      var code;
+
+      editor.htmleditor.on('click', '.uk-htmleditor-button-code, .uk-htmleditor-button-preview', function (event) {
+         if ($(event.currentTarget).hasClass('uk-htmleditor-button-preview')) {
+            // FIXME: Should we really render the macros via AJAX call?
+            code = editor.editor.getValue();
+            $.post('<% stories.href render %>', encodeURIComponent(code))
+               .done(function (data) {
+                  editor.editor.setValue(data);
+               });
+         } else {
+            editor.editor.setValue(code);
+         }
+      });
 
       form.on('keyup', 'input:text', update)
          .on('click', '.uk-button', disableOnBeforeUnload);
@@ -207,17 +265,8 @@ else
                .done(parse);
          });
 
-      editor = UIkit.htmleditor(document.querySelector('#text'), {
-         mode: 'tab',
-         markdown: false,
-         lblPreview: '<% gettext Preview %>',
-         lblCodeview: '<% gettext HTML %>',
-         lblMarkedview: '<% gettext Markdown %>'
-      });
-
-      editor.editor.on('keyup', update);
-
-      if ('<% session.backup %>') {
+      // Restore backup text if available and if the editor refers to a new story
+      if (location.href.match('/create$') && '<% session.backup %>') {
          $.getJSON(url, function (data) {
             $.each(data, function (key, value) {
                $('#' + key).val(value);
