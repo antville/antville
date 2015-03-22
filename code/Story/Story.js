@@ -639,8 +639,12 @@ Story.prototype.linebreak_filter = function (value, param, mode) {
 };
 
 Story.prototype.code_filter = function (value, param) {
-  // FIXME: I am too lazy to write a filter so I abuse Helma’s format() method and restore the linebreaks afterwards.
+  // FIXME: I am too lazy to write a filter so I abuse Helma’s format() method and restore  linebreaks and some other markup afterwards.
   value = format(value).replace(/<br\s?\/?>(?:\r\n|\n|\r)/g, '\n');
+  // Restore Markdown quotes “>”
+  value = value.replace(/\n(&gt;)+/gm, function (str) {
+    return str.replace(/&gt;/g, '>');
+  });
   return value;
 };
 
