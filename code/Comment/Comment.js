@@ -217,6 +217,14 @@ Comment.prototype.getConfirmExtra = function () {
   }
 };
 
+Comment.prototype.isGaslighted = function () {
+  var creatorIsTroll = this.site.trollFilter.indexOf(this.creator.name) > -1;
+  if (session.user && creatorIsTroll) {
+    return session.user.name !== this.creator.name;
+  }
+  return creatorIsTroll;
+};
+
 /**
  *
  * @param {String} name
@@ -245,6 +253,10 @@ Comment.prototype.text_macro = function() {
         gettext('This comment was removed by the author.') :
         gettext('This comment was removed.'));
     res.writeln('</em>');
+  } else if (this.isGaslighted()) {
+    res.write('<em>');
+    res.write('This comment is gaslighted.');
+    res.write('</em>');
   } else {
     res.write(this.text);
   }
@@ -276,3 +288,9 @@ Comment.prototype.modifier_macro = function() {
 Comment.prototype.link_macro = function(param, action, text) {
   return HopObject.prototype.link_macro.call(this, param, action, text);
 }
+
+Comment.prototype.meta_macro = function (param) {
+  if (this.status === Comment.PUBLIC && !this.isGaslighted()) {
+    this.renderSkin('Comment#meta');
+  }
+};

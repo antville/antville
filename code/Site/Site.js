@@ -42,9 +42,10 @@ this.handleMetadata('spamfilter');
 this.handleMetadata('tagline');
 this.handleMetadata('timeZone');
 this.handleMetadata('title');
+this.handleMetadata('trollFilter');
 
 /**
- * @function
+ * Ffunction
  * @returns {String[]}
  * @see defineConstants
  */
@@ -367,7 +368,16 @@ Site.prototype.getFormOptions = function(name) {
     default:
     return HopObject.prototype.getFormOptions.apply(this, arguments);
   }
-}
+};
+
+Site.prototype.getFormValue = function (name) {
+  switch (name) {
+    case 'trollFilter':
+    var trolls = this.getMetadata('trollFilter');
+    return trolls ? trolls.join('\n') : String.EMPTY;
+  }
+  return HopObject.prototype.getFormValue.apply(this, arguments);
+};
 
 /**
  * @returns {String}
@@ -407,7 +417,10 @@ Site.prototype.update = function(data) {
     notificationMode: data.notificationMode || Site.NOBODY,
     timeZone: data.timeZone || root.getTimeZone().getID(),
     locale: data.locale || root.getLocale().toString(),
-    spamfilter: data.spamfilter || ''
+    spamfilter: data.spamfilter || '',
+    trollFilter: data.trollFilter.split(/\r\n|\r|\n/).filter(function (item) {
+      return item.length > 0;
+    })
   });
 
   if (User.require(User.PRIVILEGED)) {
@@ -934,7 +947,7 @@ Site.prototype.spamfilter_macro = function() {
     }
   }
   return;
-}
+};
 
 /**
  *
