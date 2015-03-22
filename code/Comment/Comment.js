@@ -190,9 +190,14 @@ Comment.prototype.update = function(data) {
   }
   // Get difference to current content before applying changes
   var delta = this.getDelta(data);
-  this.title = data.title;
-  this.text = data.text;
   this.setMetadata(data);
+  this.title = this.title ? stripTags(data.title) : String.EMPTY;
+
+  if (User.require(User.TRUSTED) || Membership.require(Membership.CONTRIBUTOR)) {
+    this.text = data.text;
+  } else {
+    this.text = this.text ? node.sanitizeHtml(data.text) : String.EMPTY;
+  }
 
   if (this.story.commentMode === Story.MODERATED) {
     this.status = Comment.PENDING;
