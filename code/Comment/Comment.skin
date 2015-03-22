@@ -16,6 +16,7 @@
          <li><% comment.created short %></li>
          <% comment.link main "<i class='uk-icon-link'></i>" prefix=<li> suffix=</li> %>
          <% comment.link delete "<i class='uk-icon-trash-o'></i>" prefix=<li> suffix=</li> %>
+         <% comment.link filter "<i class='uk-icon-filter'></i>" prefix=<li> suffix=</li> %>
          <% comment.link edit "<i class='uk-icon-pencil'></i>" prefix=<li> suffix=</li> %>
          <% if <% param.commentLink %> is false then '' else <% comment.link comment#form "<i class='uk-icon-comment-o'></i> " prefix=<li> suffix=</li> %> %>
       </ul>

@@ -119,6 +119,7 @@ Comment.prototype.getPermission = function(action) {
         this.story.getPermission(action) &&
         this.status !== Comment.PENDING;
     case 'delete':
+    case 'filter':
     return this.story.getPermission.call(this, 'delete');
     case 'edit':
     return this.status !== Comment.DELETED &&
@@ -167,7 +168,17 @@ Comment.prototype.edit_action = function() {
   res.data.body = this.renderSkinAsString('Comment#edit');
   this.site.renderSkin('Site#page');
   return;
-}
+};
+
+Comment.prototype.filter_action = function () {
+  var username = this.creator.name;
+  var trollFilter = this.site.trollFilter;
+  if (trollFilter.indexOf(username) < 0) {
+    trollFilter.push(username);
+    this.site.setMetadata('trollFilter', trollFilter);
+  }
+  res.redirect(req.data.http_referer);
+};
 
 /**
  *
