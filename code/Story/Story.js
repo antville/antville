@@ -607,8 +607,8 @@ Story.prototype.format_filter = function(value, param, mode) {
       break;
 
       default:
-      value = this.macro_filter(format(value), param);
       value = this.url_filter(value, param);
+      value = this.macro_filter(format(value), param);
       var parts = value.split(/(?:\n\n|\r\r|\r\n\r\n)/);
       value = '<p>' + parts.join('</p><p>') + '</p>';
       return value;
