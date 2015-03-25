@@ -29,3 +29,7 @@
 </table>
 <% response.pager %>
 
+<% #upload %>
+<div class='uk-hidden av-upload-drop'>
+   <i class='uk-icon uk-icon-cloud-upload'></i>
+</div>
