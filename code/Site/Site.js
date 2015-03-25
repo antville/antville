@@ -21,6 +21,7 @@
 
 markgettext('Site');
 markgettext('site');
+markgettext('a site // accusative');
 
 this.handleMetadata('archiveMode');
 this.handleMetadata('callbackMode');

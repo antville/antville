@@ -21,6 +21,7 @@
 
 markgettext('Poll');
 markgettext('poll');
+markgettext('a poll // accusative');
 
 /**
  * @function

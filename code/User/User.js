@@ -19,8 +19,9 @@
  * @fileOverview Defines the User prototype.
  */
 
-markgettext('User');
-markgettext('user');
+markgettext('Account');
+markgettext('account');
+markgettext('a account // accusative');
 
 this.handleMetadata('hash');
 this.handleMetadata('notes');

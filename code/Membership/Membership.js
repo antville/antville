@@ -21,6 +21,7 @@
 
 markgettext('Membership');
 markgettext('membership');
+markgettext('a membership // accusative');
 
 /**
  *
@@ -218,7 +219,7 @@ Membership.prototype.content_action = function() {
       10, req.queryParams.page);
   res.data.pager = renderPager(this.content,
       this.href(), 10, req.queryParams.page);
-  res.data.title = gettext('Content of User: {0}', this.name);
+  res.data.title = gettext('Content of Member {0}', this.name);
   res.data.body = this.renderSkinAsString('$Membership#content');
   this.site.renderSkin('Site#page');
 }

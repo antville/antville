@@ -128,7 +128,7 @@
       </div>
       <div class='uk-form-controls'>
          <% gettext '{0} activity sorted by date in {1} order.'
-            <% admin.dropdown name="display" <% markgettext any %> <% markgettext content %> <% markgettext comment %> <% markgettext link %> <% markgettext file %> <% markgettext image %> <% markgettext poll %> <% markgettext site %> <% markgettext user %> %>
+            <% admin.dropdown name="display" <% markgettext any %> <% markgettext content %> <% markgettext comment %> <% markgettext link %> <% markgettext file %> <% markgettext image %> <% markgettext poll %> <% markgettext site %> <% markgettext account %> %>
             <% admin.dropdown name="order" <% markgettext descending %> <% markgettext ascending %> %>
          %>
       </div>
@@ -266,7 +266,7 @@
          <th><% gettext Method %></th>
          <th><% gettext Type %></th>
          <th><% gettext ID %></th>
-         <th><% gettext User %></th>
+         <th><% gettext Account %></th>
          <th></th>
       </tr>
    </thead>

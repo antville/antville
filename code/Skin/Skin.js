@@ -21,6 +21,7 @@
 
 markgettext('Skin');
 markgettext('skin');
+markgettext('a skin // accusative');
 
 /**
  *
