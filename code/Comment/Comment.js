@@ -122,7 +122,8 @@ Comment.prototype.getPermission = function(action) {
     case 'filter':
     return this.story.getPermission.call(this, 'delete');
     case 'edit':
-    return this.status !== Comment.DELETED &&
+    return User.require(User.PRIVILEGED) ||
+        this.status !== Comment.DELETED &&
         this.creator === session.user;
   }
   return false;
