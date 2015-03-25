@@ -90,7 +90,9 @@ Stories.prototype.create_action = function() {
   res.data.title = gettext('Add Story');
   res.data.action = this.href(req.action);
   HopObject.confirmConstructor(Story);
-  res.data.body = (new Story).renderSkinAsString('Story#edit');
+  var story = new Story();
+  res.data.body = story.renderSkinAsString('Story#edit');
+  res.data.body += story.renderSkinAsString('$Story#editor');
   this._parent.renderSkin('Site#page');
   return;
 }
@@ -126,7 +128,7 @@ Stories.prototype.render_json_action = function () {
   var content = String(req.postParams.http_post_remainder);
   var story = new Story;
   story.site = res.handlers.site;
-  var result = Story.prototype.macro_filter.call(story, content);
+  var result = Story.prototype.format_filter.call(story, content, {}, 'markdown');
   res.write(result);
 };
 

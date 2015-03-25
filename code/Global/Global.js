@@ -516,9 +516,18 @@ function file_macro(param, id, mode) {
   }
 
   file = HopObject.getFromPath(id, 'files');
+
   if (!file) {
+     if (res.contentType === 'text/html' && !id.contains('/')) {
+      res.handlers.site.link_macro({
+        'class': 'uk-icon-button uk-icon-file-o',
+        'data-uk-tooltip': "{pos: 'right'}",
+        title: gettext('Create missing file'),
+      }, 'files/create?name=' + encodeURIComponent(id), ' ');
+    }
     return;
   }
+
   if (mode === 'url') {
     res.write(file.getUrl());
   } else {
@@ -546,13 +555,20 @@ function image_macro(param, id, mode) {
     image = Images.Default[name] || Images.Default[name + '.gif'];
   } else {
     image = HopObject.getFromPath(id, 'images');
-    // FIXME: Could fallback be replaced with CSS background-image?
-    if (!image && param.fallback) {
-      image = HopObject.getFromPath(param.fallback, 'images');
-    }
+  }
+
+  if (!image && param.fallback) {
+    image = HopObject.getFromPath(param.fallback, 'images');
   }
 
   if (!image) {
+     if (res.contentType === 'text/html' && !id.contains('/')) {
+      res.handlers.site.link_macro({
+        'class': 'uk-icon-button uk-icon-picture-o',
+        'data-uk-tooltip': "{pos: 'right'}",
+        title: gettext('Create missing image'),
+      }, 'images/create?name=' + encodeURIComponent(id), ' ');
+    }
     return;
   }
 

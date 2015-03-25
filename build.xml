@@ -62,7 +62,7 @@
     <property name="apps.src" value="https://github.com/p3k/helma-apps.git"/>
     <property name="jala.src" value="https://github.com/p3k/helma-jala.git"/>
 
-    <property name="uikit.dir" location="./node_modules/uikit"/>
+    <property name="uikit.dir" location="./node_modules/uikit-bower"/>
 
     <property name="build.dir" location="${basedir}/build"/>
     <property file="${build.dir}/build.properties"/>
@@ -202,18 +202,21 @@
 
   <target name="client" depends="init">
     <copy todir="static/fonts">
-      <fileset dir="node_modules/uikit-bower/fonts" includes="**"/>
+      <fileset dir="${uikit.dir}/fonts" includes="**"/>
     </copy>
     <mkdir dir="static/scripts"/>
     <exec executable="node_modules/.bin/browserify" output="static/scripts/main.min.js">
       <arg line="build/client/main.js -d -p [minifyify --map /static/scripts/main.min.map.json --output static/scripts/main.min.map.json]"/>
     </exec>
-    <exec executable="node_modules/.bin/browserify" output="static/scripts/cm.min.js">
-      <arg line="build/client/cm.js -d -p [minifyify --map /static/scripts/cm.min.map.json --output static/scripts/cm.min.map.json]"/>
+    <exec executable="node_modules/.bin/browserify" output="static/scripts/editor.min.js">
+      <arg line="build/client/editor.js -d -p [minifyify --map /static/scripts/editor.min.map.json --output static/scripts/editor.min.map.json]"/>
     </exec>
     <mkdir dir="static/styles"/>
     <exec executable="node_modules/.bin/lessc" output="static/styles/main.min.css">
       <arg line="-x build/client/main.less"/>
+    </exec>
+    <exec executable="node_modules/.bin/lessc" output="static/styles/editor.min.css">
+      <arg line="--clean-css build/client/editor.less"/>
     </exec>
   </target>
 
@@ -223,6 +226,7 @@
     </exec>
     <concat destfile="code/Global/0.node.js" append="true">
       <fileset file="node_modules/less/dist/less-rhino-1.7.5.js"/>
+      <fileset file="node_modules/marked/lib/marked.js"/>
     </concat>
   </target>
 
