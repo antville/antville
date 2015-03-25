@@ -119,6 +119,7 @@ Comment.prototype.getPermission = function(action) {
         this.story.getPermission(action) &&
         this.status !== Comment.PENDING;
     case 'delete':
+    case 'filter':
     return this.story.getPermission.call(this, 'delete');
     case 'edit':
     return this.status !== Comment.DELETED &&
@@ -167,7 +168,17 @@ Comment.prototype.edit_action = function() {
   res.data.body = this.renderSkinAsString('Comment#edit');
   this.site.renderSkin('Site#page');
   return;
-}
+};
+
+Comment.prototype.filter_action = function () {
+  var username = this.creator.name;
+  var trollFilter = this.site.trollFilter;
+  if (trollFilter.indexOf(username) < 0) {
+    trollFilter.push(username);
+    this.site.setMetadata('trollFilter', trollFilter);
+  }
+  res.redirect(req.data.http_referer);
+};
 
 /**
  *
@@ -179,9 +190,14 @@ Comment.prototype.update = function(data) {
   }
   // Get difference to current content before applying changes
   var delta = this.getDelta(data);
-  this.title = data.title;
-  this.text = data.text;
   this.setMetadata(data);
+  this.title = this.title ? stripTags(data.title) : String.EMPTY;
+
+  if (User.require(User.TRUSTED) || Membership.require(Membership.CONTRIBUTOR)) {
+    this.text = data.text;
+  } else {
+    this.text = this.text ? node.sanitizeHtml(data.text) : String.EMPTY;
+  }
 
   if (this.story.commentMode === Story.MODERATED) {
     this.status = Comment.PENDING;
@@ -217,6 +233,14 @@ Comment.prototype.getConfirmExtra = function () {
   }
 };
 
+Comment.prototype.isGaslighted = function () {
+  var creatorIsTroll = this.site.trollFilter.indexOf(this.creator.name) > -1;
+  if (session.user && creatorIsTroll) {
+    return session.user.name !== this.creator.name;
+  }
+  return creatorIsTroll;
+};
+
 /**
  *
  * @param {String} name
@@ -245,6 +269,10 @@ Comment.prototype.text_macro = function() {
         gettext('This comment was removed by the author.') :
         gettext('This comment was removed.'));
     res.writeln('</em>');
+  } else if (this.isGaslighted()) {
+    res.write('<em>');
+    res.write('This comment is gaslighted.');
+    res.write('</em>');
   } else {
     res.write(this.text);
   }
@@ -276,3 +304,9 @@ Comment.prototype.modifier_macro = function() {
 Comment.prototype.link_macro = function(param, action, text) {
   return HopObject.prototype.link_macro.call(this, param, action, text);
 }
+
+Comment.prototype.meta_macro = function (param) {
+  if (this.status === Comment.PUBLIC && !this.isGaslighted()) {
+    this.renderSkin('Comment#meta');
+  }
+};

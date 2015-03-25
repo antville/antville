@@ -218,9 +218,10 @@
   </target>
 
   <target name="server" depends="init">
-    <concat destfile="code/Global/0.node.js">
-      <header>module = {};</header>
-      <fileset file="node_modules/JSON/json2.js"/>
+    <exec executable="node_modules/.bin/browserify" output="code/Global/0.node.js">
+      <arg line="build/server.js -d"/>
+    </exec>
+    <concat destfile="code/Global/0.node.js" append="true">
       <fileset file="node_modules/less/dist/less-rhino-1.7.5.js"/>
     </concat>
   </target>
