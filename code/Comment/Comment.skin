@@ -27,10 +27,10 @@
 </article>
 
 <% #meta %>
-<% if <% comment.creator url %> is null then '' else <% comment.creator url prefix="<a href='" suffix="'>" %> %>
+<% comment.creator url prefix="<a href='" suffix="'>" %>
 <img alt='' class='uk-comment-avatar' src='<% comment.creator gravatar suffix='?s=50&amp;d=mm' %>'>
 <% if <% comment.creator url %> is null then '' else </a> %>
-<h4 class='uk-comment-title'><% comment.creator %></h4>
+<h4 class='uk-comment-title'><% comment.creator %> <% comment.badge %></h4>
 
 <% #comment %>
 <% comment.skin Comment#content %>
