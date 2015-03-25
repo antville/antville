@@ -75,9 +75,7 @@ else
             var addAction = function (name, replace, mode) {
                editor.off('action.' + name);
                editor.on('action.' + name, function() {
-                  if (editor.getCursorMode() == 'markdown') {
                      editor[mode == 'replaceLine' ? 'replaceLine' : 'replaceSelection'](replace);
-                  }
                });
             };
 
