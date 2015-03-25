@@ -50,7 +50,7 @@ else
       <% gettext "Last modified by {0} on {1}" <% comment.modifier %> <% comment.modified short %> prefix=<div> suffix=</div> %>
    %>
 </div>
-<form class='uk-margin-top uk-form uk-form-stacked' method="post" action="<% response.action %>">
+<form class='uk-margin-large-top uk-form uk-form-stacked' method="post" action="<% response.action %>">
    <div class='uk-form-row'>
       <div class='uk-form-label'>
          <% gettext Text %>
