@@ -33,6 +33,7 @@
     "less": "git://github.com/less/less.js#v1.7.5",
     "marked": "^0.3.3",
     "minifyify": "^6.1.0",
-    "napa": "^1.1.0"
+    "napa": "^1.1.0",
+    "sanitize-html": "^1.6.1"
   }
 }

@@ -100,6 +100,33 @@
    <fieldset class='uk-margin-top'>
       <legend><% gettext Advanced %></legend>
       <div class='uk-form-row'>
+         <label class='uk-form-label'>
+            <% gettext 'Troll Filter' %>
+         </label>
+         <div class='uk-form-controls'>
+            <% site.textarea trollFilter rows=5 class='uk-width-1-1' %>
+         </div>
+      </div>
+      <div class='uk-form-row'>
+         <label class='uk-form-label'>
+            <% gettext 'Referrer Filter' %>
+         </label>
+         <div class='uk-form-controls'>
+            <% site.textarea spamfilter rows=5 class='uk-width-1-1' %>
+            <p class="uk-form-help-block">
+               <% gettext "Enter one filter {0}pattern{1} per line to be applied on every URL in the referrer and backlink lists." '<a href="http://en.wikipedia.org/wiki/Regular_expression">' </a> %>
+            </p>
+         </div>
+      </div>
+      <div class='uk-form-row'>
+         <label class='uk-form-label'>
+            <% gettext Bookmarklet %>
+         </label>
+         <div class='uk-form-controls'>
+            <a class='uk-button' data-uk-tooltip='{pos: "right"}' href="javascript: var siteUrl = '<% site.href %>'; var selection = (window.getSelection) ? window.getSelection() : document.selection.createRange(); selection = selection.text || selection; selection = selection + ''; var url='<% root.static %>../../formica.html?s=' + encodeURIComponent(siteUrl) + '&amp;l=' + encodeURIComponent(location.href) + '&amp;r=' + encodeURIComponent(document.referrer) + '&amp;w=400&amp;h=400&amp;c=' + encodeURIComponent(selection || document.title); window.open(url, 'formica', 'width=630, height=350'); void 0;" title="<% gettext 'Drag to Bookmarks Bar' %>"><% gettext "Post to {0}" <% site.title %> %></a>
+         </div>
+      </div>
+      <div class='uk-form-row'>
          <label class='uk-form-label' for='callbackUrl'>
             <% gettext 'Callback URL' %>
          </label>
@@ -117,25 +144,6 @@
          </label>
          <div class='uk-form-controls'>
             <% site.diskspace %>
-         </div>
-      </div>
-      <div class='uk-form-row'>
-         <label class='uk-form-label'>
-            <% gettext Bookmarklet %>
-         </label>
-         <div class='uk-form-controls'>
-            <a class='uk-button' data-uk-tooltip='{pos: "right"}' href="javascript: var siteUrl = '<% site.href %>'; var selection = (window.getSelection) ? window.getSelection() : document.selection.createRange(); selection = selection.text || selection; selection = selection + ''; var url='<% root.static %>../../formica.html?s=' + encodeURIComponent(siteUrl) + '&amp;l=' + encodeURIComponent(location.href) + '&amp;r=' + encodeURIComponent(document.referrer) + '&amp;w=400&amp;h=400&amp;c=' + encodeURIComponent(selection || document.title); window.open(url, 'formica', 'width=630, height=350'); void 0;" title="<% gettext 'Drag to Bookmarks Bar' %>"><% gettext "Post to {0}" <% site.title %> %></a>
-         </div>
-      </div>
-   </fieldset>
-   <fieldset class='uk-margin-top'>
-      <legend><% gettext "Referrer Filter" %></legend>
-      <div class='uk-form-row'>
-         <div class='uk-form-controls'>
-            <% site.textarea spamfilter rows=5 class='uk-width-1-1' %>
-            <p class="uk-form-help-block">
-               <% gettext "Enter one filter {0}pattern{1} per line to be applied on every URL in the referrer and backlink lists." '<a href="http://en.wikipedia.org/wiki/Regular_expression">' </a> %>
-            </p>
          </div>
       </div>
    </fieldset>
@@ -607,6 +615,11 @@ h1 a, .uk-table a {
 
 .uk-form select, .uk-form textarea, .uk-form input:not([type]), .uk-form input[type="text"], .uk-form input[type="password"], .uk-form input[type="datetime"], .uk-form input[type="datetime-local"], .uk-form input[type="date"], .uk-form input[type="month"], .uk-form input[type="time"], .uk-form input[type="week"], .uk-form input[type="number"], .uk-form input[type="email"], .uk-form input[type="url"], .uk-form input[type="search"], .uk-form input[type="tel"], .uk-form input[type="color"] {
    border-color: @border-color;
+}
+
+// Remove the left padding of the first meta subnav item for vertical alignment with the username
+h4 + .uk-comment-meta li:first-child {
+   padding-left: 0;
 }
 
 .av-page {

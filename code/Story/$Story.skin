@@ -226,7 +226,7 @@ else
          if ($(event.currentTarget).hasClass('uk-htmleditor-button-preview')) {
             // FIXME: Should we really render the macros via AJAX call?
             var raw = encodeURIComponent(editor.editor.getValue());
-            $.post('<% stories.href render %>', raw)
+            $.post('<% stories.href render.json %>', raw)
                .done(function (data) {
                   $('.uk-htmleditor-preview div').html(data);
                });

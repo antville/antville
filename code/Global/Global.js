@@ -244,7 +244,7 @@ var console = function (type) {
     writeln(shellColors[type] + '[' + now + '] [' + type.toUpperCase() + '] [console] ' + argString + '\u001B[0m');
 
     if (typeof res !== 'undefined') {
-      res.debug('<script>console.' + type + '("%c%s (Server)", "font-style: italic;", ' +
+      res.debug('<script>console.' + type + '("%c%s", "font-style: italic;", ' +
           JSON.stringify(argString) + ');</script>');
     }
   }

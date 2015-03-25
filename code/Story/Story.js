@@ -241,8 +241,14 @@ Story.prototype.update = function(data) {
 
   // Get difference to current content before applying changes
   var delta = this.getDelta(data);
-  this.title = data.title ? stripTags(data.title.trim()) : String.EMPTY;
-  this.text = data.text ? data.text.trim() : String.EMPTY;
+  this.title = data.title ? stripTags(data.title) : String.EMPTY;
+
+  if (User.require(User.TRUSTED) || Membership.require(Membership.CONTRIBUTOR)) {
+    this.text = data.text;
+  } else {
+    this.text = this.text ? node.sanitizeHtml(data.text) : String.EMPTY;
+  }
+
   this.status = data.status || Story.PUBLIC;
   this.mode = data.mode || Story.FEATURED;
   this.commentMode = data.commentMode || Story.OPEN;
