@@ -83,7 +83,7 @@ else
       });
 
       var raw = encodeURIComponent(buffer.join(' '));
-      $.post('<% stories.href render %>', raw)
+      $.post('<% stories.href render.json %>', raw)
          .done(parse);
 
       function parse(data) {
