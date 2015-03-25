@@ -75,17 +75,17 @@ else
             var addAction = function (name, replace, mode) {
                editor.off('action.' + name);
                editor.on('action.' + name, function() {
-                     editor[mode == 'replaceLine' ? 'replaceLine' : 'replaceSelection'](replace);
+                  editor[mode == 'replaceLine' ? 'replaceLine' : 'replaceSelection'](replace);
                });
             };
 
             editor.addButtons({
                file: {
-                  title: "<% gettext 'File Macro' %>",
+                  title: "<% gettext 'File' %>",
                   label: '<i class="uk-icon-file-o"></i>'
                },
                poll: {
-                  title: "<% gettext 'Poll Macro' %>",
+                  title: "<% gettext 'Poll' %>",
                   label: '<i class="uk-icon-bar-chart"></i>'
                }
             });
