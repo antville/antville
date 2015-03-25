@@ -19,17 +19,17 @@
 var sql = new Sql();
 
 var next_id;
-sql.retrieve("select max(id) from metadata");
+sql.retrieve("select max(id) as max_id from metadata");
 sql.traverse(function () {
-  next_id = this.max + 1;
+  next_id = this.max_id + 1;
 });
 
-sql.retrieve("select s.id, m.name, m.value from site s left outer join metadata m on m.parent_type = 'Site' and m.parent_id = s.id and m.name = 'trollFilter'");
+sql.retrieve("select s.id, s.name as site_name, m.name, m.value from site s left outer join metadata m on m.parent_type = 'Site' and m.parent_id = s.id and m.name = 'trollFilter' order by s.name");
 sql.traverse(function () {
   if (!this.name) {
-    writeln('Initialize trollFilter for ' + this.id);
+    writeln('Initialize trollFilter for Site ' + this.site_name);
+    //writeln([next_id, this.id, 'Site', 'trollFilter', '[]', 'Array'].join(', '));
     sql.execute("insert into metadata values($0, $1, 'Site', 'trollFilter', '[]', 'Array')", next_id, this.id);
-    //writeln([next_id, this.id, 'Site', 'trollFilter', '[]', 'Array'].join());
     next_id += 1;
   }
 });

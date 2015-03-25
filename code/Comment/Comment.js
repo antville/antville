@@ -122,7 +122,8 @@ Comment.prototype.getPermission = function(action) {
     case 'filter':
     return this.story.getPermission.call(this, 'delete');
     case 'edit':
-    return this.status !== Comment.DELETED &&
+    return User.require(User.PRIVILEGED) ||
+        this.status !== Comment.DELETED &&
         this.creator === session.user;
   }
   return false;
@@ -309,4 +310,19 @@ Comment.prototype.meta_macro = function (param) {
   if (this.status === Comment.PUBLIC && !this.isGaslighted()) {
     this.renderSkin('Comment#meta');
   }
+};
+
+Comment.prototype.badge_macro = function () {
+  var role, type, membership;
+  if (this.creator === this.story.creator) {
+    role = gettext('Author');
+    type = 'success';
+  } else if ((membership = Membership.getByName(this.creator.name)) && membership.role === Membership.OWNER) {
+    role = gettext('Owner');
+    type = 'success';
+  } else if (this.creator.status === User.PRIVILEGED) {
+    role = gettext('Admin');
+    type = 'primary';
+  }
+  role && html.element('span', role, {'class': 'uk-badge uk-badge-' + type});
 };
