@@ -21,6 +21,7 @@
 
 markgettext('Site');
 markgettext('site');
+markgettext('a site // accusative');
 
 this.handleMetadata('archiveMode');
 this.handleMetadata('callbackMode');
@@ -30,6 +31,7 @@ this.handleMetadata('commentMode');
 this.handleMetadata('configured');
 this.handleMetadata('deleted');
 this.handleMetadata('export_id');
+this.handleMetadata('imageDimensionLimits');
 this.handleMetadata('import_id');
 this.handleMetadata('job');
 this.handleMetadata('locale');
@@ -372,6 +374,10 @@ Site.prototype.getFormOptions = function(name) {
 
 Site.prototype.getFormValue = function (name) {
   switch (name) {
+    case 'maxImageWidth':
+    return this.imageDimensionLimits[0];
+    case 'maxImageHeight':
+    return this.imageDimensionLimits[1];
     case 'trollFilter':
     var trolls = this.getMetadata('trollFilter');
     return trolls ? trolls.join('\n') : String.EMPTY;
@@ -404,20 +410,24 @@ Site.prototype.update = function(data) {
     this.job = null;
   }
 
+  data.maxImageWidth = Math.abs(data.maxImageWidth) || Infinity;
+  data.maxImageHeight = Math.abs(data.maxImageHeight) || Infinity;
+
   this.map({
-    title: stripTags(data.title) || this.name,
-    tagline: data.tagline || '',
-    mode: data.mode || Site.CLOSED,
-    callbackUrl: data.callbackUrl || this.callbackUrl || '',
+    archiveMode: data.archiveMode || Site.CLOSED,
     callbackMode: data.callbackMode || Site.DISABLED,
+    callbackUrl: data.callbackUrl || this.callbackUrl || '',
+    imageDimensionLimits: [data.maxImageWidth, data.maxImageHeight],
+    commentMode: data.commentMode || Site.DISABLED,
+    locale: data.locale || root.getLocale().toString(),
+    mode: data.mode || Site.CLOSED,
+    notificationMode: data.notificationMode || Site.NOBODY,
     pageMode: data.pageMode || Site.DAYS,
     pageSize: parseInt(data.pageSize, 10) || 3,
-    commentMode: data.commentMode || Site.DISABLED,
-    archiveMode: data.archiveMode || Site.CLOSED,
-    notificationMode: data.notificationMode || Site.NOBODY,
-    timeZone: data.timeZone || root.getTimeZone().getID(),
-    locale: data.locale || root.getLocale().toString(),
     spamfilter: data.spamfilter || '',
+    tagline: data.tagline || '',
+    title: stripTags(data.title) || this.name,
+    timeZone: data.timeZone || root.getTimeZone().getID(),
     trollFilter: data.trollFilter.split(/\r\n|\r|\n/).filter(function (item) {
       return item.length > 0;
     })

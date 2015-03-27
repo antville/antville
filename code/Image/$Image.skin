@@ -76,17 +76,6 @@
          <% image.input tags class='uk-width-1-1' %>
       </div>
    </div>
-   <div class='uk-form-row uk-hidden av-pixels-row'>
-      <label class='uk-form-label' for='maxWidth'>
-         Pixels
-         <i class='uk-icon-info-circle uk-text-muted' title='<% gettext "If you want to resize the image please specify your desired maximum width and/or maximum height in pixels. If you specify both the image will be resized to match both criterias, but the image ratio will be preserved. If the width or height of your image exceeds 100 pixels Antville automatically creates a thumbnail of it, too." %> ' data-uk-tooltip='{pos: "right"}'></i>
-      </label>
-      <div class='uk-form-controls'>
-         <% image.input maxWidth type='number' min=1 max=1000 class='uk-form-width-small' %>
-         &times;
-         <% image.input maxHeight type='number' min=1 max=1000 class='uk-form-width-small' %>
-      </div>
-   </div>
    <fieldset class='uk-margin-top'>
      <legend><% gettext Information %></legend>
       <div class='uk-form-row'>
@@ -105,13 +94,10 @@
 $(function() {
    if ('<% image.name %>') {
       $('#name').attr('disabled', true);
-      $('#maxWidth').attr('disabled', true);
-      $('#maxHeight').attr('disabled', true);
    }
+   $('.av-name-row').removeClass('uk-hidden');
    if (location.href.indexOf('/layout/') < 0) {
       $('.av-tags-row').removeClass('uk-hidden');
    }
-   $('.av-name-row').removeClass('uk-hidden');
-   $('.av-pixels-row').removeClass('uk-hidden');
 });
 </script>

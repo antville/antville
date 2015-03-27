@@ -18,8 +18,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Antville-1.5\n"
 "Report-Msgid-Bugs-To: mail@antville.org\n"
-"POT-Creation-Date: 2015-03-25 13:06+0100\n"
-"PO-Revision-Date: 2015-03-25 13:07+0100\n"
+"POT-Creation-Date: 2015-03-27 15:52+0100\n"
+"PO-Revision-Date: 2015-03-27 15:52+0100\n"
 "Last-Translator: Tobi Schäfer <interface@p3k.org>\n"
 "Language-Team: The Antville People <mail@antville.org>\n"
 "Language: en\n"
@@ -37,7 +37,7 @@ msgid_plural "({0} characters)"
 msgstr[0] "({0} character)"
 msgstr[1] "({0} characters)"
 
-#: /Users/tobi/Projects/antville/current/code/Site/Site.js:787
+#: /Users/tobi/Projects/antville/current/code/Site/Site.js:797
 msgid ""
 "A Blogger export file (.xml) will be created and available for download from "
 "here within 24 hours."
@@ -87,7 +87,7 @@ msgstr "Activity"
 msgid "Add Choice"
 msgstr "Add Choice"
 
-#: /Users/tobi/Projects/antville/current/code/Story/Story.js:308
+#: /Users/tobi/Projects/antville/current/code/Story/Story.js:306
 msgid "Add Comment"
 msgstr "Add Comment"
 
@@ -95,7 +95,7 @@ msgstr "Add Comment"
 msgid "Add File"
 msgstr "Add File"
 
-#: /Users/tobi/Projects/antville/current/code/Images/Images.js:89
+#: /Users/tobi/Projects/antville/current/code/Images/Images.js:90
 msgid "Add Image"
 msgstr "Add Image"
 
@@ -117,7 +117,7 @@ msgstr "Add Skin"
 
 #: /Users/tobi/Projects/antville/current/code/Root/Site.skin:36
 #: /Users/tobi/Projects/antville/current/code/Site/Site.skin:24
-#: /Users/tobi/Projects/antville/current/code/Stories/Stories.js:90
+#: /Users/tobi/Projects/antville/current/code/Stories/Stories.js:94
 msgid "Add Story"
 msgstr "Add Story"
 
@@ -125,12 +125,16 @@ msgstr "Add Story"
 msgid "Add Your Vote"
 msgstr "Add Your Vote"
 
-#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:216
+#: /Users/tobi/Projects/antville/current/code/Comment/Comment.js:325
+msgid "Admin"
+msgstr "Admin"
+
+#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:227
 #: /Users/tobi/Projects/antville/current/code/User/$User.skin:121
 msgid "Administration"
 msgstr "Administration"
 
-#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:101
+#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:100
 msgid "Advanced"
 msgstr "Advanced"
 
@@ -152,7 +156,7 @@ msgstr "All Polls"
 msgid "All Skins"
 msgstr "All Skins"
 
-#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:252
+#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:263
 msgid "All of this will be deleted irreversibly."
 msgstr "All of this will be deleted irreversibly."
 
@@ -186,7 +190,7 @@ msgstr "Antville supports the following application programming interfaces:"
 msgid "Archive"
 msgstr "Archive"
 
-#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:976
+#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:1069
 msgid ""
 "Are you sure you want to add this URL to the referrer filter? Edit it below "
 "to filter a pattern only."
@@ -194,7 +198,7 @@ msgstr ""
 "Are you sure you want to add this URL to the referrer filter? Edit it below "
 "to filter a pattern only."
 
-#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:253
+#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:264
 msgid "Are you sure you want to proceed?"
 msgstr "Are you sure you want to proceed?"
 
@@ -202,6 +206,7 @@ msgstr "Are you sure you want to proceed?"
 msgid "Are you sure you want to remove this tag?"
 msgstr "Are you sure you want to remove this tag?"
 
+#: /Users/tobi/Projects/antville/current/code/Comment/Comment.js:319
 #: /Users/tobi/Projects/antville/current/code/Comments/$Comments.skin:15
 #: /Users/tobi/Projects/antville/current/code/Files/$Files.skin:15
 #: /Users/tobi/Projects/antville/current/code/Images/$Images.skin:20
@@ -225,20 +230,20 @@ msgstr "Basic Skins"
 #: /Users/tobi/Projects/antville/current/code/Membership/$Membership.skin:133
 #: /Users/tobi/Projects/antville/current/code/Membership/$Membership.skin:154
 #: /Users/tobi/Projects/antville/current/code/Membership/$Membership.skin:105
-#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:1110
-#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:1120
+#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:1203
+#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:1213
 #: /Users/tobi/Projects/antville/current/code/User/$User.skin:162
 msgid "Best regards."
 msgstr "Best regards."
 
 #: /Users/tobi/Projects/antville/current/code/Admin/$Admin.skin:357
 #: /Users/tobi/Projects/antville/current/code/Admin/$Admin.skin:375
-#: /Users/tobi/Projects/antville/current/code/Site/Site.js:52
+#: /Users/tobi/Projects/antville/current/code/Site/Site.js:54
 #: /Users/tobi/Projects/antville/current/code/User/User.js:84
 msgid "Blocked"
 msgstr "Blocked"
 
-#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:123
+#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:145
 msgid "Bookmarklet"
 msgstr "Bookmarklet"
 
@@ -260,7 +265,7 @@ msgstr "Cache"
 
 #: /Users/tobi/Projects/antville/current/code/Api/$Api.skin:13
 #: /Users/tobi/Projects/antville/current/code/Api/Api.js:123
-#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:131
+#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:133
 msgid "Callback URL"
 msgstr "Callback URL"
 
@@ -269,7 +274,7 @@ msgstr "Callback URL"
 #: /Users/tobi/Projects/antville/current/code/Comment/Comment.skin:65
 #: /Users/tobi/Projects/antville/current/code/File/$File.skin:64
 #: /Users/tobi/Projects/antville/current/code/HopObject/$HopObject.skin:22
-#: /Users/tobi/Projects/antville/current/code/Image/$Image.skin:101
+#: /Users/tobi/Projects/antville/current/code/Image/$Image.skin:90
 #: /Users/tobi/Projects/antville/current/code/Layout/$Layout.skin:106
 #: /Users/tobi/Projects/antville/current/code/Layout/$Layout.skin:40
 #: /Users/tobi/Projects/antville/current/code/Members/$Members.skin:124
@@ -281,10 +286,10 @@ msgstr "Callback URL"
 #: /Users/tobi/Projects/antville/current/code/Membership/$Membership.skin:77
 #: /Users/tobi/Projects/antville/current/code/Poll/$Poll.skin:120
 #: /Users/tobi/Projects/antville/current/code/Root/$Root.skin:33
-#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:264
-#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:1099
-#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:1078
-#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:155
+#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:275
+#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:1192
+#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:1171
+#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:166
 #: /Users/tobi/Projects/antville/current/code/Skin/$Skin.skin:69
 #: /Users/tobi/Projects/antville/current/code/Skin/$Skin.skin:32
 #: /Users/tobi/Projects/antville/current/code/Story/Story.skin:84
@@ -294,7 +299,7 @@ msgstr "Callback URL"
 msgid "Cancel"
 msgstr "Cancel"
 
-#: /Users/tobi/Projects/antville/current/code/Story/Story.js:237
+#: /Users/tobi/Projects/antville/current/code/Story/Story.js:245
 #, java-format
 msgid "Cannot parse timestamp {0} as a date."
 msgstr "Cannot parse timestamp {0} as a date."
@@ -319,12 +324,12 @@ msgstr "Click “Cancel” now if you are not really sure you want to proceed."
 msgid "Close"
 msgstr "Close"
 
-#: /Users/tobi/Projects/antville/current/code/Site/Site.js:60
+#: /Users/tobi/Projects/antville/current/code/Site/Site.js:62
 #: /Users/tobi/Projects/antville/current/code/Stories/$Stories.skin:8
 msgid "Closed"
 msgstr "Closed"
 
-#: /Users/tobi/Projects/antville/current/code/Stories/Stories.js:103
+#: /Users/tobi/Projects/antville/current/code/Stories/Stories.js:107
 msgid "Closed Stories"
 msgstr "Closed Stories"
 
@@ -368,7 +373,7 @@ msgstr "Confirm Deletion"
 msgid "Confirm Reset"
 msgstr "Confirm Reset"
 
-#: /Users/tobi/Projects/antville/current/code/Site/Site.js:751
+#: /Users/tobi/Projects/antville/current/code/Site/Site.js:761
 msgid "Confirm Unsubscribe"
 msgstr "Confirm Unsubscribe"
 
@@ -406,7 +411,7 @@ msgid "Content of User: {0}"
 msgstr "Content of User: {0}"
 
 #: /Users/tobi/Projects/antville/current/code/Membership/Membership.js:53
-#: /Users/tobi/Projects/antville/current/code/Site/Site.js:89
+#: /Users/tobi/Projects/antville/current/code/Site/Site.js:91
 msgid "Contributor"
 msgstr "Contributor"
 
@@ -433,19 +438,19 @@ msgstr "Could not connect with Facebook. ({0})"
 
 #: /Users/tobi/Projects/antville/current/code/File/File.js:268
 #: /Users/tobi/Projects/antville/current/code/File/File.js:322
-#: /Users/tobi/Projects/antville/current/code/Image/Image.js:262
+#: /Users/tobi/Projects/antville/current/code/Image/Image.js:259
 msgid "Could not fetch the file from the given URL."
 msgstr "Could not fetch the file from the given URL."
 
-#: /Users/tobi/Projects/antville/current/code/Image/Image.js:549
+#: /Users/tobi/Projects/antville/current/code/Image/Image.js:547
 msgid "Could not remove the image file from disk."
 msgstr "Could not remove the image file from disk."
 
-#: /Users/tobi/Projects/antville/current/code/Image/Image.js:505
+#: /Users/tobi/Projects/antville/current/code/Image/Image.js:503
 msgid "Could not resize the image."
 msgstr "Could not resize the image."
 
-#: /Users/tobi/Projects/antville/current/code/Image/Image.js:531
+#: /Users/tobi/Projects/antville/current/code/Image/Image.js:529
 msgid "Could not save the image file on disk."
 msgstr "Could not save the image file on disk."
 
@@ -485,7 +490,7 @@ msgstr "Created by {0} on {1}"
 msgid "Created by {0} on {1}."
 msgstr "Created by {0} on {1}."
 
-#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:348
+#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:359
 #, java-format
 msgid "Created {0}"
 msgstr "Created {0}"
@@ -503,15 +508,15 @@ msgid "Date string in Unix timestamp format"
 msgstr "Date string in Unix timestamp format"
 
 #: /Users/tobi/Projects/antville/current/code/File/$File.skin:63
-#: /Users/tobi/Projects/antville/current/code/Image/$Image.skin:100
+#: /Users/tobi/Projects/antville/current/code/Image/$Image.skin:89
 #: /Users/tobi/Projects/antville/current/code/Poll/$Poll.skin:119
-#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:154
+#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:165
 #: /Users/tobi/Projects/antville/current/code/Story/Story.skin:83
 #: /Users/tobi/Projects/antville/current/code/User/$User.skin:102
 msgid "Delete"
 msgstr "Delete"
 
-#: /Users/tobi/Projects/antville/current/code/Site/Site.js:59
+#: /Users/tobi/Projects/antville/current/code/Site/Site.js:61
 msgid "Deleted"
 msgstr "Deleted"
 
@@ -530,7 +535,7 @@ msgstr "Details"
 msgid "Development"
 msgstr "Development"
 
-#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:918
+#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:1011
 msgid "Disable filter"
 msgstr "Disable filter"
 
@@ -549,7 +554,7 @@ msgstr "Disconnect from {0}"
 msgid "Disk Quota"
 msgstr "Disk Quota"
 
-#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:143
+#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:153
 msgid "Disk Space"
 msgstr "Disk Space"
 
@@ -563,12 +568,12 @@ msgstr "Display"
 msgid "Do Androids dream of electric sheep?"
 msgstr "Do Androids dream of electric sheep?"
 
-#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:1072
+#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:1165
 #, java-format
 msgid "Download the file {0} or klick “Start” to create a new one."
 msgstr "Download the file {0} or klick “Start” to create a new one."
 
-#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:126
+#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:148
 msgid "Drag to Bookmarks Bar"
 msgstr "Drag to Bookmarks Bar"
 
@@ -610,7 +615,7 @@ msgstr ""
 msgid "Edit"
 msgstr "Edit"
 
-#: /Users/tobi/Projects/antville/current/code/Comment/Comment.js:167
+#: /Users/tobi/Projects/antville/current/code/Comment/Comment.js:168
 #: /Users/tobi/Projects/antville/current/code/Comment/Comment.skin:43
 msgid "Edit Comment"
 msgstr "Edit Comment"
@@ -631,7 +636,7 @@ msgstr "Edit Poll"
 msgid "Edit Story"
 msgstr "Edit Story"
 
-#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:919
+#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:1012
 msgid "Edit the filter in the site settings."
 msgstr "Edit the filter in the site settings."
 
@@ -644,7 +649,7 @@ msgstr "Edit {0}.{1}"
 msgid "Enabled"
 msgstr "Enabled"
 
-#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:117
+#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:127
 #, java-format
 msgid ""
 "Enter one filter {0}pattern{1} per line to be applied on every URL in the "
@@ -680,7 +685,7 @@ msgstr "Errors"
 msgid "Export"
 msgstr "Export"
 
-#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:1070
+#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:1163
 msgid "Export Site Data"
 msgstr "Export Site Data"
 
@@ -688,13 +693,13 @@ msgstr "Export Site Data"
 #: /Users/tobi/Projects/antville/current/code/File/File.js:22
 #: /Users/tobi/Projects/antville/current/code/HopObject/HopObject.js:160
 #: /Users/tobi/Projects/antville/current/code/Image/$Image.skin:47
-#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:1089
+#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:1182
 #: /Users/tobi/Projects/antville/current/code/Story/$Story.skin:84
 msgid "File"
 msgstr "File"
 
 #: /Users/tobi/Projects/antville/current/code/File/File.js:258
-#: /Users/tobi/Projects/antville/current/code/Image/Image.js:252
+#: /Users/tobi/Projects/antville/current/code/Image/Image.js:249
 msgid "File size is exceeding the upload limit."
 msgstr "File size is exceeding the upload limit."
 
@@ -717,14 +722,14 @@ msgid "Filter"
 msgstr "Filter"
 
 #: /Users/tobi/Projects/antville/current/code/Members/$Members.skin:188
-#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:262
+#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:273
 #: /Users/tobi/Projects/antville/current/compat/Site/$Site.skin:7
 msgid "Find"
 msgstr "Find"
 
 #: /Users/tobi/Projects/antville/current/code/Members/Members.js:286
-#: /Users/tobi/Projects/antville/current/code/Site/Site.js:707
-#: /Users/tobi/Projects/antville/current/code/Site/Site.js:991
+#: /Users/tobi/Projects/antville/current/code/Site/Site.js:717
+#: /Users/tobi/Projects/antville/current/code/Site/Site.js:1001
 #, java-format
 msgid "Found more than {0} results. Please try a more specific query."
 msgstr "Found more than {0} results. Please try a more specific query."
@@ -769,8 +774,8 @@ msgstr "Health"
 #: /Users/tobi/Projects/antville/current/code/Membership/$Membership.skin:137
 #: /Users/tobi/Projects/antville/current/code/Membership/$Membership.skin:126
 #: /Users/tobi/Projects/antville/current/code/Membership/$Membership.skin:148
-#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:1104
-#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:1114
+#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:1197
+#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:1207
 #: /Users/tobi/Projects/antville/current/code/User/$User.skin:152
 #, java-format
 msgid "Hello {0}."
@@ -828,7 +833,7 @@ msgstr ""
 "If you think you have received this e-mail in error please contact the "
 "maintainer of the site."
 
-#: /Users/tobi/Projects/antville/current/code/Image/$Image.skin:82
+#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:104
 msgid ""
 "If you want to resize the image please specify your desired maximum width "
 "and/or maximum height in pixels. If you specify both the image will be "
@@ -847,20 +852,24 @@ msgstr ""
 msgid "Image"
 msgstr "Image"
 
+#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:103
+msgid "Image Dimension Limits"
+msgstr "Image Dimension Limits"
+
 #: /Users/tobi/Projects/antville/current/code/Image/Image.js:183
 #, java-format
 msgid "Image: {0}"
 msgstr "Image: {0}"
 
 #: /Users/tobi/Projects/antville/current/code/Images/Images.js:22
-#: /Users/tobi/Projects/antville/current/code/Images/Images.js:63
+#: /Users/tobi/Projects/antville/current/code/Images/Images.js:64
 #: /Users/tobi/Projects/antville/current/code/Layout/$Layout.skin:6
 #: /Users/tobi/Projects/antville/current/code/Root/Site.skin:38
 #: /Users/tobi/Projects/antville/current/code/Site/Site.skin:26
 msgid "Images"
 msgstr "Images"
 
-#: /Users/tobi/Projects/antville/current/code/Images/Images.js:103
+#: /Users/tobi/Projects/antville/current/code/Images/Images.js:105
 #, java-format
 msgid "Images by {0}"
 msgstr "Images by {0}"
@@ -874,14 +883,14 @@ msgstr "Import"
 msgid "Import Layout"
 msgstr "Import Layout"
 
-#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:1082
+#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:1175
 msgid "Import Site Data"
 msgstr "Import Site Data"
 
 #: /Users/tobi/Projects/antville/current/code/File/$File.skin:54
-#: /Users/tobi/Projects/antville/current/code/Image/$Image.skin:91
+#: /Users/tobi/Projects/antville/current/code/Image/$Image.skin:80
 #: /Users/tobi/Projects/antville/current/code/Poll/$Poll.skin:105
-#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:227
+#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:238
 #: /Users/tobi/Projects/antville/current/code/Story/Story.skin:72
 #: /Users/tobi/Projects/antville/current/code/User/$User.skin:132
 msgid "Information"
@@ -920,7 +929,7 @@ msgstr "Last Update"
 msgid "Last modified by {0} on {1}"
 msgstr "Last modified by {0} on {1}"
 
-#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:349
+#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:360
 #, java-format
 msgid "Last modified {0}"
 msgstr "Last modified {0}"
@@ -935,7 +944,7 @@ msgstr "Last modified {0}"
 msgid "Layout"
 msgstr "Layout"
 
-#: /Users/tobi/Projects/antville/current/code/Images/Images.js:109
+#: /Users/tobi/Projects/antville/current/code/Images/Images.js:111
 msgid "Layout Images"
 msgstr "Layout Images"
 
@@ -969,7 +978,7 @@ msgid "Logout // verb"
 msgstr "Logout"
 
 #: /Users/tobi/Projects/antville/current/code/Membership/Membership.js:53
-#: /Users/tobi/Projects/antville/current/code/Site/Site.js:89
+#: /Users/tobi/Projects/antville/current/code/Site/Site.js:91
 msgid "Manager"
 msgstr "Manager"
 
@@ -1072,7 +1081,7 @@ msgstr "Next page"
 msgid "No differences were found."
 msgstr "No differences were found."
 
-#: /Users/tobi/Projects/antville/current/code/Site/Site.js:88
+#: /Users/tobi/Projects/antville/current/code/Site/Site.js:90
 msgid "Nobody"
 msgstr "Nobody"
 
@@ -1088,7 +1097,7 @@ msgstr "Not registered yet?"
 msgid "Note"
 msgstr "Note"
 
-#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:236
+#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:247
 #: /Users/tobi/Projects/antville/current/code/User/$User.skin:142
 msgid "Notes"
 msgstr "Notes"
@@ -1131,7 +1140,7 @@ msgstr ""
 "section</a> where you can modify the appearance of your site according to "
 "your needs."
 
-#: /Users/tobi/Projects/antville/current/code/Site/Site.js:61
+#: /Users/tobi/Projects/antville/current/code/Site/Site.js:63
 msgid "Open"
 msgstr "Open"
 
@@ -1143,8 +1152,9 @@ msgstr "Options"
 msgid "Original skin"
 msgstr "Original skin"
 
+#: /Users/tobi/Projects/antville/current/code/Comment/Comment.js:322
 #: /Users/tobi/Projects/antville/current/code/Membership/Membership.js:53
-#: /Users/tobi/Projects/antville/current/code/Site/Site.js:89
+#: /Users/tobi/Projects/antville/current/code/Site/Site.js:91
 msgid "Owner"
 msgstr "Owner"
 
@@ -1164,8 +1174,8 @@ msgid "Page {0} of {1}"
 msgstr "Page {0} of {1}"
 
 #: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:44
-msgid "Paging"
-msgstr "Paging"
+msgid "Pagination"
+msgstr "Pagination"
 
 #: /Users/tobi/Projects/antville/current/code/Members/$Members.skin:110
 #: /Users/tobi/Projects/antville/current/code/Members/$Members.skin:42
@@ -1181,7 +1191,11 @@ msgstr "Password forgotten?"
 msgid "Personal URL"
 msgstr "Personal URL"
 
-#: /Users/tobi/Projects/antville/current/code/Site/Site.js:123
+#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:109
+msgid "Pixels"
+msgstr "Pixels"
+
+#: /Users/tobi/Projects/antville/current/code/Site/Site.js:125
 #: /Users/tobi/Projects/antville/current/code/Skins/Skins.js:93
 #: /Users/tobi/Projects/antville/current/code/User/User.js:111
 msgid "Please avoid special characters or HTML code in the name field."
@@ -1208,11 +1222,11 @@ msgstr "Please choose a role for this member."
 msgid "Please contact an administrator for further information."
 msgstr "Please contact an administrator for further information."
 
-#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:1126
+#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:1219
 msgid "Please enable JavaScript in your browser for improved functionality."
 msgstr "Please enable JavaScript in your browser for improved functionality."
 
-#: /Users/tobi/Projects/antville/current/code/Site/Site.js:112
+#: /Users/tobi/Projects/antville/current/code/Site/Site.js:114
 msgid "Please enter a name for your new site."
 msgstr "Please enter a name for your new site."
 
@@ -1225,7 +1239,7 @@ msgid "Please enter a new password."
 msgstr "Please enter a new password."
 
 #: /Users/tobi/Projects/antville/current/code/Members/Members.js:280
-#: /Users/tobi/Projects/antville/current/code/Site/Site.js:978
+#: /Users/tobi/Projects/antville/current/code/Site/Site.js:988
 msgid "Please enter a query in the search form."
 msgstr "Please enter a query in the search form."
 
@@ -1246,10 +1260,13 @@ msgstr "Please enter a valid URL"
 msgid "Please enter a valid e-mail address"
 msgstr "Please enter a valid e-mail address"
 
-#: /Users/tobi/Projects/antville/current/code/Comment/Comment.js:189
-#: /Users/tobi/Projects/antville/current/code/Story/Story.js:231
+#: /Users/tobi/Projects/antville/current/code/Story/Story.js:233
 msgid "Please enter at least something into the “title” or “text” field."
 msgstr "Please enter at least something into the “title” or “text” field."
+
+#: /Users/tobi/Projects/antville/current/code/Comment/Comment.js:194
+msgid "Please enter something into the comment field."
+msgstr "Please enter something into the comment field."
 
 #: /Users/tobi/Projects/antville/current/claustra/recaptcha/Membership/Membership.js:27
 #: /Users/tobi/Projects/antville/current/code/Membership/Membership.js:195
@@ -1270,7 +1287,7 @@ msgid "Please fill out the whole form to create a valid poll."
 msgstr "Please fill out the whole form to create a valid poll."
 
 #: /Users/tobi/Projects/antville/current/code/HopObject/HopObject.js:133
-#: /Users/tobi/Projects/antville/current/code/Story/Story.js:291
+#: /Users/tobi/Projects/antville/current/code/Story/Story.js:289
 msgid "Please login first."
 msgstr "Please login first."
 
@@ -1310,7 +1327,7 @@ msgstr "Polls"
 msgid "Polls by {0}"
 msgstr "Polls by {0}"
 
-#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:126
+#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:148
 #, java-format
 msgid "Post to {0}"
 msgstr "Post to {0}"
@@ -1359,7 +1376,7 @@ msgstr "Probation Period"
 msgid "Proceed"
 msgstr "Proceed"
 
-#: /Users/tobi/Projects/antville/current/code/Site/Site.js:61
+#: /Users/tobi/Projects/antville/current/code/Site/Site.js:63
 msgid "Public"
 msgstr "Public"
 
@@ -1388,16 +1405,16 @@ msgstr "Recover your password"
 msgid "Reference"
 msgstr "Reference"
 
-#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:932
+#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:1025
 msgid "Referrer"
 msgstr "Referrer"
 
-#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:112
+#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:122
 msgid "Referrer Filter"
 msgstr "Referrer Filter"
 
 #: /Users/tobi/Projects/antville/current/code/Root/Site.skin:45
-#: /Users/tobi/Projects/antville/current/code/Site/Site.js:693
+#: /Users/tobi/Projects/antville/current/code/Site/Site.js:703
 #: /Users/tobi/Projects/antville/current/code/Site/Site.skin:33
 msgid "Referrers"
 msgstr "Referrers"
@@ -1418,7 +1435,7 @@ msgstr "Registration"
 
 #: /Users/tobi/Projects/antville/current/code/Admin/Admin.js:82
 #: /Users/tobi/Projects/antville/current/code/Admin/Admin.js:96
-#: /Users/tobi/Projects/antville/current/code/Site/Site.js:53
+#: /Users/tobi/Projects/antville/current/code/Site/Site.js:55
 #: /Users/tobi/Projects/antville/current/code/User/User.js:84
 msgid "Regular"
 msgstr "Regular"
@@ -1443,7 +1460,7 @@ msgstr "Required Account Status"
 #: /Users/tobi/Projects/antville/current/code/Admin/$Admin.skin:236
 #: /Users/tobi/Projects/antville/current/code/Admin/$Admin.skin:143
 #: /Users/tobi/Projects/antville/current/code/Layout/$Layout.skin:39
-#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:913
+#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:1006
 #: /Users/tobi/Projects/antville/current/code/Skin/$Skin.skin:68
 msgid "Reset"
 msgstr "Reset"
@@ -1457,7 +1474,7 @@ msgid "Resource type (e.g. Story or Comment)"
 msgstr "Resource type (e.g. Story or Comment)"
 
 #: /Users/tobi/Projects/antville/current/code/Admin/Admin.js:89
-#: /Users/tobi/Projects/antville/current/code/Site/Site.js:60
+#: /Users/tobi/Projects/antville/current/code/Site/Site.js:62
 msgid "Restricted"
 msgstr "Restricted"
 
@@ -1482,12 +1499,12 @@ msgstr "Running Polls"
 #: /Users/tobi/Projects/antville/current/code/Admin/$Admin.skin:104
 #: /Users/tobi/Projects/antville/current/code/Comment/Comment.skin:64
 #: /Users/tobi/Projects/antville/current/code/File/$File.skin:61
-#: /Users/tobi/Projects/antville/current/code/Image/$Image.skin:98
+#: /Users/tobi/Projects/antville/current/code/Image/$Image.skin:87
 #: /Users/tobi/Projects/antville/current/code/Layout/$Layout.skin:37
 #: /Users/tobi/Projects/antville/current/code/Members/$Members.skin:172
 #: /Users/tobi/Projects/antville/current/code/Membership/$Membership.skin:16
 #: /Users/tobi/Projects/antville/current/code/Poll/$Poll.skin:112
-#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:152
+#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:163
 #: /Users/tobi/Projects/antville/current/code/Skin/$Skin.skin:29
 #: /Users/tobi/Projects/antville/current/code/Story/Story.skin:81
 #: /Users/tobi/Projects/antville/current/code/User/$User.skin:100
@@ -1498,9 +1515,9 @@ msgstr "Save"
 msgid "Save and Run"
 msgstr "Save and Run"
 
-#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:911
 #: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:1004
-#: /Users/tobi/Projects/antville/current/code/Site/Site.js:719
+#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:1097
+#: /Users/tobi/Projects/antville/current/code/Site/Site.js:729
 #: /Users/tobi/Projects/antville/current/code/Site/Site.skin:39
 #: /Users/tobi/Projects/antville/current/compat/Global/aspects.js:245
 msgid "Search"
@@ -1526,7 +1543,7 @@ msgstr "Sessions"
 
 #: /Users/tobi/Projects/antville/current/code/Layout/$Layout.skin:24
 #: /Users/tobi/Projects/antville/current/code/Root/Site.skin:43
-#: /Users/tobi/Projects/antville/current/code/Site/Site.js:316
+#: /Users/tobi/Projects/antville/current/code/Site/Site.js:318
 #: /Users/tobi/Projects/antville/current/code/Site/Site.skin:30
 msgid "Settings"
 msgstr "Settings"
@@ -1556,7 +1573,7 @@ msgstr "Show Controls"
 #: /Users/tobi/Projects/antville/current/code/Admin/$Admin.skin:262
 #: /Users/tobi/Projects/antville/current/code/Admin/$Admin.skin:148
 #: /Users/tobi/Projects/antville/current/code/Members/$Members.skin:195
-#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:268
+#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:279
 #, java-format
 msgid "Showing {0} result"
 msgid_plural "Showing {0} results"
@@ -1594,11 +1611,11 @@ msgstr "Site Page"
 msgid "Site Phase-Out"
 msgstr "Site Phase-Out"
 
-#: /Users/tobi/Projects/antville/current/code/Site/Site.js:767
+#: /Users/tobi/Projects/antville/current/code/Site/Site.js:777
 msgid "Site is scheduled for export."
 msgstr "Site is scheduled for export."
 
-#: /Users/tobi/Projects/antville/current/code/Site/Site.js:821
+#: /Users/tobi/Projects/antville/current/code/Site/Site.js:831
 msgid "Site is scheduled for import."
 msgstr "Site is scheduled for import."
 
@@ -1679,14 +1696,14 @@ msgstr "Source"
 
 #: /Users/tobi/Projects/antville/current/code/File/File.js:287
 #: /Users/tobi/Projects/antville/current/code/File/File.js:337
-#: /Users/tobi/Projects/antville/current/code/Image/Image.js:286
+#: /Users/tobi/Projects/antville/current/code/Image/Image.js:283
 #, java-format
 msgid "Source: {0}"
 msgstr "Source: {0}"
 
 #: /Users/tobi/Projects/antville/current/code/Root/Site.skin:23
-#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:1097
-#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:1076
+#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:1190
+#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:1169
 #: /Users/tobi/Projects/antville/current/code/Site/Site.skin:18
 msgid "Start"
 msgstr "Start"
@@ -1698,14 +1715,14 @@ msgstr "Start Page"
 #: /Users/tobi/Projects/antville/current/code/Admin/$Admin.skin:203
 #: /Users/tobi/Projects/antville/current/code/Admin/$Admin.skin:249
 #: /Users/tobi/Projects/antville/current/code/Root/$Root.skin:68
-#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:219
+#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:230
 #: /Users/tobi/Projects/antville/current/code/User/$User.skin:124
 msgid "Status"
 msgstr "Status"
 
 #: /Users/tobi/Projects/antville/current/code/Poll/$Poll.skin:115
-#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:1097
-#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:1076
+#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:1190
+#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:1169
 msgid "Stop"
 msgstr "Stop"
 
@@ -1716,7 +1733,7 @@ msgstr "Stop"
 msgid "Stories"
 msgstr "Stories"
 
-#: /Users/tobi/Projects/antville/current/code/Stories/Stories.js:113
+#: /Users/tobi/Projects/antville/current/code/Stories/Stories.js:117
 #, java-format
 msgid "Stories by {0}"
 msgstr "Stories by {0}"
@@ -1744,7 +1761,7 @@ msgid "Subscribed"
 msgstr "Subscribed"
 
 #: /Users/tobi/Projects/antville/current/code/Membership/Membership.js:52
-#: /Users/tobi/Projects/antville/current/code/Site/Site.js:90
+#: /Users/tobi/Projects/antville/current/code/Site/Site.js:92
 msgid "Subscriber"
 msgstr "Subscriber"
 
@@ -1768,12 +1785,12 @@ msgstr "Successfully added {0} to the list of members."
 msgid "Successfully created your site."
 msgstr "Successfully created your site."
 
-#: /Users/tobi/Projects/antville/current/code/Site/Site.js:728
+#: /Users/tobi/Projects/antville/current/code/Site/Site.js:738
 #, java-format
 msgid "Successfully subscribed to site {0}."
 msgstr "Successfully subscribed to site {0}."
 
-#: /Users/tobi/Projects/antville/current/code/Site/Site.js:742
+#: /Users/tobi/Projects/antville/current/code/Site/Site.js:752
 #, java-format
 msgid "Successfully unsubscribed from site {0}."
 msgstr "Successfully unsubscribed from site {0}."
@@ -1826,8 +1843,8 @@ msgstr ""
 #: /Users/tobi/Projects/antville/current/code/Membership/$Membership.skin:155
 #: /Users/tobi/Projects/antville/current/code/Membership/$Membership.skin:123
 #: /Users/tobi/Projects/antville/current/code/Membership/$Membership.skin:106
-#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:1111
-#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:1121
+#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:1204
+#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:1214
 #: /Users/tobi/Projects/antville/current/code/User/$User.skin:163
 msgid "The Management"
 msgstr "The Management"
@@ -1848,14 +1865,14 @@ msgstr ""
 #: /Users/tobi/Projects/antville/current/code/Image/Image.js:196
 #: /Users/tobi/Projects/antville/current/code/Members/Members.js:192
 #: /Users/tobi/Projects/antville/current/code/Membership/Membership.js:158
-#: /Users/tobi/Projects/antville/current/code/Site/Site.js:307
+#: /Users/tobi/Projects/antville/current/code/Site/Site.js:309
 #: /Users/tobi/Projects/antville/current/code/Skin/Skin.js:156
 #: /Users/tobi/Projects/antville/current/code/Skins/Skins.js:99
 #: /Users/tobi/Projects/antville/current/code/User/User.js:389
 msgid "The changes were saved successfully."
 msgstr "The changes were saved successfully."
 
-#: /Users/tobi/Projects/antville/current/code/Site/Site.js:116
+#: /Users/tobi/Projects/antville/current/code/Site/Site.js:118
 msgid "The chosen name is too long. Please enter a shorter one."
 msgstr "The chosen name is too long. Please enter a shorter one."
 
@@ -1873,11 +1890,11 @@ msgstr ""
 "To enable or disable an Antville Claustra, simply add it to or remove it "
 "from the <code>claustra</code> property in <code>app.properties</code>."
 
-#: /Users/tobi/Projects/antville/current/code/Story/Story.js:299
+#: /Users/tobi/Projects/antville/current/code/Story/Story.js:297
 msgid "The comment was successfully created."
 msgstr "The comment was successfully created."
 
-#: /Users/tobi/Projects/antville/current/code/Comment/Comment.js:157
+#: /Users/tobi/Projects/antville/current/code/Comment/Comment.js:158
 msgid "The comment was successfully updated."
 msgstr "The comment was successfully updated."
 
@@ -1896,7 +1913,7 @@ msgstr ""
 msgid "The file was successfully added."
 msgstr "The file was successfully added."
 
-#: /Users/tobi/Projects/antville/current/code/Images/Images.js:78
+#: /Users/tobi/Projects/antville/current/code/Images/Images.js:79
 msgid "The image was successfully added."
 msgstr "The image was successfully added."
 
@@ -1924,7 +1941,7 @@ msgstr "The poll was created successfully."
 msgid "The poll was updated successfully."
 msgstr "The poll was updated successfully."
 
-#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:1084
+#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:1177
 #, java-format
 msgid ""
 "The site is scheduled for importing the file {0}. The imported site data "
@@ -1937,7 +1954,7 @@ msgstr ""
 msgid "The site you requested has been blocked."
 msgstr "The site you requested has been blocked."
 
-#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:1106
+#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:1199
 #, java-format
 msgid ""
 "The site {0} at {1} will be blocked in {2} because it is being restricted "
@@ -1946,7 +1963,7 @@ msgstr ""
 "The site {0} at {1} will be blocked in {2} because it is being restricted "
 "for too long."
 
-#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:1116
+#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:1209
 #, java-format
 msgid ""
 "The site {0} at {1} will be deleted in {2} because it has been considered as "
@@ -1955,7 +1972,7 @@ msgstr ""
 "The site {0} at {1} will be deleted in {2} because it has been considered as "
 "abandoned."
 
-#: /Users/tobi/Projects/antville/current/code/Site/Site.js:332
+#: /Users/tobi/Projects/antville/current/code/Site/Site.js:334
 #, java-format
 msgid "The site {0} is queued for removal."
 msgstr "The site {0} is queued for removal."
@@ -1965,7 +1982,7 @@ msgstr "The site {0} is queued for removal."
 msgid "The story is {0} and {1}"
 msgstr "The story is {0} and {1}"
 
-#: /Users/tobi/Projects/antville/current/code/Stories/Stories.js:81
+#: /Users/tobi/Projects/antville/current/code/Stories/Stories.js:85
 msgid "The story was successfully created."
 msgstr "The story was successfully created."
 
@@ -2004,19 +2021,19 @@ msgstr ""
 "The {0} macro is missing. It is essential for accessing the site and must be "
 "present in this skin."
 
-#: /Users/tobi/Projects/antville/current/code/Site/Site.js:125
+#: /Users/tobi/Projects/antville/current/code/Site/Site.js:127
 msgid "There already is a site with this name."
 msgstr "There already is a site with this name."
 
-#: /Users/tobi/Projects/antville/current/code/Site/Site.js:770
-#: /Users/tobi/Projects/antville/current/code/Site/Site.js:808
+#: /Users/tobi/Projects/antville/current/code/Site/Site.js:780
+#: /Users/tobi/Projects/antville/current/code/Site/Site.js:818
 #, java-format
 msgid "There is already another job queued for this site: {0}"
 msgstr "There is already another job queued for this site: {0}"
 
 #: /Users/tobi/Projects/antville/current/code/File/File.js:271
 #: /Users/tobi/Projects/antville/current/code/File/File.js:315
-#: /Users/tobi/Projects/antville/current/code/Image/Image.js:265
+#: /Users/tobi/Projects/antville/current/code/Image/Image.js:262
 msgid "There was nothing to upload. Please be sure to choose a file."
 msgstr "There was nothing to upload. Please be sure to choose a file."
 
@@ -2033,15 +2050,15 @@ msgstr ""
 "This callback URL invokes the ping method of the {0}. The essential "
 "JavaScript code is shown below."
 
-#: /Users/tobi/Projects/antville/current/code/Comment/Comment.js:269
+#: /Users/tobi/Projects/antville/current/code/Comment/Comment.js:271
 msgid "This comment was removed by the author."
 msgstr "This comment was removed by the author."
 
-#: /Users/tobi/Projects/antville/current/code/Comment/Comment.js:270
+#: /Users/tobi/Projects/antville/current/code/Comment/Comment.js:272
 msgid "This comment was removed."
 msgstr "This comment was removed."
 
-#: /Users/tobi/Projects/antville/current/code/Image/Image.js:272
+#: /Users/tobi/Projects/antville/current/code/Image/Image.js:269
 msgid "This does not seem to be a valid JPG, PNG or GIF image."
 msgstr "This does not seem to be a valid JPG, PNG or GIF image."
 
@@ -2090,7 +2107,7 @@ msgstr "This poll was closed {0} by {1}"
 msgid "This site is currently {0}."
 msgstr "This site is currently {0}."
 
-#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:1067
+#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:1160
 #, java-format
 msgid "This site is going to be deleted completely and irreversibly after {0}."
 msgstr ""
@@ -2182,7 +2199,7 @@ msgstr ""
 msgid "Top"
 msgstr "Top"
 
-#: /Users/tobi/Projects/antville/current/code/Stories/Stories.js:121
+#: /Users/tobi/Projects/antville/current/code/Stories/Stories.js:125
 msgid "Top Stories"
 msgstr "Top Stories"
 
@@ -2194,7 +2211,7 @@ msgstr "Total"
 msgid "Total sites hosted here"
 msgstr "Total sites hosted here"
 
-#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:104
+#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:114
 msgid "Troll Filter"
 msgstr "Troll Filter"
 
@@ -2202,7 +2219,7 @@ msgstr "Troll Filter"
 #: /Users/tobi/Projects/antville/current/code/Admin/$Admin.skin:360
 #: /Users/tobi/Projects/antville/current/code/Admin/Admin.js:82
 #: /Users/tobi/Projects/antville/current/code/Admin/Admin.js:96
-#: /Users/tobi/Projects/antville/current/code/Site/Site.js:53
+#: /Users/tobi/Projects/antville/current/code/Site/Site.js:55
 #: /Users/tobi/Projects/antville/current/code/User/User.js:84
 msgid "Trusted"
 msgstr "Trusted"
@@ -2342,12 +2359,12 @@ msgstr ""
 "You (or someone pretending to be you) requested to reset your account "
 "password for the site {0} at {1}."
 
-#: /Users/tobi/Projects/antville/current/code/Comment/Comment.js:227
+#: /Users/tobi/Projects/antville/current/code/Comment/Comment.js:229
 #, java-format
 msgid "You are about to delete a comment by user {0}."
 msgstr "You are about to delete a comment by user {0}."
 
-#: /Users/tobi/Projects/antville/current/code/Comment/Comment.js:225
+#: /Users/tobi/Projects/antville/current/code/Comment/Comment.js:227
 #, java-format
 msgid "You are about to delete a comment thread consisting of {0} postings."
 msgstr "You are about to delete a comment thread consisting of {0} postings."
@@ -2357,7 +2374,7 @@ msgstr "You are about to delete a comment thread consisting of {0} postings."
 msgid "You are about to delete a poll by user {0}."
 msgstr "You are about to delete a poll by user {0}."
 
-#: /Users/tobi/Projects/antville/current/code/Story/Story.js:721
+#: /Users/tobi/Projects/antville/current/code/Story/Story.js:733
 #, java-format
 msgid "You are about to delete a story by user {0}."
 msgstr "You are about to delete a story by user {0}."
@@ -2372,7 +2389,7 @@ msgstr "You are about to delete the account {0}."
 msgid "You are about to delete the file {0}."
 msgstr "You are about to delete the file {0}."
 
-#: /Users/tobi/Projects/antville/current/code/Image/Image.js:558
+#: /Users/tobi/Projects/antville/current/code/Image/Image.js:556
 #, java-format
 msgid "You are about to delete the image {0}."
 msgstr "You are about to delete the image {0}."
@@ -2382,12 +2399,12 @@ msgstr "You are about to delete the image {0}."
 msgid "You are about to delete the membership of user {0}."
 msgstr "You are about to delete the membership of user {0}."
 
-#: /Users/tobi/Projects/antville/current/code/Site/Site.js:386
+#: /Users/tobi/Projects/antville/current/code/Site/Site.js:392
 #, java-format
 msgid "You are about to delete the site {0}."
 msgstr "You are about to delete the site {0}."
 
-#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:246
+#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:257
 #, java-format
 msgid ""
 "You are about to delete the whole site which currently contains {0}, {1}, "
@@ -2406,7 +2423,7 @@ msgstr "You are about to reset the layout of site {0}."
 msgid "You are about to reset the skin {0}.{1}."
 msgstr "You are about to reset the skin {0}.{1}."
 
-#: /Users/tobi/Projects/antville/current/code/Site/Site.js:753
+#: /Users/tobi/Projects/antville/current/code/Site/Site.js:763
 #, java-format
 msgid "You are about to unsubscribe from the site {0}."
 msgstr "You are about to unsubscribe from the site {0}."
@@ -2546,6 +2563,11 @@ msgstr "[{0}] Welcome to {1}!"
 msgid "a comment // accusative"
 msgstr "a comment"
 
+#: /Users/tobi/Projects/antville/current/code/Site/Site.js:24
+#, fuzzy
+msgid "a site // accusative"
+msgstr "a site"
+
 #: /Users/tobi/Projects/antville/current/code/Story/$Story.skin:50
 msgid "a story // accusative"
 msgstr "a story"
@@ -2576,7 +2598,7 @@ msgstr "choice"
 
 #: /Users/tobi/Projects/antville/current/code/Admin/$Admin.skin:177
 #: /Users/tobi/Projects/antville/current/code/Poll/Poll.js:31
-#: /Users/tobi/Projects/antville/current/code/Site/Site.js:81
+#: /Users/tobi/Projects/antville/current/code/Site/Site.js:83
 #: /Users/tobi/Projects/antville/current/code/Story/Story.js:76
 #: /Users/tobi/Projects/antville/current/code/Story/Story.js:90
 msgid "closed"
@@ -2603,7 +2625,7 @@ msgstr "created"
 #: /Users/tobi/Projects/antville/current/code/Admin/$Admin.skin:71
 #: /Users/tobi/Projects/antville/current/code/Admin/$Admin.skin:90
 #: /Users/tobi/Projects/antville/current/code/Admin/$Admin.skin:98
-#: /Users/tobi/Projects/antville/current/code/Site/Site.js:67
+#: /Users/tobi/Projects/antville/current/code/Site/Site.js:69
 msgid "days"
 msgstr "days"
 
@@ -2618,8 +2640,8 @@ msgstr "deleted"
 msgid "descending"
 msgstr "descending"
 
-#: /Users/tobi/Projects/antville/current/code/Site/Site.js:74
-#: /Users/tobi/Projects/antville/current/code/Site/Site.js:96
+#: /Users/tobi/Projects/antville/current/code/Site/Site.js:76
+#: /Users/tobi/Projects/antville/current/code/Site/Site.js:98
 msgid "disabled"
 msgstr "disabled"
 
@@ -2630,9 +2652,9 @@ msgstr "e-mail"
 #: /Users/tobi/Projects/antville/current/code/Layout/$Layout.skin:18
 #: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:59
 #: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:70
-#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:137
-#: /Users/tobi/Projects/antville/current/code/Site/Site.js:75
-#: /Users/tobi/Projects/antville/current/code/Site/Site.js:97
+#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:139
+#: /Users/tobi/Projects/antville/current/code/Site/Site.js:77
+#: /Users/tobi/Projects/antville/current/code/Site/Site.js:99
 msgid "enabled"
 msgstr "enabled"
 
@@ -2649,7 +2671,7 @@ msgstr "file"
 msgid "files"
 msgstr "files"
 
-#: /Users/tobi/Projects/antville/current/code/Site/Site.js:959
+#: /Users/tobi/Projects/antville/current/code/Site/Site.js:969
 msgid "free"
 msgstr "free"
 
@@ -2736,7 +2758,7 @@ msgstr "privileged"
 
 #: /Users/tobi/Projects/antville/current/code/Admin/$Admin.skin:177
 #: /Users/tobi/Projects/antville/current/code/Comment/Comment.js:29
-#: /Users/tobi/Projects/antville/current/code/Site/Site.js:82
+#: /Users/tobi/Projects/antville/current/code/Site/Site.js:84
 #: /Users/tobi/Projects/antville/current/code/Story/Story.js:77
 msgid "public"
 msgstr "public"
@@ -2771,7 +2793,7 @@ msgid "skins"
 msgstr "skins"
 
 #: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:48
-#: /Users/tobi/Projects/antville/current/code/Site/Site.js:68
+#: /Users/tobi/Projects/antville/current/code/Site/Site.js:70
 #: /Users/tobi/Projects/antville/current/code/Stories/Stories.js:23
 msgid "stories"
 msgstr "stories"
@@ -2797,7 +2819,7 @@ msgstr "trusted"
 msgid "updated // has updated"
 msgstr "updated"
 
-#: /Users/tobi/Projects/antville/current/code/Site/Site.js:959
+#: /Users/tobi/Projects/antville/current/code/Site/Site.js:969
 msgid "used"
 msgstr "used"
 
@@ -2819,7 +2841,7 @@ msgstr "yesterday"
 msgid "{0} 401 Error"
 msgstr "{0} 401 Error"
 
-#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:230
+#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:241
 #: /Users/tobi/Projects/antville/current/code/User/$User.skin:136
 #, java-format
 msgid "{0} Comment"
@@ -2827,7 +2849,7 @@ msgid_plural "{0} Comments"
 msgstr[0] "{0} Comment"
 msgstr[1] "{0} Comments"
 
-#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:232
+#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:243
 #: /Users/tobi/Projects/antville/current/code/User/$User.skin:138
 #, java-format
 msgid "{0} File"
@@ -2835,7 +2857,7 @@ msgid_plural "{0} Files"
 msgstr[0] "{0} File"
 msgstr[1] "{0} Files"
 
-#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:231
+#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:242
 #: /Users/tobi/Projects/antville/current/code/User/$User.skin:137
 #, java-format
 msgid "{0} Image"
@@ -2860,7 +2882,7 @@ msgid_plural "{0} Sites"
 msgstr[0] "{0} Site"
 msgstr[1] "{0} Sites"
 
-#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:229
+#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:240
 #: /Users/tobi/Projects/antville/current/code/User/$User.skin:135
 #, java-format
 msgid "{0} Story"
@@ -2890,15 +2912,15 @@ msgid_plural "{0} callbacks"
 msgstr[0] "{0} callback"
 msgstr[1] "{0} callbacks"
 
-#: /Users/tobi/Projects/antville/current/code/Story/Story.js:479
+#: /Users/tobi/Projects/antville/current/code/Story/Story.js:491
 #, java-format
 msgid "{0} character"
 msgid_plural "{0} characters"
 msgstr[0] "{0} character"
 msgstr[1] "{0} characters"
 
-#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:248
-#: /Users/tobi/Projects/antville/current/code/Story/Story.js:507
+#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:259
+#: /Users/tobi/Projects/antville/current/code/Story/Story.js:519
 #, java-format
 msgid "{0} comment"
 msgid_plural "{0} comments"
@@ -2908,8 +2930,8 @@ msgstr[1] "{0} comments"
 #: /Users/tobi/Projects/antville/current/code/Root/$Root.skin:77
 #: /Users/tobi/Projects/antville/current/code/Root/Root.js:391
 #: /Users/tobi/Projects/antville/current/code/Root/Root.js:400
-#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:1108
-#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:1118
+#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:1201
+#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:1211
 #, java-format
 msgid "{0} day"
 msgid_plural "{0} days"
@@ -2923,7 +2945,7 @@ msgid_plural "{0} days ago"
 msgstr[0] "{0} day ago"
 msgstr[1] "{0} days ago"
 
-#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:250
+#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:261
 #, java-format
 msgid "{0} file"
 msgid_plural "{0} files"
@@ -2942,7 +2964,7 @@ msgid_plural "{0} hours ago"
 msgstr[0] "{0} hour ago"
 msgstr[1] "{0} hours ago"
 
-#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:249
+#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:260
 #, java-format
 msgid "{0} image"
 msgid_plural "{0} images"
@@ -2991,7 +3013,7 @@ msgstr "{0} of {1} objects"
 msgid "{0} per page"
 msgstr "{0} per page"
 
-#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:251
+#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:262
 #, java-format
 msgid "{0} poll"
 msgid_plural "{0} polls"
@@ -3013,7 +3035,7 @@ msgstr[1] "{0} requests"
 msgid "{0} sites sorted by {1} in {2} order."
 msgstr "{0} sites sorted by {1} in {2} order."
 
-#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:247
+#: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:258
 #, java-format
 msgid "{0} story"
 msgid_plural "{0} stories"
@@ -3081,6 +3103,9 @@ msgstr "{0}% in the last 5 min."
 #, java-format
 msgid "{0}% total"
 msgstr "{0}% total"
+
+#~ msgid "Paging"
+#~ msgstr "Paging"
 
 #~ msgid "Restore"
 #~ msgstr "Restore"
@@ -3434,9 +3459,6 @@ msgstr "{0}% total"
 
 #~ msgid "in // preposition"
 #~ msgstr "in"
-
-#~ msgid "pixels"
-#~ msgstr "pixels"
 
 #~ msgid "{0} Day"
 #~ msgid_plural "{0} Days"

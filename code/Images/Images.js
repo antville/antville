@@ -119,7 +119,9 @@ Images.prototype.user_action = function() {
 };
 
 Images.prototype.upload_action = function () {
-  Image.add({file: req.params.files}, this._parent);
+  var parent = req.queryParams.parent === 'layout' ? res.handlers.layout : res.handlers.site;
+  Image.add({file: req.postParams.files}, parent);
+  res.write(parent.images.href());
 };
 
 /**
