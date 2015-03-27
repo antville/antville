@@ -55,7 +55,7 @@
    <input type="hidden" name="hash" id="hash">
    <figure class='uk-float-right' style='height: 0'>
       <a href='https://gravatar.com'>
-         <img alt='' src='<% membership.creator gravatar suffix='?s=160&amp;d=mm' %>' style='border: 1px solid #ddd; border-radius: 4px'>
+         <img alt='' src='<% user.gravatar suffix="?s=160&amp;d=mm" %> 'style='border: 1px solid #ddd; border-radius: 4px;'>
          <figcaption class='uk-text-center'>
             <% gettext 'Account Image' %></a>
          </figcaption>

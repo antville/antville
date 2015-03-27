@@ -61,6 +61,12 @@ $(function() {
       $(this).selectText();
    });
 
+   // Compatibility: Go back when cancel link is clicked
+   $('a.cancel').on('click', function (event) {
+      event.preventDefault();
+      history.back()
+   });
+
    // Add the skin controls for the layout sandbox
    /*$('body').prepend($('<div>').attr('class', 'layout-sandbox')
       .append($('<div>')
