@@ -33,3 +33,48 @@
 <div class='uk-hidden av-upload-drop'>
    <i class='uk-icon uk-icon-cloud-upload'></i>
 </div>
+<script type='text/javascript'>
+(function () {
+   var dropTimer, dropHasHilite;
+   var dropElement = $('.av-upload-drop');
+
+   var parent = location.href.lastIndexOf('/layout/images/') > -1 ? 'layout' : 'site';
+   var uploadUrl = '<% site.images.href upload %>?parent=' + parent;
+
+   var target = $(document).on('dragstart dragenter dragover', function () {
+      if (!dropHasHilite) {
+         dropElement.removeClass('uk-hidden');
+         dropHasHilite = true;
+      }
+   }).on('dragleave dragend', function () {
+      dropHasHilite = false;
+      clearTimeout(dropTimer);
+      dropTimer = setTimeout(function () {
+         dropHasHilite || dropElement.addClass('uk-hidden');
+      }, 100);
+   });
+
+   var restoreDrop = function () {
+      dropElement.addClass('uk-hidden')
+         .find('i').removeClass('av-upload-glow');
+   };
+
+   var uploadDrop = UIkit.uploadDrop(target, {
+      action: uploadUrl,
+      allow: '*.(jpg|jpeg|gif|png)',
+      loadstart: function (event) {
+         dropElement.find('i')
+            .addClass('av-upload-glow');
+      },
+      progress: function (percent) {
+         //console.log(percent, '% progress');
+      },
+      allcomplete: function (response) {
+         location.href = response;
+      },
+      notallowed: restoreDrop,
+      error: restoreDrop,
+      abort: restoreDrop
+   });
+})();
+</script>
