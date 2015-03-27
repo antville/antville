@@ -43,7 +43,7 @@
       <tr>
          <th><% gettext Title %></th>
          <th><% gettext 'Last Update' %></th>
-         <th><% gettext User %></th>
+         <th><% gettext Account %></th>
       </tr>
    </thead>
    <tbody>

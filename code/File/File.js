@@ -21,6 +21,7 @@
 
 markgettext('File');
 markgettext('file');
+markgettext('a file // accusative');
 
 this.handleMetadata('url');
 this.handleMetadata('description');

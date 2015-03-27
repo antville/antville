@@ -21,6 +21,7 @@
 
 markgettext('Tag');
 markgettext('tag');
+markgettext('a tag // accusative');
 
 /**
  * @constant

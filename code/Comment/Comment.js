@@ -21,6 +21,7 @@
 
 markgettext('Comment');
 markgettext('comment');
+markgettext('a comment // accusative');
 
 /**
  * @see defineConstants

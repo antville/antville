@@ -21,6 +21,7 @@
 
 markgettext('Layout');
 markgettext('layout');
+markgettext('a layout');
 
 /** @constant */
 Layout.VALUES = [

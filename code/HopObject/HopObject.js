@@ -491,11 +491,12 @@ HopObject.prototype.macro_macro = function(param, handler) {
 /**
  *
  */
-HopObject.prototype.kind_macro = function() {
+HopObject.prototype.kind_macro = function(param) {
   var type = this.constructor.name.toLowerCase();
   switch (type) {
     default:
-    res.write(gettext(type));
+    res.write(cgettext((param.prefix || String.EMPTY) + type, 'accusative'));
+    param.prefix = null;
     break;
   }
   return;

@@ -21,6 +21,8 @@
 
 markgettext('Vote');
 markgettext('vote');
+markgettext('a vote');
+
 
 /**
  * @param {Choice} choice

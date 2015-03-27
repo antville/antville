@@ -21,6 +21,7 @@
 
 markgettext('Image');
 markgettext('image');
+markgettext('a image // accusative');
 
 this.handleMetadata('contentLength');
 this.handleMetadata('contentType');

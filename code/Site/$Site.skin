@@ -340,7 +340,7 @@
 </html>
 
 <% #header %>
-<header class='av-header'>
+<header class='av-header <% if <% site.id %> is <% root.id %> then 'av-root-site' %>'>
    <div class='av-header-bg'>
       <div class='av-header-bg-chaos'></div>
       <div class='av-header-bg-offset'>
@@ -767,7 +767,8 @@ h4 + .uk-comment-meta li:first-child {
       height: 53px;
       margin-left: -40px;
       background: url('<% image /spritesheet.png url %>');
-      background-position: 5px -139px;
+      background-position: -22px -139px;
+      background-repeat: no-repeat;
    }
 
    .av-header-bg-offset {
@@ -792,6 +793,17 @@ h4 + .uk-comment-meta li:first-child {
       font-size: 25px;
       font-weight: bold;
       transform: translateY(50%);
+   }
+
+   &.av-root-site {
+      .av-header-bg-chaos {
+         background: url('<% image /big.gif url %>');
+         background-position-x: -14px;
+      }
+
+      .av-title {
+         visibility: hidden;
+      }
    }
 }
 

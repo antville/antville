@@ -21,6 +21,7 @@
 
 markgettext('Story');
 markgettext('story');
+markgettext('a story // accusative');
 
 this.handleMetadata('title');
 this.handleMetadata('text');
