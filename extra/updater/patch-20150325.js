@@ -32,7 +32,7 @@ sql.traverse(function () {
     sql.execute("insert into metadata values($0, $1, 'Site', 'trollFilter', '[]', 'Array')", next_id, this.id);
     next_id += 1;
   }
-  writeln('-  Initialize imageDimensionLimits');
+  writeln('- Initialize imageDimensionLimits');
   sql.execute("insert into metadata values($0, $1, 'Site', 'imageDimensionLimits', '[400,400]', 'Array')", next_id, this.id);
   next_id += 1;
 });
