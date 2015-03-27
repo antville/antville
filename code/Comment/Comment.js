@@ -194,11 +194,12 @@ Comment.prototype.update = function(data) {
     throw Error(gettext('Please enter something into the comment field.'));
   }
 
-  // Get difference to current content before applying changes
+  data.title = data.title ? stripTags(data.title) : String.EMPTY;
   var delta = this.getDelta(data);
-  this.setMetadata(data);
-  data.title && (this.title = stripTags(data.title));
+
   this.text = data.text;
+  this.title = data.title;
+  this.setCustomContent(data);
 
   if (this.story.commentMode === Story.MODERATED) {
     this.status = Comment.PENDING;
