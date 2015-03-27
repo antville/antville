@@ -531,6 +531,9 @@ function file_macro(param, id, mode) {
   if (mode === 'url') {
     res.write(file.getUrl());
   } else {
+    if (mode === 'player') {
+      param.skin = file.contentType.split('/')[0];
+    }
     file.renderSkin('File#' + (param.skin || 'main'));
   }
   return;
