@@ -356,7 +356,7 @@ Image.prototype.url_macro = function() {
  *
  */
 Image.prototype.macro_macro = function() {
-  return HopObject.prototype.macro_macro.call(this, null, this.parent && this.parent.constructor === Layout ? 'layout.image' : 'image');
+  return HopObject.prototype.macro_macro.call(this, {suffix: ' box'}, this.parent && this.parent.constructor === Layout ? 'layout.image' : 'image');
 }
 
 /**
