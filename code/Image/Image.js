@@ -234,9 +234,6 @@ Image.prototype.getFormValue = function(name) {
   switch (name) {
     case 'file':
     return getOrigin();
-    case 'maxWidth':
-    case 'maxHeight':
-    return this[name] || 400;
     case 'tags':
     return this.getTags();
   }
@@ -287,13 +284,13 @@ Image.prototype.update = function(data) {
       data.description = gettext('Source: {0}', origin);
     }
 
-    var image = this.getConstraint(mime, data.maxWidth, data.maxHeight);
+    var image = this.getConstraint(mime, res.handlers.site.imageDimensionLimits);
     this.height = image.height;
     this.width = image.width;
 
     var thumbnail;
     if (image.width > Image.THUMBNAILWIDTH) {
-      thumbnail = this.getConstraint(mime, Image.THUMBNAILWIDTH);
+      thumbnail = this.getConstraint(mime, [Image.THUMBNAILWIDTH]);
       this.thumbnailWidth = thumbnail.width;
       this.thumbnailHeight = thumbnail.height;
     } else if (this.isPersistent()) {
@@ -357,7 +354,7 @@ Image.prototype.url_macro = function() {
  *
  */
 Image.prototype.macro_macro = function() {
-  return HopObject.prototype.macro_macro.call(this, null, this.parent && this.parent.constructor === Layout ? 'layout.image' : 'image');
+  return HopObject.prototype.macro_macro.call(this, {suffix: ' box'}, this.parent && this.parent.constructor === Layout ? 'layout.image' : 'image');
 }
 
 /**
@@ -474,12 +471,13 @@ Image.prototype.getJSON = function() {
 /**
  *
  * @param {helma.util.MimePart} mime
- * @param {Number} maxWidth
- * @param {Number} maxHeight
+ * @param {Array} dimensionLimits [maxWidth, maxHeight]
  * @throws {Error}
  * @returns {Object}
  */
-Image.prototype.getConstraint = function(mime, maxWidth, maxHeight) {
+Image.prototype.getConstraint = function(mime, dimensionLimits) {
+  var maxWidth = dimensionLimits[0] || Infinity;
+  var maxHeight = dimensionLimits[1] || Infinity;
   try {
     var image = new helma.Image(mime.inputStream);
     var factorH = 1, factorV = 1;

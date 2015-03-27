@@ -531,6 +531,9 @@ function file_macro(param, id, mode) {
   if (mode === 'url') {
     res.write(file.getUrl());
   } else {
+    if (mode === 'player') {
+      param.skin = file.contentType.split('/')[0];
+    }
     file.renderSkin('File#' + (param.skin || 'main'));
   }
   return;
@@ -950,7 +953,7 @@ function json_filter(value, param) {
 
 function script_filter(value, param) {
   // Remove <script> element and comments (order in brackets is crucial)
-  return value.replace(/\s*(?:<!--|-->|<\?script[^>]*>)\s*/g, String.EMPTY);
+  return value.replace(/\s*(?:<!--|-->|<\/?script[^>]*>)\s*/g, String.EMPTY);
 }
 
 /**

@@ -187,19 +187,20 @@ Comment.prototype.filter_action = function () {
  * @param {Object} data
  */
 Comment.prototype.update = function(data) {
-  if (!data.title && !data.text) {
-    throw Error(gettext('Please enter at least something into the “title” or “text” field.'));
+  if (!User.require(User.TRUSTED) && !Membership.require(Membership.CONTRIBUTOR)) {
+    data.text = data.text ? node.sanitizeHtml(data.text) : String.EMPTY;
   }
-  // Get difference to current content before applying changes
-  var delta = this.getDelta(data);
-  this.setMetadata(data);
-  this.title = this.title ? stripTags(data.title) : String.EMPTY;
 
-  if (User.require(User.TRUSTED) || Membership.require(Membership.CONTRIBUTOR)) {
-    this.text = data.text;
-  } else {
-    this.text = this.text ? node.sanitizeHtml(data.text) : String.EMPTY;
+  if (!data.text) {
+    throw Error(gettext('Please enter something into the comment field.'));
   }
+
+  data.title = data.title ? stripTags(data.title) : String.EMPTY;
+  var delta = this.getDelta(data);
+
+  this.text = data.text;
+  this.title = data.title;
+  this.setCustomContent(data);
 
   if (this.story.commentMode === Story.MODERATED) {
     this.status = Comment.PENDING;

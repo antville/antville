@@ -245,8 +245,7 @@ File.prototype.getFormValue = function(name) {
     case 'file':
     return getOrigin();
   }
-
-  return HopObject.prototype.getFormValue(name);
+  return this[name] || req.queryParams[name];
 }
 
 /**

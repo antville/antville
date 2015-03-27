@@ -228,9 +228,17 @@ Story.prototype.edit_action = function() {
 Story.prototype.update = function(data) {
   var site = this.site || res.handlers.site;
 
+  data.title = data.title ? stripTags(data.title) : String.EMPTY;
+
   if (!data.title && !data.text) {
     throw Error(gettext('Please enter at least something into the “title” or “text” field.'));
   }
+
+  var delta = this.getDelta(data);
+
+  this.title = data.title;
+  this.text = data.text;
+
   if (data.created) {
     try {
       this.created = data.created.toDate('yyyy-MM-dd HH:mm', site.getTimeZone());
@@ -238,16 +246,6 @@ Story.prototype.update = function(data) {
       throw Error(gettext('Cannot parse timestamp {0} as a date.', data.created));
       app.log(ex);
     }
-  }
-
-  // Get difference to current content before applying changes
-  var delta = this.getDelta(data);
-  this.title = data.title ? stripTags(data.title) : String.EMPTY;
-
-  if (User.require(User.TRUSTED) || Membership.require(Membership.CONTRIBUTOR)) {
-    this.text = data.text;
-  } else {
-    this.text = this.text ? node.sanitizeHtml(data.text) : String.EMPTY;
   }
 
   this.status = data.status || Story.PUBLIC;
@@ -410,23 +408,30 @@ Story.prototype.getDelta = function(data) {
     return Infinity;
   }
 
-  var deltify = function(s1, s2) {
-    var len1 = s1 ? String(s1).length : 0;
-    var len2 = s2 ? String(s2).length : 0;
-    return Math.abs(len1 - len2);
+  // In-between updates (1 hour) get zero delta
+  if ((new Date() - this.modified) < Date.ONEHOUR) {
+    return 0;
+  }
+
+  var getDelta = function(a, b) {
+    var lenA = a ? String(a).length : 0;
+    var lenB = b ? String(b).length : 0;
+    return Math.abs(lenA - lenB);
   };
 
   var delta = 0;
-  delta += deltify(data.title, this.title);
-  delta += deltify(data.text, this.text);
+  delta += getDelta(data.title, this.title);
+  delta += getDelta(data.text, this.text);
+
+  /* FIXME: Custom content needs refactoring
   for (var key in data) {
     if (this.isCustomContent(key)) {
-      delta += deltify(data[key], this.getMetadata(key))
+      delta += getDelta(data[key], this.getMetadata(key))
     }
   }
-  // In-between updates (1 hour) get zero delta
-  var timex = (new Date - this.modified) > Date.ONEHOUR ? 1 : 0;
-  return delta * timex;
+  */
+
+  return delta;
 }
 
 /**
@@ -456,15 +461,20 @@ Story.prototype.getAbstract = function (param) {
     ratio = titleLength / limit;
   }
   var textLimit = Math[ratio < 0.5 ? 'ceil' : 'floor'](limit * (1 - ratio));
-  var text = this.text && stripTags(this.text).clip(textLimit, null, '\\s');
+  var text = this.text && stripTags(this.text).clip(textLimit, null, '\\s').trim();
   title && result.push('<b>' + title + '</b> ');
   text && result.push(text);
+
+  // FIXME: Custom content needs refactoring.
+  // Too much information stored in Story.metadata!
+  /*
   if (result.length < 1) {
-    // FIXME: Custom content should move to compatibility layer
     var contentArgs = Array.prototype.slice.call(arguments, 1); // Remove first argument (param)
     if (!contentArgs.length) {
       for (var key in this.getMetadata()) {
-        contentArgs.push(key);
+        if (key !== 'title' && key !== 'text') {
+          contentArgs.push(key);
+        }
       }
     }
     ratio = 1 / contentArgs.length;
@@ -476,6 +486,8 @@ Story.prototype.getAbstract = function (param) {
       }
     }
   }
+  */
+
   if (result.length < 1 && typeof param['default'] !== 'string') {
     return '<i>' + ngettext('{0} character', '{0} characters', raw.join(String.EMPTY).length) + '</i>';
   }

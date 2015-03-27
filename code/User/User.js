@@ -504,4 +504,9 @@ User.prototype.list_macro = function(param, type) {
     });
   }
   return;
+};
+
+User.prototype.gravatar_macro = function () {
+  res.write('https://secure.gravatar.com/avatar/');
+  this.email && res.write(this.email.trim().toLowerCase().md5());
 }

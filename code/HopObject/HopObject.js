@@ -481,7 +481,9 @@ HopObject.prototype.macro_macro = function(param, handler) {
     res.write(handler || constructor.name.toLowerCase());
     res.write(String.SPACE);
     res.write(this.name ? quote(this.name, '\\s') : this._id);
+    param.suffix && res.write(param.suffix);
     res.encode(' %>');
+    param.suffix = null;
   }
   return;
 }
@@ -602,9 +604,8 @@ HopObject.prototype.creator_macro = function(param, mode) {
     html.link({href: this.creator.url}, this.creator.name);
   } else if (mode === 'url') {
     res.write(this.creator.url);
-  } else if (mode === 'gravatar' && this.creator.email) {
-    res.write('https://secure.gravatar.com/avatar/');
-    res.write(this.creator.email.trim().toLowerCase().md5());
+  } else if (mode === 'gravatar') {
+    this.creator.gravatar_macro(param);
   } else {
     res.write(this.creator.name);
   } return;

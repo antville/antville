@@ -317,12 +317,20 @@ Site.prototype.monthlist_macro = function(param) {
 }
 
 Site.prototype.skin_macro = function (param, name) {
+  name || (name = param.name);
   switch (name) {
     // Always embed the stylesheet via link, never inline
     case 'Site#stylesheet':
     case 'stylesheet':
-    res.write('/* Stylesheet is going to be injected by script; use <link> element to avoid this. */');
+    //console.warn('Stylesheet is going to be injected by script; use <link> element to avoid this.');
     return;
+    case 'Site#javascript':
+    case 'javascript':
+    if (!res.meta.javascript) {
+      res.writeln("<script type='text/javascript' src='" + this.href('main.js') + "'></script>");
+      res.meta.javascript = true;
+    }
+    break;
   }
   return HopObject.prototype.skin_macro.apply(this, arguments);
 };
