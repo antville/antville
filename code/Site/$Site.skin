@@ -371,7 +371,7 @@ $(function () {
    $('a[href="javascript:"]:hidden').css('display', 'inline-block');
 
    // Injecting main.css if necessary for compatibility reasons
-   if (!document.querySelector('link[href$=main\\.css]')) {
+   if (!document.querySelector('link[href="<% site.href main.css %>"]')) {
       var link = document.createElement('link');
       link.href = '<% site.href main.css %>';
       link.rel = 'stylesheet';

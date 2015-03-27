@@ -953,7 +953,7 @@ function json_filter(value, param) {
 
 function script_filter(value, param) {
   // Remove <script> element and comments (order in brackets is crucial)
-  return value.replace(/\s*(?:<!--|-->|<\?script[^>]*>)\s*/g, String.EMPTY);
+  return value.replace(/\s*(?:<!--|-->|<\/?script[^>]*>)\s*/g, String.EMPTY);
 }
 
 /**
