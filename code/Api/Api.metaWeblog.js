@@ -218,12 +218,6 @@ Api.metaWeblog.newMediaObject = function(id, name, password, media) {
         media.bits, media.type);
     data.file_origin = media.name;
     data.description = media.description;
-    if (media.maxWidth) {
-       data.maxWidth = media.maxWidth;
-    }
-    if (media.maxHeight) {
-       data.maxHeight = media.maxHeight;
-    }
     result.url = Image.add(data, site, user).getUrl();
   } else {
     if (!site.files.getPermission('create')) {

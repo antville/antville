@@ -30,6 +30,7 @@ this.handleMetadata('commentMode');
 this.handleMetadata('configured');
 this.handleMetadata('deleted');
 this.handleMetadata('export_id');
+this.handleMetadata('imageDimensionLimits');
 this.handleMetadata('import_id');
 this.handleMetadata('job');
 this.handleMetadata('locale');
@@ -372,6 +373,10 @@ Site.prototype.getFormOptions = function(name) {
 
 Site.prototype.getFormValue = function (name) {
   switch (name) {
+    case 'maxImageWidth':
+    return this.imageDimensionLimits[0];
+    case 'maxImageHeight':
+    return this.imageDimensionLimits[1];
     case 'trollFilter':
     var trolls = this.getMetadata('trollFilter');
     return trolls ? trolls.join('\n') : String.EMPTY;
@@ -404,6 +409,9 @@ Site.prototype.update = function(data) {
     this.job = null;
   }
 
+  data.maxImageWidth = Math.abs(data.maxImageWidth) || Infinity;
+  data.maxImageHeight = Math.abs(data.maxImageHeight) || Infinity;
+
   this.map({
     title: stripTags(data.title) || this.name,
     tagline: data.tagline || '',
@@ -412,6 +420,7 @@ Site.prototype.update = function(data) {
     callbackMode: data.callbackMode || Site.DISABLED,
     pageMode: data.pageMode || Site.DAYS,
     pageSize: parseInt(data.pageSize, 10) || 3,
+    imageDimensionLimits: [data.maxImageWidth, data.maxImageHeight],
     commentMode: data.commentMode || Site.DISABLED,
     archiveMode: data.archiveMode || Site.CLOSED,
     notificationMode: data.notificationMode || Site.NOBODY,
