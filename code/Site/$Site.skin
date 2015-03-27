@@ -551,7 +551,7 @@ hr {
    }
 }
 
-.uk-button {
+.uk-button:not(.uk-button-success) {
    text-shadow: initial !important;
 
    &, &:link, &:visited {
