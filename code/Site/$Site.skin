@@ -359,6 +359,9 @@ $(function () {
    var dropTimer, dropHasHilite;
    var dropElement = $('.av-upload-drop');
 
+   var parent = location.href.lastIndexOf('/layout/images/') > -1 ? 'layout' : 'site';
+   var uploadUrl = '<% site.images.href upload %>?parent=' + parent;
+
    var target = $(document).on('dragstart dragenter dragover', function () {
       if (!dropHasHilite) {
          dropElement.removeClass('uk-hidden');
@@ -378,17 +381,17 @@ $(function () {
    };
 
    var uploadDrop = UIkit.uploadDrop(target, {
-      action: '<% site.images.href upload %>',
+      action: uploadUrl,
       allow: '*.(jpg|jpeg|gif|png)',
       loadstart: function (event) {
          dropElement.find('i')
             .addClass('av-upload-glow');
       },
       progress: function (percent) {
-         console.log(percent, '% progress');
+         //console.log(percent, '% progress');
       },
       allcomplete: function (response) {
-         location.href = '<% site.images.href %>';
+         location.href = response;
       },
       notallowed: restoreDrop,
       error: restoreDrop,
