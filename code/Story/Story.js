@@ -227,9 +227,17 @@ Story.prototype.edit_action = function() {
 Story.prototype.update = function(data) {
   var site = this.site || res.handlers.site;
 
+  data.title = data.title ? stripTags(data.title) : String.EMPTY;
+
   if (!data.title && !data.text) {
     throw Error(gettext('Please enter at least something into the “title” or “text” field.'));
   }
+
+  var delta = this.getDelta(data);
+
+  this.title = data.title;
+  this.text = data.text;
+
   if (data.created) {
     try {
       this.created = data.created.toDate('yyyy-MM-dd HH:mm', site.getTimeZone());
@@ -237,16 +245,6 @@ Story.prototype.update = function(data) {
       throw Error(gettext('Cannot parse timestamp {0} as a date.', data.created));
       app.log(ex);
     }
-  }
-
-  // Get difference to current content before applying changes
-  var delta = this.getDelta(data);
-  this.title = data.title ? stripTags(data.title) : String.EMPTY;
-
-  if (User.require(User.TRUSTED) || Membership.require(Membership.CONTRIBUTOR)) {
-    this.text = data.text;
-  } else {
-    this.text = this.text ? node.sanitizeHtml(data.text) : String.EMPTY;
   }
 
   this.status = data.status || Story.PUBLIC;
@@ -463,9 +461,9 @@ Story.prototype.getAbstract = function (param) {
     var contentArgs = Array.prototype.slice.call(arguments, 1); // Remove first argument (param)
     if (!contentArgs.length) {
       for (var key in this.getMetadata()) {
-        contentArgs.push(key);
+          contentArgs.push(key);
+        }
       }
-    }
     ratio = 1 / contentArgs.length;
     for (var i = 0, buffer, key = contentArgs[i]; i < contentArgs.length; i += 1) {
       if (key && (buffer = this.getMetadata(key))) {
