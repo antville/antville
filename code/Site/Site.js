@@ -21,6 +21,7 @@
 
 markgettext('Site');
 markgettext('site');
+markgettext('a site // accusative');
 
 this.handleMetadata('archiveMode');
 this.handleMetadata('callbackMode');
@@ -413,20 +414,20 @@ Site.prototype.update = function(data) {
   data.maxImageHeight = Math.abs(data.maxImageHeight) || Infinity;
 
   this.map({
-    title: stripTags(data.title) || this.name,
-    tagline: data.tagline || '',
-    mode: data.mode || Site.CLOSED,
-    callbackUrl: data.callbackUrl || this.callbackUrl || '',
+    archiveMode: data.archiveMode || Site.CLOSED,
     callbackMode: data.callbackMode || Site.DISABLED,
-    pageMode: data.pageMode || Site.DAYS,
-    pageSize: parseInt(data.pageSize, 10) || 3,
+    callbackUrl: data.callbackUrl || this.callbackUrl || '',
     imageDimensionLimits: [data.maxImageWidth, data.maxImageHeight],
     commentMode: data.commentMode || Site.DISABLED,
-    archiveMode: data.archiveMode || Site.CLOSED,
-    notificationMode: data.notificationMode || Site.NOBODY,
-    timeZone: data.timeZone || root.getTimeZone().getID(),
     locale: data.locale || root.getLocale().toString(),
+    mode: data.mode || Site.CLOSED,
+    notificationMode: data.notificationMode || Site.NOBODY,
+    pageMode: data.pageMode || Site.DAYS,
+    pageSize: parseInt(data.pageSize, 10) || 3,
     spamfilter: data.spamfilter || '',
+    tagline: data.tagline || '',
+    title: stripTags(data.title) || this.name,
+    timeZone: data.timeZone || root.getTimeZone().getID(),
     trollFilter: data.trollFilter.split(/\r\n|\r|\n/).filter(function (item) {
       return item.length > 0;
     })
