@@ -407,23 +407,30 @@ Story.prototype.getDelta = function(data) {
     return Infinity;
   }
 
-  var deltify = function(s1, s2) {
-    var len1 = s1 ? String(s1).length : 0;
-    var len2 = s2 ? String(s2).length : 0;
-    return Math.abs(len1 - len2);
+  // In-between updates (1 hour) get zero delta
+  if ((new Date() - this.modified) < Date.ONEHOUR) {
+    return 0;
+  }
+
+  var getDelta = function(a, b) {
+    var lenA = a ? String(a).length : 0;
+    var lenB = b ? String(b).length : 0;
+    return Math.abs(lenA - lenB);
   };
 
   var delta = 0;
-  delta += deltify(data.title, this.title);
-  delta += deltify(data.text, this.text);
+  delta += getDelta(data.title, this.title);
+  delta += getDelta(data.text, this.text);
+
+  /* FIXME: Custom content needs refactoring
   for (var key in data) {
     if (this.isCustomContent(key)) {
-      delta += deltify(data[key], this.getMetadata(key))
+      delta += getDelta(data[key], this.getMetadata(key))
     }
   }
-  // In-between updates (1 hour) get zero delta
-  var timex = (new Date - this.modified) > Date.ONEHOUR ? 1 : 0;
-  return delta * timex;
+  */
+
+  return delta;
 }
 
 /**
