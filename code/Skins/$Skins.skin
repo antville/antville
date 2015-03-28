@@ -73,7 +73,7 @@
    <thead>
       <tr>
          <th><% gettext Name %></th>
-         <th><% gettext Author %></th>
+         <th><% gettext Account %></th>
          <th><% gettext Modified %></th>
          <th></th>
          <th></th>

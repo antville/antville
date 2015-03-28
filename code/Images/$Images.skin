@@ -16,8 +16,8 @@
          <th><% gettext Type %></th>
          <th><% gettext Size %></th>
          -->
-         <th>Pixels</th>
-         <th><% gettext Author %></th>
+         <th><% gettext Dimensions %></th>
+         <th><% gettext Account %></th>
          <th><% gettext Modified %></th>
          <th></th>
          <th></th>

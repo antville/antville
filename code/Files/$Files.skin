@@ -12,7 +12,7 @@
          <th class='uk-text-right'><i class='uk-icon-download'></i></th>
          <th><% gettext Name %></th>
          <!-- th><% gettext Size %></th -->
-         <th><% gettext Author %></th>
+         <th><% gettext Account %></th>
          <th><% gettext Modified %></th>
          <th></th>
          <th></th>

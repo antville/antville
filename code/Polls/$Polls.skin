@@ -12,7 +12,7 @@
       <tr>
          <th class='uk-text-right'><i class='uk-icon-bar-chart'></i></th>
          <th><% gettext Question %></th>
-         <th><% gettext Author %></th>
+         <th><% gettext Account %></th>
          <th><% gettext Modified %></th>
          <th></th>
          <th></th>

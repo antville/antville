@@ -105,6 +105,7 @@ global.messages['en'] = {
   "Description": "Description",
   "Details": "Details",
   "Development": "Development",
+  "Dimensions": "Dimensions",
   "Disable filter": "Disable filter",
   "Disabled": "Disabled",
   "Disconnect from {0}": "Disconnect from {0}",
