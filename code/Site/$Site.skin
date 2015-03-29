@@ -341,12 +341,8 @@
 
 <% #header %>
 <header class='av-header <% if <% site.id %> is <% root.id %> then 'av-root-site' %>'>
-   <div class='av-header-bg'>
-      <div class='av-header-bg-chaos'></div>
-      <div class='av-header-bg-offset'>
-         <div class='av-header-bg-dots'></div>
-      </div>
-   </div>
+   <div class='av-header-bg-chaos'></div>
+   <div class='av-header-bg-dots'></div>
    <div class='av-title'>
       <% if <% site.id %> is <% root.id %> then
          <% image /big.gif | site.link title=<% site.tagline %> %>
@@ -759,52 +755,43 @@ h4 + .uk-comment-meta li:first-child {
 }
 
 .av-header {
+   position: relative;
    margin-top: 5px;
-
-   .av-header-bg {
-      position: relative;
-   }
+   margin-bottom: -18px;
 
    .av-header-bg-chaos {
-      float: left;
       width: 274px;
       height: 53px;
-      margin-left: -53px;
+      margin-left: -54px;
       background: url('<% image /spritesheet.png url %>');
       background-position: -9px -139px;
       background-repeat: no-repeat;
    }
 
-   .av-header-bg-offset {
-      height: 53px;
-      margin-left: 222px;
-   }
-
    .av-header-bg-dots {
+      margin-left: 222px;
       position: relative;
-      top: 7px;
+      top: -46px;
+      width: 900px - 274px + 54px;
       height: 38px;
       background: url('<% image /dot.gif url %>');
-      background-position-x: 1px;
    }
 
    .av-title {
-      position: relative;
-      top: -50px;
+      position: absolute;
+      top: 13px;
       overflow: visible;
       white-space: nowrap;
       font-family: Verdana, Helvetica, Arial, sans-serif;
       font-size: 25px;
       font-weight: bold;
-      transform: translateY(50%);
    }
 
    // The root site gets the beautiful logo with ant animation
    &.av-root-site {
       .av-title {
-         top: -80px;
-         left: -54px;
-         margin-bottom: -30px;
+         top: 0px;
+         left: -55px;
       }
    }
 }
