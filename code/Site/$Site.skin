@@ -348,7 +348,11 @@
       </div>
    </div>
    <div class='av-title'>
-      <% site.title | site.link title=<% site.tagline %> %>
+      <% if <% site.id %> is <% root.id %> then
+         <% image /big.gif | site.link title=<% site.tagline %> %>
+      else
+         <% site.title | site.link title=<% site.tagline %> %>
+      %>
    </div>
 </header>
 
@@ -763,11 +767,11 @@ h4 + .uk-comment-meta li:first-child {
 
    .av-header-bg-chaos {
       float: left;
-      width: 262px;
+      width: 274px;
       height: 53px;
-      margin-left: -40px;
+      margin-left: -53px;
       background: url('<% image /spritesheet.png url %>');
-      background-position: -22px -139px;
+      background-position: -9px -139px;
       background-repeat: no-repeat;
    }
 
@@ -795,14 +799,12 @@ h4 + .uk-comment-meta li:first-child {
       transform: translateY(50%);
    }
 
+   // The root site gets the beautiful logo with ant animation
    &.av-root-site {
-      .av-header-bg-chaos {
-         background: url('<% image /big.gif url %>');
-         background-position-x: -14px;
-      }
-
       .av-title {
-         visibility: hidden;
+         top: -80px;
+         left: -54px;
+         margin-bottom: -30px;
       }
    }
 }
