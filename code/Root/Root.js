@@ -403,4 +403,15 @@ Root.prototype.getCreationPermission = function() {
     }
   }
   return true;
-}
+};
+
+Root.prototype.link_macro = function (param, url, text) {
+  switch (url) {
+    case 'create':
+    if (root.creationScope === User.REGULAR) {
+      return renderLink.call(global, param, url, text || '', this);
+    }
+  }
+
+  return HopObject.prototype.link_macro.apply(this, arguments);
+};
