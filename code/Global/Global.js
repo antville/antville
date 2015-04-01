@@ -1195,14 +1195,19 @@ function getLocales(language) {
       var isTranslated = jala.i18n.getCatalog(jala.i18n.getLocale(localeString));
       result.push({
         value: localeString,
-        display: (isTranslated ? '︎' : '⚠︎ ') + locale.getDisplayName(locale),
-        'class': isTranslated ? '' : 'av-locale-needs-translation'
+        display: (isTranslated ? String.EMPTY : '⚠︎ ') + locale.getDisplayName(locale),
+        'class': isTranslated ? String.EMPTY : 'av-locale-needs-translation'
       });
     }
   }
+  // TODO: Automatically integrate gendered german language
+  result.push({
+    value: 'de-x-♂',
+    display: 'Deutsch ♂'
+  });
   result.sort(new String.Sorter('display'));
   return result;
-}
+};
 
 /**
  * This method returns an array of structs providing two properties each:

@@ -19,7 +19,7 @@ msgstr ""
 "Project-Id-Version: Antville-1.5\n"
 "Report-Msgid-Bugs-To: mail@antville.org\n"
 "POT-Creation-Date: 2015-04-01 13:49+0200\n"
-"PO-Revision-Date: 2015-04-01 14:01+0100\n"
+"PO-Revision-Date: 2015-04-01 14:02+0100\n"
 "Last-Translator: Tobi Schäfer <interface@p3k.org>\n"
 "Language-Team: The Antville People <mail@antville.org>\n"
 "Language: de\n"
@@ -222,7 +222,7 @@ msgstr "Sind Sie sicher, dass Sie das Stichwort {0} entfernen wollen?"
 
 #: /Users/tobi/Projects/antville/current/code/Comment/Comment.js:320
 msgid "Author"
-msgstr "Autorin"
+msgstr "Autor"
 
 #: /Users/tobi/Projects/antville/current/code/Skins/$Skins.skin:50
 msgid "Basic"
@@ -424,12 +424,12 @@ msgstr "Beiträge von Mitglied {0}"
 #: /Users/tobi/Projects/antville/current/code/Membership/Membership.js:54
 #: /Users/tobi/Projects/antville/current/code/Site/Site.js:91
 msgid "Contributor"
-msgstr "Autorin"
+msgstr "Autor"
 
 #: /Users/tobi/Projects/antville/current/code/Members/$Members.skin:8
 #: /Users/tobi/Projects/antville/current/code/Members/Members.js:234
 msgid "Contributors"
-msgstr "Autorinnen"
+msgstr "Autoren"
 
 #: /Users/tobi/Projects/antville/current/compat/Layout/$Layout.skin:12
 msgid "Convert"
@@ -624,9 +624,9 @@ msgid ""
 msgstr ""
 "Jede Antville-Site bietet in den Einstellungen die Möglichkeit, eine Rückruf-"
 "Adresse zu definieren, die bei jeder Änderung des Inhalts aufgerufen wird. "
-"Auf diese Weise können Benutzerinnen mittels eigenem Programmcode "
-"verschiedene Ereignisse individuell behandeln – auf einem Server und in "
-"einer Programmiersprache ihrer Wahl."
+"Auf diese Weise können Benutzer mittels eigenem Programmcode verschiedene "
+"Ereignisse individuell behandeln – auf einem Server und in einer "
+"Programmiersprache ihrer Wahl."
 
 #: /Users/tobi/Projects/antville/current/code/Image/Image.skin:15
 #: /Users/tobi/Projects/antville/current/code/Poll/$Poll.skin:29
@@ -820,8 +820,8 @@ msgid ""
 "If the user did not include contact information in the message itself, you "
 "can send your reply via the user’s contact form [2]."
 msgstr ""
-"Falls die Absenderin der Nachricht keine Kontaktinformationen hinzugefügt "
-"hat, können Sie Ihre Antwort über das Kontaktformular senden [2]."
+"Falls der Absender der Nachricht keine Kontaktinformationen hinzugefügt hat, "
+"können Sie Ihre Antwort über das Kontaktformular senden [2]."
 
 #: /Users/tobi/Projects/antville/current/code/File/$File.skin:39
 #: /Users/tobi/Projects/antville/current/code/Image/$Image.skin:56
@@ -854,7 +854,7 @@ msgid ""
 "maintainer of the site."
 msgstr ""
 "Sollten Sie diese Nachricht irrtümlich erhalten haben, nehmen Sie bitte "
-"Verbindung mit der Eigentümerin der Website auf."
+"Verbindung mit dem Eigentümer der Website auf."
 
 #: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:104
 msgid ""
@@ -1003,12 +1003,12 @@ msgstr "Abmelden"
 #: /Users/tobi/Projects/antville/current/code/Membership/Membership.js:54
 #: /Users/tobi/Projects/antville/current/code/Site/Site.js:91
 msgid "Manager"
-msgstr "Redakteurin"
+msgstr "Redakteur"
 
 #: /Users/tobi/Projects/antville/current/code/Members/$Members.skin:9
 #: /Users/tobi/Projects/antville/current/code/Members/Members.js:225
 msgid "Managers"
-msgstr "Redakteurinnen"
+msgstr "Redakteure"
 
 #: /Users/tobi/Projects/antville/current/code/Story/$Story.skin:217
 msgid "Markdown"
@@ -1179,12 +1179,12 @@ msgstr "Ursprünglicher Skin"
 #: /Users/tobi/Projects/antville/current/code/Membership/Membership.js:54
 #: /Users/tobi/Projects/antville/current/code/Site/Site.js:91
 msgid "Owner"
-msgstr "Besitzerin"
+msgstr "Besitzer"
 
 #: /Users/tobi/Projects/antville/current/code/Members/$Members.skin:10
 #: /Users/tobi/Projects/antville/current/code/Members/Members.js:216
 msgid "Owners"
-msgstr "Besitzerinnen"
+msgstr "Besitzer"
 
 #: /Users/tobi/Projects/antville/current/code/Global/$Global.skin:71
 #: /Users/tobi/Projects/antville/current/code/Membership/$Membership.skin:98
@@ -1248,7 +1248,7 @@ msgstr "Bitte wählen Sie eine Rolle für dieses Mitglied."
 #: /Users/tobi/Projects/antville/current/code/HopObject/HopObject.js:122
 msgid "Please contact an administrator for further information."
 msgstr ""
-"Bitte wenden Sie sich an eine Administratorin für weitere Informationen."
+"Bitte wenden Sie sich an einen Administrator für weitere Informationen."
 
 #: /Users/tobi/Projects/antville/current/code/Site/$Site.skin:1178
 msgid "Please enable JavaScript in your browser for improved functionality."
@@ -1311,7 +1311,7 @@ msgstr "Bitte geben Sie den Namen der neuen Einstellung ein:"
 #: /Users/tobi/Projects/antville/current/claustra/recaptcha/Membership/$Recaptcha.skin:4
 #: /Users/tobi/Projects/antville/current/code/Membership/$Membership.skin:59
 msgid "Please enter your message to the user below."
-msgstr "Bitte geben Sie Ihre Nachricht an die Empfängerin ein."
+msgstr "Bitte geben Sie Ihre Nachricht an den Empfänger ein."
 
 #: /Users/tobi/Projects/antville/current/code/Poll/Poll.js:196
 msgid "Please fill out the whole form to create a valid poll."
@@ -1622,7 +1622,7 @@ msgid ""
 "a>, monitor all <a href=\"{2}\">activity</a>, configure the <a href="
 "\"{3}\">setup</a> and much more."
 msgstr ""
-"Da Sie Administratorin dieser Antville-Installation sind, haben Sie auch die "
+"Da Sie Administrator dieser Antville-Installation sind, haben Sie auch die "
 "Berechtigung, <a href=\"{0}\">Websites</a> und <a href=\"{1}\">Konten</a> zu "
 "verwalten, alle <a href=\"{2}\">Aktivitäten</a> zu verfolgen, sowie die <a "
 "href=\"{3}\">Konfiguration</a> zu verändern."
@@ -1799,12 +1799,12 @@ msgstr "Abonniert"
 #: /Users/tobi/Projects/antville/current/code/Membership/Membership.js:53
 #: /Users/tobi/Projects/antville/current/code/Site/Site.js:92
 msgid "Subscriber"
-msgstr "Abonnentin"
+msgstr "Abonnent"
 
 #: /Users/tobi/Projects/antville/current/code/Members/$Members.skin:7
 #: /Users/tobi/Projects/antville/current/code/Members/Members.js:243
 msgid "Subscribers"
-msgstr "Abonnentinnen"
+msgstr "Abonnenten"
 
 #: /Users/tobi/Projects/antville/current/code/Members/Members.js:264
 #: /Users/tobi/Projects/antville/current/code/Membership/Membership.skin:10
@@ -1965,7 +1965,7 @@ msgstr "Der Name wird zu einem Teil der Internet-Adresse Ihrer Website."
 
 #: /Users/tobi/Projects/antville/current/code/Membership/Membership.js:81
 msgid "The only owner of a site cannot be removed."
-msgstr "Die einzige Eigentümerin einer Website kann nicht gelöscht werden."
+msgstr "Der einzige Eigentümer einer Website kann nicht gelöscht werden."
 
 #: /Users/tobi/Projects/antville/current/code/Root/$Root.skin:57
 msgid "The path you requested was not found."
@@ -2094,7 +2094,7 @@ msgstr ""
 
 #: /Users/tobi/Projects/antville/current/code/Comment/Comment.js:272
 msgid "This comment was removed by the author."
-msgstr "Dieser Kommentar wurde von der Autorin gelöscht."
+msgstr "Dieser Kommentar wurde vom Autor gelöscht."
 
 #: /Users/tobi/Projects/antville/current/code/Comment/Comment.js:273
 msgid "This comment was removed."
@@ -2127,14 +2127,14 @@ msgid ""
 "This message was automatically sent to you because you are listed as "
 "recipient of notification e-mails of the corresponding site."
 msgstr ""
-"Diese Nachricht wurde automatisch an Sie versendet, weil Sie als Empfängerin "
+"Diese Nachricht wurde automatisch an Sie versendet, weil Sie als Empfänger "
 "von Benachrichtigungen für die betreffende Website aufgeführt werden."
 
 #: /Users/tobi/Projects/antville/current/code/Membership/$Membership.skin:91
 #, java-format
 msgid "This message was sent to you by an anonymous user of the site {0} [1]."
 msgstr ""
-"Diese Nachricht wurde Ihnen von einer unbekannten Absenderin der Website {0} "
+"Diese Nachricht wurde Ihnen von einem unbekannten Absender der Website {0} "
 "gesendet [1]."
 
 #: /Users/tobi/Projects/antville/current/code/Membership/$Membership.skin:94
@@ -2204,7 +2204,7 @@ msgstr "Prozesse"
 
 #: /Users/tobi/Projects/antville/current/code/User/$User.skin:7
 msgid "Thus, it is publicly accessible for every visitor."
-msgstr "Daher ist sie für jede Besucherin öffentlich zugänglich."
+msgstr "Daher ist sie für jeden Besucher öffentlich zugänglich."
 
 #: /Users/tobi/Projects/antville/current/code/Global/$Global.skin:75
 msgid ""
@@ -2239,7 +2239,7 @@ msgid ""
 "To prevent abuse, the sender address and the subject of the e-mail are set "
 "to predefined values."
 msgstr ""
-"Um Missbrauch zu verhindern, werden für Absenderin und Betreff der E-Mail "
+"Um Missbrauch zu verhindern, werden für Absender und Betreff der E-Mail "
 "festgelegte Werte verwendet."
 
 #: /Users/tobi/Projects/antville/current/code/Stories/$Stories.skin:9
@@ -2550,7 +2550,7 @@ msgstr "Ihr Kennwort wurde geändert."
 #: /Users/tobi/Projects/antville/current/code/Membership/Membership.js:200
 #, java-format
 msgid "[{0}] Message from anonymous user"
-msgstr "[{0}] Nachricht von unbekannter Absenderin"
+msgstr "[{0}] Nachricht von unbekanntem Absender"
 
 #: /Users/tobi/Projects/antville/current/claustra/recaptcha/Membership/Membership.js:31
 #: /Users/tobi/Projects/antville/current/code/Membership/Membership.js:199
@@ -2814,7 +2814,7 @@ msgstr "offen"
 
 #: /Users/tobi/Projects/antville/current/code/User/$User.skin:5
 msgid "owners"
-msgstr "Besitzerinnen"
+msgstr "Besitzer"
 
 #: /Users/tobi/Projects/antville/current/code/Comment/Comment.js:30
 msgid "pending"
