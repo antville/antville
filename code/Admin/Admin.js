@@ -694,6 +694,7 @@ Admin.prototype.renderActivity = function (item) {
       case Story:
       return item.getAbstract();
       case File:
+      return item.name;
       case User:
       return item.email
       case Image:
