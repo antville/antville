@@ -140,7 +140,9 @@ Site.add = function(data, user) {
     status: user.status === User.PRIVILEGED ? Site.TRUSTED : user.status,
     mode: Site.CLOSED,
     commentMode: Site.ENABLED,
-    archiveMode: Site.PUBLIC
+    archiveMode: Site.PUBLIC,
+    spamFilter: String.EMPTY,
+    trollFilter: String.EMPTY
   });
 
   site.update(site);
@@ -416,7 +418,7 @@ Site.prototype.update = function(data) {
   this.map({
     archiveMode: data.archiveMode || Site.CLOSED,
     callbackMode: data.callbackMode || Site.DISABLED,
-    callbackUrl: data.callbackUrl || this.callbackUrl || '',
+    callbackUrl: data.callbackUrl || this.callbackUrl || String.EMPTY,
     imageDimensionLimits: [data.maxImageWidth, data.maxImageHeight],
     commentMode: data.commentMode || Site.DISABLED,
     locale: data.locale || root.getLocale().toString(),
@@ -424,13 +426,13 @@ Site.prototype.update = function(data) {
     notificationMode: data.notificationMode || Site.NOBODY,
     pageMode: data.pageMode || Site.DAYS,
     pageSize: parseInt(data.pageSize, 10) || 3,
-    spamfilter: data.spamfilter || '',
-    tagline: data.tagline || '',
+    spamfilter: data.spamfilter || String.EMPTY,
+    tagline: data.tagline || String.EMPTY,
     title: stripTags(data.title) || this.name,
     timeZone: data.timeZone || root.getTimeZone().getID(),
-    trollFilter: data.trollFilter.split(/\r\n|\r|\n/).filter(function (item) {
+    trollFilter: data.trollFilter ? data.trollFilter.split(/\r\n|\r|\n/).filter(function (item) {
       return item.length > 0;
-    })
+    }) : String.EMPTY
   });
 
   if (User.require(User.PRIVILEGED)) {
