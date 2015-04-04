@@ -60,7 +60,7 @@
             <% gettext 'Probation Period' %>
          </label>
          <div class='uk-form-controls'>
-            <% root.input probationPeriod class=uk-width-1-6 type=number min=1 %> <% gettext days %>
+            <% root.input probationPeriod class=uk-width-1-6 type=number min=0 %> <% gettext days %>
          </div>
       </div>
       <div class='uk-form-row'>
@@ -68,7 +68,7 @@
             <% gettext Interval %>
          </label>
          <div class='uk-form-controls'>
-            <% root.input creationDelay class=uk-width-1-6 type=number min=1 %> <% gettext days %>
+            <% root.input creationDelay class=uk-width-1-6 type=number min=0 %> <% gettext days %>
          </div>
       </div>
    </fieldset>
