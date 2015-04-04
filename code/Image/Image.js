@@ -353,9 +353,10 @@ Image.prototype.url_macro = function() {
 /**
  *
  */
-Image.prototype.macro_macro = function() {
+Image.prototype.macro_macro = function(param) {
   if (this.parent && this.parent.constructor === Layout) {
-    return HopObject.prototype.macro_macro.call(this, 'layout.image');
+    param.suffix = null;
+    return HopObject.prototype.macro_macro.call(this, param, 'layout.image');
   }
   return HopObject.prototype.macro_macro.call(this, param, 'image');
 }
