@@ -16,7 +16,7 @@
       <% if <% image.tags count %> is 0 then '' else <% image.tags prefix="<i class='uk-text-muted uk-icon-tags' data-uk-tooltip title='" suffix="'></i>" %> %>
    </td>
    <td class='uk-text-right uk-text-nowrap'>
-      <a href='javascript:' class='av-clipboard-copy' data-text='<% gettext 'Press CTRL & C to copy to clipboard.' %>' data-value="<% image.macro %>"><i class='uk-icon-clipboard'></i></a>
+      <a href='javascript:' class='av-clipboard-copy' data-text='<% gettext 'Press CTRL & C to copy to clipboard.' %>' data-value="<% image.macro suffix=' box' %>"><i class='uk-icon-clipboard'></i></a>
       <% image.link delete "<i class='uk-icon-trash-o'></i>" %>
       <% image.link edit "<i class='uk-icon-pencil'></i>" %>
    </td>

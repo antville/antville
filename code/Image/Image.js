@@ -354,7 +354,10 @@ Image.prototype.url_macro = function() {
  *
  */
 Image.prototype.macro_macro = function() {
-  return HopObject.prototype.macro_macro.call(this, {suffix: ' box'}, this.parent && this.parent.constructor === Layout ? 'layout.image' : 'image');
+  if (this.parent && this.parent.constructor === Layout) {
+    return HopObject.prototype.macro_macro.call(this, 'layout.image');
+  }
+  return HopObject.prototype.macro_macro.call(this, param, 'image');
 }
 
 /**
