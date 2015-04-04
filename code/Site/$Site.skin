@@ -756,8 +756,8 @@ h4 + .uk-comment-meta li:first-child {
 
 .av-header {
    position: relative;
+   height: 73px;
    margin-top: 5px;
-   margin-bottom: -18px;
 
    .av-header-bg-chaos {
       width: 274px;
