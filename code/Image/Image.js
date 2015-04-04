@@ -253,7 +253,7 @@ Image.prototype.update = function(data) {
   var mime = data.file;
   var origin = data.file_origin;
 
-  if (mime.contentLength < 1) {
+  if (!mime || mime.contentLength < 1) {
     if (origin && origin !== this.origin) {
       mime = getURL(origin);
       if (!mime) {
