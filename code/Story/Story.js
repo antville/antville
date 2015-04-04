@@ -31,7 +31,8 @@ Story.ALLOWED_MACROS = [
   'image',
   'link',
   'poll',
-  'story.link'
+  'story.link',
+  'value'
 ];
 
 /**
