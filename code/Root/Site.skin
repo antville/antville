@@ -5,9 +5,13 @@
 <p>
    <% root.link create <% gettext "Create a site. It only takes a few clicks." %> class='uk-button uk-button-success' %>
 </p>
-<p class='small'>
-   <% gettext "Total sites hosted here" suffix=: %> <% root.size %><br>
+<p class='uk-text-muted'>
+   <% gettext "Total sites hosted here" suffix=: %> <% root.size %>
+   <br>
    <% gettext "Number of public sites" suffix=: %> <% root.sites.size %>
+   <a class='uk-icon-hover' href='<% root.href sites %>'>
+      <i class='uk-icon-arrow-circle-right'></i>
+   </a>
 </p>
 <h1>
   Recent Updates
