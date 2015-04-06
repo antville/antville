@@ -180,12 +180,10 @@ msgstr "An error occurred while processing your request."
 #: /Users/tobi/Projects/antville/current/code/Root/Site.skin:3
 msgid ""
 "Antville is an open source project aimed at the development of a simple site "
-"hosting system with many advanced <a href=\"http://code.google.com/p/"
-"antville/wiki/AntvilleFeatures\">features</a>."
+"hosting system with many advanced <a href=\"{0}\">features</a>."
 msgstr ""
 "Antville is an open source project aimed at the development of a simple site "
-"hosting system with many advanced <a href=\"http://code.google.com/p/"
-"antville/wiki/AntvilleFeatures\">features</a>."
+"hosting system with many advanced <a href=\"{0}\">features</a>."
 
 #: /Users/tobi/Projects/antville/current/code/Api/$Api.skin:37
 msgid ""

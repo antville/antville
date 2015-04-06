@@ -38,7 +38,7 @@ global.messages['en'] = {
   "All Skins": "All Skins",
   "All of this will be deleted irreversibly.": "All of this will be deleted irreversibly.",
   "An error occurred while processing your request.": "An error occurred while processing your request.",
-  "Antville is an open source project aimed at the development of a simple site hosting system with many advanced <a href=\"http://code.google.com/p/antville/wiki/AntvilleFeatures\">features</a>.": "Antville is an open source project aimed at the development of a simple site hosting system with many advanced <a href=\"http://code.google.com/p/antville/wiki/AntvilleFeatures\">features</a>.",
+  "Antville is an open source project aimed at the development of a simple site hosting system with many advanced <a href=\"{0}\">features</a>.": "Antville is an open source project aimed at the development of a simple site hosting system with many advanced <a href=\"{0}\">features</a>.",
   "Antville itself provides a default callback URL invoking the basic ping method of the weblogs.com API.": "Antville itself provides a default callback URL invoking the basic ping method of the weblogs.com API.",
   "Antville supports the following application programming interfaces:": "Antville supports the following application programming interfaces:",
   "Archive": "Archive",

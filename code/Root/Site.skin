@@ -1,6 +1,6 @@
 <% #main %>
 <p>
-   <% gettext 'Antville is an open source project aimed at the development of a simple site hosting system with many advanced <a href="http://code.google.com/p/antville/wiki/AntvilleFeatures">features</a>.' %>
+   <% gettext 'Antville is an open source project aimed at the development of a simple site hosting system with many advanced <a href="{0}">features</a>.' https://github.com/antville/antville/wiki/Features %>
 </p>
 <p>
    <% root.link create <% gettext "Create a site. It only takes a few clicks." %> class='uk-button uk-button-success' %>
