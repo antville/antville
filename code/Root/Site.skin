@@ -33,7 +33,7 @@
 <% root.admin.skin $Admin#navigation suffix="<li class='uk-nav-divider'></li>" %>
 <li><% site.link health <% gettext Health prefix="<i class='uk-icon-stethoscope'></i> " %> %></li>
 <li><% site.api.link main <% gettext API %> %></li>
-<li><% link http://code.google.com/p/antville <% gettext Development %> %></li>
+<li><% link //project.antville.org <% gettext Development %> %></li>
 <li class='uk-nav-divider'></li>
 <% site.stories.link create <% gettext "Add Story" prefix="<i class='uk-icon-plus'></i> " %> prefix="<li>" suffix=</li> %>
 <% site.stories.link main <% gettext Stories %> prefix=<li> suffix=</li> %>
