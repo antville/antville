@@ -9,7 +9,7 @@
 
 <% #content %>
 <a id='<% comment.id %>'></a>
-<article class='uk-comment uk-margin-top'>
+<article class='uk-comment uk-margin-top <% if <% comment.creator %> is <% comment.story.creator %> then uk-comment-primary %>'>
    <header class='uk-comment-header'>
       <% comment.meta %>
       <ul class='uk-comment-meta uk-subnav uk-subnav-line'>

@@ -315,16 +315,13 @@ Comment.prototype.meta_macro = function (param) {
 };
 
 Comment.prototype.badge_macro = function () {
-  var role, type, membership;
-  if (this.creator === this.story.creator) {
-    role = gettext('Author');
-    type = 'success';
-  } else if ((membership = Membership.getByName(this.creator.name)) && membership.role === Membership.OWNER) {
-    role = gettext('Owner');
-    type = 'success';
-  } else if (this.creator.status === User.PRIVILEGED) {
-    role = gettext('Admin');
-    type = 'primary';
+  var cls = {'class': 'uk-badge uk-badge-primary'};
+  if (this.creator.status === User.PRIVILEGED) {
+    html.element('span', gettext('Admin'), cls);
+  } else {
+    var membership = Membership.getByName(this.creator.name);
+    if (membership && membership.role !== 'subscriber') {
+      html.element('span', gettext(membership.role.titleize()), cls);
+    }
   }
-  role && html.element('span', role, {'class': 'uk-badge uk-badge-' + type});
 };
