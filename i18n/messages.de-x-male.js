@@ -6,9 +6,9 @@ if (!global.messages) {
 }
 
 /**
- * Messages for locale "de-x-♂"
+ * Messages for locale "de-x-male"
  */
-global.messages['de-x-♂'] = {
+global.messages['de-x-male'] = {
   "({0} character)": "({0} Zeichen)",
   "({0} characters)": "({0} Zeichen)",
   "A Blogger export file (.xml) will be created and available for download from here within 24 hours.": "Eine Blogger-Export-Datei (.xml) wird erstellt und steht hier spätestens nach 24 Stunden zum Download bereit.",

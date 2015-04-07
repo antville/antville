@@ -1202,7 +1202,7 @@ function getLocales(language) {
   }
   // TODO: Automatically integrate gendered german language
   result.push({
-    value: 'de-x-♂',
+    value: 'de-x-male',
     display: 'Deutsch ♂'
   });
   result.sort(new String.Sorter('display'));

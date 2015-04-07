@@ -1011,18 +1011,18 @@ Site.prototype.search = function (type, term, limit) {
  * @returns {java.util.Locale}
  */
 Site.prototype.getLocale = function() {
-  var locale;
-  if (locale = this.cache.locale) {
-    return locale;
-  } else if (this.locale) {
-    var parts = this.locale.split('_');
-    locale = new java.util.Locale(parts[0] || String.EMPTY,
-        parts[1] || String.EMPTY, parts.splice(2).join('_'));
+  var locale = this.cache.locale;
+
+  if (locale) return locale;
+
+  if (this.locale) {
+    locale = java.util.Locale.forLanguageTag(this.locale);
   } else {
     locale = java.util.Locale.getDefault();
   }
+
   return this.cache.locale = locale;
-}
+};
 
 /**
  * @returns {java.util.TimeZone}
