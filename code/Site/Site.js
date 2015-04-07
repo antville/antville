@@ -432,7 +432,7 @@ Site.prototype.update = function(data) {
     timeZone: data.timeZone || root.getTimeZone().getID(),
     trollFilter: data.trollFilter ? data.trollFilter.split(/\r\n|\r|\n/).filter(function (item) {
       return item.length > 0;
-    }) : String.EMPTY
+    }) : []
   });
 
   if (User.require(User.PRIVILEGED)) {
