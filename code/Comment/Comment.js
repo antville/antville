@@ -192,7 +192,10 @@ Comment.prototype.filter_action = function () {
  */
 Comment.prototype.update = function(data) {
   if (!User.require(User.TRUSTED) && !Membership.require(Membership.CONTRIBUTOR)) {
-    data.text = data.text ? node.sanitizeHtml(data.text) : String.EMPTY;
+    var spec = {
+      allowedTags: node.sanitizeHtml.defaults.allowedTags.concat(['img'])
+    };
+    data.text = data.text ? node.sanitizeHtml(data.text, spec) : String.EMPTY;
   }
 
   if (!data.text) {
