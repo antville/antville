@@ -52,7 +52,7 @@ var aspects = {
         var status = [Story.PUBLIC, Story.SHARED, Story.OPEN];
         data.status = status[data.editableby] || data.editableby || Story.PUBLIC;
       }
-      data.mode = (data.addToFront ? Story.FEATURED : Story.HIDDEN);
+      data.mode = (data.addToFront || data.publish ? Story.FEATURED : Story.HIDDEN);
       data.commentMode = (data.discussions ? Story.OPEN : Story.CLOSED);
       data.addToFront = data.discussions = data.editableby = data.publish = null;
       data.save = 1;
