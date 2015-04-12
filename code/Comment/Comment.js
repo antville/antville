@@ -120,12 +120,16 @@ Comment.prototype.getPermission = function(action) {
         this.story.getPermission(action) &&
         this.status !== Comment.PENDING;
     case 'delete':
-    case 'filter':
     return this.story.getPermission.call(this, 'delete');
     case 'edit':
     return User.require(User.PRIVILEGED) ||
         this.status !== Comment.DELETED &&
         this.creator === session.user;
+    case 'filter':
+    return this.creator !== session.user &&
+        this.site.trollFilter.indexOf(this.creator.name) < 0 &&
+        (User.require(User.PRIVILEGED) ||
+        Membership.require(Membership.MANAGER));
   }
   return false;
 }
@@ -296,16 +300,6 @@ Comment.prototype.creator_macro = function() {
 Comment.prototype.modifier_macro = function() {
   return this.status === Comment.DELETED ? null :
       HopObject.prototype.modifier_macro.apply(this, arguments);
-}
-
-/**
- *
- * @param {Object} param
- * @param {Object} action
- * @param {Object} text
- */
-Comment.prototype.link_macro = function(param, action, text) {
-  return HopObject.prototype.link_macro.call(this, param, action, text);
 }
 
 Comment.prototype.meta_macro = function (param) {
