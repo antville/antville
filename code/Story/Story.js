@@ -721,7 +721,7 @@ Story.prototype.macro_filter = function(value) {
  */
 Story.prototype.url_filter = function(value, param, mode) {
   param.limit || (param.limit = 50);
-  var re = /(^|\/>|[(\[\s])(!?(?:https?|ftp):\/\/\S+?)([.,;:)\]"'!?]?)(?=[\s<]|$)/gim;
+  var re = /(^|\/>|[^\]]\(|[\[\s])(!?(?:https?|ftp):\/\/\S+?)([.,;:)\]"'!?]?)(?=[\s<]|$)/gim;
   return value.replace(re, function(str, head, url, tail) {
     if (url.startsWith('!')) {
       return head + url.substring(1) + tail;
