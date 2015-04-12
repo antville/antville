@@ -375,7 +375,29 @@ Story.prototype.setCustomContent = function(data) {
  * @param {String} name
  */
 Story.prototype.isCustomContent = function(key) {
-  return this[key] === undefined && key !== 'save';
+  var reservedKeys = [
+    'addtofront',
+    'addtotopic',
+    'antvillehash',
+    'antvilleuser',
+    'cancel',
+    'commentmode',
+    'discussions',
+    'editableby',
+    'hopsession',
+    'mode',
+    'og:image',
+    'og:video',
+    'publish',
+    'save',
+    'status',
+    'submit',
+    'text',
+    'tags',
+    'title',
+    'topic'
+  ];
+  return reservedKeys.indexOf(key.toLowerCase()) < 0;
 }
 
 /**
