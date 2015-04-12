@@ -1609,7 +1609,7 @@ msgstr "Kontrollelemente anzeigen"
 #, java-format
 msgid "Showing {0} result"
 msgid_plural "Showing {0} results"
-msgstr[0] "{0} Treffer werden angezeigt"
+msgstr[0] "{0} Treffer wird angezeigt"
 msgstr[1] "{0} Treffer werden angezeigt"
 
 #: /Users/tobi/Projects/antville/current/code/Admin/$Admin.skin:15

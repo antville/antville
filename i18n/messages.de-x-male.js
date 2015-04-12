@@ -300,7 +300,7 @@ global.messages['de-x-male'] = {
   "Setup": "Konfiguration",
   "Show": "Anzeigen",
   "Show Controls": "Kontrollelemente anzeigen",
-  "Showing {0} result": "{0} Treffer werden angezeigt",
+  "Showing {0} result": "{0} Treffer wird angezeigt",
   "Showing {0} results": "{0} Treffer werden angezeigt",
   "Since you are an administrator of this Antville installation you are entitled to manage <a href=\"{0}\">sites</a> and <a href=\"{1}\">accounts</a>, monitor all <a href=\"{2}\">activity</a>, configure the <a href=\"{3}\">setup</a> and much more.": "Da Sie Administrator dieser Antville-Installation sind, haben Sie auch die Berechtigung, <a href=\"{0}\">Websites</a> und <a href=\"{1}\">Konten</a> zu verwalten, alle <a href=\"{2}\">Aktivitäten</a> zu verfolgen, sowie die <a href=\"{3}\">Konfiguration</a> zu verändern.",
   "Site": "Site",
