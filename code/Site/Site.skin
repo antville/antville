@@ -19,6 +19,7 @@ prefix="Last update: " default="None so far" %>)</span></li>
 <li><% site.tags.link main <% gettext Tags %> %></li>
 <li><% site.galleries.link main <% gettext Galleries %> %></li>
 <% site.comments.link main <% gettext Comments %> prefix=<li> suffix=</li> %>
+<li><% site.link contact <% gettext Contact %> %></li>
 <li><% site.link rss.xml "<i class='uk-icon-rss'></i> RSS" %></li>
 <li class='uk-nav-divider'></li>
 <% site.stories.link create <% gettext "Add Story" prefix="<i class='uk-icon-plus'></i> " %> prefix="<li>" suffix=</li> %>

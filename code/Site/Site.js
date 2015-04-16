@@ -240,6 +240,7 @@ Site.prototype.constructor = function() {
 Site.prototype.getPermission = function(action) {
   switch (action) {
     case 'backup.js':
+    case 'contact':
     case 'main.js':
     case 'main.css':
     case 'error':
@@ -851,7 +852,21 @@ Site.prototype.robots_txt_action = function() {
   res.contentType = 'text/plain';
   this.renderSkin('Site#robots');
   return;
-}
+};
+
+Site.prototype.contact_action = function () {
+  var username = req.data.name;
+  var membership;
+  if (username) membership = Membership.getByName(username);
+  if (!membership) membership = this.members.owners.get(0);
+  try {
+    if (!membership) throw Error(gettext('Something went wrong'));
+    res.redirect(membership.href('contact'));
+  } catch (ex) {
+    res.message = ex.toString();
+    res.redirect(req.data.http_referer);
+  }
+};
 
 /**
  *
