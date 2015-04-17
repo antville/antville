@@ -1,11 +1,11 @@
 <% #main %>
 <li>
-   <% comment.skin Comment#content %>
+   <% comment.skin content %>
    <% comment.comments prefix=<ul> suffix=</ul> %>
 </li>
 
 <% #reply %>
-<li><% comment.skin Comment#content commentLink=false %></li>
+<li><% comment.skin content %></li>
 
 <% #content %>
 <a id='<% comment.id %>'></a>
@@ -18,7 +18,11 @@
          <% comment.link delete "<i class='uk-icon-trash-o'></i>" prefix=<li> suffix=</li> %>
          <% comment.link filter "<i class='uk-icon-filter'></i>" prefix=<li> suffix=</li> %>
          <% comment.link edit "<i class='uk-icon-pencil'></i>" prefix=<li> suffix=</li> %>
-         <% if <% param.commentLink %> is false then '' else <% comment.link comment#form "<i class='uk-icon-comment-o'></i> " prefix=<li> suffix=</li> %> %>
+         <% if <% comment.level %> is 0 then
+            <% comment.link comment#form "<i class='uk-icon-comment-o'></i> " prefix=<li> suffix=</li> %>
+         else
+            <% comment.top.link comment#form "<i class='uk-icon-comment-o'></i> " prefix=<li> suffix=</li> %>
+         %>
       </ul>
    </header>
    <div class='uk-comment-body'>
@@ -33,10 +37,11 @@
 <h4 class='uk-comment-title'><% comment.creator %> <% comment.badge %></h4>
 
 <% #comment %>
-<% comment.skin Comment#content %>
+<ul class='uk-comment-list'>
+   <% comment.skin main %>
+</ul>
 
 <% #edit %>
-<script type='text/javascript' src='<% root.static ../../scripts/editor.min.js %>'></script>
 <% if <% comment.creator %> is null then
    <% parent.skin <% parent.type suffix=#comment %> %>
 else

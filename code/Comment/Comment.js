@@ -257,17 +257,26 @@ Comment.prototype.isGaslighted = function () {
  * @returns {HopObject}
  */
 Comment.prototype.getMacroHandler = function(name) {
-  if (name === 'related') {
+  switch (name) {
+    case 'related':
     var membership = this.creator.getMembership();
     if (!membership || membership.comments.size() < 2 || this.status === Comment.DELETED) {
       return new HopObject(); // Work-around for issue 88
     }
     return membership.comments;
-  } else if (name === 'story') {
+
+    case 'story':
     return this.story;
+
+    case 'top':
+    var top = this;
+    while (top) {
+      if (top.parent.constructor === Story) return top;
+      top = top.parent;
+    }
   }
   return Story.prototype.getMacroHandler.apply(this, arguments);
-}
+};
 
 /**
  *
@@ -321,4 +330,14 @@ Comment.prototype.badge_macro = function () {
       html.element('span', gettext(membership.role.titleize()), cls);
     }
   }
+};
+
+Comment.prototype.level_macro = function () {
+  var level = 0;
+  var comment = this;
+  while (comment.parent.constructor !== Story) {
+    level += 1;
+    comment = comment.parent;
+  }
+  res.write(level);
 };
