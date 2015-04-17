@@ -649,15 +649,15 @@ Story.prototype.format_filter = function(value, param, mode) {
       case 'markdown':
       value = this.linebreak_filter(value, param, 'markdown');
       value = this.code_filter(value, param);
-      value = this.url_filter(value, param);
       value = this.macro_filter(value, param);
+      value = this.url_filter(value, param);
       value = this.markdown_filter(value, param);
       return value;
 
       default:
       value = format(value);
-      value = this.url_filter(value, param);
       value = this.macro_filter(value, param);
+      value = this.url_filter(value, param);
       return value;
     }
   }
