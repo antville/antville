@@ -237,7 +237,7 @@ Members.prototype.onCodeUpdate = function() {
       if (getProperty('google-search') === 'true') {
         if (req.data.q) {
           if (!req.data.q.contains('site:')) {
-            res.redirect(site.href(req.action) + '?q=' + req.data.q + encodeURIComponent(' site:' + site.href().replace('test.www.', '')));
+            res.redirect(site.href(req.action) + '?q=' + encodeURIComponent(req.data.q + ' site:' + site.href().replace('test.www.', '')));
           } else {
             req.data.q = req.data.q.replace(/\s+site:.+$/, String.EMPTY);
           }
