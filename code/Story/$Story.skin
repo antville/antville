@@ -270,5 +270,12 @@ else
       }
 
       scheduler();
+
+      // Work-around for https://github.com/uikit/uikit/issues/1149
+      // FIXME: Fix should be available in next release of UIkit.
+      setTimeout(function() {
+         editor.fit();
+      }, 1000);
    })();
+
 </script>
