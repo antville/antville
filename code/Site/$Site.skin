@@ -1116,7 +1116,7 @@ a.gs-title:hover {
 </tr>
 
 <% #deleted %>
-<% gettext "This site is going to be deleted completely and irreversibly after {0}." <% site.deleted | format long %> %>
+<p><% gettext "This site is going to be deleted completely and irreversibly after {0}." <% site.deleted | format long %> %></p>
 
 <% #export %>
 <h1><% gettext "Export Site Data" %></h1>
