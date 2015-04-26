@@ -160,14 +160,14 @@ Story.prototype.getPermission = function(action) {
         User.require(User.PRIVILEGED);
   }
   return false;
-}
+};
 
 Story.prototype.main_action = function() {
   this.site.renderPage({
     type: 'article',
     schema: 'http://schema.org/Article',
-    title: this.getTitle(10),
-    description: this.format_filter(this.getAbstract().replace(/\s+/g, String.SPACE), null, 'quotes'),
+    title: this.title ? stripTags(this.format_filter(this.title), {}, 'quotes').clip(10, String.ELLIPSIS, '\\s') : formatDate(this.created, 'date'),
+    description: this.getDescription(20),
     body: this.renderSkinAsString('Story#main'),
     images: this.getMetadata('og:image'),
     videos: this.getMetadata('og:video')
@@ -176,7 +176,7 @@ Story.prototype.main_action = function() {
   this.count();
   this.log();
   return;
-}
+};
 
 /**
  *
@@ -195,6 +195,16 @@ Story.prototype.getTitle = function(limit) {
     }
   }
   return String(res.meta[key]) || String.ELLIPSIS;
+};
+
+Story.prototype.getDescription = function(limit) {
+  var key = this + ':text:' + limit;
+  if (!res.meta[key]) {
+    if (this.text) {
+      res.meta[key] = stripTags(this.format_filter(this.text, {}, 'markdown')).clip(limit, String.ELLIPSIS, '\\s').replace(/\s+/g, String.SPACE).trim();
+    }
+  }
+  return res.meta[key] || String.EMPTY;
 };
 
 Story.prototype.edit_action = function() {
