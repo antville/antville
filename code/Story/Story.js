@@ -166,7 +166,7 @@ Story.prototype.main_action = function() {
   this.site.renderPage({
     type: 'article',
     schema: 'http://schema.org/Article',
-    title: this.title ? stripTags(this.format_filter(this.title), {}, 'quotes').clip(10, String.ELLIPSIS, '\\s') : formatDate(this.created, 'date'),
+    title: this.title ? stripTags(this.format_filter(this.title, {}, 'quotes')).clip(10, String.ELLIPSIS, '\\s') : formatDate(this.created, 'date'),
     description: this.getDescription(20),
     body: this.renderSkinAsString('Story#main'),
     images: this.getMetadata('og:image'),
