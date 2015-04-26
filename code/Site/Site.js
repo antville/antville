@@ -610,7 +610,7 @@ Site.prototype.renderXml = function(collection) {
   var list = collection.constructor === Array ? collection : collection.list(0, 25);
   for each (var item in list) {
     entry = new rome.SyndEntryImpl();
-    entry.setTitle(item.title || formatDate(item.created, 'medium'));
+    entry.setTitle(item.title || formatDate(item.created, 'date'));
     entry.setLink(item.href());
     entry.setAuthor(item.creator.name);
     entry.setPublishedDate(item.created);
