@@ -199,18 +199,15 @@
 <meta property='og:type' content='<% response.type %>'>
 <% // Facebook is very picky with locales (e.g. complains about 'de' and 'en_AU') %>
 <% //site.locale prefix="<meta property='og:locale' content='" suffix="'>" %>
-<meta property='og:title' content='<% response.title %>'>
-<meta property='og:description' content='<% response.description %>'>
+<% response.title prefix="<meta property='og:title' content='" suffix="'>" %>
+<% response.description prefix="<meta property='og:description' content='" suffix="'>" %>
 <meta property='og:site_name' content='<% site.title %>'>
-<% //response.images prefix="<meta property='og:image' content='" suffix="'>" %>
 <meta property='og:url' content='<% href %>'>
 <meta name='twitter:card' content='summary'>
-<meta name='twitter:title' content='<% response.title %>'>
-<meta name='twitter:description' content='<% response.description %>'>
-<% //response.image prefix="<meta name='twitter:image:src' content='" suffix="'>" %>
-<meta itemprop='name' content='<% response.title %>'>
-<meta itemprop='description' content='<% response.description %>'>
-<% //response.image prefix="<meta itemprop='image' content='" suffix="'>" %>
+<% response.title prefix="<meta name='twitter:title' content='" suffix="'>" %>
+<% response.description prefix="<meta name='twitter:description' content='" suffix="'>" %>
+<% response.title prefix="<meta itemprop='name' content='" suffix="'>" %>
+<% response.description prefix="<meta itemprop='description' content='" suffix="'>" %>
 <% response.images %>
 <% response.videos %>
 

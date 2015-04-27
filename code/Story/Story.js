@@ -163,11 +163,17 @@ Story.prototype.getPermission = function(action) {
 };
 
 Story.prototype.main_action = function() {
+  var title = this.title ? stripTags(this.format_filter(this.title, {}, 'quotes')).clip(10, String.ELLIPSIS, '\\s') : null;
+  var description = this.getDescription(20);
+  if (!title && description) {
+    title = description;
+    description = null;
+  }
   this.site.renderPage({
     type: 'article',
     schema: 'http://schema.org/Article',
-    title: this.title ? stripTags(this.format_filter(this.title, {}, 'quotes')).clip(10, String.ELLIPSIS, '\\s') : formatDate(this.created, 'date'),
-    description: this.getDescription(20),
+    title: title,
+    description: description,
     body: this.renderSkinAsString('Story#main'),
     images: this.getMetadata('og:image'),
     videos: this.getMetadata('og:video')
