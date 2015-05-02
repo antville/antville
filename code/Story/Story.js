@@ -666,8 +666,8 @@ Story.prototype.format_filter = function(value, param, mode) {
       value = this.linebreak_filter(value, param, 'markdown');
       value = this.code_filter(value, param);
       value = this.macro_filter(value, param);
-      value = this.url_filter(value, param);
       value = this.markdown_filter(value, param);
+      value = this.url_filter(value, param, 'extended');
       return value;
 
       default:
@@ -736,31 +736,29 @@ Story.prototype.macro_filter = function(value) {
  * @returns {String}
  */
 Story.prototype.url_filter = function(value, param, mode) {
-  param.limit || (param.limit = 50);
-  var re = /(^|\/>|[^\]]\(|[\[\s])(!?(?:https?|ftp):\/\/\S+?)([.,;:)\]"'!?]?)(?=[\s<]|$)/gim;
-  return value.replace(re, function(str, head, url, tail) {
-    if (url.startsWith('!')) {
-      return head + url.substring(1) + tail;
-    }
-    res.push();
-    res.write(head);
-    if (mode === 'plain') {
-      res.write(url.clip(param.limit));
-    } else {
-      var text, location = /:\/\/([^\/]*)/.exec(url)[1];
-      text = location;
-      if (mode === 'extended') {
-        text = url.replace(/^.+\/([^\/]*)$/, '$1');
+  var re = />\s*((?:(?:ftp|https?):)?\/\/)([^/]+)(\/[^<]*)?<\/a>/g;
+  if (!mode) {
+    return value.replace(re, function (str, head, domain, tail) {
+      return '>' + domain + '</a>';
+    });
+  } else if (mode === 'plain') {
+    var limit = param.limit || 10;
+    return value.replace(re, function (str, head, domain, tail) {
+      tail = tail ? tail.clip(limit) : String.EMPTY
+      return '>' + head + domain + tail + '</a>';
+    });
+  } else if (mode === 'extended') {
+    return value.replace(re, function (str, head, domain, tail) {
+      var baseName = tail ? tail.split('/').pop() : null;
+      if (baseName) {
+        baseName = baseName.split(/[?#]/).shift();
+        return '>' + baseName + '</a> <span class="uk-text-muted">(' + domain + ')</span>';
       }
-      html.link({href: url, title: url}, text.clip(param.limit));
-      if (mode === 'extended' && text !== location) {
-        res.write(' <span class="uk-text-muted">(' + location + ')</span>');
-      }
-    }
-    res.write(tail);
-    return res.pop();
-  });
-}
+      return '>' + domain + '</a>';
+    });
+  }
+  return value;
+};
 
 Story.prototype.markdown_filter = function (value, param) {
   return marked(value);
