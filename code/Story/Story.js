@@ -644,10 +644,9 @@ Story.prototype.referrers_macro = function(param, limit) {
  */
 Story.prototype.format_filter = function(value, param, mode) {
   if (value) {
-    switch (mode) {
-      case 'plain':
-      return this.url_filter(stripTags(value), param, mode);
+    if (!param) param = {};
 
+    switch (mode) {
       case 'quotes':
       return stripTags(value).replace(/(?:\x22|\x27)/g, function(quote) {
         return '&#' + quote.charCodeAt(0) + ';';
@@ -662,21 +661,16 @@ Story.prototype.format_filter = function(value, param, mode) {
       }
       break;
 
-      case 'markdown':
+      default:
       value = this.linebreak_filter(value, param, 'markdown');
       value = this.code_filter(value, param);
       value = this.macro_filter(value, param);
       value = this.markdown_filter(value, param);
       value = this.url_filter(value, param);
       return value;
-
-      default:
-      value = format(value);
-      value = this.macro_filter(value, param);
-      value = this.url_filter(value, param);
-      return value;
     }
   }
+
   return String.EMTPY;
 }
 
