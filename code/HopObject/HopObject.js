@@ -631,7 +631,14 @@ HopObject.prototype.modifier_macro = function(param, mode) {
     res.write(this.modifier.name);
   }
   return;
-}
+};
+
+HopObject.prototype.source_macro = function () {
+  var site = this.site || this.parent;
+  if (res.handlers.site !== site) {
+    this.renderSkin('$HopObject#source');
+  }
+};
 
 /**
  * @returns {String}

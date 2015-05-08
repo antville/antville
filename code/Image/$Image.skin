@@ -28,14 +28,9 @@
 </div>
 
 <% #embed %>
-<div class='av-image-box'>
+<div class='av-image-box uk-margin-bottom'>
    <% image.render | image.link class='uk-thumbnail' %>
-   <% if <% site.id %> is <% image.site.id %> then '' else <% image.skin $Image#source %> %>
-</div>
-
-<% #source %>
-<div class='uk-text-right uk-text-muted uk-text-small'>
-   <% gettext Via %>: <% image.site.title | image.link %>
+   <% image.source %>
 </div>
 
 <% #edit %>

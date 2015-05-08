@@ -54,11 +54,9 @@ else
 <div class='uk-margin-bottom'>
    <div class='uk-panel uk-panel-box'>
       <% story.title prefix="<h2 class='uk-panel-title'>" suffix=</h2> %>
-      <% story.text %>
+      <% story.text | story.format %>
    </div>
-   <div class='uk-text-right uk-text-small uk-text-muted'>
-      <% gettext Source suffix=<% story.link . <% story.site.title %> prefix=': ' %> %>
-   </div>
+   <% story.source %>
 </div>
 
 <% #editor %>

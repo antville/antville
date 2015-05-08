@@ -23,6 +23,11 @@
   </p>
 </form>
 
+<% #source %>
+<div class='uk-text-right uk-text-muted uk-text-small'>
+   <% gettext Via %>: <% this.site.title | this.link %>
+</div>
+
 <% #notify_create %>
 <% gettext 'Hello {0}.' <% membership.name %> %>
 
