@@ -995,27 +995,32 @@ a.gs-title:hover {
    var searchFilter = new Antville.Filter(query.filter);
 
    var searchEngineFilters = [
-      new Antville.Filter("//.*altavista.*/\\?", "q"),
-      new Antville.Filter("//.*baidu.com/s\\?", "wd"),
-      new Antville.Filter("//.*bing\\..*/search\\?", "q"),
-      new Antville.Filter("//.*duckduckgo.com/\\?", "q"),
-      new Antville.Filter("//.*google\\..*/imgres\\?", "imgurl"),
-      new Antville.Filter("//.*google\\..*/\\?.*q=[^&]", "q"),
-      new Antville.Filter("//.*search\\.yahoo\\..*/\\?", "p"),
-      new Antville.Filter("//.*yandex\\..*/\\?", "text")
+      new Antville.Filter('//.*altavista.*/\\?', 'q'),
+      new Antville.Filter('//.*baidu.com/s\\?', 'wd'),
+      new Antville.Filter('//.*bing\\..*/search\\?', 'q'),
+      new Antville.Filter('//.*duckduckgo.com/\\?', 'q'),
+      new Antville.Filter('//.*google\\..*/imgres\\?', 'imgurl'),
+      new Antville.Filter('//.*google\\..*/\\?.*q=[^&]', 'q'),
+      new Antville.Filter('//.*haosou\\.com/s\\?', 'q'),
+      new Antville.Filter('//.*search\\.yahoo\\..*/\\?', 'p'),
+      new Antville.Filter('//.*search\\.ask\\.com/web\\?', '1'),
+      new Antville.Filter('//.*yandex\\..*/\\?', 'text')
    ];
 
    var urlShortenerCounter = 0;
    var urlShortenerFilters = [
-      new Antville.Filter("//.*baidu.com/link"),
+      new Antville.Filter('//.*baidu.com/link'),
       new Antville.Filter('//bit\\.ly/'),
-      new Antville.Filter("//.*duckduckgo.com/l/\\?"),
+      new Antville.Filter('//.*duckduckgo.com/l/\\?'),
+      new Antville.Filter('//l.facebook.com/lrs.php'),
       new Antville.Filter('//goo\\.gl/'),
       new Antville.Filter('//.*google\\..*/url\\?'),
+      new Antville.Filter('//ift.tt'),
       new Antville.Filter('//owl\\.ly/'),
       new Antville.Filter('//t\\.co/'),
       new Antville.Filter('//tinyurl\\.com/'),
-      new Antville.Filter("//.*search\\.yahoo\\..*/.+/RU=")
+      new Antville.Filter('//.*stumbleupon\\.com/refer\\.php\\?'),
+      new Antville.Filter('//.*search\\.yahoo\\..*/.+/RU=')
    ];
 
    $('.av-referrer-row').each(function (index) {
