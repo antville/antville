@@ -996,7 +996,9 @@ a.gs-title:hover {
 
    var searchEngineFilters = [
       new Antville.Filter("//.*altavista.*/\?", "q"),
+      new Antville.Filter("//.*baidu.com/s\?", "wd"),
       new Antville.Filter("//.*bing\..*/\?", "q"),
+      new Antville.Filter("//.*duckduckgo.com/\?", "q"),
       new Antville.Filter("//.*google\..*/imgres\?", "imgurl"),
       new Antville.Filter("//.*google\..*/\?.*q=[^&]", "q"),
       new Antville.Filter("//.*search\.yahoo\..*/\?", "p"),
@@ -1005,6 +1007,7 @@ a.gs-title:hover {
 
    var urlShortenerCounter = 0;
    var urlShortenerFilters = [
+      new Antville.Filter("//.*baidu.com/link", "url"),
       new Antville.Filter('//bit\.ly/'),
       new Antville.Filter('//goo\.gl/'),
       new Antville.Filter('//owl\.ly/'),
