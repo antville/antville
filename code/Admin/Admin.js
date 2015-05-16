@@ -599,7 +599,7 @@ Admin.prototype.filterSites = function(data) {
     }
   }
 
-  add('order by', sortings[data.sortings] || 'modified', data.order == 1 ? 'asc' : 'desc');
+  add('order by', sortings[data.sorting] || 'modified', data.order === '1' ? 'asc' : 'desc');
   this.sites.subnodeRelation = sql.join(String.SPACE);
 
   function add() {
@@ -645,8 +645,9 @@ Admin.prototype.filterUsers = function(data) {
     }
   }
 
-  add('order by', sortings[data.sorting] || 'created', data.order == 1 ? 'asc' : 'desc');
+  add('order by', sortings[data.sorting] || 'created', data.order === '1' ? 'asc' : 'desc');
   this.users.subnodeRelation = sql.join(String.SPACE);
+  console.log(this.users.subnodeRelation);
 
   function add() {
     sql.push.apply(sql, arguments);
