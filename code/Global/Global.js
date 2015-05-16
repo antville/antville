@@ -372,9 +372,9 @@ function if_macro(param, firstValue, _is_, secondValue, _then_, firstResult,
  * @param {String} [format] A date format string
  * @returns {String} The formatted current date string
  */
-function now_macro(param, format) {
+var now_macro = function(param, format) {
   return formatDate(new Date, format || param.format);
-}
+};
 
 /**
  * Renders a link.
