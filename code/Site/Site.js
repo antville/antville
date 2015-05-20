@@ -855,7 +855,7 @@ Site.prototype.contact_action = function () {
   if (username) membership = Membership.getByName(username);
   if (!membership) membership = this.members.owners.get(0);
   try {
-    if (!membership) throw Error(gettext('Something went wrong'));
+    if (!membership) throw Error(gettext('Something went wrong.'));
     res.redirect(membership.href('contact'));
   } catch (ex) {
     res.message = ex.toString();
