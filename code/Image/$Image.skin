@@ -28,7 +28,7 @@
 </div>
 
 <% #embed %>
-<div class='av-image-box uk-margin-bottom'>
+<div class='av-image-box'>
    <% image.render | image.link class='uk-thumbnail' %>
    <% image.source %>
 </div>
