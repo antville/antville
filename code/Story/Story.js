@@ -663,7 +663,6 @@ Story.prototype.format_filter = function(value, param, mode) {
 
       default:
       value = this.linebreak_filter(value, param, 'markdown');
-      value = this.code_filter(value, param);
       value = this.macro_filter(value, param);
       value = this.markdown_filter(value, param);
       value = this.url_filter(value, param);
@@ -676,13 +675,12 @@ Story.prototype.format_filter = function(value, param, mode) {
 
 Story.prototype.linebreak_filter = function (value, param, mode) {
   if (mode === 'markdown') {
-    // Adding two spaces before any linebreak if not already present;
-    // Markdown is going to transform two spaces into HTML linebreaks.
-    var parts = value.split(/\r\n|\n|\r/);
-    value = parts.map(function (line) {
-      return line.endsWith('  ') ? line : line + '  ';
+    // Use Helma’s format() method and restore linebreaks for Markdown (two spaces) afterwards.
+    value = format(value).replace(/<br\s*\/?>(?:\r\n|\n|\r)/g, '  \n');
+    // Restore Markdown quotes “>”
+    value = value.replace(/\n(&gt;)+/gm, function (str) {
+      return str.replace(/&gt;/g, '>');
     });
-    return value.join('\n');
   } else {
     var parts = value.split(/(?:\n\n|\r\r|\r\n\r\n)+/);
     value = format('<p>' + parts.join('</p><p>') + '</p>');
@@ -691,13 +689,8 @@ Story.prototype.linebreak_filter = function (value, param, mode) {
 };
 
 Story.prototype.code_filter = function (value, param) {
-  // FIXME: I am too lazy to write a filter so I abuse Helma’s format() method and restore  linebreaks and some other markup afterwards.
-  value = format(value).replace(/<br\s?\/?>(?:\r\n|\n|\r)/g, '\n');
-  // Restore Markdown quotes “>”
-  value = value.replace(/\n(&gt;)+/gm, function (str) {
-    return str.replace(/&gt;/g, '>');
-  });
-  return value;
+  value = this.linebreak_filter(value, param);
+  return this.markdown_filter(value, param);
 };
 
 /**
