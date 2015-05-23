@@ -66,9 +66,13 @@
 </form>
 <script type="text/javascript">
    $("form#login").on('submit', function (event) {
+      if ($('#digest').val()) {
+         return true;
+      }
+      var form = $(this);
+      event.preventDefault();
       var name = $("#name").val();
       $.ajax({
-         async: false,
          url: '<% members.href salt.txt %>',
          data: "user=" + encodeURIComponent(name),
          dataType: "text",
@@ -79,9 +83,9 @@
             var token = "<% session.token %>";
             $("input:password").val("");
             $("#digest").val($.md5($.md5(password + salt) + token));
+            form.submit();
          }
       });
-      return true;
    });
 </script>
 
@@ -202,6 +206,7 @@
       <tr>
          <th><% gettext Account %></th>
          <th><% gettext Registered %></th>
+         <!--th><% gettext Role %></th-->
          <th></th>
       </tr>
    </thead>
