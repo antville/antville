@@ -504,7 +504,16 @@ Admin.prototype.jobs_action = function() {
   res.data.body = this.renderSkinAsString('$Admin#jobs');
   root.renderSkin('Site#page');
   return;
-}
+};
+
+Admin.prototype.job_action = function () {
+  var site = Site.getById(req.data.delete);
+  if (site && site.job) {
+    var job = new Admin.Job(site.job);
+    job.remove();
+  }
+  return res.redirect(req.data.http_referer);
+};
 
 Admin.prototype.sites_action = function() {
   if (req.isPost()) {
@@ -663,7 +672,7 @@ Admin.prototype.renderItem = function(item) {
   var name = item._prototype;
   if (item.getClass && item.getClass() === java.io.File) {
       name = 'Job';
-      res.handlers.item = deserialize(item);
+      res.handlers.item = new Admin.Job(item.name);
   } else if (name === 'Root') {
     name = 'Site';
   }
@@ -847,6 +856,7 @@ Admin.prototype.link_macro = function (param, action, text, target) {
         var url = site.href('delete') + '?safemode';
         return renderLink.call(global, param, url, text || String.EMPTY, this);
       }
+      break;
     }
     return;
   }
