@@ -125,7 +125,7 @@ Admin.dequeue = function() {
     let job = new Admin.Job(jobs[i]);
     if (job.target) {
       try {
-        app.log('PROCESSING QUEUED JOB ' + (i+1) + ' OF ' + max);
+        app.log('Processing queued job ' + (i + 1) + ' of ' + max);
         switch (job.method) {
           case 'remove':
           Site.remove.call(job.target);
@@ -137,12 +137,12 @@ Admin.dequeue = function() {
           Exporter.run(job.target, job.user);
           break;
         }
+        job.remove();
       } catch (ex) {
         app.log('Failed to process job ' + job + ' due to ' + ex);
         app.debug(ex.rhinoException);
       }
     }
-    job.remove();
   }
   return;
 }
