@@ -49,6 +49,7 @@ Admin.Job = function(target, method, user) {
   });
 
   this.remove = function() {
+    target.job = null;
     return file['delete']();
   }
 
