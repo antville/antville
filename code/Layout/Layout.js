@@ -64,25 +64,28 @@ Layout.add = function(site, user) {
  * @param {Boolean} includeSelf
  */
 Layout.remove = function(options) {
+  if (!options) options = {};
   if (this.constructor === Layout) {
-    // Backup current layout in temporary directory if possible
-    var dir = this.getFile();
-    if (dir.exists() && dir.list().length > 0) {
-      var zip = this.getArchive(res.skinpath);
-      var file = java.io.File.createTempFile(this.site.name + '-layout-', '.zip');
-      zip.save(file);
+    // The “force” flag is set e.g. when a whole site is removed
+    if (!options.force) {
+      // Backup current layout in temporary directory if possible
+      var dir = this.getFile();
+      if (dir.exists() && dir.list().length > 0) {
+        var zip = this.getArchive(res.skinpath);
+        var file = java.io.File.createTempFile(this.site.name + '-layout-', '.zip');
+        zip.save(file);
+      }
     }
     HopObject.remove.call(this.skins);
     HopObject.remove.call(this.images);
     this.getFile().removeDirectory();
-    // The “force” flag is set e.g. when a whole site is removed
-    if (options && options.force) {
+    if (options.force) {
       this.deleteMetadata();
       this.remove();
     }
   }
   return;
-}
+};
 
 /**
  * @function
