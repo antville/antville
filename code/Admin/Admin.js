@@ -158,7 +158,7 @@ Admin.purgeSites = function() {
       if (this.job) {
         return; // Site is already scheduled for deletion
       }
-      let job = new Admin.Job(this, 'remove', User.getById(1));
+      let job = new Admin.Job(this, 'remove', root.admins.get(0));
       this.job = job.name;
     }
   });
