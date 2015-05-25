@@ -42,13 +42,11 @@ Exporter.run = function(site, user) {
     var baseDir = site.getStaticFile();
     var member = site.members.get(user.name);
 
-    var xml = new helma.File(baseDir, 'export.xml');
-    xml.remove();
-    xml.open();
+    var xml = [];
 
     var add = function(s) {
-      return xml.write(s);
-    }
+      return xml.push(s);
+    };
 
     add('<?xml version="1.0" encoding="UTF-8"?>');
     add('<?xml-stylesheet href="http://www.blogger.com/styles/atom.css" type="text/css"?>');
@@ -85,26 +83,18 @@ Exporter.run = function(site, user) {
     });
     add('</feed>');
 
-    xml.close();
-    // Provide the exported data as downloadable file
-    // FIXME: Adding a file to a site could be a little bit simpler :/
-    file = new File;
-    file.site = site;
-    file.update({
-      file: {contentLength: 0},
-      file_origin: site.href('export'),
-      name: site.name + '-export'
-    });
-    site.files.add(file);
-    file.creator = file.modifier = user;
-    file.created = file.modified = new Date();
-    file.requests = 0;
+    var name = site.name + '-export';
+    var content = java.lang.String(xml.join(String.EMPTY)).getBytes('utf-8');
+
+    var data = {
+      file: new Packages.helma.util.MimePart(name, content, 'application/rss+xml'),
+      file_origin: site.href('export')
+    };
+
+    var file = File.add(data, site, user);
     site.export_id = file._id;
   } catch (ex) {
-    app.log(ex);
-  } finally {
-    xml.close();
-    xml.remove();
+    app.log(ex.rhinoException);
   }
 
   // Reset the site’s export status
