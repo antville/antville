@@ -346,7 +346,7 @@
 <% #job %>
 <tr>
    <td><% gettext <% item.method %> | titleize %></td>
-   <td><a href='<% item.target.href %>'><% item.target.title %></a></td>
+   <td><a href='<% item.target.href %>'><% item.target.name %></a></td>
    <td><% item.user.name %></td>
    <td class='uk-text-right'><% admin.link <% item.target.id prefix='job?delete=' %> "<i class='uk-icon-trash-o'></i>" %></td>
 </tr>
