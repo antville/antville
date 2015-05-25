@@ -916,9 +916,15 @@ function format_filter(value, param, pattern, type) {
   if (!value && value !== 0) {
     return;
   }
-  var f = global['format' + value.constructor.name];
-  if (f && f.constructor === Function) {
-    return f(value, pattern || param.pattern, type);
+  if (type) {
+    var Ctor = global[type.titleize()];
+    if (Ctor) value = new Ctor(value);
+  } else {
+    type = value.constructor.name;
+  }
+  var format = global['format' + type.titleize()];
+  if (format && format.constructor === Function) {
+    return format(value, pattern || param.pattern);
   }
   return value;
 }

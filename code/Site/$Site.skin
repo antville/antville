@@ -12,7 +12,14 @@
 
 <% #edit %>
 <h1><% response.title %></h1>
-<div class='uk-article-meta'><% site.skin $HopObject#meta %></div>
+<div class='uk-article-meta'>
+   <% if <% this.creator %> is null then '' else
+      <% gettext 'Created by {0} on {1}' <% this.creator %> <% this.created short %> %>
+   %>
+   <% if <% this.created %> is <% this.configured %> then '' else
+      <% gettext 'Last modified by {0} on {1}' <% this.modifier %> <% this.configured | format short date %> prefix=<br> %>
+   %>
+</div>
 <form class='uk-form uk-form-stacked' id="edit" method="post" action="<% response.action %>">
    <fieldset>
       <div class='uk-form-row uk-margin-top'>
