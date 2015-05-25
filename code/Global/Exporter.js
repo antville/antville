@@ -83,7 +83,7 @@ Exporter.run = function(site, user) {
     });
     add('</feed>');
 
-    var name = site.name + '-export';
+    var name = site.name + '-export.xml';
     var content = java.lang.String(xml.join(String.EMPTY)).getBytes('utf-8');
 
     var data = {
