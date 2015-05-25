@@ -436,11 +436,10 @@ Site.prototype.update = function(data) {
   if (User.require(User.PRIVILEGED)) {
     this.status = data.status;
     this.notes = data.notes;
-  } else {
-  this.configured = new Date;
-  this.modifier = session.user;
   }
 
+  this.configured = new Date;
+  this.modifier = session.user;
   this.clearCache();
   return;
 }
