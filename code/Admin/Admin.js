@@ -23,7 +23,8 @@ markgettext('export');
 markgettext('import');
 markgettext('remove');
 
-Admin.SITEREMOVALGRACEPERIOD = 0; // days
+Admin.SITEREMOVALGRACEPERIOD = 14; // days
+Admin.MAXBATCHSIZE = 50;
 
 /**
  *
@@ -125,7 +126,7 @@ Admin.queue.dir.exists() || Admin.queue.dir.mkdirs();
  */
 Admin.dequeue = function() {
   var jobs = Admin.queue.dir.list();
-  var max = Math.min(jobs.length, 10);
+  var max = Math.min(jobs.length, Admin.MAXBATCHSIZE);
   for (let i=0; i<max; i+=1) {
     let job = new Admin.Job(jobs[i]);
     if (job.target) {
