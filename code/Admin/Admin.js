@@ -19,7 +19,11 @@
  * @fileOverview Defines the Admin prototype.
  */
 
-Admin.SITEREMOVALGRACEPERIOD = 14; // days
+markgettext('export');
+markgettext('import');
+markgettext('remove');
+
+Admin.SITEREMOVALGRACEPERIOD = 0; // days
 
 /**
  *
@@ -48,10 +52,11 @@ Admin.Job = function(target, method, user) {
     return file.getName();
   });
 
-  this.remove = function() {
-    target.job = null;
-    return file['delete']();
-  }
+  this.remove = function(isCareless) {
+    // isCareless is `true` after a site is completely removed, to prevent NullPointer exception
+    if (!isCareless) target.job = null;
+    if (file.exists()) file['delete']();
+  };
 
   if (target && method && user) {
     file = new java.io.File.createTempFile('job-', String.EMPTY, Admin.queue.dir);
@@ -137,7 +142,7 @@ Admin.dequeue = function() {
           Exporter.run(job.target, job.user);
           break;
         }
-        job.remove();
+        job.remove(true);
       } catch (ex) {
         app.log('Failed to process job ' + job + ' due to ' + ex);
         app.debug(ex.rhinoException);
@@ -158,8 +163,7 @@ Admin.purgeSites = function() {
       if (this.job) {
         return; // Site is already scheduled for deletion
       }
-      let job = new Admin.Job(this, 'remove', root.admins.get(0));
-      this.job = job.name;
+      this.job = Admin.queue(this, 'remove', this.modifier);
     }
   });
 
