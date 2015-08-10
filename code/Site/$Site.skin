@@ -429,7 +429,6 @@ $(function () {
 
 // Overwriting some classes defined by UIKit to go along with Antville’s layout
 
-
 html, html.uk-notouch, body {
    background-color: @background;
    color: @text-color;
@@ -668,6 +667,14 @@ h4 + .uk-comment-meta li:first-child {
 
 .av-invisible {
    visibility: hidden;
+}
+
+.av-concealed-link {
+   color: inherit;
+
+   &:hover {
+      color: inherit;
+   }
 }
 
 .av-upload {
