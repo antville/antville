@@ -223,7 +223,7 @@ Story.prototype.edit_action = function() {
       }).call(this, req.postParams['og:image_array'], req.postParams['og:video_array']);
       delete session.data.backup;
       res.message = gettext('The story was successfully updated.');
-      res.redirect(this.href(req.action));
+      res.redirect(this.href());
     } catch (ex) {
       res.message = ex;
       app.log(ex);
