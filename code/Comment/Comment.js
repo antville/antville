@@ -120,12 +120,17 @@ Comment.prototype.getPermission = function(action) {
         this.story.getPermission(action) &&
         this.status !== Comment.PENDING;
     case 'delete':
-    case 'filter':
     return this.story.getPermission.call(this, 'delete');
     case 'edit':
     return User.require(User.PRIVILEGED) ||
-        this.status !== Comment.DELETED &&
-        this.creator === session.user;
+        Membership.require(Membership.MANAGER) ||
+        this.creator === session.user &&
+        this.status !== Comment.DELETED;
+    case 'filter':
+    return this.creator !== session.user &&
+        this.site.trollFilter.indexOf(this.creator.name) < 0 &&
+        (User.require(User.PRIVILEGED) ||
+        Membership.require(Membership.MANAGER));
   }
   return false;
 }
@@ -188,7 +193,10 @@ Comment.prototype.filter_action = function () {
  */
 Comment.prototype.update = function(data) {
   if (!User.require(User.TRUSTED) && !Membership.require(Membership.CONTRIBUTOR)) {
-    data.text = data.text ? node.sanitizeHtml(data.text) : String.EMPTY;
+    var spec = {
+      allowedTags: node.sanitizeHtml.defaults.allowedTags.concat(['img'])
+    };
+    data.text = data.text ? node.sanitizeHtml(data.text, spec) : String.EMPTY;
   }
 
   if (!data.text) {
@@ -250,17 +258,26 @@ Comment.prototype.isGaslighted = function () {
  * @returns {HopObject}
  */
 Comment.prototype.getMacroHandler = function(name) {
-  if (name === 'related') {
+  switch (name) {
+    case 'related':
     var membership = this.creator.getMembership();
     if (!membership || membership.comments.size() < 2 || this.status === Comment.DELETED) {
       return new HopObject(); // Work-around for issue 88
     }
     return membership.comments;
-  } else if (name === 'story') {
+
+    case 'story':
     return this.story;
+
+    case 'top':
+    var top = this;
+    while (top) {
+      if (top.parent.constructor === Story) return top;
+      top = top.parent;
+    }
   }
   return Story.prototype.getMacroHandler.apply(this, arguments);
-}
+};
 
 /**
  *
@@ -298,16 +315,6 @@ Comment.prototype.modifier_macro = function() {
       HopObject.prototype.modifier_macro.apply(this, arguments);
 }
 
-/**
- *
- * @param {Object} param
- * @param {Object} action
- * @param {Object} text
- */
-Comment.prototype.link_macro = function(param, action, text) {
-  return HopObject.prototype.link_macro.call(this, param, action, text);
-}
-
 Comment.prototype.meta_macro = function (param) {
   if (this.status === Comment.PUBLIC && !this.isGaslighted()) {
     this.renderSkin('Comment#meta');
@@ -315,16 +322,23 @@ Comment.prototype.meta_macro = function (param) {
 };
 
 Comment.prototype.badge_macro = function () {
-  var role, type, membership;
-  if (this.creator === this.story.creator) {
-    role = gettext('Author');
-    type = 'success';
-  } else if ((membership = Membership.getByName(this.creator.name)) && membership.role === Membership.OWNER) {
-    role = gettext('Owner');
-    type = 'success';
-  } else if (this.creator.status === User.PRIVILEGED) {
-    role = gettext('Admin');
-    type = 'primary';
+  var cls = {'class': 'uk-badge uk-badge-primary'};
+  if (this.creator.status === User.PRIVILEGED) {
+    html.element('span', gettext('Admin'), cls);
+  } else {
+    var membership = Membership.getByName(this.creator.name);
+    if (membership && membership.role !== 'subscriber') {
+      html.element('span', gettext(membership.role.titleize()), cls);
+    }
   }
-  role && html.element('span', role, {'class': 'uk-badge uk-badge-' + type});
+};
+
+Comment.prototype.level_macro = function () {
+  var level = 0;
+  var comment = this;
+  while (comment.parent.constructor !== Story) {
+    level += 1;
+    comment = comment.parent;
+  }
+  res.write(level);
 };

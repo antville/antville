@@ -181,9 +181,13 @@ Image.prototype.href = function(action) {
 }
 
 Image.prototype.main_action = function() {
-  res.data.title = gettext('Image: {0}', this.getTitle());
-  res.data.body = this.renderSkinAsString('Image#main');
-  res.handlers.site.renderSkin('Site#page');
+  res.handlers.site.renderPage({
+    type: 'article',
+    schema: 'http://schema.org/ImageObject',
+    title: gettext('Image: {0}', this.getTitle()),
+    body: this.renderSkinAsString('Image#main'),
+    images: [this.getUrl()]
+  });
   return;
 }
 
@@ -253,7 +257,7 @@ Image.prototype.update = function(data) {
   var mime = data.file;
   var origin = data.file_origin;
 
-  if (mime.contentLength < 1) {
+  if (!mime || mime.contentLength < 1) {
     if (origin && origin !== this.origin) {
       mime = getURL(origin);
       if (!mime) {
@@ -347,14 +351,18 @@ Image.prototype.contentLength_macro = function() {
  *
  */
 Image.prototype.url_macro = function() {
-  return res.write(this.getUrl());
+  return res.write(encodeURI(this.getUrl()));
 }
 
 /**
  *
  */
-Image.prototype.macro_macro = function() {
-  return HopObject.prototype.macro_macro.call(this, {suffix: ' box'}, this.parent && this.parent.constructor === Layout ? 'layout.image' : 'image');
+Image.prototype.macro_macro = function(param) {
+  if (this.parent && this.parent.constructor === Layout) {
+    param.suffix = null;
+    return HopObject.prototype.macro_macro.call(this, param, 'layout.image');
+  }
+  return HopObject.prototype.macro_macro.call(this, param, 'image');
 }
 
 /**
@@ -365,7 +373,7 @@ Image.prototype.thumbnail_macro = function(param) {
   if (!this.thumbnailName) {
     return this.render_macro(param);
   }
-  param.src = this.getUrl(this.getThumbnailFile().getName());
+  param.src = encodeURI(this.getUrl(this.getThumbnailFile().getName()));
   param.title || (param.title = encode(this.description));
   param.alt = encode(param.alt || param.title);
   var width = param.width || this.thumbnailWidth;
@@ -387,7 +395,7 @@ Image.prototype.thumbnail_macro = function(param) {
  * @param {Object} param
  */
 Image.prototype.render_macro = function(param) {
-  param.src = this.getUrl();
+  param.src = encodeURI(this.getUrl());
   param.title || (param.title = encode(this.description));
   param.alt = encode(param.alt || param.title);
   var style = [];

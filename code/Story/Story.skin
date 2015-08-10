@@ -26,7 +26,6 @@
 </div>
 
 <% #edit %>
-<script type='text/javascript' src='<% root.static ../../scripts/editor.min.js %>'></script>
 <h1>
    <% response.title %>
    <% story.link . ' ' class='uk-icon-button uk-icon-link uk-text-middle' %>
@@ -84,19 +83,20 @@
       <a href='.' class="uk-button uk-button-link"><% gettext Cancel %></a>
    </div>
 </form>
+<script type='text/javascript' src='<% root.static ../../scripts/editor.min.js %>'></script>
 
 <% #comment %>
 <% story.skin Story#date %>
 <% story.skin Story#content %>
 
 <% #history %>
-<li>
+<li class='uk-margin-small-top'>
    <a href='<% this.href %>' title='<% this.modified %>'>
-      <% this.abstract | this.link %>
+      <% this.abstract %>
+      <div class='uk-text-small uk-text-muted'>
+         <% this.creator %>, <% this.modified text %>
+      </div>
    </a>
-   <div class='uk-text-small'>
-      <% this.creator %>, <% this.modified text %>
-   </div>
 </li>
 
 <% #permalink %>

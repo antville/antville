@@ -52,7 +52,7 @@ var aspects = {
         var status = [Story.PUBLIC, Story.SHARED, Story.OPEN];
         data.status = status[data.editableby] || data.editableby || Story.PUBLIC;
       }
-      data.mode = (data.addToFront ? Story.FEATURED : Story.HIDDEN);
+      data.mode = (data.addToFront || data.publish ? Story.FEATURED : Story.HIDDEN);
       data.commentMode = (data.discussions ? Story.OPEN : Story.CLOSED);
       data.addToFront = data.discussions = data.editableby = data.publish = null;
       data.save = 1;
@@ -237,7 +237,7 @@ Members.prototype.onCodeUpdate = function() {
       if (getProperty('google-search') === 'true') {
         if (req.data.q) {
           if (!req.data.q.contains('site:')) {
-            res.redirect(site.href(req.action) + '?q=' + req.data.q + encodeURIComponent(' site:' + site.href().replace('test.www.', '')));
+            res.redirect(site.href(req.action) + '?q=' + encodeURIComponent(req.data.q + ' site:' + site.href().replace('test.www.', '')));
           } else {
             req.data.q = req.data.q.replace(/\s+site:.+$/, String.EMPTY);
           }

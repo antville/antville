@@ -60,7 +60,7 @@
             <% gettext 'Probation Period' %>
          </label>
          <div class='uk-form-controls'>
-            <% root.input probationPeriod class=uk-width-1-6 type=number min=1 %> <% gettext days %>
+            <% root.input probationPeriod class=uk-width-1-6 type=number min=0 %> <% gettext days %>
          </div>
       </div>
       <div class='uk-form-row'>
@@ -68,7 +68,7 @@
             <% gettext Interval %>
          </label>
          <div class='uk-form-controls'>
-            <% root.input creationDelay class=uk-width-1-6 type=number min=1 %> <% gettext days %>
+            <% root.input creationDelay class=uk-width-1-6 type=number min=0 %> <% gettext days %>
          </div>
       </div>
    </fieldset>
@@ -264,8 +264,7 @@
    <thead>
       <tr>
          <th><% gettext Method %></th>
-         <th><% gettext Type %></th>
-         <th><% gettext ID %></th>
+         <th><% gettext Reference %></th>
          <th><% gettext Account %></th>
          <th></th>
       </tr>
@@ -346,11 +345,10 @@
 
 <% #job %>
 <tr>
-   <td><% item.method %></td>
-   <td><% item.type %></td>
-   <td><% item.id %></td>
-   <td><% item.user %></td>
-   <td><% item.link delete "<i class='uk-icon-trash-o'></i>" %></td>
+   <td><% gettext <% item.method %> | titleize %></td>
+   <td><a href='<% item.target.href %>'><% item.target.name %></a></td>
+   <td><% item.user.name %></td>
+   <td class='uk-text-right'><% admin.link <% item.target.id prefix='job?delete=' %> "<i class='uk-icon-trash-o'></i>" %></td>
 </tr>
 
 <% #blockedSite %>

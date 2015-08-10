@@ -19,7 +19,12 @@
  * @fileOverview Defines the Admin prototype.
  */
 
+markgettext('export');
+markgettext('import');
+markgettext('remove');
+
 Admin.SITEREMOVALGRACEPERIOD = 14; // days
+Admin.MAXBATCHSIZE = 50;
 
 /**
  *
@@ -48,9 +53,11 @@ Admin.Job = function(target, method, user) {
     return file.getName();
   });
 
-  this.remove = function() {
-    return file['delete']();
-  }
+  this.remove = function(isCareless) {
+    // isCareless is `true` after a site is completely removed, to prevent NullPointer exception
+    if (!isCareless) target.job = null;
+    if (file.exists()) file['delete']();
+  };
 
   if (target && method && user) {
     file = new java.io.File.createTempFile('job-', String.EMPTY, Admin.queue.dir);
@@ -119,12 +126,12 @@ Admin.queue.dir.exists() || Admin.queue.dir.mkdirs();
  */
 Admin.dequeue = function() {
   var jobs = Admin.queue.dir.list();
-  var max = Math.min(jobs.length, 10);
+  var max = Math.min(jobs.length, Admin.MAXBATCHSIZE);
   for (let i=0; i<max; i+=1) {
     let job = new Admin.Job(jobs[i]);
     if (job.target) {
       try {
-        app.log('PROCESSING QUEUED JOB ' + (i+1) + ' OF ' + max);
+        app.log('Processing queued job ' + (i + 1) + ' of ' + max);
         switch (job.method) {
           case 'remove':
           Site.remove.call(job.target);
@@ -136,12 +143,12 @@ Admin.dequeue = function() {
           Exporter.run(job.target, job.user);
           break;
         }
+        job.remove(true);
       } catch (ex) {
         app.log('Failed to process job ' + job + ' due to ' + ex);
         app.debug(ex.rhinoException);
       }
     }
-    job.remove();
   }
   return;
 }
@@ -157,8 +164,7 @@ Admin.purgeSites = function() {
       if (this.job) {
         return; // Site is already scheduled for deletion
       }
-      let job = new Admin.Job(this, 'remove', User.getById(1));
-      this.job = job.name;
+      this.job = Admin.queue(this, 'remove', this.modifier);
     }
   });
 
@@ -503,7 +509,16 @@ Admin.prototype.jobs_action = function() {
   res.data.body = this.renderSkinAsString('$Admin#jobs');
   root.renderSkin('Site#page');
   return;
-}
+};
+
+Admin.prototype.job_action = function () {
+  var site = Site.getById(req.data.delete);
+  if (site && site.job) {
+    var job = new Admin.Job(site.job);
+    job.remove();
+  }
+  return res.redirect(req.data.http_referer);
+};
 
 Admin.prototype.sites_action = function() {
   if (req.isPost()) {
@@ -599,7 +614,7 @@ Admin.prototype.filterSites = function(data) {
     }
   }
 
-  add('order by', sortings[data.sortings] || 'modified', data.order == 1 ? 'asc' : 'desc');
+  add('order by', sortings[data.sorting] || 'modified', data.order === '1' ? 'asc' : 'desc');
   this.sites.subnodeRelation = sql.join(String.SPACE);
 
   function add() {
@@ -645,7 +660,7 @@ Admin.prototype.filterUsers = function(data) {
     }
   }
 
-  add('order by', sortings[data.sorting] || 'created', data.order == 1 ? 'asc' : 'desc');
+  add('order by', sortings[data.sorting] || 'created', data.order === '1' ? 'asc' : 'desc');
   this.users.subnodeRelation = sql.join(String.SPACE);
 
   function add() {
@@ -662,7 +677,7 @@ Admin.prototype.renderItem = function(item) {
   var name = item._prototype;
   if (item.getClass && item.getClass() === java.io.File) {
       name = 'Job';
-      res.handlers.item = deserialize(item);
+      res.handlers.item = new Admin.Job(item.name);
   } else if (name === 'Root') {
     name = 'Site';
   }
@@ -694,6 +709,7 @@ Admin.prototype.renderActivity = function (item) {
       case Story:
       return item.getAbstract();
       case File:
+      return item.name;
       case User:
       return item.email
       case Image:
@@ -845,6 +861,7 @@ Admin.prototype.link_macro = function (param, action, text, target) {
         var url = site.href('delete') + '?safemode';
         return renderLink.call(global, param, url, text || String.EMPTY, this);
       }
+      break;
     }
     return;
   }

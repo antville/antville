@@ -19,6 +19,7 @@ prefix="Last update: " default="None so far" %>)</span></li>
 <li><% site.tags.link main <% gettext Tags %> %></li>
 <li><% site.galleries.link main <% gettext Galleries %> %></li>
 <% site.comments.link main <% gettext Comments %> prefix=<li> suffix=</li> %>
+<li><% site.link contact <% gettext Contact %> %></li>
 <li><% site.link rss.xml "<i class='uk-icon-rss'></i> RSS" %></li>
 <li class='uk-nav-divider'></li>
 <% site.stories.link create <% gettext "Add Story" prefix="<i class='uk-icon-plus'></i> " %> prefix="<li>" suffix=</li> %>
@@ -35,9 +36,11 @@ prefix="Last update: " default="None so far" %>)</span></li>
 <li><% root.title | root.link %></li>
 
 <% #search %>
-<form class='uk-form' method='post' action='<% site.href search %>'>
-   <input type='text' class='uk-width-1-1' name='q' value='<% request.q encoding="form" %>' required placeholder='<% gettext Search %>'>
-</form>
+<li class='uk-margin-left'>
+   <form class='uk-form' method='post' action='<% site.href search %>'>
+      <input type='text' class='uk-width-1-1' name='q' value='<% request.q encoding="form" %>' required placeholder='<% gettext Search %>'>
+   </form>
+</li>
 
 <% #robots %>
 # See http://www.robotstxt.org for more information
@@ -77,13 +80,9 @@ prefix="Last update: " default="None so far" %>)</span></li>
                   <li class='uk-nav-divider'></li>
                   <% site.skin Site#navigation %>
                   <li class='uk-nav-divider'></li>
-                  <li class='uk-margin-left'>
-                     <% site.skin Site#search %>
-                  </li>
-                  <li class='uk-nav-header'></li>
-                  <li class='uk-margin-left uk-text-small'>
-                     <% site.calendar %>
-                  </li>
+                  <% site.skin Site#search %>
+                  <% site.calendar prefix="<li class='uk-nav-header'></li>
+                     <li class='uk-margin-left uk-text-small'>" suffix='</li>' %>
                </ul>
             </div>
          </div>

@@ -12,7 +12,14 @@
 
 <% #edit %>
 <h1><% response.title %></h1>
-<div class='uk-article-meta'><% site.skin $HopObject#meta %></div>
+<div class='uk-article-meta'>
+   <% if <% this.creator %> is null then '' else
+      <% gettext 'Created by {0} on {1}' <% this.creator %> <% this.created short %> %>
+   %>
+   <% if <% this.created %> is <% this.configured %> then '' else
+      <% gettext 'Last modified by {0} on {1}' <% this.modifier %> <% this.configured | format short date %> prefix=<br> %>
+   %>
+</div>
 <form class='uk-form uk-form-stacked' id="edit" method="post" action="<% response.action %>">
    <fieldset>
       <div class='uk-form-row uk-margin-top'>
@@ -199,18 +206,15 @@
 <meta property='og:type' content='<% response.type %>'>
 <% // Facebook is very picky with locales (e.g. complains about 'de' and 'en_AU') %>
 <% //site.locale prefix="<meta property='og:locale' content='" suffix="'>" %>
-<meta property='og:title' content='<% response.title %>'>
-<meta property='og:description' content='<% response.description %>'>
+<% response.title prefix="<meta property='og:title' content='" suffix="'>" %>
+<% response.description prefix="<meta property='og:description' content='" suffix="'>" %>
 <meta property='og:site_name' content='<% site.title %>'>
-<% //response.images prefix="<meta property='og:image' content='" suffix="'>" %>
 <meta property='og:url' content='<% href %>'>
 <meta name='twitter:card' content='summary'>
-<meta name='twitter:title' content='<% response.title %>'>
-<meta name='twitter:description' content='<% response.description %>'>
-<% //response.image prefix="<meta name='twitter:image:src' content='" suffix="'>" %>
-<meta itemprop='name' content='<% response.title %>'>
-<meta itemprop='description' content='<% response.description %>'>
-<% //response.image prefix="<meta itemprop='image' content='" suffix="'>" %>
+<% response.title prefix="<meta name='twitter:title' content='" suffix="'>" %>
+<% response.description prefix="<meta name='twitter:description' content='" suffix="'>" %>
+<% response.title prefix="<meta itemprop='name' content='" suffix="'>" %>
+<% response.description prefix="<meta itemprop='description' content='" suffix="'>" %>
 <% response.images %>
 <% response.videos %>
 
@@ -341,14 +345,14 @@
 
 <% #header %>
 <header class='av-header <% if <% site.id %> is <% root.id %> then 'av-root-site' %>'>
-   <div class='av-header-bg'>
-      <div class='av-header-bg-chaos'></div>
-      <div class='av-header-bg-offset'>
-         <div class='av-header-bg-dots'></div>
-      </div>
-   </div>
+   <div class='av-header-bg-chaos'></div>
+   <div class='av-header-bg-dots'></div>
    <div class='av-title'>
-      <% site.title | site.link title=<% site.tagline %> %>
+      <% if <% site.id %> is <% root.id %> then
+         <% image /big.gif | site.link title=<% site.tagline %> %>
+      else
+         <% site.title | site.link title=<% site.tagline %> %>
+      %>
    </div>
 </header>
 
@@ -424,7 +428,6 @@ $(function () {
 @title-font: <% value 'title font' default=@big-font %>;
 
 // Overwriting some classes defined by UIKit to go along with Antville’s layout
-
 
 html, html.uk-notouch, body {
    background-color: @background;
@@ -666,6 +669,14 @@ h4 + .uk-comment-meta li:first-child {
    visibility: hidden;
 }
 
+.av-concealed-link {
+   color: inherit;
+
+   &:hover {
+      color: inherit;
+   }
+}
+
 .av-upload {
    position: relative;
 
@@ -755,54 +766,43 @@ h4 + .uk-comment-meta li:first-child {
 }
 
 .av-header {
+   position: relative;
+   height: 73px;
    margin-top: 5px;
 
-   .av-header-bg {
-      position: relative;
-   }
-
    .av-header-bg-chaos {
-      float: left;
-      width: 262px;
+      width: 274px;
       height: 53px;
-      margin-left: -40px;
+      margin-left: -54px;
       background: url('<% image /spritesheet.png url %>');
-      background-position: -22px -139px;
+      background-position: -9px -139px;
       background-repeat: no-repeat;
    }
 
-   .av-header-bg-offset {
-      height: 53px;
-      margin-left: 222px;
-   }
-
    .av-header-bg-dots {
+      margin-left: 222px;
       position: relative;
-      top: 7px;
+      top: -46px;
+      width: 900px - 274px + 54px;
       height: 38px;
       background: url('<% image /dot.gif url %>');
-      background-position-x: 1px;
    }
 
    .av-title {
-      position: relative;
-      top: -50px;
+      position: absolute;
+      top: 13px;
       overflow: visible;
       white-space: nowrap;
       font-family: Verdana, Helvetica, Arial, sans-serif;
       font-size: 25px;
       font-weight: bold;
-      transform: translateY(50%);
    }
 
+   // The root site gets the beautiful logo with ant animation
    &.av-root-site {
-      .av-header-bg-chaos {
-         background: url('<% image /big.gif url %>');
-         background-position-x: -14px;
-      }
-
       .av-title {
-         visibility: hidden;
+         top: 0px;
+         left: -55px;
       }
    }
 }
@@ -1009,22 +1009,32 @@ a.gs-title:hover {
    var searchFilter = new Antville.Filter(query.filter);
 
    var searchEngineFilters = [
-      new Antville.Filter("//.*altavista.*/\?", "q"),
-      new Antville.Filter("//.*bing\..*/\?", "q"),
-      new Antville.Filter("//.*google\..*/imgres\?", "imgurl"),
-      new Antville.Filter("//.*google\..*/\?.*q=[^&]", "q"),
-      new Antville.Filter("//.*search\.yahoo\..*/\?", "p"),
-      new Antville.Filter("//.*yandex\..*/\?", "text")
+      new Antville.Filter('//.*altavista.*/\\?', 'q'),
+      new Antville.Filter('//.*baidu.com/s\\?', 'wd'),
+      new Antville.Filter('//.*bing\\..*/search\\?', 'q'),
+      new Antville.Filter('//.*duckduckgo.com/\\?', 'q'),
+      new Antville.Filter('//.*google\\..*/imgres\\?', 'imgurl'),
+      new Antville.Filter('//.*google\\..*/\\?.*q=[^&]', 'q'),
+      new Antville.Filter('//.*haosou\\.com/s\\?', 'q'),
+      new Antville.Filter('//.*search\\.yahoo\\..*/\\?', 'p'),
+      new Antville.Filter('//.*search\\.ask\\.com/web\\?', '1'),
+      new Antville.Filter('//.*yandex\\..*/\\?', 'text')
    ];
 
    var urlShortenerCounter = 0;
    var urlShortenerFilters = [
-      new Antville.Filter('//bit\.ly/'),
-      new Antville.Filter('//goo\.gl/'),
-      new Antville.Filter('//owl\.ly/'),
-      new Antville.Filter('//t\.co/'),
-      new Antville.Filter('//tinyurl\.com/'),
-      new Antville.Filter('//.*google\..*/url\?')
+      new Antville.Filter('//.*baidu.com/link'),
+      new Antville.Filter('//bit\\.ly/'),
+      new Antville.Filter('//.*duckduckgo.com/l/\\?'),
+      new Antville.Filter('//l.facebook.com/lrs.php'),
+      new Antville.Filter('//goo\\.gl/'),
+      new Antville.Filter('//.*google\\..*/url\\?'),
+      new Antville.Filter('//ift.tt'),
+      new Antville.Filter('//owl\\.ly/'),
+      new Antville.Filter('//t\\.co/'),
+      new Antville.Filter('//tinyurl\\.com/'),
+      new Antville.Filter('//.*stumbleupon\\.com/refer\\.php\\?'),
+      new Antville.Filter('//.*search\\.yahoo\\..*/.+/RU=')
    ];
 
    $('.av-referrer-row').each(function (index) {
@@ -1127,7 +1137,7 @@ a.gs-title:hover {
 </tr>
 
 <% #deleted %>
-<% gettext "This site is going to be deleted completely and irreversibly after {0}." <% site.deleted | format long %> %>
+<p><% gettext "This site is going to be deleted completely and irreversibly after {0}." <% site.deleted | format long %> %></p>
 
 <% #export %>
 <h1><% gettext "Export Site Data" %></h1>

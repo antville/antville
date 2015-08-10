@@ -22,27 +22,29 @@
   ~ limitations under the License.
   -->
 
-<project name="antville" default="usage" basedir=".">
+<project name="antville" default="dist" basedir=".">
   <target name="help" depends="usage"/>
   <target name="usage">
     <echo message="Antville Build Instructions"/>
     <echo message="==========================="/>
     <echo message="Available targets are:"/>
-    <echo message="  all       Generate the Antville and AntClick packages"/>
-    <echo message="  antclick  Generate the AntClick packages"/>
-    <echo message="  antville  Generate the Antville packages"/>
     <echo message="  clean     Clean up build directory"/>
+    <echo message="  click     Generate the AntClick packages"/>
     <echo message="  client    Build client-side scripts and styles"/>
+    <echo message="  dist      Generate the Antville and AntClick packages (default)"/>
     <echo message="  docs      Generate the API documentation"/>
+    <echo message="  help      Show these build instructions"/>
     <echo message="  messages  Generate JavaScript message files"/>
     <echo message="  patch     Apply patch file to Antville installation"/>
     <echo message="  pot       Extract gettext call strings into POT file"/>
+    <echo message="  ville     Generate the Antville packages"/>
+    <echo message="  +claustra Scaffolds a new claustra, ready for implementation"/>
     <echo message="  +patch    Scaffolds a new patch, ready for implementation"/>
-    <echo message="  +trail    Scaffolds a new trail, ready for implementation"/>
-    <echo message="  usage     Show these build instructions (default)"/>
   </target>
 
-  <target name="all" depends="antville, antclick"/>
+  <target name="dist" depends="antville, antclick"/>
+  <target name="all" depends="dist"/>
+  <target name="build" depends="dist"/>
 
   <target name="init">
     <tstamp>
@@ -53,14 +55,13 @@
     </tstamp>
 
     <property name="name" value="antville"/>
-    <property name="year" value="1998-${year}"/>
+    <property name="year" value="2001-${year}"/>
     <property name="version" value="1.5"/>
     <property name="package.name" value="${name}-${version}"/>
 
-    <property name="antville.src" value="https://code.google.com/p/antville"/>
-    <property name="helma.src" value="https://github.com/p3k/helma.git"/>
-    <property name="apps.src" value="https://github.com/p3k/helma-apps.git"/>
-    <property name="jala.src" value="https://github.com/p3k/helma-jala.git"/>
+    <property name="antville.src" value="https://github.com/antville/antville.git"/>
+    <property name="helma.src" value="https://github.com/antville/helma.git"/>
+    <property name="jala.src" value="https://github.com/antville/helma-jala.git"/>
 
     <property name="uikit.dir" location="./node_modules/uikit-bower"/>
 
@@ -75,8 +76,6 @@
     <property name="export.dir" location="${work.dir}/export"/>
     <property name="modules.dir" location="${export.dir}/helma/modules"/>
     <property name="antville.dir" location="${export.dir}/antville"/>
-    <property name="hopkit.dir" location="${helma.dir}/modules/jala/util/HopKit"/>
-    <property name="trails.dir" location="${antville.dir}/trails"/>
 
     <property name="docs.title" value="Antville&amp;#32;${version}&amp;#32;API&amp;#32;Reference"/>
     <property name="docs.infiles" location="${basedir}/code"/>
@@ -305,22 +304,22 @@
     </echo>
   </target>
 
-  <target name="+trail" depends="init">
-    <property name="trail.dir" value="trails/${trail.name}/${trail.title}"/>
-    <input message="Please enter the name of the trail: " addproperty="trail.name"/>
+  <target name="+claustra" depends="init">
+    <input message="Please enter the name of the new claustra: " addproperty="claustra.name"/>
     <script language="javascript"><![CDATA[
-      name = project.getProperty('trail.name');
+      name = project.getProperty('claustra.name');
       firstLetter = name.substr(0, 1).toUpperCase();
       title = firstLetter + name.substr(1);
-      project.setProperty('trail.title', title);
+      project.setProperty('claustra.title', title);
     ]]></script>
-    <mkdir dir="${trail.dir}"/>
-    <echo file="${trail.dir}/${trail.title}.properties" append="true">#sites = collection(Site)</echo>
-    <echo file="${trail.dir}/${trail.title}.js" append="true">${trail.title}.prototype.main_action = function () {${line.separator}<!--
+    <property name="claustra.dir" value="claustra/${claustra.name}/${claustra.title}"/>
+    <mkdir dir="${claustra.dir}"/>
+    <echo file="${claustra.dir}/${claustra.title}.properties" append="true">#sites = collection(Site)</echo>
+    <echo file="${claustra.dir}/${claustra.title}.js" append="true">${claustra.title}.prototype.main_action = function () {${line.separator}<!--
     -->  //res.debug(this.sites.count());${line.separator}<!--
     -->};${line.separator}</echo>
-    <mkdir dir="${trail.dir}/../Trails"/>
-    <echo file="${trail.dir}/../Trails/Trails.properties" append="true">${trail.name} = mountpoint(${trail.title})${line.separator}</echo>
+    <mkdir dir="${claustra.dir}/../Claustra"/>
+    <echo file="${claustra.dir}/../Claustra/Claustra.properties" append="true">${claustra.name} = mountpoint(${claustra.title})${line.separator}</echo>
   </target>
 
   <target name="clean" depends="init">

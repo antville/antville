@@ -372,9 +372,9 @@ function if_macro(param, firstValue, _is_, secondValue, _then_, firstResult,
  * @param {String} [format] A date format string
  * @returns {String} The formatted current date string
  */
-function now_macro(param, format) {
+var now_macro = function(param, format) {
   return formatDate(new Date, format || param.format);
-}
+};
 
 /**
  * Renders a link.
@@ -916,9 +916,15 @@ function format_filter(value, param, pattern, type) {
   if (!value && value !== 0) {
     return;
   }
-  var f = global['format' + value.constructor.name];
-  if (f && f.constructor === Function) {
-    return f(value, pattern || param.pattern, type);
+  if (type) {
+    var Ctor = global[type.titleize()];
+    if (Ctor) value = new Ctor(value);
+  } else {
+    type = value.constructor.name;
+  }
+  var format = global['format' + type.titleize()];
+  if (format && format.constructor === Function) {
+    return format(value, pattern || param.pattern);
   }
   return value;
 }
@@ -1195,14 +1201,19 @@ function getLocales(language) {
       var isTranslated = jala.i18n.getCatalog(jala.i18n.getLocale(localeString));
       result.push({
         value: localeString,
-        display: (isTranslated ? '︎' : '⚠︎ ') + locale.getDisplayName(locale),
-        'class': isTranslated ? '' : 'av-locale-needs-translation'
+        display: (isTranslated ? String.EMPTY : '⚠︎ ') + locale.getDisplayName(locale),
+        'class': isTranslated ? String.EMPTY : 'av-locale-needs-translation'
       });
     }
   }
+  // TODO: Automatically integrate gendered german language
+  result.push({
+    value: 'de-x-male',
+    display: 'Deutsch ♂'
+  });
   result.sort(new String.Sorter('display'));
   return result;
-}
+};
 
 /**
  * This method returns an array of structs providing two properties each:

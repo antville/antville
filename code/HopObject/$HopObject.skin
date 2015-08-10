@@ -23,7 +23,12 @@
   </p>
 </form>
 
-<% #notify_create %>
+<% #source %>
+<div class='uk-text-right uk-text-muted uk-text-small'>
+   <% gettext Via %>: <% this.site.title | this.link %>
+</div><!-- This comment prevents Markdown from rendering an empty paragraph.
+
+--><% #notify_create %>
 <% gettext 'Hello {0}.' <% membership.name %> %>
 
 <% gettext '{0} has added {1} to the site {2}:' <% this.modifier %> <% gettext <% this.kind prefix='a ' %> %> <% site.title %> %>

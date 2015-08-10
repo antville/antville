@@ -20,7 +20,7 @@
 
 <% #header %>
 <h1><% poll.question | stripTags %></h1>
-<div class='uk-article-meta'>
+<div class='uk-article-meta uk-margin-bottom'>
    <% gettext "Posted by {0} on {1}" <% poll.creator %> <% poll.created short %> %>
 </div>
 
@@ -40,17 +40,17 @@
 <% poll.skin #footer %>
 
 <% #embed %>
-<% if <% poll.status %> is open then
-   <% poll.skin $Poll#open title=<% poll.question %> %>
-else
-   <% poll.skin $Poll#closed title=<% poll.question %> %>
-%>
-<div class='uk-text-right uk-text-small uk-text-muted'>
-   <% gettext Source suffix=<% poll.link . <% poll.site.title %> prefix=': ' %> %>
+<div class='uk-margin-bottom'>
+   <% if <% poll.status %> is open then
+      <% poll.skin $Poll#open title=<% poll.question %> %>
+   else
+      <% poll.skin $Poll#closed title=<% poll.question %> %>
+   %>
+   <% poll.source %>
 </div>
 
 <% #open %>
-<form class='uk-margin-top uk-panel uk-panel-box uk-form uk-form-stacked' method="post" action="<% poll.href %>">
+<form class='uk-panel uk-panel-box uk-form uk-form-stacked' method="post" action="<% poll.href %>">
    <% param.title prefix="<h1 class='uk-panel-title'>" suffix=</h1> %>
    <% poll.loop skin="$Choice#main" %>
    <div class='uk-margin-top'>
@@ -62,7 +62,7 @@ else
 </form>
 
 <% #closed %>
-<div class='uk-margin-top uk-panel uk-panel-box'>
+<div class='uk-panel uk-panel-box'>
    <% param.title prefix="<h1 class='uk-panel-title'>" suffix=</h1> %>
    <% poll.loop skin="$Choice#result" %>
    <div class='uk-float-left'>

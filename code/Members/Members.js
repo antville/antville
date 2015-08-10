@@ -292,6 +292,10 @@ Members.prototype.add_action = function() {
       app.log(ex);
     }
   } else if (req.queryParams.name) {
+    var membership = this.get(req.queryParams.name);
+    if (membership) {
+      return res.redirect(membership.href('edit'));
+    }
     try {
       var membership = this.addMembership(req.queryParams);
       membership.notify(req.action, membership.creator.email, gettext('[{0}] Notification of membership change', root.title));
@@ -301,7 +305,7 @@ Members.prototype.add_action = function() {
       res.message = ex;
       app.log(ex);
     }
-    res.redirect(this.href());
+    res.redirect(this.href(req.action));
   }
   res.data.action = this.href(req.action);
   res.data.title = gettext('Add Member');
@@ -352,8 +356,8 @@ Members.prototype.addMembership = function(data) {
   var user = root.users.get(data.name);
   if (!user) {
     throw Error(gettext('Sorry, your input did not match any registered user.'));
-  } else if (this.get(data.name)) {
-    throw Error(gettext('This user is already a member of this site.'));
+  /*} else if (this.get(data.name)) {
+    throw Error(gettext('This user is already a member of this site.'));*/
   }
   var membership = Membership.add(user, Membership.SUBSCRIBER, this._parent);
   return membership;

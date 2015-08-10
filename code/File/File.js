@@ -307,63 +307,13 @@ File.prototype.update = function(data) {
   this.description = data.description;
   this.touch();
   return;
-
-
-
-  if (!data.file_origin) {
-    if (this.isTransient()) {
-      throw Error(gettext('There was nothing to upload. Please be sure to choose a file.'));
-    }
-  } else if (data.file_origin !== this.origin) {
-    var mime = data.file;
-    if (mime.contentLength < 1) {
-      mime = getURL(data.file_origin);
-      if (!mime) {
-        throw Error(gettext('Could not fetch the file from the given URL.'));
-      }
-    }
-
-    this.origin = data.file_origin;
-    var mimeName = mime.normalizeFilename(mime.name);
-    this.contentLength = mime.contentLength;
-    this.contentType = mime.contentType;
-
-    if (!this.name) {
-       var name = File.getName(data.name) || mimeName.split('.')[0];
-       this.name = this.site.files.getAccessName(name);
-    }
-
-    if (!data.description) {
-      data.description = gettext('Source: {0}', data.file_origin);
-    }
-
-    // Make the file persistent before proceeding with writing
-    // it to disk (also see Helma bug #607)
-    this.isTransient() && this.persist();
-
-    var extension = mimeName.substr(mimeName.lastIndexOf('.')) || String.EMPTY;
-    var fileName = this.name + extension;
-    if (fileName !== this.fileName) {
-      // Remove existing file if the file name has changed
-      this.getFile().remove();
-    }
-    this.fileName = fileName;
-    var file = this.getFile();
-    mime.writeToFile(file.getParent(), file.getName());
-  }
-
-  // FIXME: one day?
-  //this.setTags(data.tags || data.tag_array);
-  this.description = data.description;
-  this.touch();
-  return;
 }
 
 /**
  *
  */
 File.prototype.url_macro = function() {
-  return res.write(this.url || this.getUrl());
+  return res.write(encodeURI(this.url || this.getUrl()));
 }
 
 /**

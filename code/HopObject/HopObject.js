@@ -481,9 +481,11 @@ HopObject.prototype.macro_macro = function(param, handler) {
     res.write(handler || constructor.name.toLowerCase());
     res.write(String.SPACE);
     res.write(this.name ? quote(this.name, '\\s') : this._id);
-    param.suffix && res.write(param.suffix);
+    if (param.suffix) {
+      res.write(param.suffix);
+      param.suffix = null;
+    }
     res.encode(' %>');
-    param.suffix = null;
   }
   return;
 }
@@ -629,7 +631,14 @@ HopObject.prototype.modifier_macro = function(param, mode) {
     res.write(this.modifier.name);
   }
   return;
-}
+};
+
+HopObject.prototype.source_macro = function () {
+  var site = this.site || this.parent;
+  if (res.handlers.site !== site) {
+    this.renderSkin('$HopObject#source');
+  }
+};
 
 /**
  * @returns {String}

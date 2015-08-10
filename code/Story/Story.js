@@ -31,7 +31,8 @@ Story.ALLOWED_MACROS = [
   'image',
   'link',
   'poll',
-  'story.link'
+  'story.link',
+  'value'
 ];
 
 /**
@@ -159,14 +160,20 @@ Story.prototype.getPermission = function(action) {
         User.require(User.PRIVILEGED);
   }
   return false;
-}
+};
 
 Story.prototype.main_action = function() {
+  var title = this.title ? stripTags(this.format_filter(this.title, {}, 'quotes')).clip(10, String.ELLIPSIS, '\\s') : null;
+  var description = this.getDescription(20);
+  if (!title && description) {
+    title = description;
+    description = null;
+  }
   this.site.renderPage({
     type: 'article',
     schema: 'http://schema.org/Article',
-    title: this.getTitle(10),
-    description: this.format_filter(this.getAbstract().replace(/\s+/g, String.SPACE), null, 'quotes'),
+    title: title,
+    description: description,
     body: this.renderSkinAsString('Story#main'),
     images: this.getMetadata('og:image'),
     videos: this.getMetadata('og:video')
@@ -175,7 +182,7 @@ Story.prototype.main_action = function() {
   this.count();
   this.log();
   return;
-}
+};
 
 /**
  *
@@ -196,6 +203,16 @@ Story.prototype.getTitle = function(limit) {
   return String(res.meta[key]) || String.ELLIPSIS;
 };
 
+Story.prototype.getDescription = function(limit) {
+  var key = this + ':text:' + limit;
+  if (!res.meta[key]) {
+    if (this.text) {
+      res.meta[key] = stripTags(this.format_filter(this.text, {}, 'markdown')).clip(limit, String.ELLIPSIS, '\\s').replace(/\s+/g, String.SPACE).trim();
+    }
+  }
+  return res.meta[key] || String.EMPTY;
+};
+
 Story.prototype.edit_action = function() {
   if (req.isPost()) {
     try {
@@ -206,7 +223,7 @@ Story.prototype.edit_action = function() {
       }).call(this, req.postParams['og:image_array'], req.postParams['og:video_array']);
       delete session.data.backup;
       res.message = gettext('The story was successfully updated.');
-      res.redirect(this.href(req.action));
+      res.redirect(this.href());
     } catch (ex) {
       res.message = ex;
       app.log(ex);
@@ -374,7 +391,29 @@ Story.prototype.setCustomContent = function(data) {
  * @param {String} name
  */
 Story.prototype.isCustomContent = function(key) {
-  return this[key] === undefined && key !== 'save';
+  var reservedKeys = [
+    'addtofront',
+    'addtotopic',
+    'antvillehash',
+    'antvilleuser',
+    'cancel',
+    'commentmode',
+    'discussions',
+    'editableby',
+    'hopsession',
+    'mode',
+    'og:image',
+    'og:video',
+    'publish',
+    'save',
+    'status',
+    'submit',
+    'text',
+    'tags',
+    'title',
+    'topic'
+  ];
+  return reservedKeys.indexOf(key.toLowerCase()) < 0;
 }
 
 /**
@@ -605,10 +644,9 @@ Story.prototype.referrers_macro = function(param, limit) {
  */
 Story.prototype.format_filter = function(value, param, mode) {
   if (value) {
-    switch (mode) {
-      case 'plain':
-      return this.url_filter(stripTags(value), param, mode);
+    if (!param) param = {};
 
+    switch (mode) {
       case 'quotes':
       return stripTags(value).replace(/(?:\x22|\x27)/g, function(quote) {
         return '&#' + quote.charCodeAt(0) + ';';
@@ -623,33 +661,41 @@ Story.prototype.format_filter = function(value, param, mode) {
       }
       break;
 
-      case 'markdown':
+      default:
       value = this.linebreak_filter(value, param, 'markdown');
-      value = this.code_filter(value, param);
-      value = this.url_filter(value, param);
       value = this.macro_filter(value, param);
       value = this.markdown_filter(value, param);
-      return value;
-
-      default:
-      value = format(value);
       value = this.url_filter(value, param);
-      value = this.macro_filter(value, param);
       return value;
     }
   }
+
   return String.EMTPY;
 }
 
 Story.prototype.linebreak_filter = function (value, param, mode) {
   if (mode === 'markdown') {
-    // Adding two spaces before any linebreak if not already present;
-    // Markdown is going to transform two spaces into HTML linebreaks.
-    var parts = value.split(/\r\n|\n|\r/);
-    value = parts.map(function (line) {
-      return line.endsWith('  ') ? line : line + '  ';
-    });
-    return value.join('\n');
+    var mdLineBreakMarker = new RegExp('<!--av-break-->', 'g');
+    var mdQuoteMarker = new RegExp('<!--av-quote-->', 'g');
+    var mdCodeMarker = new RegExp('<!--av-code-->', 'g');
+    return value
+      // Prevent Markdown for linebreaks (lines ending with 2 spaces)
+      // as well as code segments (4 spaces) to be removed by Helma’s format() method
+      .replace(/ {2}$/gm, mdLineBreakMarker.source)
+      .replace(/^ {4}/gm, mdCodeMarker.source)
+      // Prevent Markdown for quote segments (lines starting with ‘>’)
+      // to be removed by Helma’s format method()
+      .replace(/^(>+)/gm, function(item) {
+        return mdQuoteMarker.source.repeat(item.length);
+      })
+      // Apply Helma’s format() method for good
+      // FIXME: This should go into the compat layer
+      .format(value)
+      // Restore Markdown quote segments
+      .replace(mdQuoteMarker, '>')
+      // Restore Markdown linebreaks and code segments
+      .replace(mdLineBreakMarker, String.SPACE.repeat(2))
+      .replace(mdCodeMarker, String.SPACE.repeat(4));
   } else {
     var parts = value.split(/(?:\n\n|\r\r|\r\n\r\n)+/);
     value = format('<p>' + parts.join('</p><p>') + '</p>');
@@ -658,13 +704,8 @@ Story.prototype.linebreak_filter = function (value, param, mode) {
 };
 
 Story.prototype.code_filter = function (value, param) {
-  // FIXME: I am too lazy to write a filter so I abuse Helma’s format() method and restore  linebreaks and some other markup afterwards.
-  value = format(value).replace(/<br\s?\/?>(?:\r\n|\n|\r)/g, '\n');
-  // Restore Markdown quotes “>”
-  value = value.replace(/\n(&gt;)+/gm, function (str) {
-    return str.replace(/&gt;/g, '>');
-  });
-  return value;
+  value = this.linebreak_filter(value, param);
+  return this.markdown_filter(value, param);
 };
 
 /**
@@ -697,31 +738,29 @@ Story.prototype.macro_filter = function(value) {
  * @returns {String}
  */
 Story.prototype.url_filter = function(value, param, mode) {
-  param.limit || (param.limit = 50);
-  var re = /(^|\/>|[(\[\s])(!?(?:https?|ftp):\/\/\S+?)([.,;:)\]"'!?]?)(?=[\s<]|$)/gim;
-  return value.replace(re, function(str, head, url, tail) {
-    if (url.startsWith('!')) {
-      return head + url.substring(1) + tail;
-    }
-    res.push();
-    res.write(head);
-    if (mode === 'plain') {
-      res.write(url.clip(param.limit));
-    } else {
-      var text, location = /:\/\/([^\/]*)/.exec(url)[1];
-      text = location;
-      if (mode === 'extended') {
-        text = url.replace(/^.+\/([^\/]*)$/, '$1');
+  var re = />\s*((?:(?:ftp|https?):)?\/\/)([^/]+)(\/[^<]*)?<\/a>/g;
+  if (!mode) {
+    return value.replace(re, function (str, head, domain, tail) {
+      return '>' + domain + '</a>';
+    });
+  } else if (mode === 'plain') {
+    var limit = param.limit || 10;
+    return value.replace(re, function (str, head, domain, tail) {
+      tail = tail ? tail.clip(limit) : String.EMPTY
+      return '>' + head + domain + tail + '</a>';
+    });
+  } else if (mode === 'extended') {
+    return value.replace(re, function (str, head, domain, tail) {
+      var baseName = tail ? tail.split('/').pop() : null;
+      if (baseName) {
+        baseName = baseName.split(/[?#]/).shift();
+        return '>' + baseName + '</a> <span class="uk-text-muted">(' + domain + ')</span>';
       }
-      html.link({href: url, title: url}, text.clip(param.limit));
-      if (mode === 'extended' && text !== location) {
-        res.write(' <span class="uk-text-muted">(' + location + ')</span>');
-      }
-    }
-    res.write(tail);
-    return res.pop();
-  });
-}
+      return '>' + domain + '</a>';
+    });
+  }
+  return value;
+};
 
 Story.prototype.markdown_filter = function (value, param) {
   return marked(value);

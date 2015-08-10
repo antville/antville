@@ -66,9 +66,13 @@
 </form>
 <script type="text/javascript">
    $("form#login").on('submit', function (event) {
+      if ($('#digest').val()) {
+         return true;
+      }
+      var form = $(this);
+      event.preventDefault();
       var name = $("#name").val();
       $.ajax({
-         async: false,
          url: '<% members.href salt.txt %>',
          data: "user=" + encodeURIComponent(name),
          dataType: "text",
@@ -79,9 +83,9 @@
             var token = "<% session.token %>";
             $("input:password").val("");
             $("#digest").val($.md5($.md5(password + salt) + token));
+            form.submit();
          }
       });
-      return true;
    });
 </script>
 
@@ -179,8 +183,8 @@
 <form class='uk-form uk-form-stacked' method='post' action='<% response.action %>'>
    <div class='uk-form-row'>
       <div class='uk-form-label'>
-         <% gettext Account %>
-         <i class='uk-icon-info-circle uk-text-muted' data-uk-tooltip="{pos: 'bottom'}" title='<% gettext 'You can use the asterisk * as wildcard.' %>'></i>
+         <% gettext Name %>
+         <i class='uk-icon-info-circle uk-text-muted' data-uk-tooltip="{pos: 'right'}" title='<% gettext 'You can use the asterisk * as wildcard.' %>'></i>
       </div>
       <div class='uk-form-controls'>
          <input type='text' name='term' id='term' value='<% request.term encoding='form' %>' class='uk-width-1-2' required>
@@ -200,8 +204,9 @@
 <table class='uk-table uk-table-striped uk-table-hover uk-table-condensed'>
    <thead>
       <tr>
-         <th><% gettext Name %></th>
+         <th><% gettext Account %></th>
          <th><% gettext Registered %></th>
+         <!--th><% gettext Role %></th-->
          <th></th>
       </tr>
    </thead>
