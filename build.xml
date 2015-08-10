@@ -136,7 +136,7 @@
       <arg line="clone ${jala.src}"/>
     </exec>
 
-    <!-- Checkout each repostory index to the export directory -->
+    <!-- Checkout each repository index to the export directory -->
     <mkdir dir="${export.dir}"/>
     <exec dir="${source.dir}/helma" executable="git">
       <arg line="checkout-index -f -a --prefix=${export.dir}/helma/"/>
