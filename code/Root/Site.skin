@@ -8,9 +8,8 @@
 <p class='uk-text-muted'>
    <% gettext "Total sites hosted here" suffix=: %> <% root.size %>
    <br>
-   <% gettext "Number of public sites" suffix=: %> <% root.sites.size %>
-   <a class='uk-icon-hover' href='<% root.href sites %>'>
-      <i class='uk-icon-arrow-circle-right'></i>
+   <a class='av-concealed-link' href='<% root.href sites %>'>
+      <% gettext "Number of public sites" suffix=: %> <% root.sites.size %><i class='uk-icon-arrow-circle-right uk-margin-small-left'></i>
    </a>
 </p>
 <h1>
