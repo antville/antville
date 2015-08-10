@@ -675,12 +675,27 @@ Story.prototype.format_filter = function(value, param, mode) {
 
 Story.prototype.linebreak_filter = function (value, param, mode) {
   if (mode === 'markdown') {
-    // Use Helma’s format() method and restore linebreaks for Markdown (two spaces) afterwards.
-    value = format(value).replace(/<br\s*\/?>(?:\r\n|\n|\r)/g, '  \n');
-    // Restore Markdown quotes “>”
-    value = value.replace(/\n(&gt;)+/gm, function (str) {
-      return str.replace(/&gt;/g, '>');
-    });
+    var mdLineBreakMarker = new RegExp('xxx', 'g');
+    var mdQuoteMarker = new RegExp('yyy', 'g');
+    var mdCodeMarker = new RegExp('zzz', 'g');
+    return value
+      // Prevent Markdown for linebreaks (lines ending with 2 spaces)
+      // as well as code segments (4 spaces) to be removed by Helma’s format() method
+      .replace(/ {2}$/gm, mdLineBreakMarker.source)
+      .replace(/^ {4}/gm, mdCodeMarker.source)
+      // Prevent Markdown for quote segments (lines starting with ‘>’)
+      // to be removed by Helma’s format method()
+      .replace(/^(>+)/gm, function(item) {
+        return mdQuoteMarker.source.repeat(item.length);
+      })
+      // Apply Helma’s format() method for good
+      // FIXME: This should go into the compat layer
+      .format(value)
+      // Restore Markdown quote segments
+      .replace(mdQuoteMarker, '>')
+      // Restore Markdown linebreaks and code segments
+      .replace(mdLineBreakMarker, String.SPACE.repeat(2))
+      .replace(mdCodeMarker, String.SPACE.repeat(4));
   } else {
     var parts = value.split(/(?:\n\n|\r\r|\r\n\r\n)+/);
     value = format('<p>' + parts.join('</p><p>') + '</p>');
