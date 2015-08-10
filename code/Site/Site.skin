@@ -19,6 +19,7 @@ prefix="Last update: " default="None so far" %>)</span></li>
 <li><% site.tags.link main <% gettext Tags %> %></li>
 <li><% site.galleries.link main <% gettext Galleries %> %></li>
 <% site.comments.link main <% gettext Comments %> prefix=<li> suffix=</li> %>
+<li><% site.link contact <% gettext Contact %> %></li>
 <li><% site.link rss.xml "<i class='uk-icon-rss'></i> RSS" %></li>
 <li class='uk-nav-divider'></li>
 <% site.stories.link create <% gettext "Add Story" prefix="<i class='uk-icon-plus'></i> " %> prefix="<li>" suffix=</li> %>
@@ -35,30 +36,33 @@ prefix="Last update: " default="None so far" %>)</span></li>
 <li><% root.title | root.link %></li>
 
 <% #search %>
-<form class='uk-form' method='post' action='<% site.href search %>'>
-   <input type='text' class='uk-width-1-1' name='q' value='<% request.q encoding="form" %>' required placeholder='<% gettext Search %>'>
-</form>
+<li class='uk-margin-left'>
+   <form class='uk-form' method='post' action='<% site.href search %>'>
+      <input type='text' class='uk-width-1-1' name='q' value='<% request.q encoding="form" %>' required placeholder='<% gettext Search %>'>
+   </form>
+</li>
 
 <% #robots %>
 # See http://www.robotstxt.org for more information
 #User-agent: *
 #Disallow: /
 #User-agent: BadBot
-#Disallow: /foo
+#Disallow: /private/path
 
 <% #page %>
 <!DOCTYPE html>
-<html <% site.locale prefix='lang=' %>>
-   <head>
+<html <% site.locale prefix='lang=' %> prefix='og: http://ogp.me/ns# fb: http://ogp.me/ns/fb#'>
+   <head <% response.schema prefix="itemscope itemtype='" suffix="'" %>>
       <meta charset='utf-8'>
+      <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+      <meta name='viewport' content='width=device-width, initial-scale=1'>
+      <% response.meta %>
       <title><% response.title %></title>
+      <link rel='canonical' href='<% href %>'>
       <link rel='icon' type='image/x-icon' href='<% image /favicon.png url %>'>
       <link rel='shortcut icon' type='image/x-icon' href='<% image /favicon.png url %>'>
-      <link rel='search' type='application/opensearchdescription+xml' href='<% site.href search.xml %>' title='<% site.title %>'>
-      <link rel='alternate' type='application/rss+xml' title='Stories and comments of <% site.title %>' href='<% site.href rss.xml %>'>
-      <link rel='alternate' type='application/rss+xml' title='Stories of <% site.title %>' href='<% site.href stories.xml %>'>
-      <link rel='alternate' type='application/rss+xml' title='Comments of <% site.title %>' href='<% site.href comments.xml %>'>
-      <link rel='alternate' type='application/rss+xml' title='Sites of <% root.title %>' href='<% root.href updates.xml %>'>
+      <link rel='apple-touch-icon' href='<% image /favicon.png url %>'>
+      <% response.links %>
       <link rel='stylesheet' type='text/css' href='<% site.href main.css %>'>
       <script type='text/javascript' src='<% site.href main.js %>'></script>
    </head>
@@ -73,16 +77,12 @@ prefix="Last update: " default="None so far" %>)</span></li>
             <div class='uk-margin-large-left av-border-left'>
                <% membership.status %>
                <ul class='uk-nav uk-nav-side'>
-                  <li class='uk-nav-divider'/>
+                  <li class='uk-nav-divider'></li>
                   <% site.skin Site#navigation %>
-                  <li class='uk-nav-divider'/>
-                  <li class='uk-margin-left'>
-                     <% site.skin Site#search %>
-                  </li>
-                  <li class='uk-nav-header'/>
-                  <li class='uk-margin-left uk-text-small'>
-                     <% site.calendar %>
-                  </li>
+                  <li class='uk-nav-divider'></li>
+                  <% site.skin Site#search %>
+                  <% site.calendar prefix="<li class='uk-nav-header'></li>
+                     <li class='uk-margin-left uk-text-small'>" suffix='</li>' %>
                </ul>
             </div>
          </div>
@@ -108,59 +108,13 @@ function openPopup(img, width, height) {
 }
 
 <% #values %>
-<% value 'font' 'Helvetica, Arial, sans-serif' %>
-<% value 'background color' #fff %>
-<% value 'link color' #ff4040 %>
+<% value 'background color' #ffffff %>
+<% value 'title color' #444444 %>
+<% value 'text color' #444444 %>
+<% value 'muted color' #999999 %>
 <% value 'hover color' #d50000 %>
+<% value 'link color' #ff4040 %>
+<% value 'text font' 'Helvetica, Arial, sans-serif' %>
+<% value 'title font' 'Helvetica, Arial, sans-serif' %>
 
 <% #stylesheet %>
-/*
-html, body {
-   background-color: <% value 'background color' %>;
-   font-family: <% value font %>;
-}
-
-a {
-   color: <% value 'link color' %>;
-   &:hover {
-     color: <% value 'hover color' %>;
-   }
-}
-
-.av-poll-result-bar {
-   background-color: <% value "link color" %>;
-}
-
-.uk-button-primary {
-   border-color: <% value 'link color' %>;
-   color: <% value 'link color' %>;
-   &:hover {
-      border-color: <% value 'hover color' %>;
-      color: <% value 'hover color' %>;
-   }
-}
-
-.uk-pagination > .uk-active > span {
-   border-color: <% value 'link color' %>;
-   color: <% value 'link color' %>;
-}
-
-.uk-button-link, .uk-subnav > li > a {
-   color: <% value 'link color' %>;
-   &:hover {
-      color: <% value 'hover color' %>;
-   }
-}
-
-.uk-nav-side > li.uk-active > a {
-   color: <% value 'link color' %>;
-}
-
-.jala-calendar-selected {
-   border: 1px solid <% value "link color" %>;
-}
-
-.jala-calendar-selected, .jala-calendar-selected a {
-   color: <% value 'link color' %>;
-}
-*/

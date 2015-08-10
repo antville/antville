@@ -233,10 +233,18 @@ var console = function (type) {
   return function(text /*, text, … */) {
     var now = formatDate(new Date, 'yyyy/MM/dd HH:mm:ss');
     var argString = Array.prototype.join.call(arguments, String.SPACE);
-    writeln('\u001B[34m[' + now + '] [CONSOLE] ' + argString + '\u001B[0m');
+    var shellColors = {
+      debug: '\u001B[34m',
+      error: '\u001B[35m',
+      info: '\u001B[0m',
+      log: '\u001B[0m',
+      warn: '\u001B[31m'
+    };
+
+    writeln(shellColors[type] + '[' + now + '] [' + type.toUpperCase() + '] [console] ' + argString + '\u001B[0m');
 
     if (typeof res !== 'undefined') {
-      res.debug('<script>console.' + type + '("%c%s", "color: #39f", ' +
+      res.debug('<script>console.' + type + '("%c%s", "font-style: italic;", ' +
           JSON.stringify(argString) + ');</script>');
     }
   }
@@ -364,9 +372,9 @@ function if_macro(param, firstValue, _is_, secondValue, _then_, firstResult,
  * @param {String} [format] A date format string
  * @returns {String} The formatted current date string
  */
-function now_macro(param, format) {
+var now_macro = function(param, format) {
   return formatDate(new Date, format || param.format);
-}
+};
 
 /**
  * Renders a link.
@@ -508,12 +516,24 @@ function file_macro(param, id, mode) {
   }
 
   file = HopObject.getFromPath(id, 'files');
+
   if (!file) {
+     if (res.contentType === 'text/html' && !id.contains('/')) {
+      res.handlers.site.link_macro({
+        'class': 'uk-icon-button uk-icon-file-o',
+        'data-uk-tooltip': "{pos: 'right'}",
+        title: gettext('Create missing file'),
+      }, 'files/create?name=' + encodeURIComponent(id), ' ');
+    }
     return;
   }
+
   if (mode === 'url') {
     res.write(file.getUrl());
   } else {
+    if (mode === 'player') {
+      param.skin = file.contentType.split('/')[0];
+    }
     file.renderSkin('File#' + (param.skin || 'main'));
   }
   return;
@@ -538,13 +558,20 @@ function image_macro(param, id, mode) {
     image = Images.Default[name] || Images.Default[name + '.gif'];
   } else {
     image = HopObject.getFromPath(id, 'images');
-    // FIXME: Could fallback be replaced with CSS background-image?
-    if (!image && param.fallback) {
-      image = HopObject.getFromPath(param.fallback, 'images');
-    }
+  }
+
+  if (!image && param.fallback) {
+    image = HopObject.getFromPath(param.fallback, 'images');
   }
 
   if (!image) {
+     if (res.contentType === 'text/html' && !id.contains('/')) {
+      res.handlers.site.link_macro({
+        'class': 'uk-icon-button uk-icon-picture-o',
+        'data-uk-tooltip': "{pos: 'right'}",
+        title: gettext('Create missing image'),
+      }, 'images/create?name=' + encodeURIComponent(id), ' ');
+    }
     return;
   }
 
@@ -742,6 +769,14 @@ function value_macro(param, name, value) {
   return;
 }
 
+function href_macro(param) {
+  var href = path.href(req.action === 'main' ? String.EMPTY : req.action);
+  if (!href.startsWith('http')) {
+    href = req.servletRequest.rootURL + href;
+  }
+  return res.write(href);
+}
+
 /**
  * Renders either a skin or the URL of a random site, story or image.
  * The corresponding story and image collections will be retrieved either from res.handlers.site or
@@ -881,9 +916,15 @@ function format_filter(value, param, pattern, type) {
   if (!value && value !== 0) {
     return;
   }
-  var f = global['format' + value.constructor.name];
-  if (f && f.constructor === Function) {
-    return f(value, pattern || param.pattern, type);
+  if (type) {
+    var Ctor = global[type.titleize()];
+    if (Ctor) value = new Ctor(value);
+  } else {
+    type = value.constructor.name;
+  }
+  var format = global['format' + type.titleize()];
+  if (format && format.constructor === Function) {
+    return format(value, pattern || param.pattern);
   }
   return value;
 }
@@ -918,7 +959,7 @@ function json_filter(value, param) {
 
 function script_filter(value, param) {
   // Remove <script> element and comments (order in brackets is crucial)
-  return value.replace(/\s*(?:<!--|-->|<\?script[^>]*>)\s*/g, String.EMPTY);
+  return value.replace(/\s*(?:<!--|-->|<\/?script[^>]*>)\s*/g, String.EMPTY);
 }
 
 /**
@@ -1160,14 +1201,19 @@ function getLocales(language) {
       var isTranslated = jala.i18n.getCatalog(jala.i18n.getLocale(localeString));
       result.push({
         value: localeString,
-        display: (isTranslated ? '︎' : '⚠︎ ') + locale.getDisplayName(locale),
-        'class': isTranslated ? '' : 'av-locale-needs-translation'
+        display: (isTranslated ? String.EMPTY : '⚠︎ ') + locale.getDisplayName(locale),
+        'class': isTranslated ? String.EMPTY : 'av-locale-needs-translation'
       });
     }
   }
+  // TODO: Automatically integrate gendered german language
+  result.push({
+    value: 'de-x-male',
+    display: 'Deutsch ♂'
+  });
   result.sort(new String.Sorter('display'));
   return result;
-}
+};
 
 /**
  * This method returns an array of structs providing two properties each:

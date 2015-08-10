@@ -240,20 +240,15 @@ Story.prototype.topicchooser_macro = function(param) {
 }
 
 Story.prototype.addtofront_macro = function(param) {
-  if (param.as === "editor") {
-    // if we're in a submit, use the submitted form value.
-    // otherwise, render the object's value.
-    if (req.data.publish || req.data.save) {
-      if (!req.data.addToFront) {
-        delete param.checked;
-      }
-    } else if (req.action !== "create" && this.mode !== Story.FEATURED) {
-      delete param.checked;
-    }
-    param.name = "addToFront";
-    param.value = "1";
+  if (param.as === 'editor') {
+    var mode = req.isPost() ? req.postParams.addToFront : this.mode;
+    param.name = 'addToFront';
+    param.value = '1';
+    param.checked = (mode === Story.FEATURED ? 'checked' : null);
     delete param.as;
     html.checkBox(param);
+  } else {
+    res.write(this.mode === Story.FEATURED ? 'yes' : 'no');
   }
   return;
 }

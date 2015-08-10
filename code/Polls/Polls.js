@@ -72,7 +72,7 @@ Polls.prototype.create_action = function() {
       res.message = err.toString();
     }
   } else {
-    req.postParams.title_array = [null, null];
+    req.postParams.title_array = [null];
   }
   res.data.action = this.href(req.action);
   res.data.title = gettext('Add Poll');

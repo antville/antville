@@ -21,6 +21,7 @@
 
 markgettext('Layout');
 markgettext('layout');
+markgettext('a layout');
 
 /** @constant */
 Layout.VALUES = [
@@ -63,25 +64,28 @@ Layout.add = function(site, user) {
  * @param {Boolean} includeSelf
  */
 Layout.remove = function(options) {
+  if (!options) options = {};
   if (this.constructor === Layout) {
-    // Backup current layout in temporary directory if possible
-    var dir = this.getFile();
-    if (dir.exists() && dir.list().length > 0) {
-      var zip = this.getArchive(res.skinpath);
-      var file = java.io.File.createTempFile(this.site.name + '-layout-', '.zip');
-      zip.save(file);
+    // The “force” flag is set e.g. when a whole site is removed
+    if (!options.force) {
+      // Backup current layout in temporary directory if possible
+      var dir = this.getFile();
+      if (dir.exists() && dir.list().length > 0) {
+        var zip = this.getArchive(res.skinpath);
+        var file = java.io.File.createTempFile(this.site.name + '-layout-', '.zip');
+        zip.save(file);
+      }
     }
     HopObject.remove.call(this.skins);
     HopObject.remove.call(this.images);
     this.getFile().removeDirectory();
-    // The “force” flag is set e.g. when a whole site is removed
-    if (options && options.force) {
+    if (options.force) {
       this.deleteMetadata();
       this.remove();
     }
   }
   return;
-}
+};
 
 /**
  * @function
@@ -213,12 +217,13 @@ Layout.prototype.update = function(data) {
   }
   res.push();
   for (var key in data) {
-    if (key.startsWith('value_')) {
+    var prefix = 'av-value ';
+    if (key.startsWith(prefix)) {
       var value = data[key];
-      key = key.substr(6);
+      key = key.substr(prefix.length);
       res.write('<% value ');
       res.write(quote(key, '\\s'));
-      res.write(' ');
+      res.write(String.SPACE);
       res.write(quote(value, '\\s'));
       res.write(' %>\n');
     }
@@ -492,14 +497,52 @@ Layout.prototype.image_macro = function(param, name, mode) {
 Layout.prototype.values_macro = function() {
   var values = [];
   for (var key in res.meta.values) {
-    values.push({key: key, value: res.meta.values[key]});
+    values.push({
+      key: key,
+      value: res.meta.values[key]
+    });
   }
+
+  this.renderSkin('$Layout#value', {'class': 'uk-hidden'});
+
   values.sort(new String.Sorter('key'));
   for each (var pair in values) {
+    var type = getType(pair.key);
     this.renderSkin('$Layout#value', {
-      key: pair.key.capitalize(),
-      value: pair.value
+      title: pair.key.capitalize(),
+      name: 'av-value ' + pair.key,
+      value: getValue(pair.value, type),
+      type: type,
+      macro: '<% value ' + quote(pair.key, '\\s') + ' %>'
     });
+  }
+
+  function getValue(value, type) {
+    return {
+      color: getColor(value)
+    }[type] || value;
+  }
+
+  function getType(name) {
+    var parts = name.split(String.SPACE);
+    var typePart = parts.pop();
+    var types = {
+      color: 'color'
+    };
+    return types[typePart] || 'text';
+  }
+
+  function getColor(value) {
+    value = String(value).trim();
+    if (value.startsWith('#') && value.length === 4) {
+      var color = ['#'];
+      for (var i = 1, char; i < value.length; i += 1) {
+        char = value[i];
+        color.push(char, char);
+      }
+      return color.join(String.EMPTY);
+    }
+    return value;
   }
   return;
 }

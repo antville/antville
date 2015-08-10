@@ -37,7 +37,7 @@
          </div>
       </div>
       <div class='uk-form-row'>
-         <label class='uk-form-label' for='quote'>
+         <label class='uk-form-label' for='quota'>
             <% gettext "Disk Quota" %>
          </label>
          <div class='uk-form-controls'>
@@ -60,7 +60,7 @@
             <% gettext 'Probation Period' %>
          </label>
          <div class='uk-form-controls'>
-            <% root.input probationPeriod class=uk-width-1-6 type=number min=1 %> <% gettext days %>
+            <% root.input probationPeriod class=uk-width-1-6 type=number min=0 %> <% gettext days %>
          </div>
       </div>
       <div class='uk-form-row'>
@@ -68,7 +68,7 @@
             <% gettext Interval %>
          </label>
          <div class='uk-form-controls'>
-            <% root.input creationDelay maxlength=3 class=uk-width-1-6 type=number min=1 %> <% gettext days %>
+            <% root.input creationDelay class=uk-width-1-6 type=number min=0 %> <% gettext days %>
          </div>
       </div>
    </fieldset>
@@ -79,7 +79,7 @@
             <% gettext Mode %>
          </label>
          <div class='uk-form-controls'>
-            <% root.select phaseOutMode label=enabled %>
+            <% root.select phaseOutMode %>
          </div>
       </div>
       <div class='uk-form-row'>
@@ -107,7 +107,6 @@
    </div>
 </form>
 <script type="text/javascript">
-$(function() {
    $("#creationScope").on('change', function() {
       var disabled = $(this).val() === "regular" ? false : true;
       $("#probationPeriod").attr("disabled", disabled);
@@ -118,7 +117,6 @@ $(function() {
       $("#phaseOutNotificationPeriod").attr("disabled", disabled);
       $("#phaseOutGracePeriod").attr("disabled", disabled);
    }).change();
-});
 </script>
 
 <% #activities %>
@@ -130,7 +128,7 @@ $(function() {
       </div>
       <div class='uk-form-controls'>
          <% gettext '{0} activity sorted by date in {1} order.'
-            <% admin.dropdown name="display" <% markgettext any %> <% markgettext content %> <% markgettext comment %> <% markgettext link %> <% markgettext file %> <% markgettext image %> <% markgettext poll %> <% markgettext site %> <% markgettext user %> %>
+            <% admin.dropdown name="display" <% markgettext any %> <% markgettext content %> <% markgettext comment %> <% markgettext link %> <% markgettext file %> <% markgettext image %> <% markgettext poll %> <% markgettext site %> <% markgettext account %> %>
             <% admin.dropdown name="order" <% markgettext descending %> <% markgettext ascending %> %>
          %>
       </div>
@@ -266,9 +264,8 @@ $(function() {
    <thead>
       <tr>
          <th><% gettext Method %></th>
-         <th><% gettext Type %></th>
-         <th><% gettext ID %></th>
-         <th><% gettext User %></th>
+         <th><% gettext Reference %></th>
+         <th><% gettext Account %></th>
          <th></th>
       </tr>
    </thead>
@@ -316,9 +313,7 @@ $(function() {
       <% item.notes prefix="<span title='" suffix="' data-uk-tooltip><i class='uk-icon-info-circle uk-text-muted'></i></span>" %>
    </td>
    <td class='uk-text-right uk-text-nowrap'>
-      <% if <% item.mode %> is deleted then '' else
-         <% item.link delete "<i class='uk-icon-trash-o'></i>" <% item.id %> %>
-      %>
+      <% admin.link delete "<i class='uk-icon-trash-o'></i>" <% item.self %> %>
       <% item.link edit "<i class='uk-icon-pencil'></i>" <% item.id %> %>
    </td>
 </tr>
@@ -350,11 +345,10 @@ $(function() {
 
 <% #job %>
 <tr>
-   <td><% item.method %></td>
-   <td><% item.type %></td>
-   <td><% item.id %></td>
-   <td><% item.user %></td>
-   <td><% item.link delete "<i class='uk-icon-trash-o'></i>" %></td>
+   <td><% gettext <% item.method %> | titleize %></td>
+   <td><a href='<% item.target.href %>'><% item.target.name %></a></td>
+   <td><% item.user.name %></td>
+   <td class='uk-text-right'><% admin.link <% item.target.id prefix='job?delete=' %> "<i class='uk-icon-trash-o'></i>" %></td>
 </tr>
 
 <% #blockedSite %>

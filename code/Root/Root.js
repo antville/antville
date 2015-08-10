@@ -90,6 +90,7 @@ Root.prototype.getPermission = function(action) {
   switch (action) {
     case 'debug':
     case 'default.hook':
+    case 'favicon.ico':
     case 'health':
     case 'jala.test':
     case 'jala.test.css':
@@ -138,6 +139,11 @@ Root.prototype.notfound_action = function() {
   res.handlers.site.renderSkin('Site#page');
   return;
 }
+
+Root.prototype.favicon_ico_action = function () {
+  res.contentType = 'image/x-icon';
+  res.writeBinary([]);
+};
 
 Root.prototype.create_action = function() {
   if (req.postParams.create) {
@@ -397,4 +403,15 @@ Root.prototype.getCreationPermission = function() {
     }
   }
   return true;
-}
+};
+
+Root.prototype.link_macro = function (param, url, text) {
+  switch (url) {
+    case 'create':
+    if (root.creationScope === User.REGULAR) {
+      return renderLink.call(global, param, url, text || '', this);
+    }
+  }
+
+  return HopObject.prototype.link_macro.apply(this, arguments);
+};

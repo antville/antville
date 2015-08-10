@@ -21,6 +21,7 @@
 
 markgettext('Poll');
 markgettext('poll');
+markgettext('a poll // accusative');
 
 /**
  * @function
@@ -159,7 +160,7 @@ Poll.prototype.edit_action = function() {
     try {
       this.update(req.postParams);
       res.message = gettext('The poll was updated successfully.');
-      res.redirect(this.href());
+      res.redirect(this.href(req.action));
     } catch (ex) {
       res.message = ex;
       app.log(ex);
@@ -287,6 +288,8 @@ Poll.prototype.input_macro = function(param, name) {
         return add(this);
       });
     }
+    // Always add one more empty choice which is only visible if JavaScript is disabled
+    add(new Choice());
     return;
   }
   return HopObject.prototype.input_macro.apply(this, arguments);

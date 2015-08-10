@@ -43,7 +43,7 @@
       <tr>
          <th><% gettext Title %></th>
          <th><% gettext 'Last Update' %></th>
-         <th><% gettext User %></th>
+         <th><% gettext Account %></th>
       </tr>
    </thead>
    <tbody>
@@ -116,7 +116,7 @@
       <dd><% version %></dd>
       <dt><% gettext Build %></dt>
       <dd>
-         <% link <% version hash prefix='https://code.google.com/p/antville/source/browse/?r=' %> <% version hash %> %> (<% version date | format date medium %>)
+         <% link <% version hash prefix='https://github.com/antville/antville/commit/' %> <% version hash %> %> (<% version date | format date medium %>)
       </dd>
    </dl>
 </div>

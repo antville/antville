@@ -388,7 +388,7 @@ HopObject.prototype.input_macro = function(param, name) {
  * @param {Object} param
  * @param {String} name
  */
-HopObject.prototype.textarea_macro = function(param, name) {
+HopObject.prototype.textarea_macro = function(param, name, type) {
   param.name = name;
   param.id = name;
   param.value = this.getFormValue(name);
@@ -481,6 +481,10 @@ HopObject.prototype.macro_macro = function(param, handler) {
     res.write(handler || constructor.name.toLowerCase());
     res.write(String.SPACE);
     res.write(this.name ? quote(this.name, '\\s') : this._id);
+    if (param.suffix) {
+      res.write(param.suffix);
+      param.suffix = null;
+    }
     res.encode(' %>');
   }
   return;
@@ -489,11 +493,12 @@ HopObject.prototype.macro_macro = function(param, handler) {
 /**
  *
  */
-HopObject.prototype.kind_macro = function() {
+HopObject.prototype.kind_macro = function(param) {
   var type = this.constructor.name.toLowerCase();
   switch (type) {
     default:
-    res.write(gettext(type));
+    res.write(cgettext((param.prefix || String.EMPTY) + type, 'accusative'));
+    param.prefix = null;
     break;
   }
   return;
@@ -601,9 +606,8 @@ HopObject.prototype.creator_macro = function(param, mode) {
     html.link({href: this.creator.url}, this.creator.name);
   } else if (mode === 'url') {
     res.write(this.creator.url);
-  } else if (mode === 'gravatar' && this.creator.email) {
-    res.write('https://secure.gravatar.com/avatar/');
-    res.write(this.creator.email.trim().toLowerCase().md5());
+  } else if (mode === 'gravatar') {
+    this.creator.gravatar_macro(param);
   } else {
     res.write(this.creator.name);
   } return;
@@ -627,7 +631,14 @@ HopObject.prototype.modifier_macro = function(param, mode) {
     res.write(this.modifier.name);
   }
   return;
-}
+};
+
+HopObject.prototype.source_macro = function () {
+  var site = this.site || this.parent;
+  if (res.handlers.site !== site) {
+    this.renderSkin('$HopObject#source');
+  }
+};
 
 /**
  * @returns {String}

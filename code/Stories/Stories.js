@@ -53,6 +53,7 @@ Stories.prototype.getPermission = function(action) {
     case 'top':
     case 'closed':
     case 'create':
+    case 'render.json':
     case 'user':
     return Site.require(Site.OPEN) && session.user ||
         Membership.require(Membership.CONTRIBUTOR) ||
@@ -74,6 +75,10 @@ Stories.prototype.create_action = function() {
   if (req.data.save) {
     try {
       story = Story.add(req.params);
+      (function (images, videos) {
+        this.setMetadata('og:image', images ? Array.prototype.slice.call(images) : null);
+        this.setMetadata('og:video', videos ? Array.prototype.slice.call(videos) : null);
+      }).call(story, req.postParams['og:image_array'], req.postParams['og:video_array']);
       story.notify(req.action);
       JSON.sendPaddedResponse(story._id);
       delete session.data.backup;
@@ -89,7 +94,9 @@ Stories.prototype.create_action = function() {
   res.data.title = gettext('Add Story');
   res.data.action = this.href(req.action);
   HopObject.confirmConstructor(Story);
-  res.data.body = (new Story).renderSkinAsString('Story#edit');
+  var story = new Story();
+  res.data.body = story.renderSkinAsString('Story#edit');
+  res.data.body += story.renderSkinAsString('$Story#editor');
   this._parent.renderSkin('Site#page');
   return;
 }
@@ -120,6 +127,14 @@ Stories.prototype.top_action = function() {
   this._parent.renderSkin('Site#page');
   return;
 }
+
+Stories.prototype.render_json_action = function () {
+  var content = String(req.postParams.http_post_remainder);
+  var story = new Story;
+  story.site = res.handlers.site;
+  var result = Story.prototype.format_filter.call(story, content);
+  res.write(result);
+};
 
 /**
  *

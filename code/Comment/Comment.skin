@@ -1,36 +1,45 @@
 <% #main %>
 <li>
-   <% comment.skin Comment#content %>
+   <% comment.skin content %>
    <% comment.comments prefix=<ul> suffix=</ul> %>
 </li>
 
 <% #reply %>
-<% // Remove the <ul> element for flat comments %>
-<li><% comment.skin Comment#content commentLink=false %></li>
+<li><% comment.skin content %></li>
 
 <% #content %>
-<a name='<% comment.id %>'></a>
-<article class='uk-comment uk-margin-top'>
-   <div class='uk-comment-header'>
-      <% if <% comment.creator url %> is null then '' else <% comment.creator url prefix="<a href='" suffix="'>" %> %>
-      <img class='uk-comment-avatar' src='<% comment.creator gravatar suffix='?s=50&amp;d=mm' %>'>
-      <% if <% comment.creator url %> is null then '' else </a> %>
-      <h4 class='uk-comment-title'><% comment.creator %></h4>
+<a id='<% comment.id %>'></a>
+<article class='uk-comment uk-margin-top <% if <% comment.creator %> is <% comment.story.creator %> then uk-comment-primary %>'>
+   <header class='uk-comment-header'>
+      <% comment.meta %>
       <ul class='uk-comment-meta uk-subnav uk-subnav-line'>
          <li><% comment.created short %></li>
          <% comment.link main "<i class='uk-icon-link'></i>" prefix=<li> suffix=</li> %>
          <% comment.link delete "<i class='uk-icon-trash-o'></i>" prefix=<li> suffix=</li> %>
+         <% comment.link filter "<i class='uk-icon-filter'></i>" prefix=<li> suffix=</li> %>
          <% comment.link edit "<i class='uk-icon-pencil'></i>" prefix=<li> suffix=</li> %>
-         <% if <% param.commentLink %> is false then '' else <% comment.link comment#form "<i class='uk-icon-comment-o'></i> " prefix=<li> suffix=</li> %> %>
+         <% if <% comment.level %> is 0 then
+            <% comment.link comment#form "<i class='uk-icon-comment-o'></i> " prefix=<li> suffix=</li> %>
+         else
+            <% comment.top.link comment#form "<i class='uk-icon-comment-o'></i> " prefix=<li> suffix=</li> %>
+         %>
       </ul>
-   </div>
+   </header>
    <div class='uk-comment-body'>
       <% comment.text | comment.format %>
    </div>
 </article>
 
+<% #meta %>
+<% comment.creator url prefix="<a href='" suffix="'>" %>
+<img alt='' class='uk-comment-avatar' src='<% comment.creator gravatar suffix='?s=50&amp;d=mm' %>'>
+<% if <% comment.creator url %> is null then '' else </a> %>
+<h4 class='uk-comment-title'><% comment.creator %> <% comment.badge %></h4>
+
 <% #comment %>
-<% comment.skin Comment#content %>
+<ul class='uk-comment-list'>
+   <% comment.skin main %>
+</ul>
 
 <% #edit %>
 <% if <% comment.creator %> is null then
@@ -38,7 +47,7 @@
 else
    <% gettext 'Edit Comment' prefix=<h1> suffix=<% comment.link main ' ' class='uk-icon-button uk-icon-link uk-text-middle' prefix=' ' suffix=</h1> %> %>
 %>
-<a name="form" id="form"></a>
+<a id="form"></a>
 <div class='uk-article-meta'>
    <% if <% comment.creator %> is null then '' else
       <% gettext "Posted by {0} on {1}" <% comment.creator %> <% comment.created short %> %>
@@ -47,18 +56,10 @@ else
       <% gettext "Last modified by {0} on {1}" <% comment.modifier %> <% comment.modified short %> prefix=<div> suffix=</div> %>
    %>
 </div>
-<form class='uk-margin-top uk-form uk-form-stacked' method="post" action="<% response.action %>">
+<form class='uk-margin-large-top uk-form uk-form-stacked' method="post" action="<% response.action %>">
    <div class='uk-form-row'>
       <div class='uk-form-label'>
-         <% gettext Title %>
-      </div>
-      <div class='uk-form-controls'>
-         <% comment.input title class='uk-width-1-1' %>
-      </div>
-   </div>
-   <div class='uk-form-row'>
-      <div class='uk-form-label'>
-         <% gettext Text %>
+         <% gettext Comment %>
       </div>
       <div class='uk-form-controls'>
          <% comment.textarea text class='uk-width-1-1' rows=10 %>
@@ -66,9 +67,6 @@ else
    </div>
    <div class='uk-margin-top'>
       <button type="submit" name="save" value="1" class='uk-button uk-button-primary'><% gettext Save %></button>
-      <button type="button" id="restore" value="1" class='uk-button'><% gettext Restore %></button>
       <a href='.' class="uk-button uk-button-link"><% gettext Cancel %></a>
    </div>
 </form>
-<% comment.skin $Story#restore %>
-<p class="backup"></p>

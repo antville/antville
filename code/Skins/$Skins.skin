@@ -4,7 +4,8 @@
    <head>
       <meta charset='utf-8'>
       <title><% response.title %></title>
-      <link rel="stylesheet" type="text/css" title="CSS Stylesheet" href="<% site.href main.css %>" />
+      <link rel="stylesheet" type="text/css" href="<% site.href main.css %>">
+      <link rel='stylesheet' type='text/css' href='<% root.static ../../styles/editor.min.css %>'>
       <style type="text/css">
          body {
             margin: 0;
@@ -30,11 +31,11 @@
          }
       </style>
       <script type='text/javascript' src='<% site.href main.js %>'></script>
-      <script type='text/javascript' src='<% root.static ../../scripts/cm.min.js %>'></script>
+      <script type='text/javascript' src='<% root.static ../../scripts/editor.min.js %>'></script>
    </head>
    <body>
       <span class='uk-margin-right uk-float-right'>
-         <% image /smallchaos.gif | link <% layout.skins.href %> %>
+         <% image /smallchaos.gif | link <% site.href %> %>
       </span>
       <% response.body %>
    </body>
@@ -72,7 +73,7 @@
    <thead>
       <tr>
          <th><% gettext Name %></th>
-         <th><% gettext Author %></th>
+         <th><% gettext Account %></th>
          <th><% gettext Modified %></th>
          <th></th>
          <th></th>

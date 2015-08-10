@@ -23,10 +23,15 @@
   </p>
 </form>
 
-<% #notify_create %>
+<% #source %>
+<div class='uk-text-right uk-text-muted uk-text-small'>
+   <% gettext Via %>: <% this.site.title | this.link %>
+</div><!-- This comment prevents Markdown from rendering an empty paragraph.
+
+--><% #notify_create %>
 <% gettext 'Hello {0}.' <% membership.name %> %>
 
-<% gettext 'User {0} has added {1} #{2} to the site {3}:' <% this.modifier %> <% gettext <% this.kind %> %> <% this.id %> <% site.title %> %>
+<% gettext '{0} has added {1} to the site {2}:' <% this.modifier %> <% gettext <% this.kind prefix='a ' %> %> <% site.title %> %>
 <% this.href %>
 
 <% gettext "Best regards." %>
@@ -35,9 +40,9 @@
 <% #notify_edit %>
 <% gettext 'Hello {0}.' <% membership.name %> %>
 
-<% gettext 'User {0} has modified {1} #{2} at the site {3}:' <% this.modifier %> <% gettext <% this.kind %> %> <% this.id %> <% site.title %> %>
+<% gettext '{0} has modified {1} at the site {2}:' <% this.modifier %> <% gettext <% this.kind prefix='a ' %> %> <% site.title %> %>
 <% this.href %>
 
 <% gettext "Best regards." %>
 <% gettext "The Management" %>
-<% // This comment simply adds a linebreak to format the message nicely %>
+<% // This comment macro simply adds a linebreak to format the message nicely %>

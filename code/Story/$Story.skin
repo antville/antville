@@ -22,7 +22,7 @@
       <% story.link mode <% if <% story.mode %> is hidden then eye-slash else eye prefix="<i class='uk-icon-" suffix="'></i>" %> %>
    </td>
    <td class='uk-text-nowrap uk-text-right'>
-      <a href='' data-value="<% story.macro %>" data-text='<% gettext "Press CTRL & C to copy to clipboard." %>' class='av-clipboard-copy'><i class='uk-icon-clipboard'></i></a>
+      <a href='javascript:' data-value="<% story.macro %>" data-text='<% gettext "Press CTRL & C to copy to clipboard." %>' class='av-clipboard-copy'><i class='uk-icon-clipboard'></i></a>
       <% story.link delete "<i class='uk-icon-trash-o'></i>" %>
       <% story.link edit "<i class='uk-icon-pencil'></i>" %>
    </td>
@@ -47,49 +47,233 @@ else
 <dd>Posted <% this.created text %> by <% this.creator %>.</dd>
 
 <% #update %>
-<dt><% gettext '{0} {1} {2} {3} on {4} // e.g. “{3 days ago} {admin} {posted} {a story} on {Antville}”' <% story.modified text prefix=<strong> suffix=</strong> %> <% story.creator %> <% if <% story.created %> is <% story.modified %> then <% gettext 'posted // has posted' %> else <% gettext 'updated // has updated' %> %><% if <% story.type %> is Story then <% gettext 'a story // accusative' %> else <% gettext 'a comment // accusative' %> %> <% story.site.title | story.link %> %></dt>
-<dd><% story.abstract %></dd>
+<dt><% gettext '{0} {1} {2} {3} on {4} // e.g. “{3 days ago} {admin} {posted} {a story} on {Antville}”' <% story.site.modified text prefix=<strong> suffix=</strong> %> <% story.creator %> <% if <% story.created %> is <% story.modified %> then <% gettext 'posted // has posted' %> else <% gettext 'updated // has updated' %> %><% if <% story.type %> is Story then <% gettext 'a story // accusative' %> else <% gettext 'a comment // accusative' %> %> <% story.site.title | story.site.link %> %></dt>
+<dd><% story.abstract | story.link class='av-concealed-link' %></dd>
 
 <% #embed %>
 <div class='uk-margin-bottom'>
    <div class='uk-panel uk-panel-box'>
       <% story.title prefix="<h2 class='uk-panel-title'>" suffix=</h2> %>
-      <% story.text %>
+      <% story.text | story.format %>
    </div>
-   <div class='uk-text-right uk-text-small uk-text-muted'>
-      <% gettext Source suffix=<% story.link . <% story.site.title %> prefix=': ' %> %>
-   </div>
+   <% story.source %>
 </div>
 
-<% #restore %>
-<script type="text/javascript">
-$(function() {
-   var url = "<% site.href backup.js %>";
-   var input = $(".backup :input");
+<% #editor %>
+<script type='text/javascript'>
+   (function () {
+      var form = $('#av-story-form');
 
-   if (!"<% session.backup %>") {
-      $("#restore").hide();
-   } else {
-      $("#restore").click(function() {
-         $(this).hide();
-         $.getJSON(url, function(data) {
-            $.each(data, function(key, item) {
-               $("#" + key).val(item);
+      if (!window.UIkit.htmleditor || !document.querySelector(form.selector)) {
+         return;
+      }
+
+      UIkit.plugin('htmleditor', 'antville', {
+         init: function (editor) {
+            var addAction = function (name, replace, mode) {
+               editor.off('action.' + name);
+               editor.on('action.' + name, function() {
+                  editor[mode == 'replaceLine' ? 'replaceLine' : 'replaceSelection'](replace);
+               });
+            };
+
+            editor.addButtons({
+               file: {
+                  title: "<% gettext 'File' %>",
+                  label: '<i class="uk-icon-file-o"></i>'
+               },
+               poll: {
+                  title: "<% gettext 'Poll' %>",
+                  label: '<i class="uk-icon-bar-chart"></i>'
+               }
             });
-         });
-      });
-   }
 
-   input.blur(function() {
-      $("#restore").hide();
-      var data = {};
-      input.each(function() {
-         var ref = $(this);
-         data[ref.attr("id")] = $.trim(ref.val());
+            addAction('file', "\<% file '$1' %\>");
+            addAction('image', "\<% image '$1' %\>");
+            addAction('link', "\<% link 'https://' '$1' %\>");
+            addAction('poll', "\<% poll '$1' %\>");
+         }
       });
-      $.post(url, data);
-      return;;
-   });
-   return;
-});
+
+      var editor;
+      var lastKeyPressed;
+      var submitElement;
+      var url = '<% site.href backup.js %>';
+
+      var link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = '<% root.static ../../styles/editor.min.css %>';
+      document.head.appendChild(link);
+
+      /* FIXME: Causes “Cannot read property 'replace' of undefined” in htmleditor.js:62
+      var script = document.createElement('script');
+      script.type = 'text/javascript';
+      script.src = '<% root.static ../../scripts/editor.min.js %>';
+      document.head.appendChild(script);
+      */
+
+      var enableOnBeforeUnload = function () {
+         window.onbeforeunload = function (event) {
+            var message = "<% gettext 'You are going to discard unsaved content.' %>";
+            event.returnValue = message;
+            return message;
+         };
+      };
+
+      var disableOnBeforeUnload = function () {
+         window.onbeforeunload = null;
+      };
+
+      var update = function () {
+         window.onbeforeunload || enableOnBeforeUnload();
+         lastKeyPressed = new Date();
+      };
+
+      var scheduler = function () {
+         var now = new Date();
+         if (lastKeyPressed && (now - lastKeyPressed > 1000)) {
+            var data = {};
+            form.find('input:text').each(function () {
+               data[this.id] = $.trim(this.value);
+            });
+            if (editor) {
+               data.text = $.trim(editor.editor.getValue());
+            }
+            $.post(url, data);
+            lastKeyPressed = null;
+         }
+         setTimeout(scheduler, 100);
+      };
+
+      var parse = function (data) {
+         var html = $('<div>').html(data);
+         var assets = [];
+         html.find('[src]').each(function () {
+            var url = $(this).attr('src');
+            var re = new RegExp('\.(?:gif|jpg|jpeg|png)$', 'i');
+            if (url.match(re)) {
+               assets.push(url);
+            }
+            re = new RegExp('^.+://[^/]*(youtube)[^/]+/embed/([^/?]+)', 'i');
+            var match = url.match(re);
+            if (match) {
+               form.append($('<input>').attr({
+                  hidden: true,
+                  name: 'og:video',
+                  value: 'https://' + match[1] + '.com/v/' + match[2]
+               }));
+               assets.push('https://img.' + match[1] + '.com/vi/' + match[2] + '/0.jpg');
+            }
+         });
+
+         if (!assets.length) {
+            resubmit();
+         }
+
+         $.each(assets, function (index, url) {
+            var img = new Image;
+            img.src = url;
+
+            img.onload = function () {
+               form.append($('<input>').attr({
+                  hidden: true,
+                  name: 'og:image',
+                  value: url
+               }));
+               assets.shift();
+               if (!assets.length) {
+                  resubmit();
+               }
+            };
+
+            img.onerror = function () {
+               assets.shift();
+               if (!assets.length) {
+                  resubmit();
+               }
+            };
+         });
+      };
+
+      var resubmit = function () {
+         // Turn the clicked (or default) submit button into a hidden value to be sure it is submitted again
+         var submit = submitElement || form.find(':submit:first');
+         submitElement = null;
+         form.append($('<input>').attr({
+            hidden: true,
+            name: submit.name,
+            value: submit.value
+         })).submit();
+      };
+
+      editor = UIkit.htmleditor(document.querySelector('#text'), {
+         mode: 'tab',
+         markdown: true,
+         lblPreview: '<% gettext Preview %>',
+         lblCodeview: '<% gettext HTML %>',
+         lblMarkedview: '<% gettext Markdown %>',
+         toolbar: ['bold', 'italic', 'strike', 'link', 'image', 'file', 'poll', 'blockquote', 'listUl', 'listOl']
+      });
+
+      editor.editor.on('keyup', update);
+
+      editor.htmleditor.on('click', '.uk-htmleditor-button-code, .uk-htmleditor-button-preview', function (event) {
+         if ($(event.currentTarget).hasClass('uk-htmleditor-button-preview')) {
+            // FIXME: Should we really render the macros via AJAX call?
+            var raw = encodeURIComponent(editor.editor.getValue());
+            $.post('<% stories.href render.json %>', raw)
+               .done(function (data) {
+                  $('.uk-htmleditor-preview div').html(data);
+               });
+         }
+      });
+
+      form.on('keyup', 'input:text', update)
+         .on('click', '.uk-button', disableOnBeforeUnload);
+
+      form
+         .on('click', ':submit', function (event) {
+            event.preventDefault();
+            $(this.form).trigger('submit', this);
+         })
+         .on('submit', function (event, submit) {
+            var form = $(this);
+            if (form.data('is-processed')) {
+               return;
+            }
+
+            event.preventDefault();
+            form.data('is-processed', true);
+            submitElement = submit;
+
+            var buffer = [];
+            form.find(':input, textarea').each(function () {
+               buffer.push($(this).val());
+            });
+
+            var raw = encodeURIComponent(buffer.join(' '));
+            $.post('<% stories.href render.json %>', raw)
+               .done(parse);
+         });
+
+      // Restore backup text if available and if the editor refers to a new story
+      if (location.href.match('/create$') && '<% session.backup %>') {
+         $.getJSON(url, function (data) {
+            $.each(data, function (key, value) {
+               $('#' + key).val(value);
+            });
+            editor && editor.editor.setValue(data.text);
+         });
+      }
+
+      scheduler();
+
+      // Work-around for https://github.com/uikit/uikit/issues/1149
+      // FIXME: Fix should be available in next release of UIkit.
+      setTimeout(function() {
+         editor.fit();
+      }, 1000);
+   })();
+
 </script>

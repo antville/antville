@@ -21,6 +21,7 @@
 
 markgettext('Choice');
 markgettext('choice');
+markgettext('a choice // accusative')
 
 /**
  *

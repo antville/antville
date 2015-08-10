@@ -13,7 +13,7 @@
       <tr>
          <th class='uk-text-right'><i class='uk-icon-comments-o'></i></th>
          <th><% gettext Content %></th>
-         <th><% gettext Author %></th>
+         <th><% gettext Account %></th>
          <th><% gettext Modified %></th>
          <th></th>
          <th></th>
@@ -25,15 +25,3 @@
    </tbody>
 </table>
 <% response.pager %>
-
-<% #macros %>
-<p class="small">
-   <b>Available Macros:</b><br>
-   <code>
-      &lt;% file %&gt;<br>
-      &lt;% image %&gt;<br>
-      &lt;% link %&gt;<br>
-      &lt;% poll %&gt;<br>
-      &lt;% site.link %&gt;
-   </code>
-</p>

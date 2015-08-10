@@ -24,7 +24,6 @@
    </div>
 </div>
 <script type="text/javascript">
-$(function() {
    $('#confirmation').hide();
    $('#mode').on('click', function() {
       if ($(this).prop('checked')) {
@@ -40,5 +39,4 @@ $(function() {
       $('button').attr('disabled', !$(this).prop('checked'));
    });
    $('.av-alert-confirm').removeClass('uk-hidden');
-});
 </script>

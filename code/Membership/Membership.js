@@ -21,6 +21,7 @@
 
 markgettext('Membership');
 markgettext('membership');
+markgettext('a membership // accusative');
 
 /**
  *
@@ -131,9 +132,9 @@ Membership.prototype.getPermission = function(action) {
     case 'contact':
     return res.handlers.site.getPermission('main');
     case 'edit':
-    return Membership.require(Membership.OWNER) && (!this.require(Membership.OWNER) || this.site.members.owners.size() > 1);
+    return User.require(User.PRIVILEGED) || Membership.require(Membership.OWNER) && (!this.require(Membership.OWNER) || this.site.members.owners.size() > 1);
     case 'delete':
-    return (this.creator === session.user || Membership.require(Membership.OWNER)) && (!this.require(Membership.OWNER) || this.site.members.owners.size() > 1);
+    return User.require(User.PRIVILEGED) || (this.creator === session.user || Membership.require(Membership.OWNER)) && (!this.require(Membership.OWNER) || this.site.members.owners.size() > 1);
   }
   return false;
 }
@@ -177,13 +178,10 @@ Membership.prototype.edit_action = function() {
 Membership.prototype.update = function(data) {
   if (!data.role) {
     throw Error(gettext('Please choose a role for this member.'));
-  } else if (this.user === session.user) {
-    throw Error(gettext('Sorry, you are not allowed to edit your own membership.'));
   } else if (data.role !== this.role) {
     this.role = data.role || Membership.SUBSCRIBER;
     this.touch();
-    this.notify(req.action, this.creator.email,
-        gettext('[{0}] Notification of membership change', root.title));
+    this.notify(req.action, this.creator.email, gettext('[{0}] Notification of membership change', root.title));
   }
   return;
 }
@@ -218,7 +216,7 @@ Membership.prototype.content_action = function() {
       10, req.queryParams.page);
   res.data.pager = renderPager(this.content,
       this.href(), 10, req.queryParams.page);
-  res.data.title = gettext('Content of User: {0}', this.name);
+  res.data.title = gettext('Content of Member {0}', this.name);
   res.data.body = this.renderSkinAsString('$Membership#content');
   this.site.renderSkin('Site#page');
 }

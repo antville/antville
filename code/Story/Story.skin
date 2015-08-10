@@ -11,13 +11,11 @@
 <% #content %>
 <article class='uk-article'>
    <% story.link main <% story.title prefix="<h1 class='uk-article-title'>" suffix="</h1>" default=' ' %> %>
-   <p class='uk-article-meta'>
+   <div class='uk-article-meta uk-margin-bottom'>
       <% gettext 'Posted by {0} at {1}' <% story.creator %> <% story.created time %> %>
       <% story.tags link prefix=<% gettext 'in' suffix=' ' %> %>
-   </p>
-   <p>
-      <% story.text | story.format %>
-   </p>
+   </div>
+   <% story.text | story.format markdown %>
 </article>
 
 <% #preview %>
@@ -33,8 +31,7 @@
    <% story.link . ' ' class='uk-icon-button uk-icon-link uk-text-middle' %>
 </h1>
 <div class='uk-article-meta'><% story.skin $HopObject#meta %></div>
-<% story.skin $Story#restore %>
-<form class='uk-margin-top uk-form uk-form-stacked' method="post" action="<% response.action %>">
+<form id='av-story-form' class='uk-margin-top uk-form uk-form-stacked' method="post" action="<% response.action %>">
    <div class='uk-form-row'>
       <label class='uk-form-label' for='title'>
          <% gettext Title %>
@@ -48,7 +45,7 @@
          <% gettext Text %>
       </label>
       <div class='uk-form-controls'>
-         <% story.textarea rows=15 text class=uk-width-1-1 data-uk-htmleditor='' %>
+         <% story.textarea text rows=15 class=uk-width-1-1 %>
       </div>
    </div>
    <div class='uk-form-row'>
@@ -73,7 +70,7 @@
    <fieldset class='uk-margin-top'>
       <legend><% gettext Information %></legend>
       <div class='uk-form-row'>
-         <% story.macro | link 'javascript:' data-value=<% story.macro %> data-text=<% gettext "Press CTRL & C to copy to clipboard." %> class='av-clipboard-copy' %>
+         <% story.macro | link <% story.href %> data-value=<% story.macro %> data-text=<% gettext "Press CTRL & C to copy to clipboard." %> class='av-clipboard-copy' %>
          <div><% story.comments summary %></div>
          <div><% ngettext '{0} request' '{0} requests' <% story.requests default=0 %> %></div>
       </div>
@@ -82,26 +79,24 @@
       <button class='uk-button uk-button-primary' type="submit" name="save" value="1">
          <% gettext Save %>
       </button>
-      <button class='uk-button uk-button-success' type="button" id="restore" value="1">
-         <% gettext Restore %>
-      </button>
       <% story.link delete <% gettext Delete %> class='uk-button' %>
       <a href='.' class="uk-button uk-button-link"><% gettext Cancel %></a>
    </div>
 </form>
+<script type='text/javascript' src='<% root.static ../../scripts/editor.min.js %>'></script>
 
 <% #comment %>
 <% story.skin Story#date %>
 <% story.skin Story#content %>
 
 <% #history %>
-<li>
+<li class='uk-margin-small-top'>
    <a href='<% this.href %>' title='<% this.modified %>'>
-      <% this.abstract | this.link %>
+      <% this.abstract %>
+      <div class='uk-text-small uk-text-muted'>
+         <% this.creator %>, <% this.modified text %>
+      </div>
    </a>
-   <div class='uk-text-small'>
-      <% this.creator %>, <% this.modified text %>
-   </div>
 </li>
 
 <% #permalink %>

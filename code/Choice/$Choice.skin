@@ -7,7 +7,7 @@
 </div>
 
 <% #edit %>
-<div class='choice uk-form-row'>
+<div class='av-choice uk-form-row'>
    <div class='uk-form-label'>#<% param.index %></div>
    <div>
       <input type='text' name='title' class='uk-width-1-1' value='<% choice.title %>' />

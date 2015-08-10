@@ -45,6 +45,7 @@ Images.prototype.getPermission = function(action) {
     case '.':
     case 'main':
     case 'create':
+    case 'upload':
     // FIXME: case 'tags':
     return Site.require(Site.OPEN) && session.user ||
         Membership.require(Membership.CONTRIBUTOR) ||
@@ -89,6 +90,7 @@ Images.prototype.create_action = function() {
   res.data.title = gettext('Add Image');
   HopObject.confirmConstructor(Image);
   res.data.body = (new Image).renderSkinAsString('$Image#edit');
+  res.data.body += this.renderSkinAsString('$Images#upload');
   res.handlers.site.renderSkin('Site#page');
   return;
 }
@@ -114,7 +116,13 @@ Images.prototype.user_action = function() {
   res.data.body = this.renderSkinAsString(skin);
   res.handlers.site.renderSkin('Site#page');
   return;
-}
+};
+
+Images.prototype.upload_action = function () {
+  var parent = req.queryParams.parent === 'layout' ? res.handlers.layout : res.handlers.site;
+  Image.add({file: req.postParams.files}, parent);
+  res.write(parent.images.href());
+};
 
 /**
  * @namespace

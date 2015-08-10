@@ -6,13 +6,13 @@
    </td>
    <td class='uk-text-right uk-text-nowrap'>
       <% tag.link rss.xml "<i class='uk-icon-rss'></i>" %>
-      <% tag.link delete "<i class='uk-icon-trash-o'></i>" class='deleteTag' data-av-tag-url=<% tag.href delete %> %>
-      <% tag.link rename "<i class='uk-icon-pencil'></i>" class='renameTag' data-av-tag-url=<% tag.href rename %> %>
+      <% tag.link delete "<i class='uk-icon-trash-o'></i>" class='av-delete-tag uk-hidden' data-av-tag-url=<% tag.href delete %> %>
+      <% tag.link rename "<i class='uk-icon-pencil'></i>" class='av-rename-tag uk-hidden' data-av-tag-url=<% tag.href rename %> %>
    </td>
 </tr>
 
 <% #main %>
-<div <% if <% tag.type parent %> is Image then "class='av-tagged'" %>>
+<div class='av-tag'>
    <% list.render skin="$TagHub#main" %>
 </div>
 <ul class='uk-pagination uk-text-left'>
@@ -20,9 +20,12 @@
   <% list.nextLink text="<i class='uk-icon-arrow-right'></i>" prefix=<li> suffix=</li> default="<li class='uk-disabled'><span><i class='uk-icon-arrow-right'></i></span></li>" %>
 </ul>
 <script type='text/javascript'>
+   if ('<% tag.type parent %>' === 'Image') {
+      $('.av-tag').addClass('av-collage');
+   }
    $(window).load(function() {
       var resizeTimer = null;
-      $('.av-tagged').collageCaption();
+      $('.av-collage').collageCaption();
       $(window).bind('resize', function() {
          $('.av-tagged-image').css('opacity', 0);
          if (resizeTimer) clearTimeout(resizeTimer);
@@ -32,7 +35,7 @@
       collage();
 
       function collage() {
-         $('.av-tagged').removeWhitespace().collagePlus({
+         $('.av-collage').removeWhitespace().collagePlus({
             allowPartialLastRow: true,
             fadeSpeed: 'slow'
          });

@@ -21,6 +21,7 @@
 
 markgettext('Site');
 markgettext('site');
+markgettext('a site // accusative');
 
 this.handleMetadata('archiveMode');
 this.handleMetadata('callbackMode');
@@ -30,6 +31,7 @@ this.handleMetadata('commentMode');
 this.handleMetadata('configured');
 this.handleMetadata('deleted');
 this.handleMetadata('export_id');
+this.handleMetadata('imageDimensionLimits');
 this.handleMetadata('import_id');
 this.handleMetadata('job');
 this.handleMetadata('locale');
@@ -42,9 +44,10 @@ this.handleMetadata('spamfilter');
 this.handleMetadata('tagline');
 this.handleMetadata('timeZone');
 this.handleMetadata('title');
+this.handleMetadata('trollFilter');
 
 /**
- * @function
+ * Ffunction
  * @returns {String[]}
  * @see defineConstants
  */
@@ -137,7 +140,9 @@ Site.add = function(data, user) {
     status: user.status === User.PRIVILEGED ? Site.TRUSTED : user.status,
     mode: Site.CLOSED,
     commentMode: Site.ENABLED,
-    archiveMode: Site.PUBLIC
+    archiveMode: Site.PUBLIC,
+    spamFilter: String.EMPTY,
+    trollFilter: String.EMPTY
   });
 
   site.update(site);
@@ -235,6 +240,7 @@ Site.prototype.constructor = function() {
 Site.prototype.getPermission = function(action) {
   switch (action) {
     case 'backup.js':
+    case 'contact':
     case 'main.js':
     case 'main.css':
     case 'error':
@@ -273,11 +279,8 @@ Site.prototype.getPermission = function(action) {
         !Membership.require(Membership.SUBSCRIBER);
 
     case 'unsubscribe':
-    if (!Membership.require(Membership.OWNER) || this.members.owners.size() > 1) {
-      var membership = Membership.getByName(session.user.name, this);
-      return membership;
-    }
-    return;
+    var membership = Membership.getByName(session.user.name, this);
+    return membership ? membership.getPermission('delete') : false;
 
     case 'import':
     case '$Site#admin':
@@ -286,12 +289,18 @@ Site.prototype.getPermission = function(action) {
 }
 
 Site.prototype.main_action = function() {
-  res.data.body = this.renderSkinAsString(this.mode === Site.DELETED ? '$Site#deleted' : 'Site#main');
-  res.data.title = this.getTitle();
-  this.renderSkin('Site#page');
+  this.renderPage({
+    type: 'website',
+    schema: 'http://schema.org/WebSite',
+    title: this.getTitle(),
+    description: this.tagline || String.EMPTY,
+    body: this.renderSkinAsString(this.mode === Site.DELETED ? '$Site#deleted' : 'Site#main'),
+    images: [(this.layout.images.get('favicon') || Images.Default['favicon.png']).getUrl()],
+    links: this.renderSkinAsString('$Site#links')
+  });
   this.log();
   return;
-}
+};
 
 Site.prototype.edit_action = function() {
   if (req.postParams.save) {
@@ -361,7 +370,20 @@ Site.prototype.getFormOptions = function(name) {
     default:
     return HopObject.prototype.getFormOptions.apply(this, arguments);
   }
-}
+};
+
+Site.prototype.getFormValue = function (name) {
+  switch (name) {
+    case 'maxImageWidth':
+    return this.imageDimensionLimits[0];
+    case 'maxImageHeight':
+    return this.imageDimensionLimits[1];
+    case 'trollFilter':
+    var trolls = this.getMetadata('trollFilter');
+    return trolls ? trolls.join('\n') : String.EMPTY;
+  }
+  return HopObject.prototype.getFormValue.apply(this, arguments);
+};
 
 /**
  * @returns {String}
@@ -388,30 +410,36 @@ Site.prototype.update = function(data) {
     this.job = null;
   }
 
+  data.maxImageWidth = Math.abs(data.maxImageWidth) || Infinity;
+  data.maxImageHeight = Math.abs(data.maxImageHeight) || Infinity;
+
   this.map({
-    title: stripTags(data.title) || this.name,
-    tagline: data.tagline || '',
-    mode: data.mode || Site.CLOSED,
-    callbackUrl: data.callbackUrl || this.callbackUrl || '',
+    archiveMode: data.archiveMode || Site.CLOSED,
     callbackMode: data.callbackMode || Site.DISABLED,
+    callbackUrl: data.callbackUrl || this.callbackUrl || String.EMPTY,
+    imageDimensionLimits: [data.maxImageWidth, data.maxImageHeight],
+    commentMode: data.commentMode || Site.DISABLED,
+    locale: data.locale || root.getLocale().toString(),
+    mode: data.mode || Site.CLOSED,
+    notificationMode: data.notificationMode || Site.NOBODY,
     pageMode: data.pageMode || Site.DAYS,
     pageSize: parseInt(data.pageSize, 10) || 3,
-    commentMode: data.commentMode || Site.DISABLED,
-    archiveMode: data.archiveMode || Site.CLOSED,
-    notificationMode: data.notificationMode || Site.NOBODY,
+    spamfilter: data.spamfilter || String.EMPTY,
+    tagline: data.tagline || String.EMPTY,
+    title: stripTags(data.title) || this.name,
     timeZone: data.timeZone || root.getTimeZone().getID(),
-    locale: data.locale || root.getLocale().toString(),
-    spamfilter: data.spamfilter || ''
+    trollFilter: data.trollFilter ? data.trollFilter.split(/\r\n|\r|\n/).filter(function (item) {
+      return item.length > 0;
+    }) : []
   });
 
   if (User.require(User.PRIVILEGED)) {
     this.status = data.status;
     this.notes = data.notes;
-  } else {
-  this.configured = new Date;
-  this.modifier = session.user;
   }
 
+  this.configured = new Date;
+  this.modifier = session.user;
   this.clearCache();
   return;
 }
@@ -420,35 +448,38 @@ Site.prototype.main_css_action = function() {
   res.contentType = 'text/css';
   res.dependsOn(String(Root.VERSION));
   res.dependsOn(this.layout.modified);
-  //HopObject.confirmConstructor(Skin);
-  //res.dependsOn((new Skin('Site', 'stylesheet')).getStaticFile().lastModified());
+  HopObject.confirmConstructor(Skin);
+  res.dependsOn((new Skin('Site', 'stylesheet')).getStaticFile().lastModified());
   res.digest();
 
-  res.push();
-  this.renderSkin('$Site#stylesheet');
-  this.renderSkin('Site#stylesheet');
-  var lessCss = res.pop();
+  // FIXME: This prevents the UIKit fonts from loading (wrong path)
+  //var file = new java.io.File(root.getStaticFile('../../styles/main.min.css'));
+  //res.writeln(Packages.org.apache.commons.io.FileUtils.readFileToString(file, 'utf-8'));
+
+  var coreCss = this.renderSkinAsString('$Site#stylesheet');
+  var customCss = this.renderSkinAsString('Site#stylesheet');
+
+  lessParser.parse(coreCss, function (error, tree) {
+    if (error) throw error;
+    coreCss = tree.toCSS();
+  });
 
   try {
-    lessParser.parse(lessCss, function(error, tree) {
+    lessParser.parse(customCss, function(error, tree) {
       if (error) throw error;
-      //var file = new java.io.File(root.getStaticFile('../../styles/main.min.css'));
-      //res.writeln(Packages.org.apache.commons.io.FileUtils.readFileToString(file, 'utf-8'));
-      res.writeln(tree.toCSS());
+      customCss = tree.toCSS();
     });
   } catch (ex) {
-    handleError(ex);
-    res.writeln(lessCss);
-  }
-
-  function handleError(error) {
-    res.writeln('/** ');
-    res.writeln(error)
+    var message = [ex.type, 'error in line', ex.line, 'column', ex.column, 'of', ex.filename + ':', ex.message/*, '/', ex.extract[1]*/].join(String.SPACE);
+    res.writeln('/**');
+    res.writeln('LESS parser got exception when rendering custom CSS.');
+    res.writeln(message)
     res.writeln('**/');
-    console.log(error);
-    return;
+    console.error(message);
   }
 
+  res.writeln(coreCss);
+  res.writeln(customCss);
   return;
 }
 
@@ -519,6 +550,32 @@ Site.prototype.search_xml_action = function() {
   return;
 }
 
+Site.prototype.renderPage = function (parts) {
+  for (var key in parts) {
+    res.data[key] = parts[key];
+  }
+  if (parts.images) {
+    res.data.images = parts.images.map(function (url) {
+      return html.tagAsString('meta', {
+        property: 'og:image',
+        name: 'twitter:image',
+        itemprop: 'image',
+        content: encodeURI(url)
+      });
+    }).join('\n');
+  }
+  if (parts.videos) {
+    res.data.videos = parts.videos.map(function (url) {
+      return html.tagAsString('meta', {
+        property: 'og:video',
+        content: encodeURI(url)
+      });
+    }).join('\n');
+  }
+  res.data.meta = this.renderSkinAsString('$Site#meta');
+  this.renderSkin('Site#page');
+};
+
 /**
  *
  * @param {Story[]} collection
@@ -552,20 +609,15 @@ Site.prototype.renderXml = function(collection) {
   var list = collection.constructor === Array ? collection : collection.list(0, 25);
   for each (var item in list) {
     entry = new rome.SyndEntryImpl();
-    entry.setTitle(item.title || formatDate(item.created, 'medium'));
+    entry.setTitle(item.title || formatDate(item.created, 'date'));
     entry.setLink(item.href());
     entry.setAuthor(item.creator.name);
     entry.setPublishedDate(item.created);
     if (item.text) {
       description = new rome.SyndContentImpl();
       description.setType('text/html');
-      description.setValue(item.format_filter(item.text, {}));
       // FIXME: Work-around for org.jdom.IllegalDataException caused by some ASCII control characters
-      /*
-      description.setValue(item.renderSkinAsString('Story#rss').replace(/[\x00-\x1f^\x0a^\x0d]/g, function(c) {
-        return '&#' + c.charCodeAt(0) + ';';
-      }));
-      */
+      description.setValue(item.format_filter(item.text).replace(/[\x00-\x1f^\x0a^\x0d]/g, String.EMPTY));
       entry.setDescription(description);
     }
     entries.add(entry);
@@ -794,7 +846,21 @@ Site.prototype.robots_txt_action = function() {
   res.contentType = 'text/plain';
   this.renderSkin('Site#robots');
   return;
-}
+};
+
+Site.prototype.contact_action = function () {
+  var username = req.data.name;
+  var membership;
+  if (username) membership = Membership.getByName(username);
+  if (!membership) membership = this.members.owners.get(0);
+  try {
+    if (!membership) throw Error(gettext('Something went wrong.'));
+    res.redirect(membership.href('contact'));
+  } catch (ex) {
+    res.message = ex.toString();
+    res.redirect(req.data.http_referer);
+  }
+};
 
 /**
  *
@@ -899,7 +965,7 @@ Site.prototype.spamfilter_macro = function() {
     }
   }
   return;
-}
+};
 
 /**
  *
@@ -951,18 +1017,18 @@ Site.prototype.search = function (type, term, limit) {
  * @returns {java.util.Locale}
  */
 Site.prototype.getLocale = function() {
-  var locale;
-  if (locale = this.cache.locale) {
-    return locale;
-  } else if (this.locale) {
-    var parts = this.locale.split('_');
-    locale = new java.util.Locale(parts[0] || String.EMPTY,
-        parts[1] || String.EMPTY, parts.splice(2).join('_'));
+  var locale = this.cache.locale;
+
+  if (locale) return locale;
+
+  if (this.locale) {
+    locale = java.util.Locale.forLanguageTag(this.locale);
   } else {
     locale = java.util.Locale.getDefault();
   }
+
   return this.cache.locale = locale;
-}
+};
 
 /**
  * @returns {java.util.TimeZone}

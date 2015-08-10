@@ -1,5 +1,15 @@
 <% #main %>
-<a href="<% file.href %>" title="<% file.description %>"><% file.name %></a> 
+<a href="<% file.href %>" title="<% file.description %>"><% file.name %></a>
 <span class="small">
    (<% file.contentType suffix=", " %><% file.contentLength %>)
 </span>
+
+<% #audio %>
+<audio src='<% file.url %>' controls>
+  <% file.skin #main %>
+</audio>
+
+<% #video %>
+<video src='<% file.url %>' controls>
+  <% file.skin #main %>
+</video>

@@ -16,30 +16,30 @@
    </p>
    <p>
       <% gettext 'The callback URL will be invoked as an HTTP POST request with the following parameters:' %>
-      <dl class='uk-description-list-line'>
-         <dt>type</dt>
-         <dd><% gettext 'Resource type (e.g. Story or Comment)' %></dd>
-         <dt>id</dt>
-         <dd><% gettext 'Numeric identifier of the resource' %></dd>
-         <dt>url</dt>
-         <dd><% gettext 'URL string of the resource' %></dd>
-         <dt>date</dt>
-         <dd><% gettext 'Date string in Unix timestamp format' %></dd>
-         <dt>user</dt>
-         <dd><% gettext 'Name of the user who triggered the event' %></dd>
-         <dt>site</dt>
-         <dd><% gettext 'Title or name of the site' %></dd>
-         <dt>origin</dt>
-         <dd><% gettext 'URL string of the site' %></dd>
-      </dl>
    </p>
+   <dl class='uk-description-list-line'>
+      <dt>type</dt>
+      <dd><% gettext 'Resource type (e.g. Story or Comment)' %></dd>
+      <dt>id</dt>
+      <dd><% gettext 'Numeric identifier of the resource' %></dd>
+      <dt>url</dt>
+      <dd><% gettext 'URL string of the resource' %></dd>
+      <dt>date</dt>
+      <dd><% gettext 'Date string in Unix timestamp format' %></dd>
+      <dt>user</dt>
+      <dd><% gettext 'Name of the account that triggered the event' %></dd>
+      <dt>site</dt>
+      <dd><% gettext 'Title or name of the site' %></dd>
+      <dt>origin</dt>
+      <dd><% gettext 'URL string of the site' %></dd>
+   </dl>
    <p>
-      <% gettext 'Antville itself provides a default callback URL invoking the basic ping method of the weblogs.com API:' %>
+      <% gettext 'Antville itself provides a default callback URL invoking the basic ping method of the weblogs.com API.' %>
    </p>
    <div><% api.href callback | link %></div>
 </div>
 
 <% #callback %>
 <h1><% response.title %></h1>
-<% gettext 'This callback URL invokes the ping method of the {0}. The essential JavaScript code is shown below.' "<a href='http://www.weblogs.com/api.html'>weblogs.com API</a>." %>
+<% gettext 'This callback URL invokes the ping method of the {0}. The essential JavaScript code is shown below.' "<a href='http://www.weblogs.com/api.html'>weblogs.com API</a>" %>
 <pre><code><% param.code %></code></pre>

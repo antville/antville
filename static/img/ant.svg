@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Source: https://openclipart.org/detail/69/ant-icon-by-rejon -->
+<!-- Create PNG: convert -background none +antialias -density 1800x1800 -resize 180x180 -quality 00 -depth 8 ant.svg favicon.png  -->
 <svg
     xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"

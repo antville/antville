@@ -1,15 +1,16 @@
 <% #main %>
 <p>
-   <% gettext 'Antville is an open source project aimed at the development of a simple site hosting system with many advanced <a href="http://code.google.com/p/antville/wiki/AntvilleFeatures">features</a>.' %>
+   <% gettext 'Antville is an open source project aimed at the development of a simple site hosting system with many advanced <a href="{0}">features</a>.' https://github.com/antville/antville/wiki/Features %>
 </p>
 <p>
-   <a class='uk-button uk-button-success' href='<% site.href create %>'>
-      <% gettext "Create a site. It only takes a few clicks." %>
-   </a>
+   <% root.link create <% gettext "Create a site. It only takes a few clicks." %> class='uk-button uk-button-success' %>
 </p>
-<p class='small'>
-   <% gettext "Total sites hosted here" suffix=: %> <% root.size %><br>
-   <% gettext "Number of public sites" suffix=: %> <% root.sites.size %>
+<p class='uk-text-muted'>
+   <% gettext "Total sites hosted here" suffix=: %> <% root.size %>
+   <br>
+   <a class='av-concealed-link' href='<% root.href sites %>'>
+      <% gettext "Number of public sites" suffix=: %> <% root.sites.size %><i class='uk-icon-arrow-circle-right uk-margin-small-left'></i>
+   </a>
 </p>
 <h1>
   Recent Updates
@@ -20,26 +21,18 @@
 </dl>
 
 <% #navigation %>
-<li><% site.link main <% gettext Start prefix="<i class='uk-icon-home'></i> " %> %></li>
+<li><% root.link main <% gettext Start prefix="<i class='uk-icon-home'></i> " %> %></li>
 <li><% root.link sites <% gettext Sites %> %></li>
-<!--
-<li><% site.tags.link main <% gettext Tags %> %></li>
-<li><% site.galleries.link main <% gettext Galleries %> %></li>
--->
-<li><% site.link stories.xml "<i class='uk-icon-rss'></i> RSS" %></li>
+<li><% root.link contact <% gettext Contact %> %></li>
 <li class='uk-nav-divider'></li>
 <% root.admin.skin $Admin#navigation suffix="<li class='uk-nav-divider'></li>" %>
-<li><% site.link health <% gettext Health prefix="<i class='uk-icon-stethoscope'></i> " %> %></li>
-<li><% site.api.link main <% gettext API %> %></li>
-<li><% link http://code.google.com/p/antville <% gettext Development %> %></li>
+<li><% root.link health <% gettext Health prefix="<i class='uk-icon-stethoscope'></i> " %> %></li>
+<li><% root.api.link main <% gettext API %> %></li>
+<li><% link //project.antville.org <% gettext Development %> %></li>
 <li class='uk-nav-divider'></li>
-<% site.stories.link create <% gettext "Add Story" prefix="<i class='uk-icon-plus'></i> " %> prefix="<li>" suffix=</li> %>
-<% site.stories.link main <% gettext Stories %> prefix=<li> suffix=</li> %>
-<% site.images.link main <% gettext Images %> prefix=<li> suffix=</li> %>
-<% site.files.link main <% gettext Files %> prefix=<li> suffix=</li> %>
-<% site.polls.link main <% gettext Polls %> prefix=<li> suffix=</li> %>
-<% site.members.link main <% gettext Members %> prefix=<li> suffix=</li> %>
-<li class='uk-nav-divider'></li>
-<% site.link edit <% gettext Settings prefix="<i class='uk-icon-cog'></i> " %> prefix=<li> suffix=</li> %>
-<% site.layout.link main <% gettext Layout %> prefix=<li> suffix=</li> %>
-<% site.link referrers <% gettext Referrers %> prefix=<li> suffix=</li> %>
+<% root.link edit <% gettext Settings prefix="<i class='uk-icon-cog'></i> " %> prefix=<li> suffix=</li> %>
+<% root.layout.link main <% gettext Layout %> prefix=<li> suffix=</li> %>
+<% root.link referrers <% gettext Referrers %> prefix=<li> suffix=</li> %>
+
+<% #search %>
+<% // Intentionally left empty %>

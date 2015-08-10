@@ -21,6 +21,7 @@
 
 markgettext('Image');
 markgettext('image');
+markgettext('a image // accusative');
 
 this.handleMetadata('contentLength');
 this.handleMetadata('contentType');
@@ -180,9 +181,13 @@ Image.prototype.href = function(action) {
 }
 
 Image.prototype.main_action = function() {
-  res.data.title = gettext('Image: {0}', this.getTitle());
-  res.data.body = this.renderSkinAsString('Image#main');
-  res.handlers.site.renderSkin('Site#page');
+  res.handlers.site.renderPage({
+    type: 'article',
+    schema: 'http://schema.org/ImageObject',
+    title: gettext('Image: {0}', this.getTitle()),
+    body: this.renderSkinAsString('Image#main'),
+    images: [this.getUrl()]
+  });
   return;
 }
 
@@ -233,9 +238,6 @@ Image.prototype.getFormValue = function(name) {
   switch (name) {
     case 'file':
     return getOrigin();
-    case 'maxWidth':
-    case 'maxHeight':
-    return this[name] || 400;
     case 'tags':
     return this.getTags();
   }
@@ -247,25 +249,29 @@ Image.prototype.getFormValue = function(name) {
  * @param {Object} data
  */
 Image.prototype.update = function(data) {
+  if (data.uploadError) {
+    app.log(data.uploadError);
+    throw Error(gettext('File size is exceeding the upload limit.'));
+  }
+
+  var mime = data.file;
   var origin = data.file_origin;
 
-  if (!origin) {
-    if (this.isTransient()) {
-      throw Error(gettext('There was nothing to upload. Please be sure to choose a file.'));
-    }
-  } else if (origin !== this.origin) {
-    var mime = data.file;
-    // Check if mime is not null to allow post requests with no file upload at all
-    if (!mime || mime.contentLength < 1) {
+  if (!mime || mime.contentLength < 1) {
+    if (origin && origin !== this.origin) {
       mime = getURL(origin);
       if (!mime) {
-        throw Error(gettext('Could not fetch the image from the given URL.'));
+        throw Error(gettext('Could not fetch the file from the given URL.'));
       }
+    } else if (this.isTransient()) {
+      throw Error(gettext('There was nothing to upload. Please be sure to choose a file.'));
     }
+  }
 
+  if (mime.contentLength > 0) {
     var extension = Image.getFileExtension(mime.contentType);
     if (!extension) {
-      throw Error(gettext('This does not seem to be a (valid) JPG, PNG or GIF image file.'));
+      throw Error(gettext('This does not seem to be a valid JPG, PNG or GIF image.'));
     }
 
     this.origin = origin;
@@ -278,13 +284,17 @@ Image.prototype.update = function(data) {
        this.name = this.parent.images.getAccessName(name);
     }
 
-    var image = this.getConstraint(mime, data.maxWidth, data.maxHeight);
+    if (!data.description && origin) {
+      data.description = gettext('Source: {0}', origin);
+    }
+
+    var image = this.getConstraint(mime, res.handlers.site.imageDimensionLimits);
     this.height = image.height;
     this.width = image.width;
 
     var thumbnail;
     if (image.width > Image.THUMBNAILWIDTH) {
-      thumbnail = this.getConstraint(mime, Image.THUMBNAILWIDTH);
+      thumbnail = this.getConstraint(mime, [Image.THUMBNAILWIDTH]);
       this.thumbnailWidth = thumbnail.width;
       this.thumbnailHeight = thumbnail.height;
     } else if (this.isPersistent()) {
@@ -341,14 +351,18 @@ Image.prototype.contentLength_macro = function() {
  *
  */
 Image.prototype.url_macro = function() {
-  return res.write(this.getUrl());
+  return res.write(encodeURI(this.getUrl()));
 }
 
 /**
  *
  */
-Image.prototype.macro_macro = function() {
-  return HopObject.prototype.macro_macro.call(this, null, this.parent && this.parent.constructor === Layout ? 'layout.image' : 'image');
+Image.prototype.macro_macro = function(param) {
+  if (this.parent && this.parent.constructor === Layout) {
+    param.suffix = null;
+    return HopObject.prototype.macro_macro.call(this, param, 'layout.image');
+  }
+  return HopObject.prototype.macro_macro.call(this, param, 'image');
 }
 
 /**
@@ -359,7 +373,7 @@ Image.prototype.thumbnail_macro = function(param) {
   if (!this.thumbnailName) {
     return this.render_macro(param);
   }
-  param.src = this.getUrl(this.getThumbnailFile().getName());
+  param.src = encodeURI(this.getUrl(this.getThumbnailFile().getName()));
   param.title || (param.title = encode(this.description));
   param.alt = encode(param.alt || param.title);
   var width = param.width || this.thumbnailWidth;
@@ -381,7 +395,7 @@ Image.prototype.thumbnail_macro = function(param) {
  * @param {Object} param
  */
 Image.prototype.render_macro = function(param) {
-  param.src = this.getUrl();
+  param.src = encodeURI(this.getUrl());
   param.title || (param.title = encode(this.description));
   param.alt = encode(param.alt || param.title);
   var style = [];
@@ -465,12 +479,13 @@ Image.prototype.getJSON = function() {
 /**
  *
  * @param {helma.util.MimePart} mime
- * @param {Number} maxWidth
- * @param {Number} maxHeight
+ * @param {Array} dimensionLimits [maxWidth, maxHeight]
  * @throws {Error}
  * @returns {Object}
  */
-Image.prototype.getConstraint = function(mime, maxWidth, maxHeight) {
+Image.prototype.getConstraint = function(mime, dimensionLimits) {
+  var maxWidth = dimensionLimits[0] || Infinity;
+  var maxHeight = dimensionLimits[1] || Infinity;
   try {
     var image = new helma.Image(mime.inputStream);
     var factorH = 1, factorV = 1;

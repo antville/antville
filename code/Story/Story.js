@@ -21,6 +21,7 @@
 
 markgettext('Story');
 markgettext('story');
+markgettext('a story // accusative');
 
 this.handleMetadata('title');
 this.handleMetadata('text');
@@ -30,7 +31,8 @@ Story.ALLOWED_MACROS = [
   'image',
   'link',
   'poll',
-  'story.link'
+  'story.link',
+  'value'
 ];
 
 /**
@@ -158,17 +160,29 @@ Story.prototype.getPermission = function(action) {
         User.require(User.PRIVILEGED);
   }
   return false;
-}
+};
 
 Story.prototype.main_action = function() {
-  res.data.title = this.getTitle(10);
-  res.data.body = this.renderSkinAsString('Story#main');
-  this.site.renderSkin('Site#page');
+  var title = this.title ? stripTags(this.format_filter(this.title, {}, 'quotes')).clip(10, String.ELLIPSIS, '\\s') : null;
+  var description = this.getDescription(20);
+  if (!title && description) {
+    title = description;
+    description = null;
+  }
+  this.site.renderPage({
+    type: 'article',
+    schema: 'http://schema.org/Article',
+    title: title,
+    description: description,
+    body: this.renderSkinAsString('Story#main'),
+    images: this.getMetadata('og:image'),
+    videos: this.getMetadata('og:video')
+  });
   this.site.log();
   this.count();
   this.log();
   return;
-}
+};
 
 /**
  *
@@ -187,12 +201,26 @@ Story.prototype.getTitle = function(limit) {
     }
   }
   return String(res.meta[key]) || String.ELLIPSIS;
-}
+};
+
+Story.prototype.getDescription = function(limit) {
+  var key = this + ':text:' + limit;
+  if (!res.meta[key]) {
+    if (this.text) {
+      res.meta[key] = stripTags(this.format_filter(this.text, {}, 'markdown')).clip(limit, String.ELLIPSIS, '\\s').replace(/\s+/g, String.SPACE).trim();
+    }
+  }
+  return res.meta[key] || String.EMPTY;
+};
 
 Story.prototype.edit_action = function() {
-  if (req.postParams.save) {
+  if (req.isPost()) {
     try {
       this.update(req.postParams);
+      (function (images, videos) {
+        this.setMetadata('og:image', images ? Array.prototype.slice.call(images) : null);
+        this.setMetadata('og:video', videos ? Array.prototype.slice.call(videos) : null);
+      }).call(this, req.postParams['og:image_array'], req.postParams['og:video_array']);
       delete session.data.backup;
       res.message = gettext('The story was successfully updated.');
       res.redirect(this.href());
@@ -205,6 +233,7 @@ Story.prototype.edit_action = function() {
   res.data.action = this.href(req.action);
   res.data.title = gettext('Edit Story');
   res.data.body = this.renderSkinAsString('Story#edit');
+  res.data.body += this.renderSkinAsString('$Story#editor');
   this.site.renderSkin('Site#page');
   return;
 }
@@ -216,9 +245,17 @@ Story.prototype.edit_action = function() {
 Story.prototype.update = function(data) {
   var site = this.site || res.handlers.site;
 
+  data.title = data.title ? stripTags(data.title) : String.EMPTY;
+
   if (!data.title && !data.text) {
     throw Error(gettext('Please enter at least something into the “title” or “text” field.'));
   }
+
+  var delta = this.getDelta(data);
+
+  this.title = data.title;
+  this.text = data.text;
+
   if (data.created) {
     try {
       this.created = data.created.toDate('yyyy-MM-dd HH:mm', site.getTimeZone());
@@ -228,10 +265,6 @@ Story.prototype.update = function(data) {
     }
   }
 
-  // Get difference to current content before applying changes
-  var delta = this.getDelta(data);
-  this.title = data.title ? stripTags(data.title.trim()) : String.EMPTY;
-  this.text = data.text ? data.text.trim() : String.EMPTY;
   this.status = data.status || Story.PUBLIC;
   this.mode = data.mode || Story.FEATURED;
   this.commentMode = data.commentMode || Story.OPEN;
@@ -290,7 +323,9 @@ Story.prototype.comment_action = function() {
   res.data.action = this.href(req.action);
   res.data.title = gettext('Add Comment');
   HopObject.confirmConstructor(Comment);
-  res.data.body = (new Comment).renderSkinAsString('Comment#edit');
+  var comment = new Comment();
+  res.data.body = comment.renderSkinAsString('Comment#edit');
+  res.data.body += comment.renderSkinAsString('$Story#editor');
   this.site.renderSkin('Site#page');
   return;
 }
@@ -356,7 +391,29 @@ Story.prototype.setCustomContent = function(data) {
  * @param {String} name
  */
 Story.prototype.isCustomContent = function(key) {
-  return this[key] === undefined && key !== 'save';
+  var reservedKeys = [
+    'addtofront',
+    'addtotopic',
+    'antvillehash',
+    'antvilleuser',
+    'cancel',
+    'commentmode',
+    'discussions',
+    'editableby',
+    'hopsession',
+    'mode',
+    'og:image',
+    'og:video',
+    'publish',
+    'save',
+    'status',
+    'submit',
+    'text',
+    'tags',
+    'title',
+    'topic'
+  ];
+  return reservedKeys.indexOf(key.toLowerCase()) < 0;
 }
 
 /**
@@ -390,23 +447,30 @@ Story.prototype.getDelta = function(data) {
     return Infinity;
   }
 
-  var deltify = function(s1, s2) {
-    var len1 = s1 ? String(s1).length : 0;
-    var len2 = s2 ? String(s2).length : 0;
-    return Math.abs(len1 - len2);
+  // In-between updates (1 hour) get zero delta
+  if ((new Date() - this.modified) < Date.ONEHOUR) {
+    return 0;
+  }
+
+  var getDelta = function(a, b) {
+    var lenA = a ? String(a).length : 0;
+    var lenB = b ? String(b).length : 0;
+    return Math.abs(lenA - lenB);
   };
 
   var delta = 0;
-  delta += deltify(data.title, this.title);
-  delta += deltify(data.text, this.text);
+  delta += getDelta(data.title, this.title);
+  delta += getDelta(data.text, this.text);
+
+  /* FIXME: Custom content needs refactoring
   for (var key in data) {
     if (this.isCustomContent(key)) {
-      delta += deltify(data[key], this.getMetadata(key))
+      delta += getDelta(data[key], this.getMetadata(key))
     }
   }
-  // In-between updates (1 hour) get zero delta
-  var timex = (new Date - this.modified) > Date.ONEHOUR ? 1 : 0;
-  return delta * timex;
+  */
+
+  return delta;
 }
 
 /**
@@ -436,15 +500,20 @@ Story.prototype.getAbstract = function (param) {
     ratio = titleLength / limit;
   }
   var textLimit = Math[ratio < 0.5 ? 'ceil' : 'floor'](limit * (1 - ratio));
-  var text = this.text && stripTags(this.text).clip(textLimit, null, '\\s');
+  var text = this.text && stripTags(this.text).clip(textLimit, null, '\\s').trim();
   title && result.push('<b>' + title + '</b> ');
   text && result.push(text);
+
+  // FIXME: Custom content needs refactoring.
+  // Too much information stored in Story.metadata!
+  /*
   if (result.length < 1) {
-    // FIXME: Custom content should move to compatibility layer
     var contentArgs = Array.prototype.slice.call(arguments, 1); // Remove first argument (param)
     if (!contentArgs.length) {
       for (var key in this.getMetadata()) {
-        contentArgs.push(key);
+        if (key !== 'title' && key !== 'text') {
+          contentArgs.push(key);
+        }
       }
     }
     ratio = 1 / contentArgs.length;
@@ -456,6 +525,8 @@ Story.prototype.getAbstract = function (param) {
       }
     }
   }
+  */
+
   if (result.length < 1 && typeof param['default'] !== 'string') {
     return '<i>' + ngettext('{0} character', '{0} characters', raw.join(String.EMPTY).length) + '</i>';
   }
@@ -468,7 +539,7 @@ Story.prototype.getAbstract = function (param) {
  */
 Story.prototype.abstract_macro = function(param) {
   return res.write(this.getAbstract.call(this, param));
-}
+};
 
 /**
  *
@@ -573,10 +644,9 @@ Story.prototype.referrers_macro = function(param, limit) {
  */
 Story.prototype.format_filter = function(value, param, mode) {
   if (value) {
-    switch (mode) {
-      case 'plain':
-      return this.url_filter(stripTags(value), param, mode);
+    if (!param) param = {};
 
+    switch (mode) {
       case 'quotes':
       return stripTags(value).replace(/(?:\x22|\x27)/g, function(quote) {
         return '&#' + quote.charCodeAt(0) + ';';
@@ -592,12 +662,51 @@ Story.prototype.format_filter = function(value, param, mode) {
       break;
 
       default:
-      value = this.macro_filter(format(value), param);
-      return this.url_filter(value, param);
+      value = this.linebreak_filter(value, param, 'markdown');
+      value = this.macro_filter(value, param);
+      value = this.markdown_filter(value, param);
+      value = this.url_filter(value, param);
+      return value;
     }
   }
+
   return String.EMTPY;
 }
+
+Story.prototype.linebreak_filter = function (value, param, mode) {
+  if (mode === 'markdown') {
+    var mdLineBreakMarker = new RegExp('<!--av-break-->', 'g');
+    var mdQuoteMarker = new RegExp('<!--av-quote-->', 'g');
+    var mdCodeMarker = new RegExp('<!--av-code-->', 'g');
+    return value
+      // Prevent Markdown for linebreaks (lines ending with 2 spaces)
+      // as well as code segments (4 spaces) to be removed by Helma’s format() method
+      .replace(/ {2}$/gm, mdLineBreakMarker.source)
+      .replace(/^ {4}/gm, mdCodeMarker.source)
+      // Prevent Markdown for quote segments (lines starting with ‘>’)
+      // to be removed by Helma’s format method()
+      .replace(/^(>+)/gm, function(item) {
+        return mdQuoteMarker.source.repeat(item.length);
+      })
+      // Apply Helma’s format() method for good
+      // FIXME: This should go into the compat layer
+      .format(value)
+      // Restore Markdown quote segments
+      .replace(mdQuoteMarker, '>')
+      // Restore Markdown linebreaks and code segments
+      .replace(mdLineBreakMarker, String.SPACE.repeat(2))
+      .replace(mdCodeMarker, String.SPACE.repeat(4));
+  } else {
+    var parts = value.split(/(?:\n\n|\r\r|\r\n\r\n)+/);
+    value = format('<p>' + parts.join('</p><p>') + '</p>');
+  }
+  return value;
+};
+
+Story.prototype.code_filter = function (value, param) {
+  value = this.linebreak_filter(value, param);
+  return this.markdown_filter(value, param);
+};
 
 /**
  * Enables certain macros for being used in a story or comment – thus, any content object.
@@ -629,33 +738,33 @@ Story.prototype.macro_filter = function(value) {
  * @returns {String}
  */
 Story.prototype.url_filter = function(value, param, mode) {
-  param.limit || (param.limit = 50);
-  // FIXME: The first RegExp has troubles with <a href=http://... (no quotes)
-  //var re = /(^|\/>|\s+)([\w+-_]+:\/\/[^\s]+?)([\.,;:\)\]\"]?)(?=[\s<]|$)/gim;
-  var re = /(^|\/>|\s+)([!fhtpsr]+:\/\/[^\s]+?)([\.,;:\)\]\"]?)(?=[\s<]|$)/gim
-  return value.replace(re, function(str, head, url, tail) {
-    if (url.startsWith('!')) {
-      return head + url.substring(1) + tail;
-    }
-    res.push();
-    res.write(head);
-    if (mode === 'plain') {
-      res.write(url.clip(param.limit));
-    } else {
-      var text, location = /:\/\/([^\/]*)/.exec(url)[1];
-      text = location;
-      if (mode === 'extended') {
-        text = url.replace(/^.+\/([^\/]*)$/, '$1');
+  var re = />\s*((?:(?:ftp|https?):)?\/\/)([^/]+)(\/[^<]*)?<\/a>/g;
+  if (!mode) {
+    return value.replace(re, function (str, head, domain, tail) {
+      return '>' + domain + '</a>';
+    });
+  } else if (mode === 'plain') {
+    var limit = param.limit || 10;
+    return value.replace(re, function (str, head, domain, tail) {
+      tail = tail ? tail.clip(limit) : String.EMPTY
+      return '>' + head + domain + tail + '</a>';
+    });
+  } else if (mode === 'extended') {
+    return value.replace(re, function (str, head, domain, tail) {
+      var baseName = tail ? tail.split('/').pop() : null;
+      if (baseName) {
+        baseName = baseName.split(/[?#]/).shift();
+        return '>' + baseName + '</a> <span class="uk-text-muted">(' + domain + ')</span>';
       }
-      html.link({href: url, title: url}, text.clip(param.limit));
-      if (mode === 'extended' && text !== location) {
-        res.write(' <span class="uk-text-muted">(' + location + ')</span>');
-      }
-    }
-    res.write(tail);
-    return res.pop();
-  });
-}
+      return '>' + domain + '</a>';
+    });
+  }
+  return value;
+};
+
+Story.prototype.markdown_filter = function (value, param) {
+  return marked(value);
+};
 
 /**
  * @returns {String}

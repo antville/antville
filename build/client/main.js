@@ -7,6 +7,8 @@ require('jquery-collagePlus/extras/jquery.removeWhitespace');
 
 require('uikit-bower/js/uikit');
 require('uikit-bower/js/components/form-password');
+require('uikit-bower/js/components/tooltip');
+require('uikit-bower/js/components/upload');
 
 $(function() {
    // Extend jQuery with selectText() method.
@@ -57,6 +59,12 @@ $(function() {
    // FIXME: Obsolete (should move to compat layer)
    $('.macro-code').click(function(event) {
       $(this).selectText();
+   });
+
+   // Compatibility: Go back when cancel link is clicked
+   $('a.cancel').on('click', function (event) {
+      event.preventDefault();
+      history.back()
    });
 
    // Add the skin controls for the layout sandbox

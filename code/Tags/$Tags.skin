@@ -1,7 +1,6 @@
 <% #main %>
 <h1><% response.title %></h1>
-<% //tags.alphabet %>
-<% //tags.pager %>
+<% site.skin $Site#noscript %>
 <% response.pager %>
 <table class='uk-table uk-table-striped uk-table-hover uk-table-condensed'>
    <thead>
@@ -18,16 +17,12 @@
       </tr>
    </thead>
    <tbody>
-      <% //tags.list %>
       <% response.list %>
    </tbody>
 </table>
 <% response.pager %>
-<% //tags.pager %>
-<% //tags.alphabet %>
 <script type='text/javascript'>
-$(function () {
-  $('.renameTag').on('click', function (event) {
+  $('.av-rename-tag').removeClass('uk-hidden').on('click', function (event) {
     event.preventDefault();
     var name = prompt("<% gettext 'Please enter a new name for this tag' suffix=: %>")
     if (name) {
@@ -36,12 +31,11 @@ $(function () {
     }
   });
 
-  $('.deleteTag').on('click', function (event) {
+  $('.av-delete-tag').removeClass('uk-hidden').on('click', function (event) {
     event.preventDefault();
     if (confirm("<% gettext 'Are you sure you want to remove this tag?' %>")) {
       var url = $(this).data('av-tag-url');
       location.href = url;
     }
   });
-});
 </script>

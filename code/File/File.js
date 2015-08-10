@@ -21,6 +21,7 @@
 
 markgettext('File');
 markgettext('file');
+markgettext('a file // accusative');
 
 this.handleMetadata('url');
 this.handleMetadata('description');
@@ -244,7 +245,7 @@ File.prototype.getFormValue = function(name) {
     case 'file':
     return getOrigin();
   }
-  return this[name];
+  return this[name] || req.queryParams[name];
 }
 
 /**
@@ -254,24 +255,25 @@ File.prototype.getFormValue = function(name) {
 File.prototype.update = function(data) {
   if (data.uploadError) {
     app.log(data.uploadError);
-    // Looks like the file uploaded has exceeded the upload limit ...
     throw Error(gettext('File size is exceeding the upload limit.'));
   }
 
-  if (!data.file_origin) {
-    if (this.isTransient()) {
-      throw Error(gettext('There was nothing to upload. Please be sure to choose a file.'));
-    }
-  } else if (data.file_origin !== this.origin) {
-    var mime = data.file;
-    if (mime.contentLength < 1) {
-      mime = getURL(data.file_origin);
+  var mime = data.file;
+  var origin = data.file_origin;
+
+  if (mime.contentLength < 1) {
+    if (origin && origin !== this.origin) {
+      mime = getURL(origin);
       if (!mime) {
         throw Error(gettext('Could not fetch the file from the given URL.'));
       }
+    } else if (this.isTransient()) {
+      throw Error(gettext('There was nothing to upload. Please be sure to choose a file.'));
     }
+  }
 
-    this.origin = data.file_origin;
+  if (mime.contentLength > 0) {
+    this.origin = origin;
     var mimeName = mime.normalizeFilename(mime.name);
     this.contentLength = mime.contentLength;
     this.contentType = mime.contentType;
@@ -281,8 +283,8 @@ File.prototype.update = function(data) {
        this.name = this.site.files.getAccessName(name);
     }
 
-    if (!data.description) {
-      data.description = gettext('Source: {0}', data.file_origin);
+    if (!data.description && origin) {
+      data.description = gettext('Source: {0}', origin);
     }
 
     // Make the file persistent before proceeding with writing
@@ -311,7 +313,7 @@ File.prototype.update = function(data) {
  *
  */
 File.prototype.url_macro = function() {
-  return res.write(this.url || this.getUrl());
+  return res.write(encodeURI(this.url || this.getUrl()));
 }
 
 /**

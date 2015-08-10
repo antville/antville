@@ -1,5 +1,4 @@
 <% #listItem %>
-<a name="<% poll.id %>" id="<% poll.id %>"></a>
 <tr>
    <td class='uk-text-right'><% poll.votes %></td>
    <td class='uk-width-1-2 av-overflow'>
@@ -13,7 +12,7 @@
       <% poll.link status <% if <% poll.status %> is open then "<i class='uk-icon-unlock'></i>" else "<i class='uk-icon-lock'></i>" %> %>
    </td>
    <td class='uk-text-right uk-text-nowrap'>
-      <a href='' class='av-clipboard-copy' data-text='<% gettext 'Press CTRL & C to copy to clipboard.' %>' data-value="<% poll.macro %>"><i class='uk-icon-clipboard'></i></a><span title='' data-uk-tooltip="{pos: 'right'}">
+      <a href='javascript:' class='av-clipboard-copy' data-text='<% gettext 'Press CTRL & C to copy to clipboard.' %>' data-value="<% poll.macro %>"><i class='uk-icon-clipboard'></i></a>
       <% poll.link delete "<i class='uk-icon-trash-o'></i>" %>
       <% poll.link edit "<i class='uk-icon-pencil'></i>" %>
    </td>
@@ -21,7 +20,7 @@
 
 <% #header %>
 <h1><% poll.question | stripTags %></h1>
-<div class='uk-article-meta'>
+<div class='uk-article-meta uk-margin-bottom'>
    <% gettext "Posted by {0} on {1}" <% poll.creator %> <% poll.created short %> %>
 </div>
 
@@ -41,17 +40,17 @@
 <% poll.skin #footer %>
 
 <% #embed %>
-<% if <% poll.status %> is open then
-   <% poll.skin $Poll#open title=<% poll.question %> %>
-else
-   <% poll.skin $Poll#closed title=<% poll.question %> %>
-%>
-<div class='uk-text-right uk-text-small uk-text-muted'>
-   <% gettext Source suffix=<% poll.link . <% poll.site.title %> prefix=': ' %> %>
+<div class='uk-margin-bottom'>
+   <% if <% poll.status %> is open then
+      <% poll.skin $Poll#open title=<% poll.question %> %>
+   else
+      <% poll.skin $Poll#closed title=<% poll.question %> %>
+   %>
+   <% poll.source %>
 </div>
 
 <% #open %>
-<form class='uk-margin-top uk-panel uk-panel-box uk-form uk-form-stacked' method="post" action="<% poll.href %>">
+<form class='uk-panel uk-panel-box uk-form uk-form-stacked' method="post" action="<% poll.href %>">
    <% param.title prefix="<h1 class='uk-panel-title'>" suffix=</h1> %>
    <% poll.loop skin="$Choice#main" %>
    <div class='uk-margin-top'>
@@ -63,7 +62,7 @@ else
 </form>
 
 <% #closed %>
-<div class='uk-margin-top uk-panel uk-panel-box'>
+<div class='uk-panel uk-panel-box'>
    <% param.title prefix="<h1 class='uk-panel-title'>" suffix=</h1> %>
    <% poll.loop skin="$Choice#result" %>
    <div class='uk-float-left'>
@@ -73,9 +72,9 @@ else
    <div class='uk-text-right'>
       <% if <% poll.status %> is open then
          <% poll.link main <% gettext 'Add Your Vote' %> %>
-      else
+      else <% if <% poll.closed %> is null then '' else
          <% gettext "This poll was closed {0} by {1}" <% poll.closed text %> <% poll.modifier %> prefix="<span class='uk-text-muted'>" suffix='</span>' %>
-      %>
+      %> %>
    </div>
 </div>
 
@@ -89,21 +88,23 @@ else
    <div class='uk-form-row'>
       <div class='uk-form-label'><% gettext Question %></div>
       <div class='uk-form-controls'>
-         <% poll.input question rows=3 class=uk-width-1-1 %>
+         <% poll.input question class=uk-width-1-1 %>
       </div>
    </div>
-   <legend class='uk-margin-top'><% gettext Choices %></legend>
-   <% poll.input choices %>
-   <div class="uk-text-small uk-form-row">
-      <a href='' id="add">
-         <i class='uk-icon-plus'></i>
-         <% gettext "Add Choice" %>
-      </a>
-   </div>
+   <fieldset class='uk-margin-top'>
+      <legend><% gettext Choices %></legend>
+      <% poll.input choices %>
+      <div class='uk-text-small uk-form-row uk-hidden' id='av-add-choice'>
+         <a href='javascript:'>
+            <i class='uk-icon-plus'></i>
+            <% gettext "Add Choice" %>
+         </a>
+      </div>
+   </fieldset>
    <fieldset class='uk-margin-top'>
      <legend><% gettext Information %></legend>
       <div class='uk-form-row'>
-         <% poll.macro | link 'javascript:' data-value=<% poll.macro %> data-text=<% gettext "Press CTRL & C to copy to clipboard." %> class='av-clipboard-copy' %>
+         <% poll.macro | link <% poll.href %> data-value=<% poll.macro %> data-text=<% gettext "Press CTRL & C to copy to clipboard." %> class='av-clipboard-copy' %>
       </div>
    </fieldset>
    <div class='uk-margin-top'>
@@ -120,16 +121,14 @@ else
    </div>
 </form>
 <script type="text/javascript">
-$(function() {
-   var index = $(".choice").length + 1;
-   $("#add").on('click', function (event) {
+   var index = $(".av-choice").length + 1;
+   $("#av-add-choice").removeClass('uk-hidden').find('a').on('click', function (event) {
       event.preventDefault();
-      var choice = $(".choice:last").clone();
+      var choice = $(".av-choice:last").clone();
       choice.find(".uk-form-label").text('#' + index);
       choice.find("input").attr("value", '');
-      $(".choice:last").after(choice);
-      $(".choice:last").find("input").focus();
+      $(".av-choice:last").after(choice);
+      $(".av-choice:last").find("input").focus();
       index += 1;
    });
-});
 </script>

@@ -21,6 +21,7 @@
 
 markgettext('Comment');
 markgettext('comment');
+markgettext('a comment // accusative');
 
 /**
  * @see defineConstants
@@ -121,8 +122,15 @@ Comment.prototype.getPermission = function(action) {
     case 'delete':
     return this.story.getPermission.call(this, 'delete');
     case 'edit':
-    return this.status !== Comment.DELETED &&
-        this.creator === session.user;
+    return User.require(User.PRIVILEGED) ||
+        Membership.require(Membership.MANAGER) ||
+        this.creator === session.user &&
+        this.status !== Comment.DELETED;
+    case 'filter':
+    return this.creator !== session.user &&
+        this.site.trollFilter.indexOf(this.creator.name) < 0 &&
+        (User.require(User.PRIVILEGED) ||
+        Membership.require(Membership.MANAGER));
   }
   return false;
 }
@@ -167,21 +175,40 @@ Comment.prototype.edit_action = function() {
   res.data.body = this.renderSkinAsString('Comment#edit');
   this.site.renderSkin('Site#page');
   return;
-}
+};
+
+Comment.prototype.filter_action = function () {
+  var username = this.creator.name;
+  var trollFilter = this.site.trollFilter;
+  if (trollFilter.indexOf(username) < 0) {
+    trollFilter.push(username);
+    this.site.setMetadata('trollFilter', trollFilter);
+  }
+  res.redirect(req.data.http_referer);
+};
 
 /**
  *
  * @param {Object} data
  */
 Comment.prototype.update = function(data) {
-  if (!data.title && !data.text) {
-    throw Error(gettext('Please enter at least something into the “title” or “text” field.'));
+  if (!User.require(User.TRUSTED) && !Membership.require(Membership.CONTRIBUTOR)) {
+    var spec = {
+      allowedTags: node.sanitizeHtml.defaults.allowedTags.concat(['img'])
+    };
+    data.text = data.text ? node.sanitizeHtml(data.text, spec) : String.EMPTY;
   }
-  // Get difference to current content before applying changes
+
+  if (!data.text) {
+    throw Error(gettext('Please enter something into the comment field.'));
+  }
+
+  data.title = data.title ? stripTags(data.title) : String.EMPTY;
   var delta = this.getDelta(data);
-  this.title = data.title;
+
   this.text = data.text;
-  this.setMetadata(data);
+  this.title = data.title;
+  this.setCustomContent(data);
 
   if (this.story.commentMode === Story.MODERATED) {
     this.status = Comment.PENDING;
@@ -217,23 +244,40 @@ Comment.prototype.getConfirmExtra = function () {
   }
 };
 
+Comment.prototype.isGaslighted = function () {
+  var creatorIsTroll = this.site.trollFilter.indexOf(this.creator.name) > -1;
+  if (session.user && creatorIsTroll) {
+    return session.user.name !== this.creator.name;
+  }
+  return creatorIsTroll;
+};
+
 /**
  *
  * @param {String} name
  * @returns {HopObject}
  */
 Comment.prototype.getMacroHandler = function(name) {
-  if (name === 'related') {
+  switch (name) {
+    case 'related':
     var membership = this.creator.getMembership();
     if (!membership || membership.comments.size() < 2 || this.status === Comment.DELETED) {
-      return HopObject; // Work-around for issue 88
+      return new HopObject(); // Work-around for issue 88
     }
     return membership.comments;
-  } else if (name === 'story') {
+
+    case 'story':
     return this.story;
+
+    case 'top':
+    var top = this;
+    while (top) {
+      if (top.parent.constructor === Story) return top;
+      top = top.parent;
+    }
   }
   return Story.prototype.getMacroHandler.apply(this, arguments);
-}
+};
 
 /**
  *
@@ -245,6 +289,10 @@ Comment.prototype.text_macro = function() {
         gettext('This comment was removed by the author.') :
         gettext('This comment was removed.'));
     res.writeln('</em>');
+  } else if (this.isGaslighted()) {
+    res.write('<em>');
+    res.write('This comment is gaslighted.');
+    res.write('</em>');
   } else {
     res.write(this.text);
   }
@@ -267,12 +315,30 @@ Comment.prototype.modifier_macro = function() {
       HopObject.prototype.modifier_macro.apply(this, arguments);
 }
 
-/**
- *
- * @param {Object} param
- * @param {Object} action
- * @param {Object} text
- */
-Comment.prototype.link_macro = function(param, action, text) {
-  return HopObject.prototype.link_macro.call(this, param, action, text);
-}
+Comment.prototype.meta_macro = function (param) {
+  if (this.status === Comment.PUBLIC && !this.isGaslighted()) {
+    this.renderSkin('Comment#meta');
+  }
+};
+
+Comment.prototype.badge_macro = function () {
+  var cls = {'class': 'uk-badge uk-badge-primary'};
+  if (this.creator.status === User.PRIVILEGED) {
+    html.element('span', gettext('Admin'), cls);
+  } else {
+    var membership = Membership.getByName(this.creator.name);
+    if (membership && membership.role !== 'subscriber') {
+      html.element('span', gettext(membership.role.titleize()), cls);
+    }
+  }
+};
+
+Comment.prototype.level_macro = function () {
+  var level = 0;
+  var comment = this;
+  while (comment.parent.constructor !== Story) {
+    level += 1;
+    comment = comment.parent;
+  }
+  res.write(level);
+};

@@ -11,7 +11,7 @@
    </td>
    <td class='uk-text-muted'><i class='uk-icon-file<% file.contentType generic prefix=- %>-o' title='<% file.contentType %>' data-uk-tooltip></i></td>
    <td class='uk-text-right uk-text-nowrap'>
-      <a href='' class='av-clipboard-copy' data-text='<% gettext 'Press CTRL & C to copy to clipboard.' %>' data-value="<% file.macro %>"><i class='uk-icon-clipboard'></i></a>
+      <a href='javascript:' class='av-clipboard-copy' data-text='<% gettext 'Press CTRL & C to copy to clipboard.' %>' data-value="<% file.macro %>"><i class='uk-icon-clipboard'></i></a>
       <% file.link delete "<i class='uk-icon-trash-o'></i>" %>
       <% file.link edit "<i class='uk-icon-pencil'></i>" %>
    </td>
@@ -23,9 +23,10 @@
    <% file.link . ' ' class='uk-icon-button uk-icon-link uk-text-middle' %>
 </h1>
 <div class='uk-article-meta'><% file.skin $HopObject#meta %></div>
+<% site.skin $Site#noscript %>
 <form class='uk-margin-top uk-form uk-form-stacked' method="post" action="<% response.action %>" enctype="multipart/form-data">
    <div class='uk-form-row'>
-      <label class='uk-form-label' for='upload'>
+      <label class='uk-form-label' for='file'>
          <% gettext File %>
       </label>
       <div class='uk-form-controls'>
@@ -52,7 +53,7 @@
    <fieldset class='uk-margin-top'>
      <legend><% gettext Information %></legend>
       <div class='uk-form-row'>
-         <% file.macro | link 'javascript:' data-value=<% file.macro %> data-text=<% gettext "Press CTRL & C to copy to clipboard." %> class='av-clipboard-copy' %>
+         <% file.macro | link <% file.href %> data-value=<% file.macro %> data-text=<% gettext "Press CTRL & C to copy to clipboard." %> class='av-clipboard-copy' %>
       </div>
    </fieldset>
     <div class='uk-margin-top'>
@@ -60,7 +61,7 @@
          <% gettext Save %>
       </button>
       <% file.link delete <% gettext Delete %> class='uk-button' %>
-      <a href='.' class="uk-button uk-button-link"><% gettext Cancel %></a>
+      <a href='<% site.files.href %>' class="uk-button uk-button-link"><% gettext Cancel %></a>
    </div>
 </form>
 <script type="text/javascript">
