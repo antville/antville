@@ -90,13 +90,13 @@
 <% story.skin Story#content %>
 
 <% #history %>
-<li>
+<li class='uk-margin-small-top'>
    <a href='<% this.href %>' title='<% this.modified %>'>
-      <% this.abstract | this.link %>
+      <% this.abstract %>
+      <div class='uk-text-small uk-text-muted'>
+         <% this.creator %>, <% this.modified text %>
+      </div>
    </a>
-   <div class='uk-text-small'>
-      <% this.creator %>, <% this.modified text %>
-   </div>
 </li>
 
 <% #permalink %>
