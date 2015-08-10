@@ -347,7 +347,7 @@ Image.prototype.contentLength_macro = function() {
  *
  */
 Image.prototype.url_macro = function() {
-  return res.write(this.getUrl());
+  return res.write(encodeURI(this.getUrl()));
 }
 
 /**
@@ -369,7 +369,7 @@ Image.prototype.thumbnail_macro = function(param) {
   if (!this.thumbnailName) {
     return this.render_macro(param);
   }
-  param.src = this.getUrl(this.getThumbnailFile().getName());
+  param.src = encodeURI(this.getUrl(this.getThumbnailFile().getName()));
   param.title || (param.title = encode(this.description));
   param.alt = encode(param.alt || param.title);
   var width = param.width || this.thumbnailWidth;
@@ -391,7 +391,7 @@ Image.prototype.thumbnail_macro = function(param) {
  * @param {Object} param
  */
 Image.prototype.render_macro = function(param) {
-  param.src = this.getUrl();
+  param.src = encodeURI(this.getUrl());
   param.title || (param.title = encode(this.description));
   param.alt = encode(param.alt || param.title);
   var style = [];

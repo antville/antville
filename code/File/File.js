@@ -313,7 +313,7 @@ File.prototype.update = function(data) {
  *
  */
 File.prototype.url_macro = function() {
-  return res.write(this.url || this.getUrl());
+  return res.write(encodeURI(this.url || this.getUrl()));
 }
 
 /**
