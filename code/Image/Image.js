@@ -181,9 +181,13 @@ Image.prototype.href = function(action) {
 }
 
 Image.prototype.main_action = function() {
-  res.data.title = gettext('Image: {0}', this.getTitle());
-  res.data.body = this.renderSkinAsString('Image#main');
-  res.handlers.site.renderSkin('Site#page');
+  res.handlers.site.renderPage({
+    type: 'article',
+    schema: 'http://schema.org/ImageObject',
+    title: gettext('Image: {0}', this.getTitle()),
+    body: this.renderSkinAsString('Image#main'),
+    images: [this.getUrl()]
+  });
   return;
 }
 
