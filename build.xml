@@ -166,7 +166,7 @@
     </exec>
 
     <copy file="${extra.dir}/helma.jar" todir="${work.dir}/lib"/>
-    <copy file="${extra.dir}/h2-1.3.155.jar" todir="${work.dir}/lib/ext"/>
+    <copy file="${extra.dir}/h2-1.3.176.jar" todir="${work.dir}/lib/ext"/>
     <copy file="${extra.dir}/h2.txt" todir="${work.dir}/licenses"/>
 
     <copy todir="${build.dir}/work/db">
