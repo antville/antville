@@ -675,9 +675,9 @@ Story.prototype.format_filter = function(value, param, mode) {
 
 Story.prototype.linebreak_filter = function (value, param, mode) {
   if (mode === 'markdown') {
-    var mdLineBreakMarker = new RegExp('xxx', 'g');
-    var mdQuoteMarker = new RegExp('yyy', 'g');
-    var mdCodeMarker = new RegExp('zzz', 'g');
+    var mdLineBreakMarker = new RegExp('<!--av-break-->', 'g');
+    var mdQuoteMarker = new RegExp('<!--av-quote-->', 'g');
+    var mdCodeMarker = new RegExp('<!--av-code-->', 'g');
     return value
       // Prevent Markdown for linebreaks (lines ending with 2 spaces)
       // as well as code segments (4 spaces) to be removed by Helma’s format() method
