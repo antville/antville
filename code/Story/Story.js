@@ -679,10 +679,8 @@ Story.prototype.linebreak_filter = function (value, param, mode) {
     var mdQuoteMarker = new RegExp('<!--av-quote-->', 'g');
     var mdCodeMarker = new RegExp('<!--av-code-->', 'g');
     return value
-      // Replace regular linebreaks with Markdown marker
-      .replace(/(\n|\r|\r\n)/gm, mdLineBreakMarker.source + '$1')
-      // Prevent Markdown for linebreaks (lines ending with 2 spaces)
-      // as well as code segments (4 spaces) to be removed by Helma’s format() method
+      // Prevent Markdown for linebreaks (lines ending with 2 spaces) as well as
+      // code segments (4 spaces) to be removed by Helma’s format() method
       .replace(/ {2}$/gm, mdLineBreakMarker.source)
       .replace(/^ {4}/gm, mdCodeMarker.source)
       // Prevent Markdown for quote segments (lines starting with ‘>’)
@@ -691,8 +689,12 @@ Story.prototype.linebreak_filter = function (value, param, mode) {
         return mdQuoteMarker.source.repeat(item.length);
       })
       // Apply Helma’s format() method for good
-      // FIXME: This should go into the compat layer
+      // FIXME: This should probably be moved to the compat layer
       .format(value)
+      // Replace trailing HTML linebreaks with Markdown ones
+      .replace(/<br[^>]*>$/gm, String.SPACE.repeat(2))
+      // Replace trailing HTML linebreaks inserted by Helma’s format() method with Markdown ones
+      //.replace(/<br\s*class=['"]?helma-format['"]?\s*\/?>/g, String.SPACE.repeat(2))
       // Restore Markdown quote segments
       .replace(mdQuoteMarker, '>')
       // Restore Markdown linebreaks and code segments
