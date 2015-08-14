@@ -679,6 +679,8 @@ Story.prototype.linebreak_filter = function (value, param, mode) {
     var mdQuoteMarker = new RegExp('<!--av-quote-->', 'g');
     var mdCodeMarker = new RegExp('<!--av-code-->', 'g');
     return value
+      // Replace regular linebreaks with Markdown marker
+      .replace(/(\n|\r|\r\n)/gm, mdLineBreakMarker.source + '$1')
       // Prevent Markdown for linebreaks (lines ending with 2 spaces)
       // as well as code segments (4 spaces) to be removed by Helma’s format() method
       .replace(/ {2}$/gm, mdLineBreakMarker.source)
