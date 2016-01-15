@@ -318,7 +318,7 @@ $(function() {
    function post(url, imageUrl) {
       var postStory = function(imageName) {
          var imageMacro = (imageName ? "\n\n<\x25 image '" +
-               imageName + "' | link '" + url + "' \x25>" : '');
+               imageName + "' | link '" + url + "' class='uk-thumbnail' \x25>" : '');
          $.getJSON(siteUri + '/stories/create?callback=?', {
             save: 1,
             title: $('#title').val(),
