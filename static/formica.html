@@ -127,7 +127,7 @@
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
 
-<script type='text/javascript'>
+<script>
 $(function() {
    var proxyUri = '//p3k-services.appspot.com/roxy';
    //proxyUri = 'http://localhost:8081/roxy';
@@ -318,7 +318,7 @@ $(function() {
    function post(url, imageUrl) {
       var postStory = function(imageName) {
          var imageMacro = (imageName ? "\n\n<\x25 image '" +
-               imageName + "' | link '" + url + "' class='uk-thumbnail' \x25>" : '');
+               imageName + "' box link='" + url + "' \x25>" : '');
          $.getJSON(siteUri + '/stories/create?callback=?', {
             save: 1,
             title: $('#title').val(),

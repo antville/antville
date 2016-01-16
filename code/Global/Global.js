@@ -581,7 +581,7 @@ function image_macro(param, id, mode) {
     break;
     case 'thumbnail':
     case 'popup':
-    var url = image.getUrl();
+    var url = param.link || image.getUrl();
     html.openTag('a', {href: url});
     // FIXME: Bloody popups belong to compatibility layer
     if (mode === 'popup') {
@@ -593,7 +593,8 @@ function image_macro(param, id, mode) {
     case 'box':
     // Default Images do not provide the renderSkin() method
     if (image.renderSkin) {
-      image.renderSkin(param.skin || '$Image#embed');
+      if (!param.link) param.link = image.getUrl();
+      image.renderSkin(param.skin || '$Image#embed', param);
     }
     break;
     default:
