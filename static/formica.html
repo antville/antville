@@ -1,136 +1,85 @@
 <!DOCTYPE html>
 
-<html>
-<head>
-   <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
-   <title>Antville’s Formica Bookmarklet</title>
-   <style>
-   body {
-      font-family: sans-serif;
-   }
-   form {
-      margin-bottom: 1em;
-   }
-   input#title, textarea#text {
-      width: 400px;
-      padding: 2px;
-      border: 1px solid #ccc;
-      font-size: 1.2em;
-   }
-   input#title {
-      height: 26px;
-      margin: 0 0 4px 0;
-      font-weight: bold;
-   }
-   textarea#text {
-      height: 160px;
-   }
-   button {
-      margin: 0;
-      font-size: 18px;
-   }
-   img {
-      background: url('http://t2.gstatic.com/images?q=tbn:ANd9GcRayuCjH7MGcnJmYfBEHmIVNl9UFJuhCsawGzGgjI66sgwmgMweIQ&t=1');
-   }
-   img.harvest {
-      margin: 3px;
-      background-color: #ccc;
-      border: 1px solid #ccc;
-      opacity: 0.33;
-   }
-   img.selected {
-      border-color: black;
-      opacity: 1.0;
-   }
-   @-webkit-keyframes rotate {
-     from {
-       -webkit-transform: rotate(0deg);
-     }
-     to {
-       -webkit-transform: rotate(360deg);
-     }
-   }
-   img.loading {
-      background: none;
-      margin-top: 50%;
-      -webkit-animation-name: rotate;
-      -webkit-animation-duration: 0.5s;
-      -webkit-animation-iteration-count: infinite;
-      -webkit-transition-timing-function: linear;
-   }
-   .left {
-      float: left;
-      min-height: 400px;
-   }
-   .info {
-      text-align: center;
-   }
-   .image {
-      width: 200px;
-      min-height: 201px;
-      margin: 0 4px 4px 0;
-      border-bottom: 1px solid #ccc;
-      overflow: visible hidden;
-      text-align: center;
-   }
-   .controls {
-      display: inline-block;
-      float: left;
-      margin-right: 4px;
-   }
-   .controls a {
-      display: inline-block;
-      padding: 4px;
-      border: 1px solid #ccc;
-      color: #ccc;
-      text-decoration: none;
-      font-size: 18px;
-      line-height: 16px;
-   }
-   .controls a[href='#next'] {
-      transform: scale(-1, 1);
-      -moz-transform: scale(-1, 1);
-      -webkit-transform: scale(-1, 1);
-      filter: progid:DXImageTransform.Microsoft.BasicImage(mirror=1)
-   }
-   .info {
-      line-height: 28px;
-   }
-   </style>
-</head>
-<body>
+<meta charset='utf-8'>
+<title>Antville’s Formica Bookmarklet</title>
 
-<div class='left'>
-   <div class='image'>
-      <img src='http://antville.org/static/www/ant.png' class='loading'>
+<link rel="icon" type="image/x-icon" href="img/favicon.png">
+<link rel="shortcut icon" type="image/x-icon" href="img/favicon.png">
+<link rel="apple-touch-icon" href="img/favicon.png">
+
+<style>
+body {
+  margin: 1em;
+  padding: 1em;
+}
+
+.image {
+  height: 192px;
+}
+
+.image::after {
+  content: '';
+  background: center/10px url('img/favicon.png') !important;
+  opacity: 0.2;
+  top: 1px;
+  left: 1px;
+  bottom: 1px;
+  right: 1px;
+  position: absolute;
+  z-index: -1;
+}
+
+figure.uk-panel-box {
+   padding: 16px;
+}
+</style>
+<link rel='stylesheet' type='text/css' href='//antville.org/main.css'>
+
+<div class='uk-grid'>
+   <div class='uk-width-2-5 uk-hidden left'>
+   <figure class='uk-panel uk-panel-box uk-panel-box-secondary'>
+      <div class='image uk-panel-teaser'>
+         <div id='dimensions' class='uk-panel-badge uk-badge uk-badge-success'>0×0</div>
+         <img class='loading uk-responsive-width uk-responsive-height' src=''>
+      </div>
+      <figcaption>
+         <div class='info uk-float-left'></div>
+         <div class='controls uk-button-group uk-float-right'>
+         <a href='#previous' class='uk-button'>
+            <i class='uk-icon-arrow-left'></i>
+         </a><a href='#next' class='uk-button'>
+            <i class='uk-icon-arrow-right'></i>
+         </a>
+         </div>
+      </figcaption>
+   </figure>
    </div>
-   <div class='info'></div>
+   <form class='uk-width-1-1 uk-form uk-form-stacked right'>
+   <div class='uk-form-row'>
+      <div class='uk-form-controls'>
+         <input id='title' class='uk-form uk-width-1-1' type='text' placeholder='Title'>
+      </div>
+   </div>
+   <div class='uk-form-row'>
+      <div class='uk-form-controls'>
+         <textarea id='text' class='uk-form uk-width-1-1' rows=10 placeholder='Description'></textarea>
+      </div>
+   </div>
+   <div class='uk-form-row uk-text-right'>
+      <button id='submit' name='button' type='button' class='uk-button uk-button-primary'>
+         <i class='uk-icon-image uk-hidden' id='image'></i>
+         Publish
+      </button>
+   </div>
+   </form>
 </div>
 
-<form>
-   <div>
-      <input id='title' type='text' placeholder='Title'>
-   </div>
-   <div>
-      <textarea id='text' placeholder='Description'></textarea>
-   </div>
-   <div>
-      <div class='controls'>
-         <a href='#previous'>⬅</a>
-         <a href='#next'>⬅</a>
-      </div>
-      <button name='button' type='button'>Publish</button>
-      <input type='checkbox' id='image' checked>
-      <label for='image'>Include image</label>
-   </div>
-</form>
-
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
-
+<script type='text/javascript' src='//antville.org/main.js'></script>
 <script>
 $(function() {
+
    var proxyUri = '//p3k-services.appspot.com/roxy';
-   //proxyUri = 'http://localhost:8081/roxy';
+   proxyUri = 'http://localhost:8081/roxy';
    var args, siteUri, sourceUri, images, currentIndex;
 
    (function(search) {
@@ -145,20 +94,23 @@ $(function() {
       }
    }(location.search));
 
-   $('.controls a').click(function(event) {
+   $('.controls a').on('click', function(event) {
       event.preventDefault();
+      event.stopPropagation();
       var image = getNextImage($(this).attr('href') === '#next' ? 1 : -1);
       displayImage(image);
    });
 
-   $('#image').click(function(event) {
-      toggleImage();
+   $('figure').on('click', function(event) {
+      $(this).toggleClass('uk-panel-box-primary')
+         .toggleClass('uk-panel-box-secondary');
+      $('#image').toggleClass('uk-hidden');
    });
 
-   $('form button').click(function(event) {
+   $('form button').on('click', function(event) {
       event.preventDefault();
       $(this).attr('disabled', true);
-      var imageUri = $('.left').css('display') === 'none' ? null : images[currentIndex].src;
+      var imageUri = $('#image').is(':visible') ? images[currentIndex].src : null;
       post(sourceUri, imageUri);
    });
 
@@ -166,31 +118,50 @@ $(function() {
       if (!args.s || !args.l) {
          return;
       }
+
       siteUri = decodeURIComponent(args.s);
       sourceUri = decodeURIComponent(args.l);
+
       if (siteUri && sourceUri) {
-         var text = $.trim(decodeURIComponent(args.c));
-         text && (text = '<a href="' + sourceUri + '">' + $.trim(text) + '</a>');
-         args.r && (text += ' Via ' + decodeURIComponent(args.r) + '.');
-         $('#text').val(text);
          images = [];
          currentIndex = 0;
+
          if (sourceUri.match(new RegExp('(?:bmp|gif|jpg|jpeg|png)$', 'i'))) {
             addImage(sourceUri);
             return;
          }
-         $.getJSON(proxyUri + '?callback=?&url=' + sourceUri, function(data) {
-            if (!data.content) {
-               return;
-            }
-            var baseHref = getBaseHref(data.content);
-            var match, re = /(?:\(|=|"|')([^\s\(\)'">]+\.(?:gif|jpg|jpeg|png))/gi;
-            while (match = re.exec(data.content)) {
-               addImage(match[1], baseHref);
-            }
-            if (images.length < 1 && !addImage.counter) {
-               toggleImage();
-               $('#image').attr({disabled: true, checked: false});
+
+         var customCookie = decodeURIComponent(args.k || '');
+
+         var queryString = '?callback=?&url=' + encodeURIComponent(sourceUri);
+         queryString += '&cookie=' + encodeURIComponent(document.cookie + '; ' + customCookie);
+         queryString += '&ua=' + encodeURIComponent(navigator.userAgent);
+
+         $.getJSON(proxyUri + queryString, function(data) {
+            if (data.content) {
+
+               var content = $(data.content);
+               var openGraphTitle = content.filter('meta[property="og:title"]').eq(0).attr('content');
+               var openGraphDescription = content.filter('meta[property="og:description"]').eq(0).attr('content');
+
+               var text;
+
+               if (args.c) text = $.trim(decodeURIComponent(args.c));
+               if (!text || text === openGraphTitle) text = openGraphDescription || '';
+
+               text = '[' + text + '](' + sourceUri + ')';
+               if (args.r) text += ' _(via ' + decodeURIComponent(args.r) + ')_.';
+
+               $('#title').val(openGraphTitle);
+               $('#text').val(text);
+
+               var baseHref = getBaseHref(data.content);
+               var match, re = /(?:\(|=|"|')([^\s\(\)'">]+\.(?:gif|jpg|jpeg|png))/gi;
+               while (match = re.exec(data.content)) {
+                  addImage(match[1], baseHref);
+               }
+            } else if (data.headers.error) {
+               console.log(data.headers.error, data.headers.message);
             }
          });
       }
@@ -201,13 +172,17 @@ $(function() {
       // Thus, we directly crunch the base href value from the raw data.
       var re = new RegExp('<base href=(?:[\'"])?([^>\'"]+)');
       var match = data.match(re);
+
       if (match && match.length > 1) {
          return match[1];
       }
+
       var index = sourceUri.lastIndexOf('/');
+
       if (index !== sourceUri.length - 1) {
          return sourceUri.substring(0, index + 1);
       }
+
       return sourceUri;
    }
 
@@ -215,8 +190,10 @@ $(function() {
       if (!url || images[url]) {
          return;
       }
+
+      if (!addImage.counter) addImage.counter = 0;
       images[url] = true;
-      addImage.counter || (addImage.counter = 0);
+
       if (url.charAt(0) === '/') {
          if (url.charAt(1) !== '/') {
             // url starts with one single slash: prepend root of sourceUri.
@@ -230,55 +207,20 @@ $(function() {
          baseUri || (baseUri = sourceUri.substring(0, sourceUri.lastIndexOf('/') + 1));
          url = baseUri + url;
       }
-      var image = new Image;
+
+      var image = new Image();
       image.src = url;
-      addImage.counter += 1;
+
       image.onload = function() {
          if (this.width > 100 || this.height > 100) {
             images.push(this);
             displayImage(images[0]);
          }
-         addImage.counter -= 1;
-      }
-      return;
-
-      var item = $('<img>');
-      item.attr({src: url}).addClass('harvest').click(function() {
-         var self = this;
-         $('img').each(function() {
-            $(this)[this === self ? 'addClass' : 'removeClass']('selected');
-         });
-      });
-      $('body').append(item);
-   }
-
-   function appendImage(url) {
-      if (!url || images[url]) {
-         return;
-      }
-      images[url] = true;
-      var baseUri = '';
-      if (url.charAt(0) === '/') {
-         if (url.charAt(1) !== '/') {
-            // url starts with one single slash: prepend root of sourceUri.
-            var index = sourceUri.indexOf('/', sourceUri.indexOf('://') + 3);
-            baseUri = index > -1 ? sourceUri.substring(0, index) : sourceUri;
-            url = baseUri + url;
+         addImage.counter += 1;
+         if (images.length && addImage.counter) {
+            showImage();
          }
-      } else if (url.indexOf('://') < 0) {
-         // url does neither start with a slash, nor contain
-         // a protocol: prepend sourceUri up to the final slash.
-         baseUri = sourceUri.substring(0, sourceUri.lastIndexOf('/') + 1);
-         url = baseUri + url;
       }
-      var item = $('<img>');
-      item.attr({src: url}).addClass('harvest').click(function() {
-         var self = this;
-         $('img').each(function() {
-            $(this)[this === self ? 'addClass' : 'removeClass']('selected');
-         });
-      });
-      $('body').append(item);
    }
 
    function displayImage(image) {
@@ -287,17 +229,22 @@ $(function() {
        var width = image.width;
        var height = image.height;
        var factorH = 1, factorV = 1;
-       if (width > MAX_WIDTH) {
-          factorH = MAX_WIDTH / width;
-       }
-       if (height > MAX_HEIGHT) {
-          factorV = MAX_HEIGHT / height;
-       }
+
+       if (width > MAX_WIDTH) factorH = MAX_WIDTH / width;
+       if (height > MAX_HEIGHT) factorV = MAX_HEIGHT / height;
+
        if (factorH !== 1 || factorV !== 1) {
           image.width = Math.ceil(width * (factorH < factorV ? factorH : factorV));
           image.height = Math.ceil(height * (factorH < factorV ? factorH : factorV));
        }
-       $('.image').html(image);
+
+       $('.image img').attr({
+         src: image.src,
+         width: image.width,
+         height: image.height
+       });
+
+       $('#dimensions').html(image.width + '×' + image.height);
        $('.info').html((currentIndex + 1) + ' of ' + images.length);
        return;
    }
@@ -305,27 +252,32 @@ $(function() {
    function getNextImage(direction) {
       var index = currentIndex || 0;
       index += direction || 1;
+
       if (index >= images.length) {
          index = 0;
       } else if (index < 0) {
          index = images.length - 1;
       }
+
       var image = images[index];
       currentIndex = index;
       return image;
    }
 
    function post(url, imageUrl) {
+
       var postStory = function(imageName) {
          var imageMacro = (imageName ? "\n\n<\x25 image '" +
                imageName + "' box link='" + url + "' \x25>" : '');
+
          $.getJSON(siteUri + '/stories/create?callback=?', {
             save: 1,
             title: $('#title').val(),
             text: $('#text').val() + imageMacro
-         }, function(data, status, xhr) {
+         }).done(function(data, status, xhr) {
             if (!data) {
                //console.error(this, arguments);
+               $('#submit').attr('disabled', false);
                return alert('Error: ' + status);
             }
             if (window.opener) {
@@ -333,8 +285,11 @@ $(function() {
             } else {
                location.href = siteUri + '/stories/' + data;
             }
+         }).fail(function() {
+            $('#submit').attr('disabled', false);
          });
       }
+
       if (imageUrl) {
          var name = 'image-' + Date.now();
          $.getJSON(siteUri + '/images/create?callback=?', {
@@ -344,41 +299,32 @@ $(function() {
             description: 'Source: ' + url.replace(new RegExp('^.+:///?([^/]+).*$'), '$1'),
             maxWidth: args.w || '',
             maxHeight: args.h || ''
-         }, function(data, status, xhr) {
+         }).done(function(data, status, xhr) {
             if (!data) {
                //console.error(this, arguments);
                return alert('Error: ' + status);
             }
             postStory(name);
+         }).fail(function() {
+            $('#submit').attr('disabled', false);
          });
+
       } else {
          postStory();
       }
+
       return;
    }
 
-   function toggleImage() {
-      var width;
-      var left = $('.left');
-      if (left.css('display') === 'none') {
-         left.show();
-         $('.controls').show();
-         width = $('input#title').data('width');
-         $('input#title').css({width: width});
-         $('textarea#text').css({width: width});
-      } else {
-         left.hide();
-         $('.controls').hide();
-         width = 604;
-         $('input#title').data('width', $('input#title').width())
-               .css({width: width});
-         $('textarea#text').css({width: width});
+  function showImage() {
+      if ($('.right').hasClass('uk-width-1-1')) {
+         $('.right').toggleClass('uk-width-3-5')
+            .toggleClass('uk-width-1-1');
+         $('.left').toggleClass('uk-hidden');
+         $('figure').trigger('click');
       }
    }
 
    main();
 });
 </script>
-
-</body>
-</html>
