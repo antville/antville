@@ -164,8 +164,7 @@ $(function() {
                   addImage(match[1], baseHref);
                }
             } else if (data.headers.error) {
-               console.error(data.headers.error, data.headers.message);
-               status(data.headers.message);
+               status('URL error; no data.', arguments);
             }
          });
       }
@@ -292,7 +291,7 @@ $(function() {
                location.href = siteUri + '/stories/' + data;
             }
          }).fail(function() {
-            status('Handshake error; are you logged in?', arguments);
+            status('Access error; are you logged in?', arguments);
          }).always(restore);
       }
 
@@ -315,7 +314,7 @@ $(function() {
                postStory(name);
             }
          }).fail(function() {
-            status('Handshake error; are you logged in?', arguments);
+            status('Access error; are you logged in?', arguments);
          }).always(restore);
 
       } else {
