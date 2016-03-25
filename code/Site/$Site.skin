@@ -152,7 +152,7 @@
             <% gettext Bookmarklet %>
          </label>
          <div class='uk-form-controls'>
-            <a class='uk-button' data-uk-tooltip='{pos: "right"}' href="javascript: (function() {var F = {'🍪': '',  '⚓': '<% root.static %>../../formica.html', '🐜': '//blog.p3k.org/', '📝': window.getSelection ? window.getSelection() : document.selection.createRange()}; F['📝'] = '' + (F['📝'].text || F['📝']); F['⚓'] += '?s=' + encodeURIComponent(F['🐜']) + '&amp;l=' + encodeURIComponent(location.href) + '&amp;r=' + encodeURIComponent(document.referrer) + '&amp;k=' + encodeURIComponent(F['🍪']) + '&c=' + encodeURIComponent(F['📝']); window.open(F['⚓'], '🐜', 'width=650, height=350');})(); void 0;" title="<% gettext 'Drag to Bookmarks Bar' %>"><% gettext "Post to {0}" <% site.title %> %></a>
+            <a class='uk-button' data-uk-tooltip='{pos: "right"}' href="javascript: (function() {var F = {'🍪': '',  '⚓': '<% root.static %>../../formica.html', '🐜': '<% site.href %>', '📝': window.getSelection ? window.getSelection() : document.selection.createRange()}; F['📝'] = '' + (F['📝'].text || F['📝']); F['⚓'] += '?s=' + encodeURIComponent(F['🐜']) + '&amp;l=' + encodeURIComponent(location.href) + '&amp;r=' + encodeURIComponent(document.referrer) + '&amp;k=' + encodeURIComponent(F['🍪']) + '&c=' + encodeURIComponent(F['📝']); window.open(F['⚓'], '🐜', 'width=650, height=350');})(); void 0;" title="<% gettext 'Drag to Bookmarks Bar' %>"><% gettext "Post to {0}" <% site.title %> %></a>
          </div>
       </div>
       <div class='uk-form-row'>
