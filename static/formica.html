@@ -66,6 +66,7 @@ figure.uk-panel-box {
       </div>
    </div>
    <div class='uk-form-row uk-text-right'>
+      <div id='status' class='uk-float-left'></div>
       <button id='submit' name='button' type='button' class='uk-button uk-button-primary'>
          <i class='uk-icon-image uk-hidden' id='image'></i>
          Publish
@@ -80,7 +81,7 @@ $(function() {
 
    var proxyUri = '//p3k-services.appspot.com/roxy';
    // DEBUG
-   //proxyUri = 'http://localhost:8081/roxy';
+   proxyUri = 'http://localhost:8081/roxy';
    var args, siteUri, sourceUri, images, currentIndex;
 
    (function(search) {
@@ -110,6 +111,7 @@ $(function() {
 
    $('form button').on('click', function(event) {
       event.preventDefault();
+      status(false);
       $(this).attr('disabled', true);
       var imageUri = $('#image').is(':visible') ? images[currentIndex].src : null;
       post(sourceUri, imageUri);
@@ -162,7 +164,8 @@ $(function() {
                   addImage(match[1], baseHref);
                }
             } else if (data.headers.error) {
-               console.log(data.headers.error, data.headers.message);
+               console.error(data.headers.error, data.headers.message);
+               status(data.headers.message);
             }
          });
       }
@@ -245,7 +248,7 @@ $(function() {
          height: image.height
        });
 
-       $('#dimensions').html(image.width + '×' + image.height);
+       $('#dimensions').html(width + '×' + height);
        $('.info').html((currentIndex + 1) + ' of ' + images.length);
        return;
    }
@@ -268,6 +271,8 @@ $(function() {
    function post(url, imageUrl) {
 
       var postStory = function(imageName) {
+         status("<i class='uk-icon-refresh uk-icon-spin'></i> Posting story…");
+
          var imageMacro = (imageName ? "\n\n<\x25 image '" +
                imageName + "' box link='" + url + "' \x25>" : '');
 
@@ -275,24 +280,27 @@ $(function() {
             save: 1,
             title: $('#title').val(),
             text: $('#text').val() + imageMacro
-         }).done(function(data, status, xhr) {
+         }).done(function(data) {
             if (!data) {
-               //console.error(this, arguments);
-               $('#submit').attr('disabled', false);
-               return alert('Error: ' + status);
-            }
-            if (window.opener) {
-               window.close();
+               status('Story error; maybe try again…', arguments);
+            } else if (window.opener) {
+               status("<i class='uk-icon-check-circle'></i> Success!");
+               setTimeout(function() {
+                  window.close();
+               }, 1000);
             } else {
                location.href = siteUri + '/stories/' + data;
             }
          }).fail(function() {
-            $('#submit').attr('disabled', false);
-         });
+            status('Handshake error; are you logged in?', arguments);
+         }).always(restore);
       }
 
       if (imageUrl) {
+         status("<i class='uk-icon-refresh uk-icon-spin'></i> Uploading image…");
+
          var name = 'image-' + Date.now();
+
          $.getJSON(siteUri + '/images/create?callback=?', {
             save: 1,
             file_origin: imageUrl,
@@ -300,15 +308,15 @@ $(function() {
             description: 'Source: ' + url.replace(new RegExp('^.+:///?([^/]+).*$'), '$1'),
             maxWidth: args.w || '',
             maxHeight: args.h || ''
-         }).done(function(data, status, xhr) {
+         }).done(function(data) {
             if (!data) {
-               //console.error(this, arguments);
-               return alert('Error: ' + status);
+               status('Image error; maybe try again…', arguments);
+            } else {
+               postStory(name);
             }
-            postStory(name);
          }).fail(function() {
-            $('#submit').attr('disabled', false);
-         });
+            status('Handshake error; are you logged in?', arguments);
+         }).always(restore);
 
       } else {
          postStory();
@@ -324,6 +332,27 @@ $(function() {
          $('.left').toggleClass('uk-hidden');
          $('figure').trigger('click');
       }
+   }
+
+   function status(msg, args) {
+      if (msg && args) {
+         $('#status').html("<i class='uk-icon-warning'></i> " + msg);
+         console.group(msg);
+         Array.prototype.forEach.call(args, function(item) {
+            console.log(item);
+         });
+         console.groupEnd();
+      } else if (msg) {
+         $('#status').html(msg);
+      } else {
+         $('#status').empty();
+      }
+   }
+
+   function restore() {
+      setTimeout(function() {
+         $('#submit').attr('disabled', false);
+      }, 3000);
    }
 
    main();
