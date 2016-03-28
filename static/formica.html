@@ -278,7 +278,8 @@ $(function() {
          $.getJSON(siteUri + '/stories/create?callback=?', {
             save: 1,
             title: $('#title').val(),
-            text: $('#text').val() + imageMacro
+            text: $('#text').val() + imageMacro,
+            'og:image': imageUrl
          }).done(function(data) {
             if (!data) {
                status('Story error; maybe try again…', arguments);
