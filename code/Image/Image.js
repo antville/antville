@@ -19,6 +19,8 @@
  * @fileOverview Defines the Image prototype.
  */
 
+app.addRepository("modules/helma/Http.js");
+
 markgettext('Image');
 markgettext('image');
 markgettext('a image // accusative');
@@ -259,7 +261,18 @@ Image.prototype.update = function(data) {
 
   if (!mime || mime.contentLength < 1) {
     if (origin && origin !== this.origin) {
-      mime = getURL(origin);
+
+      var http = new helma.Http();
+      http.setHeader('Referer', origin);
+      http.setBinaryMode(true);
+      var response = http.getUrl(origin);
+
+      mime = new Packages.helma.util.MimePart(
+        origin,
+        response.content,
+        response.type
+      );
+
       if (!mime) {
         throw Error(gettext('Could not fetch the file from the given URL.'));
       }
