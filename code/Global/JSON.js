@@ -25,9 +25,10 @@ JSON.pad = function(data, callback) {
 JSON.sendPaddedResponse = function(data, key, resume) {
   var callback = req.data[key || 'callback'];
   if (callback) {
+    res.reset();
     res.contentType = 'text/javascript';
     res.write(JSON.pad(data, callback));
-    resume || res.stop();
+    if (!resume) res.stop();
   }
   return;
 }
