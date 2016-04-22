@@ -237,17 +237,17 @@ $(function() {
        if (height > MAX_HEIGHT) factorV = MAX_HEIGHT / height;
 
        if (factorH !== 1 || factorV !== 1) {
-          image.width = Math.ceil(width * (factorH < factorV ? factorH : factorV));
-          image.height = Math.ceil(height * (factorH < factorV ? factorH : factorV));
+          width = Math.ceil(width * (factorH < factorV ? factorH : factorV));
+          height = Math.ceil(height * (factorH < factorV ? factorH : factorV));
        }
 
        $('.image img').attr({
          src: image.src,
-         width: image.width,
-         height: image.height
+         width: width,
+         height: height
        });
 
-       $('#dimensions').html(width + '×' + height);
+       $('#dimensions').html(image.width + '×' + image.height);
        $('.info').html((currentIndex + 1) + ' of ' + images.length);
        return;
    }
