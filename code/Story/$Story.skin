@@ -275,5 +275,33 @@ else
          editor.fit();
       }, 1000);
    })();
-
 </script>
+
+<% #instant %>
+<!doctype html>
+<html lang='en' prefix='op: http://media.facebook.com/op#'>
+
+<head>
+  <meta charset='utf-8'>
+  <meta property='op:markup_version' content='v1.0'>
+  <meta property='fb:article_style' content='default'>
+  <link rel='canonical' href='<% story.href %>'>
+</head>
+
+<body>
+  <article>
+    <header>
+      <h1><% story.title default=<% story.created date %> %></h1>
+      <time class='op-published' datetime='<% story.created iso %>'>
+        <% story.created long %>
+      </time>
+      <time class='op-modified' dateTime='<% story.modified iso %>'>
+        <% story.modified long %>
+      </time>
+      <address><a><% story.creator %></a></address>
+      <p><% param.text %></p>
+    </header>
+  </article>
+</body>
+
+</html>
