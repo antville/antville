@@ -581,82 +581,67 @@ Site.prototype.renderPage = function (parts) {
  * @param {Story[]} collection
  */
 Site.prototype.renderXml = function(collection) {
-  collection || (collection = this.stories.recent);
+  if (!collection) collection = this.stories.recent;
+
   var now = new Date;
   var feed = new rome.SyndFeedImpl();
+
   feed.setFeedType('rss_2.0');
   feed.setLink(this.href());
   feed.setTitle(this.title);
   feed.setDescription(this.tagline || String.EMPTY);
   feed.setLanguage(this.locale.replace('_', '-'));
   feed.setPublishedDate(now);
-  /*
-  var feedInfo = new rome.FeedInformationImpl();
-  var feedModules = new java.util.ArrayList();
-  feedModules.add(feedInfo);
-  feed.setModules(feedModules);
-  //feedInfo.setImage(new java.net.URL(this.getProperty('imageUrl')));
-  feedInfo.setSubtitle(this.tagline);
-  feedInfo.setSummary(this.description);
-  feedInfo.setAuthor(this.creator.name);
-  feedInfo.setOwnerName(this.creator.name);
-  //feedInfo.setOwnerEmailAddress(this.getProperty('email'));
-  */
+
   var entry, entryInfo, entryModules;
   var enclosure, enclosures, keywords;
   var entries = new java.util.ArrayList();
   var description;
   var list = collection.constructor === Array ? collection : collection.list(0, 25);
+
   for each (var item in list) {
     entry = new rome.SyndEntryImpl();
     entry.setTitle(item.title || formatDate(item.created, 'date'));
     entry.setLink(item.href());
     entry.setAuthor(item.creator.name);
     entry.setPublishedDate(item.created);
+
     if (item.text) {
       description = new rome.SyndContentImpl();
       description.setType('text/html');
       // FIXME: Work-around for org.jdom.IllegalDataException caused by some ASCII control characters
       description.setValue(item.format_filter(item.text).replace(/[\x00-\x1f^\x0a^\x0d]/g, String.EMPTY));
       entry.setDescription(description);
+
+      var allowedSites = {
+        about: true,
+        help: true,
+        tobi: true,
+        deleteme: true
+      };
+
+      if (item.site.name in allowedSites && item.constructor === Story) {
+        var content = new rome.SyndContentImpl();
+        content.setType('text/html');
+        content.setValue(item.renderSkinAsString('$Story#instant', {
+          text: stripTags(description.getValue())
+        }));
+
+        var contents = new java.util.ArrayList();
+        contents.add(content);
+        entry.setContents(contents);
+      }
     }
+
     entries.add(entry);
-    /*
-    entryInfo = new rome.EntryInformationImpl();
-    entryModules = new java.util.ArrayList();
-    entryModules.add(entryInfo);
-    entry.setModules(entryModules);
-
-    enclosure = new rome.SyndEnclosureImpl();
-    enclosure.setUrl(episode.getProperty('fileUrl'));
-    enclosure.setType(episode.getProperty('contentType'));
-    enclosure.setLength(episode.getProperty('filesize') || 0);
-    enclosures = new java.util.ArrayList();
-    enclosures.add(enclosure);
-    entry.setEnclosures(enclosures);
-
-    entryInfo.setAuthor(entry.getAuthor());
-    entryInfo.setBlock(false);
-    entryInfo.setDuration(new rome.Duration(episode.getProperty('length') || 0));
-    entryInfo.setExplicit(false);
-    entryInfo.setKeywords(episode.getProperty('keywords'));
-    entryInfo.setSubtitle(episode.getProperty('subtitle'));
-    entryInfo.setSummary(episode.getProperty('description'));
-    */
   }
+
   feed.setEntries(entries);
+
   var output = new rome.SyndFeedOutput();
   res.servletResponse.setCharacterEncoding('utf-8');
   output.output(feed, res.servletResponse.writer);
   return;
-  // FIXME: Ugly hack for adding PubSubHubbub and rssCloud elements to XML
-  /*
-  var xml = output.outputString(feed);
-  xml = xml.replace('<rss', '<rss xmlns:atom="http://www.w3.org/2005/Atom"');
-  xml = xml.replace('<channel>', '<channel>\n   <cloud domain="rpc.rsscloud.org" port="5337" path="/rsscloud/pleaseNotify" registerProcedure="" protocol="http-post" />');
-  xml = xml.replace('<channel>', '<channel>\n   <atom:link rel="hub" href="' + getProperty("parss.hub") + '"/>');
-  return xml;
-  */
 }
 
 Site.prototype.rss_xsl_action = function() {
