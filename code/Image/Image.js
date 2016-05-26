@@ -305,6 +305,7 @@ Image.prototype.update = function(data) {
     var thumbnail;
     var image = this.getHelmaImage(mime, isLayout ? null :
         res.handlers.site.imageDimensionLimits);
+
     this.width = image.width;
     this.height = image.height;
 
@@ -332,7 +333,7 @@ Image.prototype.update = function(data) {
     this.fileName = fileName;
     if (thumbnail) this.thumbnailName = this.name + '_small' + extension;
 
-    this.writeFiles(image, thumbnail);
+    this.writeFiles(image.data || mime, thumbnail && thumbnail.data);
     this.contentLength = this.getFile().getLength();
   }
 
@@ -504,14 +505,19 @@ Image.prototype.getJSON = function() {
  * @returns {Object}
  */
 Image.prototype.getHelmaImage = function(mime, dimensionLimits) {
-  if (!dimensionLimits) dimensionLimits = [Infinity, Infinity];
+  if (!dimensionLimits) dimensionLimits = [];
 
-  var maxWidth = dimensionLimits[0];
-  var maxHeight = dimensionLimits[1];
+  var maxWidth = dimensionLimits[0] || Infinity;
+  var maxHeight = dimensionLimits[1] || Infinity;
+
+  var result = {
+    data: null,
+    width: 0,
+    height: 0
+  };
 
   try {
     var image = new helma.Image(mime.inputStream);
-
     var factorH = 1, factorV = 1;
 
     if (maxWidth && image.width > maxWidth) {
@@ -533,9 +539,13 @@ Image.prototype.getHelmaImage = function(mime, dimensionLimits) {
       if (mime.contentType.endsWith('gif')) {
         image.reduceColors(256);
       }
+
+      result.data = image;
     }
 
-    return image;
+    result.width = image.width;
+    result.height = image.height;
+    return result;
 
   } catch (ex) {
     app.log(ex);
