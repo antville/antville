@@ -270,3 +270,14 @@ Stories.prototype.onCodeUpdate = function() {
   return helma.aspects.addBefore(this, "create_action",
       aspects.fixStoryEditorParams);
 }
+
+File.prototype.onCodeUpdate = function() {
+  return helma.aspects.addAround(this, 'description_macro', function(args, func, file) {
+    var param = args[0];
+    if (param.as === "editor") {
+      file.input_macro(param, "description");
+    } else {
+      func.apply(file, args);
+    }
+  })
+};

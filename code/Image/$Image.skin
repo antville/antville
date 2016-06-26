@@ -31,7 +31,7 @@
 <div class='av-image-box'>
    <figure>
       <% image.render | link <% param.link %> class='uk-thumbnail' %>
-      <% image.origin prefix=<% gettext Source prefix="<figcaption class='uk-text-small'>" suffix=': ' %> suffix=</figcaption> %>
+      <% image.description prefix="<figcaption class='uk-text-small'>" suffix=</figcaption> %>
    </figure>
 </div>
 

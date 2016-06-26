@@ -305,7 +305,6 @@ $(function() {
             save: 1,
             file_origin: imageUrl,
             name: name,
-            description: 'Source: ' + url.replace(new RegExp('^.+:///?([^/]+).*$'), '$1'),
             maxWidth: args.w || '',
             maxHeight: args.h || ''
          }).done(function(data) {

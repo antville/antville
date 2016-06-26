@@ -291,15 +291,11 @@ Image.prototype.update = function(data) {
     var mimeName = mime.normalizeFilename(mime.name);
     this.contentLength = mime.contentLength;
     this.contentType = mime.contentType;
-    this.origin = origin;
+    File.prototype.setOrigin.call(this, origin);
 
     if (!this.name) {
        var name = File.getName(data.name) || mimeName.split('.')[0];
        this.name = this.parent.images.getAccessName(name);
-    }
-
-    if (!data.description && origin) {
-      data.description = gettext('Source: {0}', origin);
     }
 
     var thumbnail;
@@ -429,6 +425,10 @@ Image.prototype.render_macro = function(param) {
   delete param.border;
   html.tag('img', param);
   return;
+};
+
+Image.prototype.description_macro = function() {
+  File.prototype.description_macro.apply(this, arguments);
 };
 
 /**
