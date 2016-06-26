@@ -613,14 +613,7 @@ Site.prototype.renderXml = function(collection) {
       description.setValue(item.format_filter(item.text).replace(/[\x00-\x1f^\x0a^\x0d]/g, String.EMPTY));
       entry.setDescription(description);
 
-      var allowedSites = {
-        about: true,
-        help: true,
-        tobi: true,
-        deleteme: true
-      };
-
-      if (item.site.name in allowedSites && item.constructor === Story) {
+      if (item.constructor === Story) {
         var content = new rome.SyndContentImpl();
         content.setType('text/html');
         content.setValue(item.renderSkinAsString('$Story#instant', {
