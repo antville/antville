@@ -22,6 +22,6 @@ sql.retrieve("select * from metadata where parent_type in ('Image', 'File') and 
 
 sql.traverse(function() {
   if (!/(?:https?|ftp):\/\//i.test(this.value)) {
-    //sql.execute("delete from metadata where id = $0", this.id);
+    sql.execute("delete from metadata where id = $0", this.id);
   }
 });
