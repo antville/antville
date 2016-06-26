@@ -150,10 +150,6 @@ File.redirectOnExceededQuota = function(url) {
   return;
 }
 
-File.prototype.setOrigin = function(origin) {
-  if (!/c:\\fakepath\\/i.test(origin)) this.origin = origin;
-};
-
 /**
  * @name File
  * @constructor
@@ -334,6 +330,8 @@ File.prototype.contentType_macro = function (param, mode) {
 File.prototype.description_macro = function(param) {
   if (this.description) {
     res.write(this.description);
+  } else if (param['default']) {
+    res.write(param['default']);
   } else if (this.origin) {
     var text = this.origin.replace(new RegExp('^.+:///?(?:www\.)?([^/]+).*$'), '$1');
     var link = html.linkAsString({href: this.origin}, text);
@@ -357,6 +355,10 @@ File.prototype.getUrl = function() {
   var site = this.site || res.handlers.site;
   return site.getStaticUrl('files/' + this.fileName);
 }
+
+File.prototype.setOrigin = function(origin) {
+  if (!/c:\\fakepath\\/i.test(origin)) this.origin = origin;
+};
 
 /**
  * @returns {String}
