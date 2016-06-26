@@ -134,6 +134,7 @@ Story.prototype.getPermission = function(action) {
   switch (action) {
     case '.':
     case 'main':
+    case 'amp.html':
     return this.status !== Story.CLOSED ||
         this.creator === session.user ||
         Membership.require(Membership.MANAGER) ||
@@ -176,7 +177,8 @@ Story.prototype.main_action = function() {
     description: description,
     body: this.renderSkinAsString('Story#main'),
     images: this.getMetadata('og:image'),
-    videos: this.getMetadata('og:video')
+    videos: this.getMetadata('og:video'),
+    links: "<link rel='amphtml' href='" + this.href('amp.html') + "'>"
   });
   this.site.log();
   this.count();
@@ -329,6 +331,20 @@ Story.prototype.comment_action = function() {
   this.site.renderSkin('Site#page');
   return;
 }
+
+Story.prototype.amp_html_action = function() {
+  var spec = node.sanitizeHtml.defaults;
+  var text = this.format_filter(this.text);
+
+  text = node.sanitizeHtml(text, spec);
+
+  this.renderSkin('$Story#amp', {
+    published: this.created,
+    text: text,
+    title: this.title || formatDate(this.created, 'date'),
+    url: this.href()
+  });
+};
 
 /**
  *
