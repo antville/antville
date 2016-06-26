@@ -18,10 +18,4 @@
 // Apply with enabled updater repository using `ant patch -Dpatch.id=20160626`
 var sql = new Sql();
 
-sql.retrieve("select * from metadata where parent_type in ('Image', 'File') and name = 'origin'");
-
-sql.traverse(function() {
-  if (!/(?:https?|ftp):\/\//i.test(this.value)) {
-    sql.execute("delete from metadata where id = $0", this.id);
-  }
-});
+sql.execute("delete from metadata where parent_type in ('Image', 'File') and name = 'origin' and value not like 'http://%' and value not like 'https://%' and value not like 'ftp://%'");
