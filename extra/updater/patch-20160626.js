@@ -21,7 +21,7 @@ var sql = new Sql();
 sql.retrieve("select * from metadata where parent_type in ('Image', 'File') and name = 'origin'");
 
 sql.traverse(function() {
-  if (/c:\\fakepath\\/i.test(this.value)) {
-    sql.execute("delete from metadata where id = $0", this.id);
+  if (!/(?:https?|ftp):\/\//i.test(this.value)) {
+    //sql.execute("delete from metadata where id = $0", this.id);
   }
 });

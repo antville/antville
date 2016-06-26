@@ -357,7 +357,7 @@ File.prototype.getUrl = function() {
 }
 
 File.prototype.setOrigin = function(origin) {
-  if (!/c:\\fakepath\\/i.test(origin)) this.origin = origin;
+  if (/(?:https?|ftp)/i.test(origin)) this.origin = origin;
 };
 
 /**
