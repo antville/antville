@@ -23,30 +23,43 @@
 
 var sql = new Sql();
 
+writeln('Droppping user_id from tag_hub table');
 sql.execute('alter table tag_hub drop column user_id');
 
+writeln('Resetting null values in modified and modifier_id columns');
+writeln('- Processing account table');
 sql.execute('update account set modified = created where modified is null');
 
+writeln('- Processing content table');
 sql.execute('update content set modified = created where modified is null');
 sql.execute('update content set modifier_id = creator_id where modifier_id is null');
 
+writeln('- Processing file table');
 sql.execute('update file set modified = created where modified is null');
 sql.execute('update file set modifier_id = creator_id where modifier_id is null');
 
+writeln('- Processing image table');
+// TODO: Set null values in created and creator_id columns (layout images)
+sql.execute('update image i, layout l set i.created = l.created where i.parent_type = "Layout" and l.id = i.parent_id and l.created is not null and i.created is null');
 sql.execute('update image set modified = created where modified is null');
 sql.execute('update image set modifier_id = creator_id where modifier_id is null');
 
+writeln('- Processing layout table');
 sql.execute('update layout set modified = created where modified is null');
 sql.execute('update layout set modifier_id = creator_id where modifier_id is null');
 
+writeln('- Processing membership table');
 sql.execute('update membership set modified = created where modified is null');
 sql.execute('update membership set modifier_id = creator_id where modifier_id is null');
 
+writeln('- Processing poll table');
 sql.execute('update poll set modified = created where modified is null');
 sql.execute('update poll set modifier_id = creator_id where modifier_id is null');
 
+writeln('- Processing site table');
 sql.execute('update site set modified = created where modified is null');
 sql.execute('update site set modifier_id = creator_id where modifier_id is null');
 
+writeln('- Processing skin table');
 sql.execute('update skin set modified = created where modified is null');
 sql.execute('update skin set modifier_id = creator_id where modifier_id is null');
