@@ -139,6 +139,7 @@ $(function() {
          var queryString = '?callback=?&url=' + encodeURIComponent(sourceUri);
          queryString += '&cookie=' + encodeURIComponent(document.cookie + '; ' + customCookie);
          queryString += '&ua=' + encodeURIComponent('Mozilla/5.0 (Formica Bookmarklet by Antville)');
+         queryString += '&ref=' + encodeURIComponent(location.href);
 
          $.getJSON(proxyUri + queryString, function(data) {
             if (data.content) {
