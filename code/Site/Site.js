@@ -1049,15 +1049,18 @@ Site.prototype.getDiskSpace = function(quota) {
  * @param {String} href
  */
 Site.prototype.processHref = function(href) {
-  var parts, domain,
-      scheme = (req.servletRequest ? req.servletRequest.scheme : 'http') + '://';
-  if (domain = getProperty('domain.' + this.name)) {
+  var parts;
+  var scheme = getHrefScheme();
+  var domain = getProperty('domain.' + this.name);
+  if (domain) {
     parts = [scheme, domain, href];
-  } else if (domain = getProperty('domain.*')) {
+  }
+  domain = getProperty('domain.*');
+  if (domain) {
     parts = [scheme, this.name, '.', domain, href];
   } else {
     var mountpoint = app.appsProperties.mountpoint;
-    (mountpoint === '/') && (mountpoint = ''); // Prevents double slashes
+    if (mountpoint === '/') mountpoint = ''; // Prevents double slashes
     parts = [scheme, req.data.http_host, mountpoint, href];
   }
   return parts.join('');
@@ -1113,11 +1116,11 @@ Site.prototype.getStaticFile = function(tail) {
  * @returns {String}
  */
 Site.prototype.getStaticUrl = function(href) {
-  href || (href = '');
-  var scheme = (req.servletRequest ? req.servletRequest.scheme : 'http') + '://';
+  if (!href) href = '';
+  var scheme = getHrefScheme();
   var host = getProperty('domain.' + this.name);
-  host || (host = getProperty('domain.*'));
-  host || (host = req.data.http_host);
+  if (!host) host = getProperty('domain.*');
+  if (!host) host = req.data.http_host;
   return [scheme, host, app.appsProperties.staticMountpoint, '/sites/', this.name, '/', href].join('');
 }
 

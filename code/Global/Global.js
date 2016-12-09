@@ -1467,3 +1467,7 @@ function getLinkCount(item) {
   }
   return (content.match(/https?:\/\//g) || []).length;
 }
+
+function getHrefScheme() {
+  return getProperty('hrefScheme', 'http') + '://';
+}

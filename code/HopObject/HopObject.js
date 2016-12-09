@@ -99,8 +99,8 @@ HopObject.prototype.onRequest = function() {
   // Checking if we are on the correct host to prevent at least some XSS issues
   if (req.action !== 'notfound' && req.action !== 'error' &&
       this.href().contains('://') &&
-      !this.href().toLowerCase().startsWith(req.servletRequest.scheme +
-      '://' + req.servletRequest.serverName.toLowerCase())) {
+      !this.href().toLowerCase().startsWith(getHrefScheme() +
+      req.servletRequest.serverName.toLowerCase())) {
     res.redirect(this.href(req.action === 'main' ? String.EMPTY : req.action));
   }
 
