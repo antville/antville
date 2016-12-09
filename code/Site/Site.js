@@ -1054,7 +1054,7 @@ Site.prototype.processHref = function(href) {
   var domain = getProperty('domain.' + this.name);
   if (domain) {
     parts = [scheme, domain, href];
-  }
+  } else {
   domain = getProperty('domain.*');
   if (domain) {
     parts = [scheme, this.name, '.', domain, href];
@@ -1062,6 +1062,7 @@ Site.prototype.processHref = function(href) {
     var mountpoint = app.appsProperties.mountpoint;
     if (mountpoint === '/') mountpoint = ''; // Prevents double slashes
     parts = [scheme, req.data.http_host, mountpoint, href];
+  }
   }
   return parts.join('');
 }
