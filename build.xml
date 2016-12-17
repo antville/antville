@@ -213,7 +213,7 @@
     </exec>
     <mkdir dir="static/styles"/>
     <exec executable="node_modules/.bin/lessc" output="static/styles/main.min.css">
-      <arg line="-x build/client/main.less"/>
+      <arg line="--clean-css build/client/main.less"/>
     </exec>
     <exec executable="node_modules/.bin/lessc" output="static/styles/editor.min.css">
       <arg line="--clean-css build/client/editor.less"/>
