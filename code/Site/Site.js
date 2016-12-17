@@ -1055,14 +1055,14 @@ Site.prototype.processHref = function(href) {
   if (domain) {
     parts = [scheme, domain, href];
   } else {
-  domain = getProperty('domain.*');
-  if (domain) {
-    parts = [scheme, this.name, '.', domain, href];
-  } else {
-    var mountpoint = app.appsProperties.mountpoint;
-    if (mountpoint === '/') mountpoint = ''; // Prevents double slashes
-    parts = [scheme, req.data.http_host, mountpoint, href];
-  }
+    domain = getProperty('domain.*');
+    if (domain) {
+      parts = [scheme, this.name, '.', domain, href];
+    } else {
+      var mountpoint = app.appsProperties.mountpoint;
+      if (mountpoint === '/') mountpoint = ''; // Prevents double slashes
+      parts = [scheme, req.data.http_host, mountpoint, href];
+    }
   }
   return parts.join('');
 }
