@@ -160,7 +160,8 @@
     <!-- Copy extra files to final destinations -->
     <copy file="${export.dir}/helma/license.txt" tofile="${work.dir}/licenses/helma.txt"/>
     <copy todir="${work.dir}">
-       <fileset dir="${extra.dir}" includes="start.bat apps.properties server.properties launcher.jar"/>
+       <fileset dir="${extra.dir}"
+          includes="start.bat apps.properties server.properties launcher.jar"/>
     </copy>
     <exec dir="${extra.dir}" executable="cp">
        <arg line="-p start.sh ${work.dir}"/>
@@ -183,7 +184,8 @@
       <fileset dir="${work.dir}/modules/helma" includes="*.jar Search.js Ssh.js Chart.js"/>
     </delete>
     <delete includeemptydirs="true">
-      <fileset dir="${work.dir}/modules/jala" includes="build.properties docs/** lib/** licenses/** tests/** util/**"/>
+      <fileset dir="${work.dir}/modules/jala"
+          includes="build.properties docs/** lib/** licenses/** tests/** util/**"/>
     </delete>
     <delete dir="${work.dir}/apps/antville/legal"/>
     <delete dir="${source.dir}"/>
@@ -206,10 +208,12 @@
     </copy>
     <mkdir dir="static/scripts"/>
     <exec executable="node_modules/.bin/browserify" output="static/scripts/main.min.js">
-      <arg line="build/client/main.js -d -p [minifyify --map /static/scripts/main.min.map.json --output static/scripts/main.min.map.json]"/>
+      <arg line="build/client/main.js -d -p [minifyify --map /static/scripts/main.min.map.json
+          --output static/scripts/main.min.map.json]"/>
     </exec>
     <exec executable="node_modules/.bin/browserify" output="static/scripts/editor.min.js">
-      <arg line="build/client/editor.js -d -p [minifyify --map /static/scripts/editor.min.map.json --output static/scripts/editor.min.map.json]"/>
+      <arg line="build/client/editor.js -d -p [minifyify --map /static/scripts/editor.min.map.json
+          --output static/scripts/editor.min.map.json]"/>
     </exec>
     <mkdir dir="static/styles"/>
     <exec executable="node_modules/.bin/lessc" output="static/styles/main.min.css">
@@ -240,8 +244,8 @@
   </target>
 
   <target name="pot" depends="init">
-    <java dir="${helma.dir}" classpath="${helma.dir}/launcher.jar" classname="helma.main.launcher.Commandline"
-        fork="true">
+    <java dir="${helma.dir}" classpath="${helma.dir}/launcher.jar"
+        classname="helma.main.launcher.Commandline" fork="true">
       <!-- Root.extractMessages is currently located in Global/i18n.js -->
       <arg value="antville.extractMessages"/>
       <arg value="${build.dir}/MessageParser.js"/>
@@ -279,7 +283,8 @@
 
   <target name="make-zip" depends="init">
     <mkdir dir="${dist.dir}"/>
-    <fixcrlf srcdir="${path}" eol="crlf" includes="**/*.txt, **/*.properties,	**/*.hac, **/*.js, **/*.skin, **/*.xml, **/.bat"/>
+    <fixcrlf srcdir="${path}" eol="crlf"
+        includes="**/*.txt, **/*.properties,	**/*.hac, **/*.js, **/*.skin, **/*.xml, **/.bat"/>
     <zip zipfile="${dist.dir}/${filename}.zip">
       <zipfileset dir="${path}" prefix="${filename}" includes="**"/>
     </zip>
@@ -294,7 +299,8 @@
       <equals arg1="${patch.confirm}" arg2="n" casesensitive="false" trim="true"/>
     </condition>
     <fail if="patch.abort">Build aborted by user.</fail>
-    <java dir="${helma.dir}" classpath="${helma.dir}/launcher.jar" classname="helma.main.launcher.Commandline" fork="true">
+    <java dir="${helma.dir}" classpath="${helma.dir}/launcher.jar"
+        classname="helma.main.launcher.Commandline" fork="true">
       <arg value="antville.patch"/>
       <arg value="${patch}"/>
     </java>
@@ -302,8 +308,9 @@
 
   <target name="+patch" depends="init">
     <property name="patch.dir" value="extra/updater"/>
-    <echo file="${patch.dir}/patch-${file-date}.js">// Apply with enabled updater repository using `ant patch -Dpatch.id=${file-date}`${line.separator}<!--
-    -->var sql = new Sql();
+    <echo file="${patch.dir}/patch-${file-date}.js"><!--
+      -->// Apply with enabled updater repository using `ant patch -Dpatch.id=${file-date}`${line.separator}<!--
+      -->var sql = new Sql();
     </echo>
   </target>
 
@@ -318,11 +325,13 @@
     <property name="claustra.dir" value="claustra/${claustra.name}/${claustra.title}"/>
     <mkdir dir="${claustra.dir}"/>
     <echo file="${claustra.dir}/${claustra.title}.properties" append="true">#sites = collection(Site)</echo>
-    <echo file="${claustra.dir}/${claustra.title}.js" append="true">${claustra.title}.prototype.main_action = function () {${line.separator}<!--
-    -->  //res.debug(this.sites.count());${line.separator}<!--
-    -->};${line.separator}</echo>
+    <echo file="${claustra.dir}/${claustra.title}.js" append="true"><!--
+        -->${claustra.title}.prototype.main_action = function () {${line.separator}<!--
+        -->  //res.debug(this.sites.count());${line.separator}<!--
+        -->};${line.separator}</echo>
     <mkdir dir="${claustra.dir}/../Claustra"/>
-    <echo file="${claustra.dir}/../Claustra/Claustra.properties" append="true">${claustra.name} = mountpoint(${claustra.title})${line.separator}</echo>
+    <echo file="${claustra.dir}/../Claustra/Claustra.properties" append="true"><!--
+        -->${claustra.name} = mountpoint(${claustra.title})${line.separator}</echo>
   </target>
 
   <target name="clean" depends="init">
