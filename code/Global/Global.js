@@ -1198,7 +1198,7 @@ function getLocales(language) {
   for (var i in locales) {
     locale = locales[i];
     localeString = locale.toString();
-    if (!localeString.contains('_')) {
+    if (localeString && !localeString.contains('_')) {
       var isTranslated = jala.i18n.getCatalog(jala.i18n.getLocale(localeString));
       result.push({
         value: localeString,
@@ -1208,6 +1208,17 @@ function getLocales(language) {
     }
   }
   // TODO: Automatically integrate gendered german language
+  /*
+  var builder = java.util.Locale.Builder();
+  var locale1 = new java.util.Locale('de__#x-male');
+  var locale2 = builder.setLanguage('de')
+    .setExtension('x', 'male')
+    .build();
+  var locale3 = java.util.Locale.forLanguageTag(this.locale);
+  var locale = locale3;
+  console.log(java.lang.System.getProperty('java.version'));
+  console.log(locale, locale.language, locale.toLanguageTag());
+  */
   result.push({
     value: 'de-x-male',
     display: 'Deutsch ♂'
