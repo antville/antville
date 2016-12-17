@@ -34,6 +34,7 @@
     <echo message="  dist      Generate the Antville and AntClick packages (default)"/>
     <echo message="  docs      Generate the API documentation"/>
     <echo message="  help      Show these build instructions"/>
+    <echo message="  libs      Update Java libraries"/>
     <echo message="  messages  Generate JavaScript message files"/>
     <echo message="  patch     Apply patch file to Antville installation"/>
     <echo message="  pot       Extract gettext call strings into POT file"/>
@@ -222,6 +223,12 @@
   <target name="server" depends="init">
     <exec executable="node_modules/.bin/browserify" output="code/Global/0.node.js">
       <arg line="build/server.js -d"/>
+    </exec>
+  </target>
+
+  <target name="libs" depends="init">
+    <exec executable="${helma.dir}/gradlew">
+      <arg line="-b build/build.gradle"/>
     </exec>
   </target>
 

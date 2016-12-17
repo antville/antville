@@ -21,9 +21,8 @@
 
 String.ELLIPSIS = '…';
 
+app.addRepository(app.dir + '/../lib/jdom-1.0.jar');
 app.addRepository(app.dir + '/../lib/rome-1.0.jar');
-app.addRepository(app.dir + '/../lib/jdom.jar');
-app.addRepository(app.dir + '/../lib/itunes-0.4.jar');
 app.addRepository(app.dir + '/../lib/lesscss-1.7.0.1.1.jar');
 
 app.addRepository('modules/core/Global.js');
@@ -229,9 +228,7 @@ var lessParser = {
  */
 var rome = new JavaImporter(
   Packages.com.sun.syndication.io,
-  Packages.com.sun.syndication.feed.synd,
-  Packages.com.sun.syndication.feed.module.itunes,
-  Packages.com.sun.syndication.feed.module.itunes.types
+  Packages.com.sun.syndication.feed.synd
 );
 
 var marked = require('marked/lib/marked');

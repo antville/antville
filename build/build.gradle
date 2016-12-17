@@ -1,0 +1,24 @@
+apply plugin: 'java'
+defaultTasks 'deps'
+
+repositories {
+  jcenter()
+  mavenCentral()
+}
+
+dependencies {
+  runtime group: 'org.lesscss', name: 'lesscss', version: '1.7.0.1.1'
+  runtime group: 'rome', name: 'rome', version: '1.0'
+}
+
+task deps(type: Copy) {
+  from configurations.runtime
+  into '../lib/'
+  finalizedBy 'cleanup'
+}
+
+task cleanup(type: Delete) {
+  delete '../lib/rhino-1.7R4.jar'
+  delete '../lib/slf4j-api-1.7.2.jar'
+  delete '../lib/slf4j-simple-1.7.2.jar'
+}
