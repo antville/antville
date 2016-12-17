@@ -57,7 +57,7 @@
 
     <property name="name" value="antville"/>
     <property name="year" value="2001-${year}"/>
-    <property name="version" value="1.5"/>
+    <property name="version" value="1.6"/>
     <property name="package.name" value="${name}-${version}"/>
 
     <property name="antville.src" value="https://github.com/antville/antville.git"/>
