@@ -22,7 +22,7 @@
 
 <% #navigation %>
 <li><% root.link main <% gettext Start prefix="<i class='uk-icon-home'></i> " %> %></li>
-<li><% root.link sites <% gettext Sites %> %></li>
+<li><% root.link sites <% gettext 'Public Sites' %> %></li>
 <li><% root.link contact <% gettext Contact %> %></li>
 <li class='uk-nav-divider'></li>
 <% root.admin.skin $Admin#navigation suffix="<li class='uk-nav-divider'></li>" %>
