@@ -452,22 +452,15 @@ Site.prototype.main_css_action = function() {
   res.dependsOn((new Skin('Site', 'stylesheet')).getStaticFile().lastModified());
   res.digest();
 
-  // FIXME: This prevents the UIKit fonts from loading (wrong path)
-  //var file = new java.io.File(root.getStaticFile('../../styles/main.min.css'));
-  //res.writeln(Packages.org.apache.commons.io.FileUtils.readFileToString(file, 'utf-8'));
-
-  var coreCss = this.renderSkinAsString('$Site#stylesheet');
-  var customCss = this.renderSkinAsString('Site#stylesheet');
-
-  lessParser.parse(coreCss, function (error, tree) {
-    if (error) throw error;
-    coreCss = tree.toCSS();
-  });
+  res.push();
+  this.renderSkin('$Site#stylesheet');
+  this.renderSkin('Site#stylesheet');
+  var css = res.pop();
 
   try {
-    lessParser.parse(customCss, function(error, tree) {
+    lessParser.parse(css, function(error, less) {
       if (error) throw error;
-      customCss = tree.toCSS();
+      res.write(less.toCSS());
     });
   } catch (ex) {
     var message = [ex.type, 'error in line', ex.line, 'column', ex.column, 'of', ex.filename + ':', ex.message/*, '/', ex.extract[1]*/].join(String.SPACE);
@@ -476,10 +469,9 @@ Site.prototype.main_css_action = function() {
     res.writeln(message)
     res.writeln('**/');
     console.error(message);
+    res.write(css);
   }
 
-  res.writeln(coreCss);
-  res.writeln(customCss);
   return;
 }
 
