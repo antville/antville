@@ -223,10 +223,6 @@
     <exec executable="node_modules/.bin/browserify" output="code/Global/0.node.js">
       <arg line="build/server.js -d"/>
     </exec>
-    <concat destfile="code/Global/0.node.js" append="true">
-      <fileset file="node_modules/less/dist/less-rhino-1.7.5.js"/>
-      <fileset file="node_modules/marked/lib/marked.js"/>
-    </concat>
   </target>
 
   <target name="docs" depends="init">

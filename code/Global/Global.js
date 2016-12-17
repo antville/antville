@@ -24,6 +24,7 @@ String.ELLIPSIS = '…';
 app.addRepository(app.dir + '/../lib/rome-1.0.jar');
 app.addRepository(app.dir + '/../lib/jdom.jar');
 app.addRepository(app.dir + '/../lib/itunes-0.4.jar');
+app.addRepository(app.dir + '/../lib/lesscss-1.7.0.1.1.jar');
 
 app.addRepository('modules/core/Global.js');
 app.addRepository('modules/core/HopObject.js');
@@ -207,7 +208,20 @@ var html = new helma.Html();
  * An instance of the LESS parser.
  * @type less.Parser
  */
-var lessParser = new less.Parser();
+var lessParser = {
+  parse: function(lessCode, callback) {
+    //return callback(null, {toCSS:function() {return lessCode}});
+    var compiler = new Packages.org.lesscss.LessCompiler();
+    try {
+      var css = compiler.compile(lessCode);
+      callback(null, {toCSS: function() {
+        return css;
+      }})
+    } catch (error) {
+      callback(error);
+    }
+  }
+};
 
 /**
  * A collection of Java classes and namespaces required for parsing and generating RSS.
@@ -219,6 +233,8 @@ var rome = new JavaImporter(
   Packages.com.sun.syndication.feed.module.itunes,
   Packages.com.sun.syndication.feed.module.itunes.types
 );
+
+var marked = require('marked/lib/marked');
 
 /**
  * A simple and hackish implementation of the console instance of some browsers.
