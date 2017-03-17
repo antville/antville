@@ -203,6 +203,7 @@
   </target>
 
   <target name="client" depends="init">
+    <echo message="Building client-side files"/>
     <copy todir="static/fonts">
       <fileset dir="${uikit.dir}/fonts" includes="**"/>
     </copy>
