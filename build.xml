@@ -38,6 +38,7 @@
     <echo message="  messages  Generate JavaScript message files"/>
     <echo message="  patch     Apply patch file to Antville installation"/>
     <echo message="  pot       Extract gettext call strings into POT file"/>
+    <echo message="  server    Build server-side NodeJS compatibility layer"/>
     <echo message="  ville     Generate the Antville packages"/>
     <echo message="  +claustra Scaffolds a new claustra, ready for implementation"/>
     <echo message="  +patch    Scaffolds a new patch, ready for implementation"/>
