@@ -247,14 +247,23 @@ var console = function (type) {
     var now = formatDate(new Date, 'yyyy/MM/dd HH:mm:ss');
     var argString = Array.prototype.join.call(arguments, String.SPACE);
     var shellColors = {
-      debug: '\u001B[34m',
-      error: '\u001B[35m',
-      info: '\u001B[0m',
-      log: '\u001B[0m',
-      warn: '\u001B[31m'
+      debug: '\u001B[1;34m',
+      error: '\u001B[1;97;101m',
+      info: '\u001B[34m',
+      log: '\u001B[90m',
+      warn: '\u001B[1;103m'
     };
 
-    writeln(shellColors[type] + '[' + now + '] [' + type.toUpperCase() + '] [console] ' + argString + '\u001B[0m');
+    var output = [
+      shellColors[type],
+      '[', now, '] ',
+      '[', type.toUpperCase(), '] ',
+      '[console] ',
+      argString,
+      '\u001B[0m'
+    ];
+
+    writeln(output.join(''));
 
     if (typeof res !== 'undefined') {
       res.debug('<script>console.' + type + '("%c%s", "font-style: italic;", ' +
