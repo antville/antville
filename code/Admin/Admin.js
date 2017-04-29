@@ -160,10 +160,8 @@ Admin.purgeSites = function() {
   var now = new Date;
 
   root.admin.deletedSites.forEach(function() {
-    if (now - this.deleted > Date.ONEDAY * Admin.SITEREMOVALGRACEPERIOD) {
-      if (this.job) {
-        return; // Site is already scheduled for deletion
-      }
+    if (now > Admin.getDeletionDate(this)) {
+      if (this.job) return; // Site is already scheduled for deletion
       this.job = Admin.queue(this, 'remove', this.modifier);
     }
   });
@@ -177,7 +175,7 @@ Admin.purgeSites = function() {
         return;
       }
       var age = now - (this.stories.size() > 0 ?
-          this.stories.get(0).modified : this.created);
+          this.stories.get(0).modified : this.modified);
       if (age - notificationPeriod > 0) {
         if (!this.notified) {
           var site = res.handlers.site = this;

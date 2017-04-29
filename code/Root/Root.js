@@ -87,7 +87,10 @@ Root.prototype.getPermission = function(action) {
   if (action && action.contains('admin')) {
     return User.require(User.PRIVILEGED);
   }
+
   switch (action) {
+    case '.':
+    case 'main':
     case 'debug':
     case 'default.hook':
     case 'favicon.ico':
@@ -98,9 +101,11 @@ Root.prototype.getPermission = function(action) {
     case 'sites':
     case 'updates.xml':
     return true;
+
     case 'create':
     return this.getCreationPermission();
   }
+
   return Site.prototype.getPermission.apply(this, arguments);
 }
 
@@ -124,10 +129,9 @@ Root.prototype.main_action = function() {
 
 Root.prototype.error_action = function() {
   res.message = String.EMPTY;
-  var param = res.error ? res : session.data;
-  res.status = param.status || 500;
-  res.data.title = gettext('{0} {1} Error', root.getTitle(), param.status);
-  res.data.body = root.renderSkinAsString('$Root#error', param);
+  res.status = res.status || 500;
+  res.data.title = gettext('{0} {1} Error', root.getTitle(), res.status);
+  res.data.body = root.renderSkinAsString('$Root#error');
   res.handlers.site.renderSkin('Site#page');
   return;
 }
@@ -136,7 +140,7 @@ Root.prototype.notfound_action = function() {
   res.status = 404;
   res.data.title = gettext('{0} {1} Error', root.getTitle(), res.status);
   res.data.body = root.renderSkinAsString('$Root#notfound', req);
-  res.handlers.site.renderSkin('Site#page');
+  root.renderSkin('Site#page');
   return;
 }
 

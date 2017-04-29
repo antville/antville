@@ -904,7 +904,21 @@ function age_filter(value, param) {
   if (!value || value.constructor !== Date) {
     return value;
   }
-  return value.getAge()
+  return value.getAge();
+}
+
+/**
+ * Helma macro filter wrapping the {@link Date#getExpiry} method.
+ * @see Date#getExpiry
+ * @param {Date} value The original date.
+ * @param {Object} param The default Helma macro parameter object.
+ * @returns {String} The resulting expiry string of the original date.
+ */
+function expiry_filter(value, param) {
+  if (!value || value.constructor !== Date) {
+    return value;
+  }
+  return value.getExpiry();
 }
 
 /**

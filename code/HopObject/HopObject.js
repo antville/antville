@@ -108,19 +108,29 @@ HopObject.prototype.onRequest = function() {
   res.handlers.membership = User.getMembership();
 
   if (User.getCurrentStatus() === User.BLOCKED) {
-    session.data.status = 403;
-    session.data.error = gettext('Your account has been blocked.') + String.SPACE +
-        gettext('Please contact an administrator for further information.');
     User.logout();
-    res.redirect(root.href('error'));
+    res.status = 403;
+    res.data.error = gettext('Your account has been blocked.') + String.SPACE +
+        gettext('Please contact an administrator for further information.');
+    root.error_action();
+    res.stop();
   }
 
-  if (res.handlers.site.status === Site.BLOCKED &&
-      !User.require(User.PRIVILEGED)) {
-    session.data.status = 403;
-    session.data.error = gettext('The site you requested has been blocked.') +
+  // Simulate 404 for sites which are due for deletion by cronjob
+  if (res.handlers.site.job && !User.require(User.PRIVILEGED) ||
+      res.handlers.site.mode === Site.DELETED && !Membership.require(Membership.OWNER)) {
+    res.handlers.site = root;
+    root.notfound_action();
+    res.stop();
+  }
+
+  if (res.handlers.site.status === Site.BLOCKED && !User.require(User.PRIVILEGED)) {
+    res.status = 403;
+    res.handlers.site = root;
+    res.data.error = gettext('The site you requested has been blocked.') +
         String.SPACE + gettext('Please contact an administrator for further information.');
-    res.redirect(root.href('error'));
+    root.error_action();
+    res.stop();
   }
 
   HopObject.confirmConstructor(Layout);

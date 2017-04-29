@@ -249,7 +249,9 @@ Site.prototype.getPermission = function(action) {
     case 'search.xml':
     case 'user.js':
     return true;
+  }
 
+  switch (action) {
     case '.':
     case 'main':
     case 'comments.xml':
@@ -331,7 +333,7 @@ Site.prototype.delete_action = function () {
       this.deleted = new Date;
       this.status = Site.BLOCKED;
       this.mode = Site.DELETED;
-      res.message = gettext('The site {0} is queued for removal.', this.name);
+      res.message = gettext('The site {0} is queued for deletion.', this.name);
     }
     this.log(root, 'Deleted site ' + this.name);
     res.redirect(this.href());
@@ -914,7 +916,7 @@ Site.prototype.static_macro = function(param, name, mode) {
  *
  */
 Site.prototype.deleted_macro = function() {
-  return new Date(this.deleted.getTime() + Date.ONEDAY * Admin.SITEREMOVALGRACEPERIOD);
+  return Admin.getDeletionDate(this);
 }
 
 /**

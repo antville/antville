@@ -60,7 +60,9 @@
 <% #error %>
 <h1><% gettext Sorry! %></h1>
 <p><% gettext "An error occurred while processing your request." %></p>
-<pre class='uk-text-break'><% session.error default=<% param.error %> %></pre>
+<div class='uk-alert uk-alert-danger'>
+  <p class='uk-text-break'><% response.error %></p>
+</div>
 
 <% #health %>
 <h1><% response.title %></h1>
