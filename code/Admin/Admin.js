@@ -156,6 +156,10 @@ Admin.dequeue = function() {
 /**
  *
  */
+Admin.getDeletionDate = function(site) {
+  return new Date(site.deleted.getTime() + Date.ONEDAY * Admin.SITEREMOVALGRACEPERIOD);
+};
+
 Admin.purgeSites = function() {
   var now = new Date;
 
