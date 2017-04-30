@@ -19,7 +19,7 @@ msgstr ""
 "Project-Id-Version: Antville-1.6\n"
 "Report-Msgid-Bugs-To: mail@antville.org\n"
 "POT-Creation-Date: 2017-04-29 23:33+0200\n"
-"PO-Revision-Date: 2017-04-29 23:34+0200\n"
+"PO-Revision-Date: 2017-04-30 10:21+0200\n"
 "Last-Translator: Tobi Schäfer <interface@p3k.org>\n"
 "Language-Team: The Antville People <mail@antville.org>\n"
 "Language: de\n"
@@ -2801,7 +2801,7 @@ msgstr "in"
 msgid "in {0} day"
 msgid_plural "in {0} days"
 msgstr[0] "in {0} Tag"
-msgstr[1] "in {0} Tage"
+msgstr[1] "in {0} Tagen"
 
 #: /Users/tobi/Projects/antville/current/code/Global/Global.js:1157
 #, java-format

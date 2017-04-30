@@ -519,7 +519,7 @@ global.messages['de'] = {
   "import": "Importieren",
   "in": "in",
   "in {0} day": "in {0} Tag",
-  "in {0} days": "in {0} Tage",
+  "in {0} days": "in {0} Tagen",
   "in {0} hour": "in {0} Stunde",
   "in {0} hours": "in {0} Stunden",
   "in {0} minute": "in {0} Minute",
