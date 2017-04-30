@@ -945,7 +945,7 @@ function link_filter(text, param, url) {
  * @see formatDate
  * @param {Object} value The original value.
  * @param {Object} param The default Helma macro parameter object.
- * @param {String} pattern A formatting pattern suitable for the formatting method.
+ * @param {String} pattern A formatting pattern suitable for the formatting fmethod.
  * @param {String} [type] Deprecated.
  * @returns {String} The formatted string.
  */
@@ -1137,8 +1137,24 @@ function formatDate(date, format) {
         now = new Date,
         diff = now - date;
     if (diff < 0) {
-      // FIXME: Do something similar for future dates
-      text = formatDate(date);
+      diff = -diff;
+      if (diff < Date.ONEMINUTE) {
+        text = gettext('soon');
+      } else if (diff < Date.ONEHOUR) {
+        text = ngettext('in {0} minute', 'in {0} minutes', parseInt(diff / Date.ONEMINUTE, 10));
+      } else if (diff < Date.ONEDAY) {
+        text = ngettext('in {0} hour', 'in {0} hours', parseInt(diff / Date.ONEHOUR, 10));
+      } else if (diff < 2 * Date.ONEDAY) {
+        text = gettext('tomorrow');
+      } else if (diff < 7 * Date.ONEDAY) {
+        text = ngettext('in {0} day', 'in {0} days', parseInt(diff / Date.ONEDAY, 10));
+      } else if (diff < 30 * Date.ONEDAY) {
+        text = ngettext('in {0} week', 'in {0} weeks', parseInt(diff / 7 / Date.ONEDAY, 10));
+      } else if (diff < 365 * Date.ONEDAY) {
+        text = ngettext('in {0} month', 'in {0} months', parseInt(diff / 30 / Date.ONEDAY, 10));
+      } else {
+        text = ngettext('in {0} year', 'in {0} years', parseInt(diff / 365 / Date.ONEDAY, 10));
+      }
     } else if (diff < Date.ONEMINUTE) {
       text = gettext('right now');
     } else if (diff < Date.ONEHOUR) {
