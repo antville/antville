@@ -145,11 +145,8 @@ HopObject.prototype.onRequest = function() {
     }
     User.getLocation();
     res.status = 401;
-    res.data.title = gettext('{0} 401 Error', root.title);
-    res.data.body = root.renderSkinAsString('$Root#error', {error:
-        gettext('You are not allowed to access this part of the site.')});
-    res.handlers.site.renderSkin('Site#page');
-    session.data.error = null;
+    res.data.error = gettext('You are not allowed to access this part of the site.');
+    root.error_action();
     res.stop();
   }
 
