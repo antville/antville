@@ -915,9 +915,12 @@ Site.prototype.static_macro = function(param, name, mode) {
 /**
  *
  */
-Site.prototype.deleted_macro = function() {
-  return Admin.getDeletionDate(this);
-}
+Site.prototype.deleted_macro = function(param, format) {
+  var date = Admin.getDeletionDate(this);
+  if (!date) return;
+  if (!param.format && !format) return date;
+  res.write(formatDate(date, format));
+};
 
 /**
  *
