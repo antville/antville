@@ -370,6 +370,26 @@ Admin.updateDomains = function() {
   return;
 }
 
+Admin.resolveUrl = function(url) {
+  var http = new helma.Http();
+  http.setMethod('HEAD');
+  http.setFollowRedirects(false);
+
+  var response;
+  var location = url;
+
+  while (location) {
+    try {
+      response = http.getUrl(location);
+      location = response.location;
+    } catch (error) {
+      location = null;
+    }
+  };
+
+  return String(response ? response.url : url);
+};
+
 /**
  * The Admin prototype is mounted at root and provides actions needed
  * for system administration. A user needs the User.PRIVILEGED permission
