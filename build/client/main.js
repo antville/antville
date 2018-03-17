@@ -5,10 +5,10 @@ require('jquery-collagePlus/jquery.collagePlus');
 require('jquery-collagePlus/extras/jquery.collageCaption');
 require('jquery-collagePlus/extras/jquery.removeWhitespace');
 
-require('uikit-bower/js/uikit');
-require('uikit-bower/js/components/form-password');
-require('uikit-bower/js/components/tooltip');
-require('uikit-bower/js/components/upload');
+require('uikit/dist/js/uikit');
+require('uikit/dist/js/components/form-password');
+require('uikit/dist/js/components/tooltip');
+require('uikit/dist/js/components/upload');
 
 $(function() {
    // Extend jQuery with selectText() method.
