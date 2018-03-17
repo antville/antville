@@ -8,4 +8,4 @@ require('codemirror/mode/xml/xml');
 require('./cm-skin-mode');
 
 window.marked = require('marked/lib/marked');
-require('uikit-bower/js/components/htmleditor');
+require('uikit/dist/js/components/htmleditor');
