@@ -29,8 +29,10 @@
 
 <% #embed %>
 <div class='av-image-box'>
-   <% image.render | image.link class='uk-thumbnail' %>
-   <% image.source %>
+   <figure>
+      <% image.render | link <% param.link %> class='uk-thumbnail' %>
+      <% image.description prefix="<figcaption class='uk-text-small'>" suffix=</figcaption> %>
+   </figure>
 </div>
 
 <% #edit %>

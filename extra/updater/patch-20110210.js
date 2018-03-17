@@ -69,9 +69,9 @@ convertMetadata(Site);
 convertMetadata(Story, "content");
 convertMetadata(User, "account");
 
-/*sql.execute("drop column metadata from account");
+sql.execute("drop column metadata from account");
 sql.execute("drop column metadata from content");
 sql.execute("drop column metadata from file");
 sql.execute("drop column metadata from image");
 sql.execute("drop column metadata from layout");
-sql.execute("drop column metadata from site");*/
+sql.execute("drop column metadata from site");

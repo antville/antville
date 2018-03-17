@@ -19,6 +19,8 @@
  * @fileOverview Defines the Image prototype.
  */
 
+app.addRepository("modules/helma/Http.js");
+
 markgettext('Image');
 markgettext('image');
 markgettext('a image // accusative');
@@ -256,10 +258,22 @@ Image.prototype.update = function(data) {
 
   var mime = data.file;
   var origin = data.file_origin;
+  var isLayout = (this.parent_type === 'Layout' || path && !!path.layout);
 
   if (!mime || mime.contentLength < 1) {
     if (origin && origin !== this.origin) {
-      mime = getURL(origin);
+
+      var http = new helma.Http();
+      http.setHeader('Referer', origin);
+      http.setBinaryMode(true);
+      var response = http.getUrl(origin);
+
+      mime = new Packages.helma.util.MimePart(
+        origin,
+        response.content,
+        response.type
+      );
+
       if (!mime) {
         throw Error(gettext('Could not fetch the file from the given URL.'));
       }
@@ -274,27 +288,26 @@ Image.prototype.update = function(data) {
       throw Error(gettext('This does not seem to be a valid JPG, PNG or GIF image.'));
     }
 
-    this.origin = origin;
     var mimeName = mime.normalizeFilename(mime.name);
     this.contentLength = mime.contentLength;
     this.contentType = mime.contentType;
+    File.prototype.setOrigin.call(this, origin);
 
     if (!this.name) {
        var name = File.getName(data.name) || mimeName.split('.')[0];
        this.name = this.parent.images.getAccessName(name);
     }
 
-    if (!data.description && origin) {
-      data.description = gettext('Source: {0}', origin);
-    }
-
-    var image = this.getConstraint(mime, res.handlers.site.imageDimensionLimits);
-    this.height = image.height;
-    this.width = image.width;
-
     var thumbnail;
-    if (image.width > Image.THUMBNAILWIDTH) {
-      thumbnail = this.getConstraint(mime, [Image.THUMBNAILWIDTH]);
+    var image = this.getHelmaImage(mime, isLayout ? null :
+        res.handlers.site.imageDimensionLimits);
+
+    this.width = image.width;
+    this.height = image.height;
+
+    // Create a thumbnail version if the image size exceeds
+    if (this.width > Image.THUMBNAILWIDTH) {
+      thumbnail = this.getHelmaImage(mime, [Image.THUMBNAILWIDTH]);
       this.thumbnailWidth = thumbnail.width;
       this.thumbnailHeight = thumbnail.height;
     } else if (this.isPersistent()) {
@@ -305,22 +318,26 @@ Image.prototype.update = function(data) {
 
     // Make the image persistent before proceeding with writing files and
     // setting tags (also see Helma bug #607)
-    this.isTransient() && this.persist();
-
+    if (this.isTransient()) this.persist();
     var fileName = this.name + extension;
+
+    // Remove existing image files if the file name has changed
     if (fileName !== this.fileName) {
-      // Remove existing image files if the file name has changed
       this.removeFiles();
     }
+
     this.fileName = fileName;
-    thumbnail && (this.thumbnailName = this.name + '_small' + extension);
-    this.writeFiles(image.resized || mime, thumbnail && thumbnail.resized);
-    image.resized && (this.contentLength = this.getFile().getLength());
+    if (thumbnail) this.thumbnailName = this.name + '_small' + extension;
+
+    this.writeFiles(image.data || mime, thumbnail && thumbnail.data);
+    this.contentLength = this.getFile().getLength();
   }
 
-  if (this.parent_type !== 'Layout') {
+  // Layout images cannot be tagged
+  if (!isLayout) {
     this.setTags(data.tags || data.tag_array);
   }
+
   this.description = data.description;
   this.touch();
   return;
@@ -410,6 +427,10 @@ Image.prototype.render_macro = function(param) {
   return;
 };
 
+Image.prototype.description_macro = function() {
+  File.prototype.description_macro.apply(this, arguments);
+};
+
 /**
  *
  * @param {Object} name
@@ -483,30 +504,49 @@ Image.prototype.getJSON = function() {
  * @throws {Error}
  * @returns {Object}
  */
-Image.prototype.getConstraint = function(mime, dimensionLimits) {
+Image.prototype.getHelmaImage = function(mime, dimensionLimits) {
+  if (!dimensionLimits) dimensionLimits = [];
+
   var maxWidth = dimensionLimits[0] || Infinity;
   var maxHeight = dimensionLimits[1] || Infinity;
+
+  var result = {
+    data: null,
+    width: 0,
+    height: 0
+  };
+
   try {
     var image = new helma.Image(mime.inputStream);
     var factorH = 1, factorV = 1;
+
     if (maxWidth && image.width > maxWidth) {
       factorH = maxWidth / image.width;
     }
+
     if (maxHeight && image.height > maxHeight) {
       factorV = maxHeight / image.height;
     }
+
     if (factorH !== 1 || factorV !== 1) {
       var width = Math.ceil(image.width *
           (factorH < factorV ? factorH : factorV));
       var height = Math.ceil(image.height *
           (factorH < factorV ? factorH : factorV));
+
       image.resize(width, height);
+
       if (mime.contentType.endsWith('gif')) {
         image.reduceColors(256);
       }
-      return {resized: image, width: image.width, height: image.height};
+
+      result.data = image;
     }
-    return {width: image.width, height: image.height};
+
+    result.width = image.width;
+    result.height = image.height;
+    return result;
+
   } catch (ex) {
     app.log(ex);
     throw Error(gettext('Could not resize the image.'));

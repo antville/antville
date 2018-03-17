@@ -152,7 +152,7 @@
             <% gettext Bookmarklet %>
          </label>
          <div class='uk-form-controls'>
-            <a class='uk-button' data-uk-tooltip='{pos: "right"}' href="javascript: var siteUrl = '<% site.href %>'; var selection = (window.getSelection) ? window.getSelection() : document.selection.createRange(); selection = selection.text || selection; selection = selection + ''; var url='<% root.static %>../../formica.html?s=' + encodeURIComponent(siteUrl) + '&amp;l=' + encodeURIComponent(location.href) + '&amp;r=' + encodeURIComponent(document.referrer) + '&amp;w=400&amp;h=400&amp;c=' + encodeURIComponent(selection || document.title); window.open(url, 'formica', 'width=630, height=350'); void 0;" title="<% gettext 'Drag to Bookmarks Bar' %>"><% gettext "Post to {0}" <% site.title %> %></a>
+            <a class='uk-button' data-uk-tooltip='{pos: "right"}' href="javascript: (function() {var F = {'🍪': '',  '⚓': '<% root.static %>../../formica.html', '🐜': '<% site.href %>', '📝': window.getSelection ? window.getSelection() : document.selection.createRange()}; F['📝'] = '' + (F['📝'].text || F['📝']); F['⚓'] += '?s=' + encodeURIComponent(F['🐜']) + '&amp;l=' + encodeURIComponent(location.href) + '&amp;r=' + encodeURIComponent(document.referrer) + '&amp;k=' + encodeURIComponent(F['🍪']) + '&c=' + encodeURIComponent(F['📝']); window.open(F['⚓'], '🐜', 'width=650, height=350');})(); void 0;" title="<% gettext 'Drag to Bookmarks Bar' %>"><% gettext "Post to {0}" <% site.title %> %></a>
          </div>
       </div>
       <div class='uk-form-row'>
@@ -203,18 +203,14 @@
 
 <% #meta %>
 <meta name='description' content='<% response.description %>'>
+<meta name='twitter:card' content='summary_large_image'>
+<meta name='twitter:title' property='og:title' itemprop='name' content='<% response.title %>'>
+<meta name='twitter:description' property='og:description' itemprop='description' content='<% response.description default=<% response.title %> %>'>
 <meta property='og:type' content='<% response.type %>'>
-<% // Facebook is very picky with locales (e.g. complains about 'de' and 'en_AU') %>
-<% //site.locale prefix="<meta property='og:locale' content='" suffix="'>" %>
-<% response.title prefix="<meta property='og:title' content='" suffix="'>" %>
-<% response.description prefix="<meta property='og:description' content='" suffix="'>" %>
 <meta property='og:site_name' content='<% site.title %>'>
 <meta property='og:url' content='<% href %>'>
-<meta name='twitter:card' content='summary'>
-<% response.title prefix="<meta name='twitter:title' content='" suffix="'>" %>
-<% response.description prefix="<meta name='twitter:description' content='" suffix="'>" %>
-<% response.title prefix="<meta itemprop='name' content='" suffix="'>" %>
-<% response.description prefix="<meta itemprop='description' content='" suffix="'>" %>
+<% // Facebook is very picky with locales (e.g. complains about 'de' and 'en_AU') %>
+<% //site.locale prefix="<meta property='og:locale' content='" suffix="'>" %>
 <% response.images %>
 <% response.videos %>
 

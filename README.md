@@ -48,7 +48,7 @@ For those of you who demonstrated a commitment to collaborative open-source deve
 
 ## About Helma Object Publisher
 
-[Helma Object Publisher](http://helma.org) is a web application server.
+[Helma Object Publisher](http://helma.org) is a web application server driven by Java and programmed with JavaScript.
 
 With Helma Object Publisher (sometimes simply referred to as Helma or Hop) you can define Objects and map them to a relational database table. These so-called HopObjects can be created, modified and deleted using a comfortable object/container model. Hence, no manual fiddling around with database code is necessary.
 

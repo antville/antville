@@ -47,7 +47,7 @@ else
 <dd>Posted <% this.created text %> by <% this.creator %>.</dd>
 
 <% #update %>
-<dt><% gettext '{0} {1} {2} {3} on {4} // e.g. “{3 days ago} {admin} {posted} {a story} on {Antville}”' <% story.site.modified text prefix=<strong> suffix=</strong> %> <% story.creator %> <% if <% story.created %> is <% story.modified %> then <% gettext 'posted // has posted' %> else <% gettext 'updated // has updated' %> %><% if <% story.type %> is Story then <% gettext 'a story // accusative' %> else <% gettext 'a comment // accusative' %> %> <% story.site.title | story.site.link %> %></dt>
+<dt><% gettext '{0} {1} {2} {3} on {4} // e.g. “{3 days ago} {admin} {posted} {a story} on {Antville}”' <% story.site.modified text prefix=<strong> suffix=</strong> %> <% story.modifier %> <% if <% story.created %> is <% story.modified %> then <% gettext 'posted // has posted' %> else <% gettext 'updated // has updated' %> %><% if <% story.type %> is Story then <% gettext 'a story // accusative' %> else <% gettext 'a comment // accusative' %> %> <% story.site.title | story.site.link %> %></dt>
 <dd><% story.abstract | story.link class='av-concealed-link' %></dd>
 
 <% #embed %>
@@ -275,5 +275,61 @@ else
          editor.fit();
       }, 1000);
    })();
-
 </script>
+
+<% #instant %>
+<!doctype html>
+<html lang='en' prefix='op: http://media.facebook.com/op#'>
+
+<head>
+  <meta charset='utf-8'>
+  <meta property='op:markup_version' content='v1.0'>
+  <meta property='fb:article_style' content='default'>
+  <link rel='canonical' href='<% story.href %>'>
+</head>
+
+<body>
+  <article>
+    <header>
+      <h1><% story.title default=<% story.created date %> %></h1>
+      <time class='op-published' datetime='<% story.created iso %>'>
+        <% story.created long %>
+      </time>
+      <time class='op-modified' dateTime='<% story.modified iso %>'>
+        <% story.modified long %>
+      </time>
+      <address><a><% story.creator %></a></address>
+      <p><% param.text %></p>
+    </header>
+  </article>
+</body>
+
+</html>
+
+<% #amp %>
+<!doctype html>
+<html amp lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title><% param.title %></title>
+    <link rel="canonical" href="<% param.url %>" />
+    <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+    <script type="application/ld+json">
+      {
+        "@context": "http://schema.org",
+        "@type": "NewsArticle",
+        "headline": "<% param.title %>",
+        "datePublished": "<% param.published %>",
+        "image": [
+          "<% param.imageUrl %>"
+        ]
+      }
+    </script>
+    <style amp-boilerplate>body{-webkit-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-moz-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-ms-animation:-amp-start 8s steps(1,end) 0s 1 normal both;animation:-amp-start 8s steps(1,end) 0s 1 normal both}@-webkit-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-moz-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-ms-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-o-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}</style><noscript><style amp-boilerplate>body{-webkit-animation:none;-moz-animation:none;-ms-animation:none;animation:none}</style></noscript>
+    <script async src="https://cdn.ampproject.org/v0.js"></script>
+  </head>
+  <body>
+    <h1><% param.title %></h1>
+    <% param.text %>
+  </body>
+</html>

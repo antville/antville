@@ -30,15 +30,6 @@ File.prototype.alias_macro = function(param) {
   return;
 }
 
-File.prototype.description_macro = function(param) {
-  if (param.as === "editor") {
-    this.input_macro(param, "description");
-  } else {
-    res.write(this.description);
-  }
-  return;
-}
-
 File.prototype.filesize_macro = function(param) {
   return this.contentLength_macro(param);
 }

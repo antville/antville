@@ -273,18 +273,14 @@ File.prototype.update = function(data) {
   }
 
   if (mime.contentLength > 0) {
-    this.origin = origin;
     var mimeName = mime.normalizeFilename(mime.name);
     this.contentLength = mime.contentLength;
     this.contentType = mime.contentType;
+    this.setOrigin(origin);
 
     if (!this.name) {
        var name = File.getName(data.name) || mimeName.split('.')[0];
        this.name = this.site.files.getAccessName(name);
-    }
-
-    if (!data.description && origin) {
-      data.description = gettext('Source: {0}', origin);
     }
 
     // Make the file persistent before proceeding with writing
@@ -331,6 +327,19 @@ File.prototype.contentType_macro = function (param, mode) {
   return res.write(this.contentType);
 }
 
+File.prototype.description_macro = function(param) {
+  if (this.description) {
+    res.write(this.description);
+  } else if (param['default']) {
+    res.write(param['default']);
+  } else if (this.origin) {
+    var text = this.origin.replace(new RegExp('^.+:///?(?:www\.)?([^/]+).*$'), '$1');
+    var link = html.linkAsString({href: this.origin}, text);
+    res.write(gettext('Source: {0}', link));
+  }
+  return;
+};
+
 /**
  *
  */
@@ -346,6 +355,10 @@ File.prototype.getUrl = function() {
   var site = this.site || res.handlers.site;
   return site.getStaticUrl('files/' + this.fileName);
 }
+
+File.prototype.setOrigin = function(origin) {
+  if (/(?:https?|ftp)/i.test(origin)) this.origin = origin;
+};
 
 /**
  * @returns {String}

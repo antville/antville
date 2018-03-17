@@ -3,13 +3,13 @@
 <div class="uk-article-meta">
    <% gettext "Posted by {0} on {1}" <% image.creator %> <% image.created short %> %>
 </div>
-<div class='uk-margin-top'>
-   <a href='<% image.url %>' class='uk-thumbnail' style='width: <% image.width %>px;'>
-     <% image.render %>
-     <div class='uk-thumbnail-caption'>
-        <% image.description default=<% image.name %> %>
-     </div>
-   </a>
+<div class='av-image-box uk-margin-top'>
+   <figure>
+      <a href='<% image.url %>'>
+         <% image.render class='uk-thumbnail' %>
+      </a>
+      <% image.description prefix="<figcaption class='uk-text-small'>" suffix=</figcaption> %>
+   </figure>
 </div>
 <div class='uk-margin-top'>
   <% image.link edit <% gettext Edit %> class='uk-button' %>

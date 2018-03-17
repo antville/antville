@@ -452,22 +452,15 @@ Site.prototype.main_css_action = function() {
   res.dependsOn((new Skin('Site', 'stylesheet')).getStaticFile().lastModified());
   res.digest();
 
-  // FIXME: This prevents the UIKit fonts from loading (wrong path)
-  //var file = new java.io.File(root.getStaticFile('../../styles/main.min.css'));
-  //res.writeln(Packages.org.apache.commons.io.FileUtils.readFileToString(file, 'utf-8'));
-
-  var coreCss = this.renderSkinAsString('$Site#stylesheet');
-  var customCss = this.renderSkinAsString('Site#stylesheet');
-
-  lessParser.parse(coreCss, function (error, tree) {
-    if (error) throw error;
-    coreCss = tree.toCSS();
-  });
+  res.push();
+  this.renderSkin('$Site#stylesheet');
+  this.renderSkin('Site#stylesheet');
+  var css = res.pop();
 
   try {
-    lessParser.parse(customCss, function(error, tree) {
+    lessParser.parse(css, function(error, less) {
       if (error) throw error;
-      customCss = tree.toCSS();
+      res.write(less.toCSS());
     });
   } catch (ex) {
     var message = [ex.type, 'error in line', ex.line, 'column', ex.column, 'of', ex.filename + ':', ex.message/*, '/', ex.extract[1]*/].join(String.SPACE);
@@ -476,10 +469,9 @@ Site.prototype.main_css_action = function() {
     res.writeln(message)
     res.writeln('**/');
     console.error(message);
+    res.write(css);
   }
 
-  res.writeln(coreCss);
-  res.writeln(customCss);
   return;
 }
 
@@ -581,82 +573,60 @@ Site.prototype.renderPage = function (parts) {
  * @param {Story[]} collection
  */
 Site.prototype.renderXml = function(collection) {
-  collection || (collection = this.stories.recent);
+  if (!collection) collection = this.stories.recent;
+
   var now = new Date;
   var feed = new rome.SyndFeedImpl();
+
   feed.setFeedType('rss_2.0');
   feed.setLink(this.href());
   feed.setTitle(this.title);
   feed.setDescription(this.tagline || String.EMPTY);
   feed.setLanguage(this.locale.replace('_', '-'));
   feed.setPublishedDate(now);
-  /*
-  var feedInfo = new rome.FeedInformationImpl();
-  var feedModules = new java.util.ArrayList();
-  feedModules.add(feedInfo);
-  feed.setModules(feedModules);
-  //feedInfo.setImage(new java.net.URL(this.getProperty('imageUrl')));
-  feedInfo.setSubtitle(this.tagline);
-  feedInfo.setSummary(this.description);
-  feedInfo.setAuthor(this.creator.name);
-  feedInfo.setOwnerName(this.creator.name);
-  //feedInfo.setOwnerEmailAddress(this.getProperty('email'));
-  */
+
   var entry, entryInfo, entryModules;
   var enclosure, enclosures, keywords;
   var entries = new java.util.ArrayList();
   var description;
   var list = collection.constructor === Array ? collection : collection.list(0, 25);
+
   for each (var item in list) {
     entry = new rome.SyndEntryImpl();
     entry.setTitle(item.title || formatDate(item.created, 'date'));
     entry.setLink(item.href());
     entry.setAuthor(item.creator.name);
     entry.setPublishedDate(item.created);
+
     if (item.text) {
       description = new rome.SyndContentImpl();
       description.setType('text/html');
       // FIXME: Work-around for org.jdom.IllegalDataException caused by some ASCII control characters
       description.setValue(item.format_filter(item.text).replace(/[\x00-\x1f^\x0a^\x0d]/g, String.EMPTY));
       entry.setDescription(description);
+
+      if (item.constructor === Story) {
+        var content = new rome.SyndContentImpl();
+        content.setType('text/html');
+        content.setValue(item.renderSkinAsString('$Story#instant', {
+          text: stripTags(description.getValue())
+        }));
+
+        var contents = new java.util.ArrayList();
+        contents.add(content);
+        entry.setContents(contents);
+      }
     }
+
     entries.add(entry);
-    /*
-    entryInfo = new rome.EntryInformationImpl();
-    entryModules = new java.util.ArrayList();
-    entryModules.add(entryInfo);
-    entry.setModules(entryModules);
-
-    enclosure = new rome.SyndEnclosureImpl();
-    enclosure.setUrl(episode.getProperty('fileUrl'));
-    enclosure.setType(episode.getProperty('contentType'));
-    enclosure.setLength(episode.getProperty('filesize') || 0);
-    enclosures = new java.util.ArrayList();
-    enclosures.add(enclosure);
-    entry.setEnclosures(enclosures);
-
-    entryInfo.setAuthor(entry.getAuthor());
-    entryInfo.setBlock(false);
-    entryInfo.setDuration(new rome.Duration(episode.getProperty('length') || 0));
-    entryInfo.setExplicit(false);
-    entryInfo.setKeywords(episode.getProperty('keywords'));
-    entryInfo.setSubtitle(episode.getProperty('subtitle'));
-    entryInfo.setSummary(episode.getProperty('description'));
-    */
   }
+
   feed.setEntries(entries);
+
   var output = new rome.SyndFeedOutput();
   res.servletResponse.setCharacterEncoding('utf-8');
   output.output(feed, res.servletResponse.writer);
   return;
-  // FIXME: Ugly hack for adding PubSubHubbub and rssCloud elements to XML
-  /*
-  var xml = output.outputString(feed);
-  xml = xml.replace('<rss', '<rss xmlns:atom="http://www.w3.org/2005/Atom"');
-  xml = xml.replace('<channel>', '<channel>\n   <cloud domain="rpc.rsscloud.org" port="5337" path="/rsscloud/pleaseNotify" registerProcedure="" protocol="http-post" />');
-  xml = xml.replace('<channel>', '<channel>\n   <atom:link rel="hub" href="' + getProperty("parss.hub") + '"/>');
-  return xml;
-  */
 }
 
 Site.prototype.rss_xsl_action = function() {
@@ -1071,16 +1041,20 @@ Site.prototype.getDiskSpace = function(quota) {
  * @param {String} href
  */
 Site.prototype.processHref = function(href) {
-  var parts, domain,
-      scheme = (req.servletRequest ? req.servletRequest.scheme : 'http') + '://';
-  if (domain = getProperty('domain.' + this.name)) {
+  var parts;
+  var scheme = getHrefScheme();
+  var domain = getProperty('domain.' + this.name);
+  if (domain) {
     parts = [scheme, domain, href];
-  } else if (domain = getProperty('domain.*')) {
-    parts = [scheme, this.name, '.', domain, href];
   } else {
-    var mountpoint = app.appsProperties.mountpoint;
-    (mountpoint === '/') && (mountpoint = ''); // Prevents double slashes
-    parts = [scheme, req.data.http_host, mountpoint, href];
+    domain = getProperty('domain.*');
+    if (domain) {
+      parts = [scheme, this.name, '.', domain, href];
+    } else {
+      var mountpoint = app.appsProperties.mountpoint;
+      if (mountpoint === '/') mountpoint = ''; // Prevents double slashes
+      parts = [scheme, req.data.http_host, mountpoint, href];
+    }
   }
   return parts.join('');
 }
@@ -1135,11 +1109,11 @@ Site.prototype.getStaticFile = function(tail) {
  * @returns {String}
  */
 Site.prototype.getStaticUrl = function(href) {
-  href || (href = '');
-  var scheme = (req.servletRequest ? req.servletRequest.scheme : 'http') + '://';
+  if (!href) href = '';
+  var scheme = getHrefScheme();
   var host = getProperty('domain.' + this.name);
-  host || (host = getProperty('domain.*'));
-  host || (host = req.data.http_host);
+  if (!host) host = getProperty('domain.*');
+  if (!host) host = req.data.http_host;
   return [scheme, host, app.appsProperties.staticMountpoint, '/sites/', this.name, '/', href].join('');
 }
 

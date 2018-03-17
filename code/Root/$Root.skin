@@ -66,7 +66,7 @@
 <h1><% response.title %></h1>
 <div class='uk-panel uk-panel-header'>
    <h3 class='uk-panel-title'><% gettext Status %></h3>
-   <% site.skin Root#status %>
+   <p><% site.skin Root#status %></p>
 </div>
 <div class='uk-panel uk-panel-header'>
    <h3 class='uk-panel-title'><% gettext Details %></h3>
@@ -116,7 +116,9 @@
       <dd><% version %></dd>
       <dt><% gettext Build %></dt>
       <dd>
-         <% link <% version hash prefix='https://github.com/antville/antville/commit/' %> <% version hash %> %> (<% version date | format date medium %>)
+         <% link <% version hash prefix='https://github.com/antville/antville/commit/' %> <% version hash %> %> (<% version date | format date %>)
       </dd>
+      <dt><% gettext 'Helma Version' %></dt>
+      <dd><% param.helma %></dd>
    </dl>
 </div>

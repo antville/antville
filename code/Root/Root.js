@@ -251,7 +251,8 @@ Root.prototype.health_action = function() {
     totalMemory: formatNumber(totalMemory),
     usedMemory: formatNumber(totalMemory - freeMemory),
     sessions: formatNumber(app.countSessions()),
-    cacheSize: formatNumber(getProperty('cacheSize'))
+    cacheSize: formatNumber(getProperty('cacheSize')),
+    helma: Packages.helma.main.Server.getServer().version
   };
 
   for each (key in ['activeThreads', 'freeThreads', 'requestCount',

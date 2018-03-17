@@ -277,13 +277,14 @@ Admin.commitEntries = function() {
     }
 
     // Only log unique combinations of context, ip and referrer
-    referrer = String(referrer);
+    referrer = Admin.resolveUrl(referrer);
     var key = item.context._prototype + '-' + item.context._id + ':' +
         item.ip + ':' + referrer;
     if (history.indexOf(key) > -1) {
       continue;
     }
     history.push(key);
+    item.referrer = referrer;
 
     // Exclude requests coming from the same site
     if (item.site) {
@@ -369,6 +370,26 @@ Admin.updateDomains = function() {
   out.close();
   return;
 }
+
+Admin.resolveUrl = function(url) {
+  var http = new helma.Http();
+  http.setMethod('HEAD');
+  http.setFollowRedirects(false);
+
+  var response;
+  var location = url;
+
+  while (location) {
+    try {
+      response = http.getUrl(location);
+      location = response.location;
+    } catch (error) {
+      location = null;
+    }
+  };
+
+  return String(response ? response.url : url);
+};
 
 /**
  * The Admin prototype is mounted at root and provides actions needed

@@ -78,7 +78,7 @@ Stories.prototype.create_action = function() {
       (function (images, videos) {
         this.setMetadata('og:image', images ? Array.prototype.slice.call(images) : null);
         this.setMetadata('og:video', videos ? Array.prototype.slice.call(videos) : null);
-      }).call(story, req.postParams['og:image_array'], req.postParams['og:video_array']);
+      }).call(story, req.data['og:image_array'], req.data['og:video_array']);
       story.notify(req.action);
       JSON.sendPaddedResponse(story._id);
       delete session.data.backup;

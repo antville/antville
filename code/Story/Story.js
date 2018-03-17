@@ -134,6 +134,7 @@ Story.prototype.getPermission = function(action) {
   switch (action) {
     case '.':
     case 'main':
+    case 'amp.html':
     return this.status !== Story.CLOSED ||
         this.creator === session.user ||
         Membership.require(Membership.MANAGER) ||
@@ -176,7 +177,8 @@ Story.prototype.main_action = function() {
     description: description,
     body: this.renderSkinAsString('Story#main'),
     images: this.getMetadata('og:image'),
-    videos: this.getMetadata('og:video')
+    videos: this.getMetadata('og:video'),
+    links: "<link rel='amphtml' href='" + this.href('amp.html') + "'>"
   });
   this.site.log();
   this.count();
@@ -329,6 +331,20 @@ Story.prototype.comment_action = function() {
   this.site.renderSkin('Site#page');
   return;
 }
+
+Story.prototype.amp_html_action = function() {
+  var spec = node.sanitizeHtml.defaults;
+  var text = this.format_filter(this.text);
+
+  text = node.sanitizeHtml(text, spec);
+
+  this.renderSkin('$Story#amp', {
+    published: this.created,
+    text: text,
+    title: this.title || formatDate(this.created, 'date'),
+    url: this.href()
+  });
+};
 
 /**
  *
@@ -679,8 +695,8 @@ Story.prototype.linebreak_filter = function (value, param, mode) {
     var mdQuoteMarker = new RegExp('<!--av-quote-->', 'g');
     var mdCodeMarker = new RegExp('<!--av-code-->', 'g');
     return value
-      // Prevent Markdown for linebreaks (lines ending with 2 spaces)
-      // as well as code segments (4 spaces) to be removed by Helma’s format() method
+      // Prevent Markdown for linebreaks (lines ending with 2 spaces) as well as
+      // code segments (4 spaces) to be removed by Helma’s format() method
       .replace(/ {2}$/gm, mdLineBreakMarker.source)
       .replace(/^ {4}/gm, mdCodeMarker.source)
       // Prevent Markdown for quote segments (lines starting with ‘>’)
@@ -689,8 +705,12 @@ Story.prototype.linebreak_filter = function (value, param, mode) {
         return mdQuoteMarker.source.repeat(item.length);
       })
       // Apply Helma’s format() method for good
-      // FIXME: This should go into the compat layer
+      // FIXME: This should probably be moved to the compat layer
       .format(value)
+      // Replace trailing HTML linebreaks with Markdown ones
+      .replace(/<br[^>]*>$/gm, String.SPACE.repeat(2))
+      // Replace trailing HTML linebreaks inserted by Helma’s format() method with Markdown ones
+      //.replace(/<br\s*class=['"]?helma-format['"]?\s*\/?>/g, String.SPACE.repeat(2))
       // Restore Markdown quote segments
       .replace(mdQuoteMarker, '>')
       // Restore Markdown linebreaks and code segments

@@ -21,9 +21,9 @@
 
 String.ELLIPSIS = '…';
 
+app.addRepository(app.dir + '/../lib/jdom-1.0.jar');
 app.addRepository(app.dir + '/../lib/rome-1.0.jar');
-app.addRepository(app.dir + '/../lib/jdom.jar');
-app.addRepository(app.dir + '/../lib/itunes-0.4.jar');
+app.addRepository(app.dir + '/../lib/lesscss-1.7.0.1.1.jar');
 
 app.addRepository('modules/core/Global.js');
 app.addRepository('modules/core/HopObject.js');
@@ -207,7 +207,20 @@ var html = new helma.Html();
  * An instance of the LESS parser.
  * @type less.Parser
  */
-var lessParser = new less.Parser();
+var lessParser = {
+  parse: function(lessCode, callback) {
+    //return callback(null, {toCSS:function() {return lessCode}});
+    var compiler = new Packages.org.lesscss.LessCompiler();
+    try {
+      var css = compiler.compile(lessCode);
+      callback(null, {toCSS: function() {
+        return css;
+      }})
+    } catch (error) {
+      callback(error);
+    }
+  }
+};
 
 /**
  * A collection of Java classes and namespaces required for parsing and generating RSS.
@@ -215,10 +228,10 @@ var lessParser = new less.Parser();
  */
 var rome = new JavaImporter(
   Packages.com.sun.syndication.io,
-  Packages.com.sun.syndication.feed.synd,
-  Packages.com.sun.syndication.feed.module.itunes,
-  Packages.com.sun.syndication.feed.module.itunes.types
+  Packages.com.sun.syndication.feed.synd
 );
+
+var marked = require('marked/lib/marked');
 
 /**
  * A simple and hackish implementation of the console instance of some browsers.
@@ -234,14 +247,23 @@ var console = function (type) {
     var now = formatDate(new Date, 'yyyy/MM/dd HH:mm:ss');
     var argString = Array.prototype.join.call(arguments, String.SPACE);
     var shellColors = {
-      debug: '\u001B[34m',
-      error: '\u001B[35m',
-      info: '\u001B[0m',
-      log: '\u001B[0m',
-      warn: '\u001B[31m'
+      debug: '\u001B[1;34m',
+      error: '\u001B[1;97;101m',
+      info: '\u001B[34m',
+      log: '\u001B[90m',
+      warn: '\u001B[1;103m'
     };
 
-    writeln(shellColors[type] + '[' + now + '] [' + type.toUpperCase() + '] [console] ' + argString + '\u001B[0m');
+    var output = [
+      shellColors[type],
+      '[', now, '] ',
+      '[', type.toUpperCase(), '] ',
+      '[console] ',
+      argString,
+      '\u001B[0m'
+    ];
+
+    writeln(output.join(''));
 
     if (typeof res !== 'undefined') {
       res.debug('<script>console.' + type + '("%c%s", "font-style: italic;", ' +
@@ -581,7 +603,7 @@ function image_macro(param, id, mode) {
     break;
     case 'thumbnail':
     case 'popup':
-    var url = image.getUrl();
+    var url = param.link || image.getUrl();
     html.openTag('a', {href: url});
     // FIXME: Bloody popups belong to compatibility layer
     if (mode === 'popup') {
@@ -593,7 +615,8 @@ function image_macro(param, id, mode) {
     case 'box':
     // Default Images do not provide the renderSkin() method
     if (image.renderSkin) {
-      image.renderSkin(param.skin || '$Image#embed');
+      if (!param.link) param.link = image.getUrl();
+      image.renderSkin(param.skin || '$Image#embed', param);
     }
     break;
     default:
@@ -1197,7 +1220,7 @@ function getLocales(language) {
   for (var i in locales) {
     locale = locales[i];
     localeString = locale.toString();
-    if (!localeString.contains('_')) {
+    if (localeString && !localeString.contains('_')) {
       var isTranslated = jala.i18n.getCatalog(jala.i18n.getLocale(localeString));
       result.push({
         value: localeString,
@@ -1207,6 +1230,17 @@ function getLocales(language) {
     }
   }
   // TODO: Automatically integrate gendered german language
+  /*
+  var builder = java.util.Locale.Builder();
+  var locale1 = new java.util.Locale('de__#x-male');
+  var locale2 = builder.setLanguage('de')
+    .setExtension('x', 'male')
+    .build();
+  var locale3 = java.util.Locale.forLanguageTag(this.locale);
+  var locale = locale3;
+  console.log(java.lang.System.getProperty('java.version'));
+  console.log(locale, locale.language, locale.toLanguageTag());
+  */
   result.push({
     value: 'de-x-male',
     display: 'Deutsch ♂'
@@ -1465,4 +1499,8 @@ function getLinkCount(item) {
     content = String(item);
   }
   return (content.match(/https?:\/\//g) || []).length;
+}
+
+function getHrefScheme() {
+  return getProperty('hrefScheme', 'http') + '://';
 }
