@@ -810,7 +810,8 @@ h4 + .uk-comment-meta li:first-child {
 }
 
 .av-floating-navigation {
-   & .av-toggle, & .av-ant {
+   & .av-hidden-toggle,
+   & .av-visible-toggle {
       display: none;
    }
 }
@@ -821,7 +822,7 @@ h4 + .uk-comment-meta li:first-child {
       @right: 5%;
       @size: 30px;
 
-      .av-ant {
+      .av-visible-toggle {
          padding: 2px;
          border-radius: 100%;
          background-color: fadeout(@background, 20%);
@@ -829,7 +830,8 @@ h4 + .uk-comment-meta li:first-child {
          background-position: 2px 2px;
       }
 
-      .av-toggle, .av-ant {
+      .av-hidden-toggle,
+      .av-visible-toggle {
          display: initial;
          position: absolute;
          top: @top;
@@ -839,7 +841,7 @@ h4 + .uk-comment-meta li:first-child {
          margin-right: 2px;
       }
 
-      .av-toggle {
+      .av-hidden-toggle {
          z-index: 9;
          opacity: 0;
 

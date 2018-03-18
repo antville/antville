@@ -74,8 +74,8 @@ prefix="Last update: " default="None so far" %>)</span></li>
             <% response.body %>
          </div>
          <div class='uk-width-3-10 --uk-hidden-small av-floating-navigation'>
-            <input type='checkbox' class='av-toggle'>
-            <div class='av-ant'></div>
+            <input type='checkbox' class='av-hidden-toggle'>
+            <div class='av-visible-toggle'></div>
             <div class='uk-margin-large-left av-border-left'>
                <% membership.status %>
                <ul class='uk-nav uk-nav-side'>
