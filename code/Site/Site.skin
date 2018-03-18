@@ -66,14 +66,16 @@ prefix="Last update: " default="None so far" %>)</span></li>
       <link rel='stylesheet' type='text/css' href='<% site.href main.css %>'>
       <script type='text/javascript' src='<% site.href main.js %>'></script>
    </head>
-   <body class='uk-container-center av-page'>
+   <body>
       <% site.skin $Site#header %>
-      <div class='uk-grid'>
-         <div class='uk-width-7-10'>
+      <div class='uk-grid av-page'>
+         <div class='uk-width-medium-7-10'>
             <% response.message prefix="<div class='uk-alert' data-uk-alert>" suffix=</div> %>
             <% response.body %>
          </div>
-         <div class='uk-width-3-10'>
+         <div class='uk-width-3-10 --uk-hidden-small av-floating-navigation'>
+            <input type='checkbox' class='av-toggle'>
+            <div class='av-ant'></div>
             <div class='uk-margin-large-left av-border-left'>
                <% membership.status %>
                <ul class='uk-nav uk-nav-side'>
