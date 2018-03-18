@@ -823,6 +823,7 @@ h4 + .uk-comment-meta li:first-child {
       @size: 30px;
 
       .av-visible-toggle {
+         .av-ant;
          padding: 2px;
          border-radius: 100%;
          background-color: fadeout(@background, 20%);
