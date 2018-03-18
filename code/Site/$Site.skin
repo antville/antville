@@ -782,8 +782,8 @@ h4 + .uk-comment-meta li:first-child {
    .av-header-bg-dots {
       position: relative;
       top: -46px;
-      //width: 100%;
       margin-left: 222px;
+      margin-right: -5.6%;
       height: 38px;
       background: url('<% image /dot.gif url %>');
    }
@@ -840,10 +840,14 @@ h4 + .uk-comment-meta li:first-child {
       }
 
       .av-toggle {
-         z-index: 10;
+         z-index: 9;
          opacity: 0;
 
          &:checked {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+
             & ~ .av-border-left {
                display: initial;
             }
@@ -856,7 +860,7 @@ h4 + .uk-comment-meta li:first-child {
          top: 0;
          right: 0;
          bottom: 0;
-         z-index: 9;
+         z-index: 10;
          padding: 10pt 10pt 10pt 0;
          background-color: fadeout(@background, 10%);
          box-shadow: -5px 0 5px 0 @border-color;
