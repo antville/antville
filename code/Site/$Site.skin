@@ -430,7 +430,7 @@ html, html.uk-notouch, body {
    font-family: @text-font;
 }
 
-body {
+body.av-16 {
    max-width: 900px;
    margin: auto 5%;
 }
