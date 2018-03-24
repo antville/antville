@@ -458,7 +458,10 @@ em {
 }
 
 img {
-   max-width: initial; // FIXME: compatibility
+   body:not(.av-16) &, table & {
+      max-width: initial; // FIXME: compatibility
+   }
+
    &[src$='pixel.gif'] {
       width: initial;
       height: initial;
@@ -605,7 +608,9 @@ hr {
 }
 
 .uk-thumbnail img {
-   max-width: 100%;
+   body:not(.av-16) & {
+      max-width: 100%;
+   }
 }
 
 h1 a, .uk-table a {

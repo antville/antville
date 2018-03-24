@@ -66,7 +66,7 @@ prefix="Last update: " default="None so far" %>)</span></li>
       <link rel='stylesheet' type='text/css' href='<% site.href main.css %>'>
       <script type='text/javascript' src='<% site.href main.js %>'></script>
    </head>
-   <body>
+   <body class='av-16'>
       <% site.skin $Site#header %>
       <div class='uk-grid av-page'>
          <div class='uk-width-medium-7-10'>
