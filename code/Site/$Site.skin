@@ -804,6 +804,10 @@ h4 + .uk-comment-meta li:first-child {
       font-family: Verdana, Helvetica, Arial, sans-serif;
       font-size: 25px;
       font-weight: bold;
+
+      img {
+         max-width: initial;
+      }
    }
 
    // The root site gets the beautiful logo with ant animation
