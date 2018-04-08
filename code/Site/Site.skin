@@ -73,10 +73,9 @@ prefix="Last update: " default="None so far" %>)</span></li>
             <% response.message prefix="<div class='uk-alert' data-uk-alert>" suffix=</div> %>
             <% response.body %>
          </div>
-         <div class='uk-width-3-10 --uk-hidden-small av-floating-navigation'>
-            <input type='checkbox' class='av-hidden-toggle'>
-            <div class='av-visible-toggle'></div>
-            <div class='uk-margin-large-left av-border-left'>
+         <div class='uk-width-3-10 av-menu'>
+            <% site.skin $Site#menuButton %>
+            <div class='uk-margin-large-left av-border-left av-navigation'>
                <% membership.status %>
                <ul class='uk-nav uk-nav-side'>
                   <li class='uk-nav-divider'></li>

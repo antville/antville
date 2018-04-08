@@ -221,6 +221,10 @@
 <link rel='alternate' type='application/rss+xml' title='Sites of <% root.title %>' href='<% root.href updates.xml %>'>
 <link rel='search' type='application/opensearchdescription+xml' href='<% site.href search.xml %>' title='<% site.title %>'>
 
+<% #menuButton %>
+<input type='checkbox' class='av-menu-toggle'>
+<i class='av-menu-toggle'></i>
+
 <% #admin %>
 <a name='admin' id='admin'></a>
 <fieldset class='uk-margin-top'>
@@ -774,20 +778,19 @@ h4 + .uk-comment-meta li:first-child {
    }
 }
 
-.av-floating-navigation {
-   & .av-hidden-toggle,
-   & .av-visible-toggle {
+.av-menu {
+   & .av-menu-toggle {
       display: none;
    }
 }
 
 @media (max-width: 767px) {
-   .av-floating-navigation {
+   .av-menu {
       @top: 14px;
       @right: 5%;
       @size: 30px;
 
-      .av-visible-toggle {
+      i.av-menu-toggle {
          .av-ant;
          padding: 2px;
          border-radius: 100%;
@@ -796,8 +799,8 @@ h4 + .uk-comment-meta li:first-child {
          background-position: 2px 2px;
       }
 
-      .av-hidden-toggle,
-      .av-visible-toggle {
+      i.av-menu-toggle,
+      input.av-menu-toggle {
          display: initial;
          position: absolute;
          top: @top;
@@ -807,7 +810,7 @@ h4 + .uk-comment-meta li:first-child {
          margin-right: 2px;
       }
 
-      .av-hidden-toggle {
+      input.av-menu-toggle {
          z-index: 9;
          opacity: 0;
 
@@ -816,13 +819,13 @@ h4 + .uk-comment-meta li:first-child {
             width: 100%;
             height: 100%;
 
-            & ~ .av-border-left {
+            & ~ .av-navigation {
                display: initial;
             }
          }
        }
 
-      .av-border-left {
+      .av-navigation {
          display: none;
          position: fixed;
          top: 0;
