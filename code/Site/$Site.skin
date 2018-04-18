@@ -389,7 +389,7 @@ html, html.uk-notouch, body {
    font-family: @text-font;
 }
 
-body:not(.av-15) {
+body.av-16, body.av-page {
    max-width: 900px;
    margin: auto 5%;
 }

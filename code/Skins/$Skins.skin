@@ -33,7 +33,7 @@
       <script type='text/javascript' src='<% site.href main.js %>'></script>
       <script type='text/javascript' src='<% root.static ../../scripts/editor.min.js %>'></script>
    </head>
-   <body class='av-15'>
+   <body>
       <span class='uk-margin-right uk-float-right'>
          <% image /smallchaos.gif | link <% site.href %> %>
       </span>
