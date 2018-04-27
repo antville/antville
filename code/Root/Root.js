@@ -46,14 +46,12 @@ Root.VERSION = (function (versionString, buildDate) {
 
 this.handleMetadata('creationDelay');
 this.handleMetadata('creationScope');
-this.handleMetadata('loginMode');
 this.handleMetadata('notificationScope');
 this.handleMetadata('phaseOutGracePeriod');
 this.handleMetadata('phaseOutNotificationPeriod');
 this.handleMetadata('phaseOutMode');
 this.handleMetadata('probationPeriod');
 this.handleMetadata('quota');
-this.handleMetadata('registrationScope');
 this.handleMetadata('replyTo');
 
 /**
