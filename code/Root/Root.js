@@ -46,12 +46,14 @@ Root.VERSION = (function (versionString, buildDate) {
 
 this.handleMetadata('creationDelay');
 this.handleMetadata('creationScope');
+this.handleMetadata('loginMode');
 this.handleMetadata('notificationScope');
 this.handleMetadata('phaseOutGracePeriod');
 this.handleMetadata('phaseOutNotificationPeriod');
 this.handleMetadata('phaseOutMode');
 this.handleMetadata('probationPeriod');
 this.handleMetadata('quota');
+this.handleMetadata('registrationScope');
 this.handleMetadata('replyTo');
 
 /**
@@ -357,10 +359,14 @@ Root.prototype.getFormOptions = function(name) {
   switch (name) {
     case 'creationScope':
     return Admin.getCreationScopes();
+    case 'loginMode':
+    return Admin.getLoginModes();
     case 'notificationScope':
     return Admin.getNotificationScopes();
     case 'phaseOutMode':
     return Admin.getPhaseOutModes();
+    case 'registrationScope':
+    return Admin.getRegistrationScopes();
   }
   return Site.prototype.getFormOptions.apply(root, arguments);
 }

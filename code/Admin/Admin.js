@@ -103,6 +103,20 @@ Admin.getPhaseOutModes = defineConstants(Admin, markgettext('Disabled'), markget
 Admin.getCreationScopes = defineConstants(Admin, markgettext('Privileged'), markgettext('Trusted'), markgettext('Regular'));
 
 /**
+ * @function
+ * @returns {String[]}
+ * @see defineConstants
+ */
+Admin.getRegistrationScopes = defineConstants(Admin, markgettext('Privileged'), markgettext('None'));
+
+/**
+ * @function
+ * @returns {String[]}
+ * @see defineConstants
+ */
+Admin.getLoginModes = defineConstants(Admin, markgettext('Disabled'), markgettext('Enabled'));
+
+/**
  * Convenience method for easily queueing jobs.
  * @param {HopObject} target
  * @param {String} method
@@ -589,13 +603,15 @@ Admin.prototype.update = function(data) {
   root.map({
     creationScope: data.creationScope,
     creationDelay: data.creationDelay,
-    replyTo: data.replyTo,
+    loginMode: data.loginMode,
     notificationScope: data.notificationScope,
     phaseOutGracePeriod: data.phaseOutGracePeriod,
     phaseOutMode: data.phaseOutMode,
     phaseOutNotificationPeriod: data.phaseOutNotificationPeriod,
     probationPeriod: data.probationPeriod,
-    quota: data.quota
+    quota: data.quota,
+    registrationScope: data.registrationScope,
+    replyTo: data.replyTo
   });
   return;
 }

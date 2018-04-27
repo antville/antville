@@ -339,10 +339,8 @@ Story.prototype.amp_html_action = function() {
   text = node.sanitizeHtml(text, spec);
 
   this.renderSkin('$Story#amp', {
-    published: this.created,
     text: text,
-    title: this.title || formatDate(this.created, 'date'),
-    url: this.href()
+    title: this.title || formatDate(this.created, 'date')
   });
 };
 
