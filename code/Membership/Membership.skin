@@ -12,7 +12,7 @@
 
 <% #login %>
 <div class='uk-margin-left uk-text-small uk-text-muted'>
-  <% gettext "You are not logged in" %>
+  <% if <% site.members.link login %> is null then '' else <% gettext "You are not logged in" %> %>
 </div>
 <ul class='uk-nav uk-nav-side'>
   <li><% site.members.link login <% gettext Login context=verb prefix="<i class='uk-icon-sign-in'></i> " %> %></li>

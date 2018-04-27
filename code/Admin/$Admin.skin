@@ -46,6 +46,25 @@
       </div>
    </fieldset>
    <fieldset class='uk-margin-top'>
+      <legend><% gettext 'Registration & Login' %></legend>
+      <div class='uk-form-row'>
+         <label class='uk-form-label' for='registrationScope'>
+            <% gettext 'Required Account Status' %>
+         </label>
+         <div class='uk-form-controls'>
+            <% root.select registrationScope %>
+         </div>
+      </div>
+      <div class='uk-form-row'>
+         <label class='uk-form-label' for='loginMode'>
+            <% gettext 'Login Mode' %>
+         </label>
+         <div class='uk-form-controls'>
+            <% root.select loginMode %>
+         </div>
+      </div>
+   </fieldset>
+   <fieldset class='uk-margin-top'>
       <legend><% gettext 'Site Creation' %></legend>
       <div class='uk-form-row'>
          <label class='uk-form-label' for='creationScope'>
