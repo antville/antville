@@ -128,7 +128,7 @@ HopObject.prototype.onRequest = function() {
   res.skinpath = res.handlers.layout.getSkinPath();
 
   if (!this.getPermission(req.action)) {
-    if (!session.user) {
+    if (!session.user && root.loginMode === Admin.ENABLED) {
       User.setLocation(root.href() + req.path);
       res.message = gettext('Please login first.');
       res.redirect(res.handlers.site.members.href('login'));
@@ -184,11 +184,9 @@ HopObject.prototype.delete_action = function() {
   });
 
   if (req.data.http_get_remainder === 'safemode') {
-    res.skinpath = root.layout.getSkinPath();
-    res.handlers.site.renderSkin('$Site#page');
-  } else {
-    res.handlers.site.renderSkin('Site#page');
+    res.skinpath = [app.dir];
   }
+  res.handlers.site.renderSkin('Site#page');
   return;
 };
 

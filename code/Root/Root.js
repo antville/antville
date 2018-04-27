@@ -357,10 +357,14 @@ Root.prototype.getFormOptions = function(name) {
   switch (name) {
     case 'creationScope':
     return Admin.getCreationScopes();
+    case 'loginMode':
+    return Admin.getLoginModes();
     case 'notificationScope':
     return Admin.getNotificationScopes();
     case 'phaseOutMode':
     return Admin.getPhaseOutModes();
+    case 'registrationScope':
+    return Admin.getRegistrationScopes();
   }
   return Site.prototype.getFormOptions.apply(root, arguments);
 }

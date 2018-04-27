@@ -40,12 +40,16 @@ markgettext('members');
  */
 Members.prototype.getPermission = function(action) {
   switch (action) {
-    case 'login':
     case 'logout':
-    case 'register':
     case 'reset':
     case 'salt.txt':
     return true;
+
+    case 'login':
+    return root.loginMode === Admin.ENABLED;
+
+    case 'register':
+    return root.registrationScope !== User.PRIVILEGED || User.require(User.PRIVILEGED);
   }
 
   var sitePermission = this._parent.getPermission('main');
