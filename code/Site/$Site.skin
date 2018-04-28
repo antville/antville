@@ -314,8 +314,8 @@
 <footer>
    <hr class='uk-margin-large-top'>
    <div class='uk-text-small uk-margin-bottom uk-float-left'>
-      <div><% gettext 'Created {0}' <% site.created text %> %>.</div>
-      <div><% gettext 'Last modified {0}' <% site.modified text %> %>.</div>
+      <div><% if <% site.created %> then <% gettext 'Created {0}' <% site.created text %> %> suffix=. %></div>
+      <div><% if <% site.modified %> then <% gettext 'Last modified {0}' <% site.modified text %> %> suffix=. %></div>
    </div>
    <div class='uk-text-right'>
       <% image /smallchaos.gif | link http://antville.org %> &
