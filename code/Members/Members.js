@@ -40,16 +40,14 @@ markgettext('members');
  */
 Members.prototype.getPermission = function(action) {
   switch (action) {
+    case 'login':
     case 'logout':
     case 'reset':
     case 'salt.txt':
     return true;
 
-    case 'login':
-    return root.loginMode === Admin.ENABLED;
-
     case 'register':
-    return root.registrationScope !== User.PRIVILEGED || User.require(User.PRIVILEGED);
+    return !root.creator || root.loginScope === Admin.NONE || User.require(root.loginScope);
   }
 
   var sitePermission = this._parent.getPermission('main');
@@ -164,6 +162,7 @@ Members.prototype.login_action = function() {
   if (req.postParams.login) {
     try {
       var user = User.login(req.postParams);
+      if (!User.require(root.loginScope)) throw Error(gettext('Sorry, logging in is currently not possible.'));
       res.message = gettext('Welcome to {0}, {1}. Have fun!', res.handlers.site.getTitle(), user.name);
       res.redirect(User.getLocation() || this._parent.href());
     } catch (ex) {

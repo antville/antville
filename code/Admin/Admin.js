@@ -107,14 +107,7 @@ Admin.getCreationScopes = defineConstants(Admin, markgettext('Privileged'), mark
  * @returns {String[]}
  * @see defineConstants
  */
-Admin.getRegistrationScopes = defineConstants(Admin, markgettext('Privileged'), markgettext('None'));
-
-/**
- * @function
- * @returns {String[]}
- * @see defineConstants
- */
-Admin.getLoginModes = defineConstants(Admin, markgettext('Disabled'), markgettext('Enabled'));
+Admin.getLoginScopes = defineConstants(Admin, markgettext('Privileged'), markgettext('Trusted'), markgettext('Regular'), markgettext('None'));
 
 /**
  * Convenience method for easily queueing jobs.
@@ -603,14 +596,13 @@ Admin.prototype.update = function(data) {
   root.map({
     creationScope: data.creationScope,
     creationDelay: data.creationDelay,
-    loginMode: data.loginMode,
+    loginScope: data.loginScope,
     notificationScope: data.notificationScope,
     phaseOutGracePeriod: data.phaseOutGracePeriod,
     phaseOutMode: data.phaseOutMode,
     phaseOutNotificationPeriod: data.phaseOutNotificationPeriod,
     probationPeriod: data.probationPeriod,
     quota: data.quota,
-    registrationScope: data.registrationScope,
     replyTo: data.replyTo
   });
   return;

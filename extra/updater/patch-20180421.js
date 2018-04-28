@@ -17,6 +17,4 @@
 
 // Apply with enabled updater repository using `ant patch -Dpatch.id=20180421`
 
-
-if (!root.loginMode) root.loginMode = Admin.ENABLED;
-if (!root.registrationScope) root.registrationScope = Admin.NONE;
+if (!root.loginScope) root.loginScope = Admin.NONE;

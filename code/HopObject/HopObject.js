@@ -128,7 +128,7 @@ HopObject.prototype.onRequest = function() {
   res.skinpath = res.handlers.layout.getSkinPath();
 
   if (!this.getPermission(req.action)) {
-    if (!session.user && root.loginMode === Admin.ENABLED) {
+    if (!session.user) {
       User.setLocation(root.href() + req.path);
       res.message = gettext('Please login first.');
       res.redirect(res.handlers.site.members.href('login'));

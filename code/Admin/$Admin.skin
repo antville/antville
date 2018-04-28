@@ -48,19 +48,11 @@
    <fieldset class='uk-margin-top'>
       <legend><% gettext 'Registration & Login' %></legend>
       <div class='uk-form-row'>
-         <label class='uk-form-label' for='registrationScope'>
+         <label class='uk-form-label' for='loginScope'>
             <% gettext 'Required Account Status' %>
          </label>
          <div class='uk-form-controls'>
-            <% root.select registrationScope %>
-         </div>
-      </div>
-      <div class='uk-form-row'>
-         <label class='uk-form-label' for='loginMode'>
-            <% gettext 'Login Mode' %>
-         </label>
-         <div class='uk-form-controls'>
-            <% root.select loginMode %>
+            <% root.select loginScope %>
          </div>
       </div>
    </fieldset>
