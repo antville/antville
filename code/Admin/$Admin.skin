@@ -55,6 +55,28 @@
             <% root.select loginScope %>
          </div>
       </div>
+      <div class='uk-form-row'>
+         <label class='uk-form-label' for='termsStory'>
+            <% gettext 'Story about Terms and Conditions' %>
+         </label>
+         <div class='uk-form-controls'>
+            <% root.input termsStory class=uk-width-1-6 type=number min=1 %>
+            <a href='<% if <% root.termsStory %> is null then <% site.href stories %> else <% story <% root.termsStory %> url %> %>'>
+               <i class='uk-icon-link'></i>
+            </a>
+         </div>
+      </div>
+      <div class='uk-form-row'>
+         <label class='uk-form-label' for='privacyStory'>
+            <% gettext 'Story about Data Privacy Statement' %>
+         </label>
+         <div class='uk-form-controls'>
+            <% root.input privacyStory class=uk-width-1-6 type=number min=1 %>
+            <a href='<% if <% root.privacyStory %> is null then <% site.href stories %> else <% story <% root.privacyStory %> url %> %>'>
+               <i class='uk-icon-link'></i>
+            </a>
+         </div>
+      </div>
    </fieldset>
    <fieldset class='uk-margin-top'>
       <legend><% gettext 'Site Creation' %></legend>

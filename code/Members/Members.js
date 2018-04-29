@@ -82,6 +82,8 @@ Members.prototype.main_action = function() {
 Members.prototype.register_action = function() {
   if (req.postParams.register) {
     try {
+      if (root.termsStory && !req.postParams.terms) throw Error('Please accept the terms and conditions.');
+      if (root.privacyStory && !req.postParams.privacy) throw Error('Please accept the data privacy statement.');
       var title = res.handlers.site.title;
       var user = User.register(req.postParams);
       var membership = Membership.add(user, Membership.SUBSCRIBER, this._parent);

@@ -23,12 +23,14 @@
 <% #navigation %>
 <li><% root.link main <% gettext Start prefix="<i class='uk-icon-home'></i> " %> %></li>
 <li><% root.link sites <% gettext 'Public Sites' %> %></li>
+<% story <% root.termsStory %> link text=<% gettext "Terms and Conditions" %> prefix=<li> suffix=</li> %>
+<% story <% root.privacyStory %> link text=<% gettext "Data Privacy Statement" %> prefix=<li> suffix=</li> %>
 <li><% root.link contact <% gettext Contact %> %></li>
 <li class='uk-nav-divider'></li>
 <% root.admin.skin $Admin#navigation suffix="<li class='uk-nav-divider'></li>" %>
 <li><% root.link health <% gettext Health prefix="<i class='uk-icon-stethoscope'></i> " %> %></li>
 <li><% root.api.link main <% gettext API %> %></li>
-<li><% link //project.antville.org <% gettext Development %> %></li>
+<li><% link https://project.antville.org <% gettext Development %> %></li>
 <li class='uk-nav-divider'></li>
 <% root.link edit <% gettext Settings prefix="<i class='uk-icon-cog'></i> " %> prefix=<li> suffix=</li> %>
 <% root.layout.link main <% gettext Layout %> prefix=<li> suffix=</li> %>

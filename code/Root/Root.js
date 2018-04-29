@@ -51,9 +51,11 @@ this.handleMetadata('notificationScope');
 this.handleMetadata('phaseOutGracePeriod');
 this.handleMetadata('phaseOutNotificationPeriod');
 this.handleMetadata('phaseOutMode');
+this.handleMetadata('privacyStory');
 this.handleMetadata('probationPeriod');
 this.handleMetadata('quota');
 this.handleMetadata('replyTo');
+this.handleMetadata('termsStory');
 
 /**
  * Antville’s Root prototype is an extent of the Site prototype.

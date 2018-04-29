@@ -601,9 +601,11 @@ Admin.prototype.update = function(data) {
     phaseOutGracePeriod: data.phaseOutGracePeriod,
     phaseOutMode: data.phaseOutMode,
     phaseOutNotificationPeriod: data.phaseOutNotificationPeriod,
+    privacyStory: data.privacyStory,
     probationPeriod: data.probationPeriod,
     quota: data.quota,
-    replyTo: data.replyTo
+    replyTo: data.replyTo,
+    termsStory: data.termsStory
   });
   return;
 }
