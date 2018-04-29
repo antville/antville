@@ -24,13 +24,12 @@
     "jquery": "^2.2.4",
     "jquery-collagePlus": "github:antville/jquery-collagePlus#0.3.4",
     "js-md5": "^0.7.3",
-    "marked": "^0.3.17",
+    "marked": "=0.3.3",
     "sanitize-html": "^1.18.2",
     "uikit": "^2.27.4"
   },
   "devDependencies": {
     "browserify": "^16.1.1",
-    "less": "^3.0.1",
     "less-plugin-clean-css": "^1.5.1",
     "minifyify": "^7.3.5"
   }

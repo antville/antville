@@ -232,6 +232,7 @@ var rome = new JavaImporter(
 );
 
 var marked = require('marked/lib/marked');
+var sanitizeHtml = require('sanitize-html/dist/sanitize-html');
 
 /**
  * A simple and hackish implementation of the console instance of some browsers.
