@@ -46,13 +46,16 @@ Root.VERSION = (function (versionString, buildDate) {
 
 this.handleMetadata('creationDelay');
 this.handleMetadata('creationScope');
+this.handleMetadata('loginScope');
 this.handleMetadata('notificationScope');
 this.handleMetadata('phaseOutGracePeriod');
 this.handleMetadata('phaseOutNotificationPeriod');
 this.handleMetadata('phaseOutMode');
+this.handleMetadata('privacyStory');
 this.handleMetadata('probationPeriod');
 this.handleMetadata('quota');
 this.handleMetadata('replyTo');
+this.handleMetadata('termsStory');
 
 /**
  * Antville’s Root prototype is an extent of the Site prototype.
@@ -87,7 +90,10 @@ Root.prototype.getPermission = function(action) {
   if (action && action.contains('admin')) {
     return User.require(User.PRIVILEGED);
   }
+
   switch (action) {
+    case '.':
+    case 'main':
     case 'debug':
     case 'default.hook':
     case 'favicon.ico':
@@ -98,9 +104,11 @@ Root.prototype.getPermission = function(action) {
     case 'sites':
     case 'updates.xml':
     return true;
+
     case 'create':
     return this.getCreationPermission();
   }
+
   return Site.prototype.getPermission.apply(this, arguments);
 }
 
@@ -111,6 +119,7 @@ Root.prototype.main_action = function() {
     this.replyTo = 'root@localhost';
     this.locale = java.util.Locale.getDefault().getLanguage();
     this.timeZone = java.util.TimeZone.getDefault().getID();
+    this.loginScope = Admin.PRIVILEGED;
     this.layout.reset();
     res.redirect(this.members.href('register'));
   } else if (session.user && this.members.owners.size() < 1) {
@@ -124,10 +133,9 @@ Root.prototype.main_action = function() {
 
 Root.prototype.error_action = function() {
   res.message = String.EMPTY;
-  var param = res.error ? res : session.data;
-  res.status = param.status || 500;
-  res.data.title = gettext('{0} {1} Error', root.getTitle(), param.status);
-  res.data.body = root.renderSkinAsString('$Root#error', param);
+  res.status = res.status || 500;
+  res.data.title = gettext('{0} {1} Error', root.getTitle(), res.status);
+  res.data.body = root.renderSkinAsString('$Root#error');
   res.handlers.site.renderSkin('Site#page');
   return;
 }
@@ -136,7 +144,7 @@ Root.prototype.notfound_action = function() {
   res.status = 404;
   res.data.title = gettext('{0} {1} Error', root.getTitle(), res.status);
   res.data.body = root.renderSkinAsString('$Root#notfound', req);
-  res.handlers.site.renderSkin('Site#page');
+  root.renderSkin('Site#page');
   return;
 }
 
@@ -251,7 +259,8 @@ Root.prototype.health_action = function() {
     totalMemory: formatNumber(totalMemory),
     usedMemory: formatNumber(totalMemory - freeMemory),
     sessions: formatNumber(app.countSessions()),
-    cacheSize: formatNumber(getProperty('cacheSize'))
+    cacheSize: formatNumber(getProperty('cacheSize')),
+    helma: Packages.helma.main.Server.getServer().version
   };
 
   for each (key in ['activeThreads', 'freeThreads', 'requestCount',
@@ -356,6 +365,8 @@ Root.prototype.getFormOptions = function(name) {
   switch (name) {
     case 'creationScope':
     return Admin.getCreationScopes();
+    case 'loginScope':
+    return Admin.getLoginScopes();
     case 'notificationScope':
     return Admin.getNotificationScopes();
     case 'phaseOutMode':

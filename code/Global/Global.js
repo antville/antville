@@ -21,9 +21,8 @@
 
 String.ELLIPSIS = '…';
 
+app.addRepository(app.dir + '/../lib/jdom-1.0.jar');
 app.addRepository(app.dir + '/../lib/rome-1.0.jar');
-app.addRepository(app.dir + '/../lib/jdom.jar');
-app.addRepository(app.dir + '/../lib/itunes-0.4.jar');
 app.addRepository(app.dir + '/../lib/lesscss-1.7.0.1.1.jar');
 
 app.addRepository('modules/core/Global.js');
@@ -229,9 +228,7 @@ var lessParser = {
  */
 var rome = new JavaImporter(
   Packages.com.sun.syndication.io,
-  Packages.com.sun.syndication.feed.synd,
-  Packages.com.sun.syndication.feed.module.itunes,
-  Packages.com.sun.syndication.feed.module.itunes.types
+  Packages.com.sun.syndication.feed.synd
 );
 
 var marked = require('marked/lib/marked');
@@ -250,14 +247,23 @@ var console = function (type) {
     var now = formatDate(new Date, 'yyyy/MM/dd HH:mm:ss');
     var argString = Array.prototype.join.call(arguments, String.SPACE);
     var shellColors = {
-      debug: '\u001B[34m',
-      error: '\u001B[35m',
-      info: '\u001B[0m',
-      log: '\u001B[0m',
-      warn: '\u001B[31m'
+      debug: '\u001B[1;34m',
+      error: '\u001B[1;97;101m',
+      info: '\u001B[34m',
+      log: '\u001B[90m',
+      warn: '\u001B[1;103m'
     };
 
-    writeln(shellColors[type] + '[' + now + '] [' + type.toUpperCase() + '] [console] ' + argString + '\u001B[0m');
+    var output = [
+      shellColors[type],
+      '[', now, '] ',
+      '[', type.toUpperCase(), '] ',
+      '[console] ',
+      argString,
+      '\u001B[0m'
+    ];
+
+    writeln(output.join(''));
 
     if (typeof res !== 'undefined') {
       res.debug('<script>console.' + type + '("%c%s", "font-style: italic;", ' +
@@ -486,7 +492,7 @@ function story_macro(param, id, mode) {
     res.write(story.href());
     break;
     case 'link':
-    html.link({href: story.href()}, story.getTitle());
+    html.link({href: story.href()}, param.text || story.getTitle());
     break;
     default:
     var skin = param.skin ? 'Story#' + param.skin : '$Story#embed';
@@ -898,7 +904,21 @@ function age_filter(value, param) {
   if (!value || value.constructor !== Date) {
     return value;
   }
-  return value.getAge()
+  return value.getAge();
+}
+
+/**
+ * Helma macro filter wrapping the {@link Date#getExpiry} method.
+ * @see Date#getExpiry
+ * @param {Date} value The original date.
+ * @param {Object} param The default Helma macro parameter object.
+ * @returns {String} The resulting expiry string of the original date.
+ */
+function expiry_filter(value, param) {
+  if (!value || value.constructor !== Date) {
+    return value;
+  }
+  return value.getExpiry();
 }
 
 /**
@@ -925,7 +945,7 @@ function link_filter(text, param, url) {
  * @see formatDate
  * @param {Object} value The original value.
  * @param {Object} param The default Helma macro parameter object.
- * @param {String} pattern A formatting pattern suitable for the formatting method.
+ * @param {String} pattern A formatting pattern suitable for the formatting fmethod.
  * @param {String} [type] Deprecated.
  * @returns {String} The formatted string.
  */
@@ -1117,24 +1137,40 @@ function formatDate(date, format) {
         now = new Date,
         diff = now - date;
     if (diff < 0) {
-      // FIXME: Do something similar for future dates
-      text = formatDate(date);
+      diff = -diff;
+      if (diff < Date.ONEMINUTE) {
+        text = gettext('soon');
+      } else if (diff < Date.ONEHOUR) {
+        text = ngettext('in {0} minute', 'in {0} minutes', Math.round(diff / Date.ONEMINUTE));
+      } else if (diff < Date.ONEDAY) {
+        text = ngettext('in {0} hour', 'in {0} hours', Math.round(diff / Date.ONEHOUR));
+      } else if (diff < 2 * Date.ONEDAY) {
+        text = gettext('tomorrow');
+      } else if (diff < 7 * Date.ONEDAY) {
+        text = ngettext('in {0} day', 'in {0} days', Math.round(diff / Date.ONEDAY));
+      } else if (diff < 30 * Date.ONEDAY) {
+        text = ngettext('in {0} week', 'in {0} weeks', Math.round(diff / 7 / Date.ONEDAY));
+      } else if (diff < 365 * Date.ONEDAY) {
+        text = ngettext('in {0} month', 'in {0} months', Math.round(diff / 30 / Date.ONEDAY));
+      } else {
+        text = ngettext('in {0} year', 'in {0} years', Math.round(diff / 365 / Date.ONEDAY));
+      }
     } else if (diff < Date.ONEMINUTE) {
       text = gettext('right now');
     } else if (diff < Date.ONEHOUR) {
-      text = ngettext('{0} minute ago', '{0} minutes ago', parseInt(diff / Date.ONEMINUTE, 10));
+      text = ngettext('{0} minute ago', '{0} minutes ago', Math.round(diff / Date.ONEMINUTE));
     } else if (diff < Date.ONEDAY) {
-      text = ngettext('{0} hour ago', '{0} hours ago', parseInt(diff / Date.ONEHOUR, 10));
+      text = ngettext('{0} hour ago', '{0} hours ago', Math.round(diff / Date.ONEHOUR));
     } else if (diff < 2 * Date.ONEDAY) {
       text = gettext('yesterday');
     } else if (diff < 7 * Date.ONEDAY) {
-      text = ngettext('{0} day ago', '{0} days ago', parseInt(diff / Date.ONEDAY, 10));
+      text = ngettext('{0} day ago', '{0} days ago', Math.round(diff / Date.ONEDAY));
     } else if (diff < 30 * Date.ONEDAY) {
-      text = ngettext('{0} week ago', '{0} weeks ago', parseInt(diff / 7 / Date.ONEDAY, 10));
+      text = ngettext('{0} week ago', '{0} weeks ago', Math.round(diff / 7 / Date.ONEDAY));
     } else if (diff < 365 * Date.ONEDAY) {
-      text = ngettext('{0} month ago', '{0} months ago', parseInt(diff / 30 / Date.ONEDAY, 10));
+      text = ngettext('{0} month ago', '{0} months ago', Math.round(diff / 30 / Date.ONEDAY));
     } else {
-      text = ngettext('{0} year ago', '{0} years ago', parseInt(diff / 365 / Date.ONEDAY, 10));
+      text = ngettext('{0} year ago', '{0} years ago', Math.round(diff / 365 / Date.ONEDAY));
     }
     return text.replace(/(\d+)\s+/, '$1\xa0'); // Add a no-break space after first digits
 
@@ -1214,7 +1250,7 @@ function getLocales(language) {
   for (var i in locales) {
     locale = locales[i];
     localeString = locale.toString();
-    if (!localeString.contains('_')) {
+    if (localeString && !localeString.contains('_')) {
       var isTranslated = jala.i18n.getCatalog(jala.i18n.getLocale(localeString));
       result.push({
         value: localeString,
@@ -1224,6 +1260,17 @@ function getLocales(language) {
     }
   }
   // TODO: Automatically integrate gendered german language
+  /*
+  var builder = java.util.Locale.Builder();
+  var locale1 = new java.util.Locale('de__#x-male');
+  var locale2 = builder.setLanguage('de')
+    .setExtension('x', 'male')
+    .build();
+  var locale3 = java.util.Locale.forLanguageTag(this.locale);
+  var locale = locale3;
+  console.log(java.lang.System.getProperty('java.version'));
+  console.log(locale, locale.language, locale.toLanguageTag());
+  */
   result.push({
     value: 'de-x-male',
     display: 'Deutsch ♂'

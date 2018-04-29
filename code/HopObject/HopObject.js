@@ -108,19 +108,29 @@ HopObject.prototype.onRequest = function() {
   res.handlers.membership = User.getMembership();
 
   if (User.getCurrentStatus() === User.BLOCKED) {
-    session.data.status = 403;
-    session.data.error = gettext('Your account has been blocked.') + String.SPACE +
-        gettext('Please contact an administrator for further information.');
     User.logout();
-    res.redirect(root.href('error'));
+    res.status = 403;
+    res.data.error = gettext('Your account has been blocked.') + String.SPACE +
+        gettext('Please contact an administrator for further information.');
+    root.error_action();
+    res.stop();
   }
 
-  if (res.handlers.site.status === Site.BLOCKED &&
-      !User.require(User.PRIVILEGED)) {
-    session.data.status = 403;
-    session.data.error = gettext('The site you requested has been blocked.') +
+  // Simulate 404 for sites which are due for deletion by cronjob
+  if (res.handlers.site.job && !User.require(User.PRIVILEGED) ||
+      res.handlers.site.mode === Site.DELETED && !Membership.require(Membership.OWNER)) {
+    res.handlers.site = root;
+    root.notfound_action();
+    res.stop();
+  }
+
+  if (res.handlers.site.status === Site.BLOCKED && !User.require(User.PRIVILEGED)) {
+    res.status = 403;
+    res.handlers.site = root;
+    res.data.error = gettext('The site you requested has been blocked.') +
         String.SPACE + gettext('Please contact an administrator for further information.');
-    res.redirect(root.href('error'));
+    root.error_action();
+    res.stop();
   }
 
   HopObject.confirmConstructor(Layout);
@@ -135,11 +145,8 @@ HopObject.prototype.onRequest = function() {
     }
     User.getLocation();
     res.status = 401;
-    res.data.title = gettext('{0} 401 Error', root.title);
-    res.data.body = root.renderSkinAsString('$Root#error', {error:
-        gettext('You are not allowed to access this part of the site.')});
-    res.handlers.site.renderSkin('Site#page');
-    session.data.error = null;
+    res.data.error = gettext('You are not allowed to access this part of the site.');
+    root.error_action();
     res.stop();
   }
 
@@ -184,11 +191,9 @@ HopObject.prototype.delete_action = function() {
   });
 
   if (req.data.http_get_remainder === 'safemode') {
-    res.skinpath = root.layout.getSkinPath();
-    res.handlers.site.renderSkin('$Site#page');
-  } else {
-    res.handlers.site.renderSkin('Site#page');
+    res.skinpath = [app.dir];
   }
+  res.handlers.site.renderSkin('Site#page');
   return;
 };
 

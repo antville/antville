@@ -2,7 +2,7 @@
 -- The Antville Project
 -- http://code.google.com/p/antville
 --
--- Copyright 2001–2014 by the Workers of Antville.
+-- Copyright 2001–2014 by the Workers of
 --
 -- Licensed under the Apache License, Version 2.0 (the License'');
 -- you may not use this file except in compliance with the License.
@@ -23,12 +23,10 @@ create user antville password 'antville';
 alter user antville admin true;
 
 -- These return errors in H2 database
-create database antville owner antville;
+create database antville;
 \connect antville;
 
-create schema antville authorization antville;
-
-create table antville.account (
+create table account (
   -- "user" is a reserved keyword in PostgreSql
   id int4 primary key,
   name varchar(255),
@@ -38,13 +36,13 @@ create table antville.account (
   modified timestamp
 );
 
-create index account_name_idx on antville.account (name);
-create index account_email_idx on antville.account (email);
-create index account_status_idx on antville.account (status);
-create index account_created_idx on antville.account (created);
-create index account_modified_idx on antville.account (modified);
+create index account_name_idx on account (name);
+create index account_email_idx on account (email);
+create index account_status_idx on account (status);
+create index account_created_idx on account (created);
+create index account_modified_idx on account (modified);
 
-create table antville.choice (
+create table choice (
   id int4 primary key,
   poll_id int4,
   title varchar(255),
@@ -52,9 +50,9 @@ create table antville.choice (
   modified timestamp
 );
 
-create index poll_choice_idx on antville.choice (poll_id);
+create index poll_choice_idx on choice (poll_id);
 
-create table antville.content (
+create table content (
   id int4 primary key,
   prototype varchar(20),
   name varchar(255),
@@ -72,17 +70,17 @@ create table antville.content (
   modifier_id int4
 );
 
-create index content_prototype_idx on antville.content (prototype);
-create index content_site_idx on antville.content (site_id);
-create index content_story_idx on antville.content (story_id);
-create index content_parent_idx on antville.content (parent_id, parent_type);
-create index content_status_idx on antville.content (status);
-create index content_mode_idx on antville.content (mode);
-create index content_requests_idx on antville.content (requests);
-create index content_created_idx on antville.content (created);
-create index content_creator_idx on antville.content (creator_id);
+create index content_prototype_idx on content (prototype);
+create index content_site_idx on content (site_id);
+create index content_story_idx on content (story_id);
+create index content_parent_idx on content (parent_id, parent_type);
+create index content_status_idx on content (status);
+create index content_mode_idx on content (mode);
+create index content_requests_idx on content (requests);
+create index content_created_idx on content (created);
+create index content_creator_idx on content (creator_id);
 
-create table antville.file (
+create table file (
   id int4 primary key,
   prototype varchar(20),
   name varchar(255),
@@ -96,13 +94,13 @@ create table antville.file (
   modifier_id int4
 );
 
-create index file_name_idx on antville.file (name);
-create index file_site_idx on antville.file (site_id);
-create index file_requests_idx on antville.file (requests);
-create index file_created_idx on antville.file (created);
-create index file_creator_idx on antville.file (creator_id);
+create index file_name_idx on file (name);
+create index file_site_idx on file (site_id);
+create index file_requests_idx on file (requests);
+create index file_created_idx on file (created);
+create index file_creator_idx on file (creator_id);
 
-create table antville.image (
+create table image (
   id int4 primary key,
   name varchar(255),
   prototype varchar(20),
@@ -114,13 +112,13 @@ create table antville.image (
   modifier_id int4
 );
 
-create index image_name_idx on antville.image (name);
-create index image_prototype_idx on antville.image (prototype);
-create index image_parent_idx on antville.image (parent_id, parent_type);
-create index image_created_idx on antville.image (created);
-create index image_creator_idx on antville.image (creator_id);
+create index image_name_idx on image (name);
+create index image_prototype_idx on image (prototype);
+create index image_parent_idx on image (parent_id, parent_type);
+create index image_created_idx on image (created);
+create index image_creator_idx on image (creator_id);
 
-create table antville.layout (
+create table layout (
   id int4 primary key,
   site_id int4,
   mode varchar(20),
@@ -130,12 +128,12 @@ create table antville.layout (
   modifier_id int4
 );
 
-create index layout_site_idx on antville.layout (site_id);
+create index layout_site_idx on layout (site_id);
 
-create sequence antville.log_id_seq;
+create sequence log_id_seq;
 
-create table antville.log (
-  id int4 not null default nextval('antville.log_id_seq'),
+create table log (
+  id int4 not null default nextval('log_id_seq'),
   context_id int4,
   context_type varchar(20),
   referrer text,
@@ -145,12 +143,12 @@ create table antville.log (
 );
 
 -- This returns an error in H2 database
-alter sequence antville.log_id_seq owned by antville.log.id;
+alter sequence log_id_seq owned by log.id;
 
-create index log_context_idx on antville.log (context_id, context_type);
-create index log_created_idx on antville.log (created);
+create index log_context_idx on log (context_id, context_type);
+create index log_created_idx on log (created);
 
-create table antville.membership (
+create table membership (
   id int4 primary key,
   name varchar(255),
   site_id int4,
@@ -161,14 +159,14 @@ create table antville.membership (
   modifier_id int4
 );
 
-create index membership_name_idx on antville.membership (name);
-create index membership_site_idx on antville.membership (site_id);
-create index membership_role_idx on antville.membership (role);
-create index membership_creator_idx on antville.membership (creator_id);
+create index membership_name_idx on membership (name);
+create index membership_site_idx on membership (site_id);
+create index membership_role_idx on membership (role);
+create index membership_creator_idx on membership (creator_id);
 
 --!helma <% #metadata %>
 
-create table antville.metadata (
+create table metadata (
   id int4 primary key,
   parent_id int4,
   parent_type varchar,
@@ -177,13 +175,13 @@ create table antville.metadata (
   type varchar(255)
 );
 
-create index metadata_parent_idx on antville.metadata (parent_type, parent_id);
-create index metadata_name_idx on antville.metadata (name);
-create index metadata_value_idx on antville.metadata using hash (value);
+create index metadata_parent_idx on metadata (parent_type, parent_id);
+create index metadata_name_idx on metadata (name);
+create index metadata_value_idx on metadata using hash (value);
 
 --!helma <% #end_of_metadata %>
 
-create table antville.poll (
+create table poll (
   id int4 primary key,
   site_id int4,
   question text,
@@ -195,12 +193,12 @@ create table antville.poll (
   modifier_id int4
 );
 
-create index poll_site_idx on antville.poll (site_id);
-create index poll_status_idx on antville.poll (status);
-create index poll_created_idx on antville.poll (created);
-create index poll_creator_idx on antville.poll (creator_id);
+create index poll_site_idx on poll (site_id);
+create index poll_status_idx on poll (status);
+create index poll_created_idx on poll (created);
+create index poll_creator_idx on poll (creator_id);
 
-create table antville.site (
+create table site (
   id int4 primary key,
   name varchar(255),
   layout_id int4,
@@ -212,12 +210,12 @@ create table antville.site (
   modifier_id int4
 );
 
-create index site_name_idx on antville.site (name);
-create index site_status_idx on antville.site (status);
-create index site_created_idx on antville.site (created);
-create index site_creator_idx on antville.site (creator_id);
+create index site_name_idx on site (name);
+create index site_status_idx on site (status);
+create index site_created_idx on site (created);
+create index site_creator_idx on site (creator_id);
 
-create table antville.skin (
+create table skin (
   id int4 primary key,
   name varchar(255),
   prototype varchar(30),
@@ -229,30 +227,30 @@ create table antville.skin (
   modifier_id int4
 );
 
-create index skin_layout_index on antville.skin (layout_id);
-create index skin_created_index on antville.site (created);
+create index skin_layout_index on skin (layout_id);
+create index skin_created_index on site (created);
 
-create table antville.tag (
+create table tag (
   id int4 primary key,
   name varchar(255),
   site_id int4,
   type varchar(20)
 );
 
-create index tag_name_idx on antville.tag (name);
-create index tag_site_idx on antville.tag (site_id);
-create index tag_type_idx on antville.tag (type);
+create index tag_name_idx on tag (name);
+create index tag_site_idx on tag (site_id);
+create index tag_type_idx on tag (type);
 
-create table antville.tag_hub (
+create table tag_hub (
   id int4 primary key,
   tag_id int4,
   tagged_id int4,
   tagged_type varchar(20)
 );
 
-create index tagged_idx on antville.tag_hub (tag_id, tagged_id, tagged_type);
+create index tagged_idx on tag_hub (tag_id, tagged_id, tagged_type);
 
-create table antville.vote (
+create table vote (
   id int4 primary key,
   poll_id int4,
   choice_id int4,
@@ -262,17 +260,13 @@ create table antville.vote (
   modified timestamp
 );
 
-create index vote_poll_idx on antville.vote (poll_id, choice_id);
+create index vote_poll_idx on vote (poll_id, choice_id);
 
-insert into antville.layout (id, site_id, mode) values ('1', '1', 'default');
+insert into layout (id, site_id, mode) values ('1', '1', 'default');
 
-insert into antville.site (id, name, layout_id, status, mode)
+insert into site (id, name, layout_id, status, mode)
 	values ('1', 'www', '1', 'trusted', 'public');
 
-grant select, insert, update, delete on antville.choice, antville.content,
-	antville.file, antville.image, antville.layout, antville.log,
-	antville.metadata, antville.membership, antville.poll, antville.site, antville.skin,
-	antville.tag, antville.tag_hub, antville.account, antville.vote to antville;
-
--- This returns an error in H2 database
-grant usage on antville.log_id_seq to antville;
+-- These return errors in H2 database
+grant select, insert, update, delete on all tables in schema public to antville;
+grant usage on log_id_seq to antville;

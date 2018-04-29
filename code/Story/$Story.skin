@@ -47,7 +47,7 @@ else
 <dd>Posted <% this.created text %> by <% this.creator %>.</dd>
 
 <% #update %>
-<dt><% gettext '{0} {1} {2} {3} on {4} // e.g. “{3 days ago} {admin} {posted} {a story} on {Antville}”' <% story.site.modified text prefix=<strong> suffix=</strong> %> <% story.creator %> <% if <% story.created %> is <% story.modified %> then <% gettext 'posted // has posted' %> else <% gettext 'updated // has updated' %> %><% if <% story.type %> is Story then <% gettext 'a story // accusative' %> else <% gettext 'a comment // accusative' %> %> <% story.site.title | story.site.link %> %></dt>
+<dt><% gettext '{0} {1} {2} {3} on {4} // e.g. “{3 days ago} {admin} {posted} {a story} on {Antville}”' <% story.site.modified text prefix=<strong> suffix=</strong> %> <% story.modifier %> <% if <% story.created %> is <% story.modified %> then <% gettext 'posted // has posted' %> else <% gettext 'updated // has updated' %> %><% if <% story.type %> is Story then <% gettext 'a story // accusative' %> else <% gettext 'a comment // accusative' %> %> <% story.site.title | story.site.link %> %></dt>
 <dd><% story.abstract | story.link class='av-concealed-link' %></dd>
 
 <% #embed %>
@@ -308,21 +308,36 @@ else
 
 <% #amp %>
 <!doctype html>
-<html amp lang="en">
+<html ⚡>
   <head>
     <meta charset="utf-8">
     <title><% param.title %></title>
-    <link rel="canonical" href="<% param.url %>" />
+    <link rel="canonical" href="<% story.href %>" />
     <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
     <script type="application/ld+json">
       {
         "@context": "http://schema.org",
         "@type": "NewsArticle",
+        "author": {
+          "@type": "Person",
+          "name": "<% story.creator %>"
+        },
+        "dateModified": "<% story.modified iso %>",
+        "datePublished": "<% story.created iso %>",
         "headline": "<% param.title %>",
-        "datePublished": "<% param.published %>",
-        "image": [
-          "<% param.imageUrl %>"
-        ]
+        "image": {
+          "@type": "ImageObject",
+          "url": "<% root.href %><% image /ant-icon.png url %>"
+        },
+        "mainEntityOfPage": "<% story.href %>",
+        "publisher": {
+          "@type": "Organization",
+          "name": "<% site.title %>",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "<% root.href %><% image /ant-icon.png url %>"
+          }
+        }
       }
     </script>
     <style amp-boilerplate>body{-webkit-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-moz-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-ms-animation:-amp-start 8s steps(1,end) 0s 1 normal both;animation:-amp-start 8s steps(1,end) 0s 1 normal both}@-webkit-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-moz-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-ms-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-o-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}</style><noscript><style amp-boilerplate>body{-webkit-animation:none;-moz-animation:none;-ms-animation:none;animation:none}</style></noscript>

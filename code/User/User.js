@@ -64,7 +64,7 @@ User.add = function(data) {
  */
 User.remove = function() {
   // FIXME: Removing an account is non-trivial as even one single modifier_id could break things if the corresponding account relation simply was removed. Thus, we might need a `deleted` property or similar to flag a removal and then take appropriate measures for related objects.
-  throw Error(gettext('Currently, it is not possible to remove an account. Please accept our humble apologies.'));
+  throw Error(gettext('Currently, it is not possible to delete an account. Please accept our humble apologies.'));
   return;
 }
 
@@ -260,10 +260,11 @@ User.logout = function() {
  * @param {String} requiredStatus
  * @returns {Boolean}
  */
-User.require = function(requiredStatus) {
+User.require = function(requiredStatus, user) {
+  if (!user) user = session.user;
   var status = [User.BLOCKED, User.REGULAR, User.TRUSTED, User.PRIVILEGED];
-  if (requiredStatus && session.user) {
-    return status.indexOf(session.user.status) >= status.indexOf(requiredStatus);
+  if (requiredStatus && user) {
+    return status.indexOf(user.status) >= status.indexOf(requiredStatus);
   }
   return false;
 }

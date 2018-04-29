@@ -42,10 +42,12 @@ Members.prototype.getPermission = function(action) {
   switch (action) {
     case 'login':
     case 'logout':
-    case 'register':
     case 'reset':
     case 'salt.txt':
     return true;
+
+    case 'register':
+    return !root.creator || root.loginScope === Admin.NONE || User.require(root.loginScope);
   }
 
   var sitePermission = this._parent.getPermission('main');
@@ -80,6 +82,8 @@ Members.prototype.main_action = function() {
 Members.prototype.register_action = function() {
   if (req.postParams.register) {
     try {
+      if (root.termsStory && !req.postParams.terms) throw Error('Please accept the terms and conditions.');
+      if (root.privacyStory && !req.postParams.privacy) throw Error('Please accept the data privacy statement.');
       var title = res.handlers.site.title;
       var user = User.register(req.postParams);
       var membership = Membership.add(user, Membership.SUBSCRIBER, this._parent);
@@ -159,7 +163,11 @@ Members.prototype.reset_action = function() {
 Members.prototype.login_action = function() {
   if (req.postParams.login) {
     try {
-      var user = User.login(req.postParams);
+      var user = User.getByName(req.postParams.name)
+      if (!User.require(root.loginScope, user)) {
+         throw Error(gettext('Sorry, logging in is currently not possible.'));
+      }
+      User.login(req.postParams);
       res.message = gettext('Welcome to {0}, {1}. Have fun!', res.handlers.site.getTitle(), user.name);
       res.redirect(User.getLocation() || this._parent.href());
     } catch (ex) {

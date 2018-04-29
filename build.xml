@@ -34,9 +34,11 @@
     <echo message="  dist      Generate the Antville and AntClick packages (default)"/>
     <echo message="  docs      Generate the API documentation"/>
     <echo message="  help      Show these build instructions"/>
+    <echo message="  libs      Update Java libraries"/>
     <echo message="  messages  Generate JavaScript message files"/>
     <echo message="  patch     Apply patch file to Antville installation"/>
     <echo message="  pot       Extract gettext call strings into POT file"/>
+    <echo message="  server    Build server-side NodeJS compatibility layer"/>
     <echo message="  ville     Generate the Antville packages"/>
     <echo message="  +claustra Scaffolds a new claustra, ready for implementation"/>
     <echo message="  +patch    Scaffolds a new patch, ready for implementation"/>
@@ -56,14 +58,14 @@
 
     <property name="name" value="antville"/>
     <property name="year" value="2001-${year}"/>
-    <property name="version" value="1.5"/>
+    <property name="version" value="1.6"/>
     <property name="package.name" value="${name}-${version}"/>
 
     <property name="antville.src" value="https://github.com/antville/antville.git"/>
     <property name="helma.src" value="https://github.com/antville/helma.git"/>
     <property name="jala.src" value="https://github.com/antville/helma-jala.git"/>
 
-    <property name="uikit.dir" location="./node_modules/uikit-bower"/>
+    <property name="uikit.dir" location="./node_modules/uikit/dist"/>
 
     <property name="build.dir" location="${basedir}/build"/>
     <property file="${build.dir}/build.properties"/>
@@ -159,7 +161,8 @@
     <!-- Copy extra files to final destinations -->
     <copy file="${export.dir}/helma/license.txt" tofile="${work.dir}/licenses/helma.txt"/>
     <copy todir="${work.dir}">
-       <fileset dir="${extra.dir}" includes="start.bat apps.properties server.properties launcher.jar"/>
+       <fileset dir="${extra.dir}"
+          includes="start.bat apps.properties server.properties launcher.jar"/>
     </copy>
     <exec dir="${extra.dir}" executable="cp">
        <arg line="-p start.sh ${work.dir}"/>
@@ -182,7 +185,8 @@
       <fileset dir="${work.dir}/modules/helma" includes="*.jar Search.js Ssh.js Chart.js"/>
     </delete>
     <delete includeemptydirs="true">
-      <fileset dir="${work.dir}/modules/jala" includes="build.properties docs/** lib/** licenses/** tests/** util/**"/>
+      <fileset dir="${work.dir}/modules/jala"
+          includes="build.properties docs/** lib/** licenses/** tests/** util/**"/>
     </delete>
     <delete dir="${work.dir}/apps/antville/legal"/>
     <delete dir="${source.dir}"/>
@@ -200,19 +204,22 @@
   </target>
 
   <target name="client" depends="init">
+    <echo message="Building client-side files"/>
     <copy todir="static/fonts">
       <fileset dir="${uikit.dir}/fonts" includes="**"/>
     </copy>
     <mkdir dir="static/scripts"/>
     <exec executable="node_modules/.bin/browserify" output="static/scripts/main.min.js">
-      <arg line="build/client/main.js -d -p [minifyify --map /static/scripts/main.min.map.json --output static/scripts/main.min.map.json]"/>
+      <arg line="build/client/main.js -d -p [minifyify --map /static/scripts/main.min.map.json
+          --output static/scripts/main.min.map.json]"/>
     </exec>
     <exec executable="node_modules/.bin/browserify" output="static/scripts/editor.min.js">
-      <arg line="build/client/editor.js -d -p [minifyify --map /static/scripts/editor.min.map.json --output static/scripts/editor.min.map.json]"/>
+      <arg line="build/client/editor.js -d -p [minifyify --map /static/scripts/editor.min.map.json
+          --output static/scripts/editor.min.map.json]"/>
     </exec>
     <mkdir dir="static/styles"/>
     <exec executable="node_modules/.bin/lessc" output="static/styles/main.min.css">
-      <arg line="-x build/client/main.less"/>
+      <arg line="--clean-css build/client/main.less"/>
     </exec>
     <exec executable="node_modules/.bin/lessc" output="static/styles/editor.min.css">
       <arg line="--clean-css build/client/editor.less"/>
@@ -225,6 +232,12 @@
     </exec>
   </target>
 
+  <target name="libs" depends="init">
+    <exec executable="${helma.dir}/gradlew">
+      <arg line="-b build/build.gradle"/>
+    </exec>
+  </target>
+
   <target name="docs" depends="init">
     <exec dir="${build.dir}/jsdoc/toolkit" executable="${build.dir}/jsdoc/jsrunwrapper.sh">
       <arg line='-D="title:${docs.title}" -q -r=2 -p -t=../templates/codeview
@@ -233,8 +246,8 @@
   </target>
 
   <target name="pot" depends="init">
-    <java dir="${helma.dir}" classpath="${helma.dir}/launcher.jar" classname="helma.main.launcher.Commandline"
-        fork="true">
+    <java dir="${helma.dir}" classpath="${helma.dir}/launcher.jar"
+        classname="helma.main.launcher.Commandline" fork="true">
       <!-- Root.extractMessages is currently located in Global/i18n.js -->
       <arg value="antville.extractMessages"/>
       <arg value="${build.dir}/MessageParser.js"/>
@@ -244,7 +257,7 @@
   </target>
 
   <target name="messages" depends="init">
-    <java dir="${helma.dir}" classpath="${helma.dir}/lib/rhino.jar"
+    <java dir="${helma.dir}" classpath="${helma.dir}/lib/rhino-1.7.9.jar"
         classname="org.mozilla.javascript.tools.shell.Main">
       <arg value="${build.dir}/PoParser.js"/>
       <arg value="${i18n.poDirectory}"/>
@@ -272,7 +285,8 @@
 
   <target name="make-zip" depends="init">
     <mkdir dir="${dist.dir}"/>
-    <fixcrlf srcdir="${path}" eol="crlf" includes="**/*.txt, **/*.properties,	**/*.hac, **/*.js, **/*.skin, **/*.xml, **/.bat"/>
+    <fixcrlf srcdir="${path}" eol="crlf"
+        includes="**/*.txt, **/*.properties,	**/*.hac, **/*.js, **/*.skin, **/*.xml, **/.bat"/>
     <zip zipfile="${dist.dir}/${filename}.zip">
       <zipfileset dir="${path}" prefix="${filename}" includes="**"/>
     </zip>
@@ -287,7 +301,8 @@
       <equals arg1="${patch.confirm}" arg2="n" casesensitive="false" trim="true"/>
     </condition>
     <fail if="patch.abort">Build aborted by user.</fail>
-    <java dir="${helma.dir}" classpath="${helma.dir}/launcher.jar" classname="helma.main.launcher.Commandline" fork="true">
+    <java dir="${helma.dir}" classpath="${helma.dir}/launcher.jar"
+        classname="helma.main.launcher.Commandline" fork="true">
       <arg value="antville.patch"/>
       <arg value="${patch}"/>
     </java>
@@ -295,8 +310,9 @@
 
   <target name="+patch" depends="init">
     <property name="patch.dir" value="extra/updater"/>
-    <echo file="${patch.dir}/patch-${file-date}.js">// Apply with enabled updater repository using `ant patch -Dpatch.id=${file-date}`${line.separator}<!--
-    -->var sql = new Sql();
+    <echo file="${patch.dir}/patch-${file-date}.js"><!--
+      -->// Apply with enabled updater repository using `ant patch -Dpatch.id=${file-date}`${line.separator}<!--
+      -->var sql = new Sql();
     </echo>
   </target>
 
@@ -311,11 +327,13 @@
     <property name="claustra.dir" value="claustra/${claustra.name}/${claustra.title}"/>
     <mkdir dir="${claustra.dir}"/>
     <echo file="${claustra.dir}/${claustra.title}.properties" append="true">#sites = collection(Site)</echo>
-    <echo file="${claustra.dir}/${claustra.title}.js" append="true">${claustra.title}.prototype.main_action = function () {${line.separator}<!--
-    -->  //res.debug(this.sites.count());${line.separator}<!--
-    -->};${line.separator}</echo>
+    <echo file="${claustra.dir}/${claustra.title}.js" append="true"><!--
+        -->${claustra.title}.prototype.main_action = function () {${line.separator}<!--
+        -->  //res.debug(this.sites.count());${line.separator}<!--
+        -->};${line.separator}</echo>
     <mkdir dir="${claustra.dir}/../Claustra"/>
-    <echo file="${claustra.dir}/../Claustra/Claustra.properties" append="true">${claustra.name} = mountpoint(${claustra.title})${line.separator}</echo>
+    <echo file="${claustra.dir}/../Claustra/Claustra.properties" append="true"><!--
+        -->${claustra.name} = mountpoint(${claustra.title})${line.separator}</echo>
   </target>
 
   <target name="clean" depends="init">
