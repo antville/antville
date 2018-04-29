@@ -161,11 +161,11 @@ Members.prototype.reset_action = function() {
 Members.prototype.login_action = function() {
   if (req.postParams.login) {
     try {
-      var user = User.login(req.postParams);
-      if (!User.require(root.loginScope)) {
-         User.logout();
+      var user = User.getByName(req.postParams.name)
+      if (!User.require(root.loginScope, user)) {
          throw Error(gettext('Sorry, logging in is currently not possible.'));
       }
+      User.login(req.postParams);
       res.message = gettext('Welcome to {0}, {1}. Have fun!', res.handlers.site.getTitle(), user.name);
       res.redirect(User.getLocation() || this._parent.href());
     } catch (ex) {
