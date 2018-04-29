@@ -209,13 +209,13 @@ var html = new helma.Html();
  */
 var lessParser = {
   parse: function(lessCode, callback) {
-    //return callback(null, {toCSS:function() {return lessCode}});
-    var compiler = new Packages.org.lesscss.LessCompiler();
+    var less = new Packages.org.lesscss.LessCompiler();
     try {
-      var css = compiler.compile(lessCode);
-      callback(null, {toCSS: function() {
-        return css;
-      }})
+      callback(null, {
+        toCSS: function() {
+          return less.compile(lessCode);
+        }
+      });
     } catch (error) {
       callback(error);
     }
