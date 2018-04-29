@@ -65,7 +65,7 @@
     <property name="helma.src" value="https://github.com/antville/helma.git"/>
     <property name="jala.src" value="https://github.com/antville/helma-jala.git"/>
 
-    <property name="uikit.dir" location="./node_modules/uikit-bower"/>
+    <property name="uikit.dir" location="./node_modules/uikit/dist"/>
 
     <property name="build.dir" location="${basedir}/build"/>
     <property file="${build.dir}/build.properties"/>

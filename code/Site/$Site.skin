@@ -203,18 +203,14 @@
 
 <% #meta %>
 <meta name='description' content='<% response.description %>'>
+<meta name='twitter:card' content='summary_large_image'>
+<meta name='twitter:title' property='og:title' itemprop='name' content='<% response.title %>'>
+<meta name='twitter:description' property='og:description' itemprop='description' content='<% response.description default=<% response.title %> %>'>
 <meta property='og:type' content='<% response.type %>'>
-<% // Facebook is very picky with locales (e.g. complains about 'de' and 'en_AU') %>
-<% //site.locale prefix="<meta property='og:locale' content='" suffix="'>" %>
-<% response.title prefix="<meta property='og:title' content='" suffix="'>" %>
-<% response.description prefix="<meta property='og:description' content='" suffix="'>" %>
 <meta property='og:site_name' content='<% site.title %>'>
 <meta property='og:url' content='<% href %>'>
-<meta name='twitter:card' content='summary'>
-<% response.title prefix="<meta name='twitter:title' content='" suffix="'>" %>
-<% response.description prefix="<meta name='twitter:description' content='" suffix="'>" %>
-<% response.title prefix="<meta itemprop='name' content='" suffix="'>" %>
-<% response.description prefix="<meta itemprop='description' content='" suffix="'>" %>
+<% // Facebook is very picky with locales (e.g. complains about 'de' and 'en_AU') %>
+<% //site.locale prefix="<meta property='og:locale' content='" suffix="'>" %>
 <% response.images %>
 <% response.videos %>
 
@@ -224,6 +220,10 @@
 <link rel='alternate' type='application/rss+xml' title='Comments of <% site.title %>' href='<% site.href comments.xml %>'>
 <link rel='alternate' type='application/rss+xml' title='Sites of <% root.title %>' href='<% root.href updates.xml %>'>
 <link rel='search' type='application/opensearchdescription+xml' href='<% site.href search.xml %>' title='<% site.title %>'>
+
+<% #menuButton %>
+<input type='checkbox' class='av-menu-toggle'>
+<i class='av-menu-toggle'></i>
 
 <% #admin %>
 <a name='admin' id='admin'></a>
@@ -297,52 +297,6 @@
    <Query role="example" searchTerms="cat" />
 </OpenSearchDescription>
 
-<% #page %>
-<!DOCTYPE html>
-<html <% site.locale prefix='lang=' %>>
-   <head>
-      <meta charset='utf-8'>
-      <title><% response.title %></title>
-      <link rel='icon' type='image/x-icon' href='<% image /favicon.png url %>'>
-      <link rel='shortcut icon' type='image/x-icon' href='<% image /favicon.png url %>'>
-      <link rel='search' type='application/opensearchdescription+xml' href='<% site.href search.xml %>' title='<% site.title %>'>
-      <link rel='alternate' type='application/rss+xml' title='Stories and comments of <% site.title %>' href='<% site.href rss.xml %>'>
-      <link rel='alternate' type='application/rss+xml' title='Stories of <% site.title %>' href='<% site.href stories.xml %>'>
-      <link rel='alternate' type='application/rss+xml' title='Comments of <% site.title %>' href='<% site.href comments.xml %>'>
-      <link rel='alternate' type='application/rss+xml' title='Sites of <% root.title %>' href='<% root.href updates.xml %>'>
-      <link rel='stylesheet' type='text/css' href='<% root.href main.css %>'>
-      <script type='text/javascript' src='<% root.href main.js %>'></script>
-   </head>
-   <body class='uk-container-center av-page'>
-   <body class='uk-container-center av-page'>
-      <% site.skin $Site#header %>
-      <div class='uk-grid'>
-         <div class='uk-width-7-10'>
-            <% response.message prefix="<div class='uk-alert' data-uk-alert>" suffix=</div> %>
-            <% response.body %>
-         </div>
-         <div class='uk-width-3-10'>
-            <div class='uk-margin-large-left av-border-left'>
-               <% membership.status %>
-               <ul class='uk-nav uk-nav-side'>
-                  <li class='uk-nav-divider'/>
-                  <% site.skin Site#navigation %>
-                  <li class='uk-nav-divider'/>
-                  <li class='uk-margin-left'>
-                     <% site.skin Site#search %>
-                  </li>
-                  <li class='uk-nav-header'/>
-                  <li class='uk-margin-left uk-text-small'>
-                     <% site.calendar %>
-                  </li>
-               </ul>
-            </div>
-         </div>
-      </div>
-      <% site.skin $Site#footer %>
-   </body>
-</html>
-
 <% #header %>
 <header class='av-header <% if <% site.id %> is <% root.id %> then 'av-root-site' %>'>
    <div class='av-header-bg-chaos'></div>
@@ -360,11 +314,11 @@
 <footer>
    <hr class='uk-margin-large-top'>
    <div class='uk-text-small uk-margin-bottom uk-float-left'>
-      <div><% gettext 'Created {0}' <% site.created text %> %>.</div>
-      <div><% gettext 'Last modified {0}' <% site.modified text %> %>.</div>
+      <div><% if <% site.created %> then <% gettext 'Created {0}' <% site.created text %> %> suffix=. %></div>
+      <div><% if <% site.modified %> then <% gettext 'Last modified {0}' <% site.modified text %> %> suffix=. %></div>
    </div>
    <div class='uk-text-right'>
-      <% image /smallchaos.gif | link http://antville.org %> &
+      <% image /smallchaos.gif | link https://antville.org %> &
       <% image /helma.png | link http://helma.org %>
    </div>
 </footer>
@@ -435,6 +389,11 @@ html, html.uk-notouch, body {
    font-family: @text-font;
 }
 
+body.av-16, body.av-page {
+   max-width: 900px;
+   margin: auto 5%;
+}
+
 h1, h2, h3, h4, h5, h6 {
    color: @title-color;
    font-family: @title-font;
@@ -458,7 +417,10 @@ em {
 }
 
 img {
-   max-width: initial; // FIXME: compatibility
+   body:not(.av-16) &, table & {
+      max-width: initial; // FIXME: compatibility
+   }
+
    &[src$='pixel.gif'] {
       width: initial;
       height: initial;
@@ -605,7 +567,9 @@ hr {
 }
 
 .uk-thumbnail img {
-   max-width: 100%;
+   body:not(.av-16) & {
+      max-width: 100%;
+   }
 }
 
 h1 a, .uk-table a {
@@ -638,7 +602,7 @@ h4 + .uk-comment-meta li:first-child {
 }
 
 .av-page {
-   width: 900px; // FIXME: Could we use the `vw` unit already?
+   overflow: auto;
 }
 
 .av-sprite {
@@ -651,8 +615,9 @@ h4 + .uk-comment-meta li:first-child {
    margin: 0 0 -2px -2px;
    width: 15px;
    height: 15px;
-   background: url(/static/img/ant.svg);
+   background-image: url(/static/img/ant.svg);
    background-size: 15px 15px;
+   background-repeat: no-repeat;
 }
 
 .av-border-left {
@@ -780,10 +745,10 @@ h4 + .uk-comment-meta li:first-child {
    }
 
    .av-header-bg-dots {
-      margin-left: 222px;
       position: relative;
       top: -46px;
-      width: 900px - 274px + 54px;
+      margin-left: 222px;
+      margin-right: -5.6%;
       height: 38px;
       background: url('<% image /dot.gif url %>');
    }
@@ -791,11 +756,17 @@ h4 + .uk-comment-meta li:first-child {
    .av-title {
       position: absolute;
       top: 13px;
-      overflow: visible;
+      width: 100%;
+      height: 100%;
+      overflow-x: hidden;
       white-space: nowrap;
       font-family: Verdana, Helvetica, Arial, sans-serif;
       font-size: 25px;
       font-weight: bold;
+
+      img {
+         max-width: initial;
+      }
    }
 
    // The root site gets the beautiful logo with ant animation
@@ -803,6 +774,68 @@ h4 + .uk-comment-meta li:first-child {
       .av-title {
          top: 0px;
          left: -55px;
+      }
+   }
+}
+
+.av-menu {
+   & .av-menu-toggle {
+      display: none;
+   }
+}
+
+@media (max-width: 767px) {
+   .av-menu {
+      @top: 14px;
+      @right: 5%;
+      @size: 30px;
+
+      i.av-menu-toggle {
+         .av-ant;
+         padding: 2px;
+         border-radius: 100%;
+         background-color: fadeout(@background, 20%);
+         background-size: @size @size;
+         background-position: 2px 2px;
+      }
+
+      i.av-menu-toggle,
+      input.av-menu-toggle {
+         display: initial;
+         position: absolute;
+         top: @top;
+         right: @right;
+         width: @size;
+         height: @size;
+         margin-right: 2px;
+      }
+
+      input.av-menu-toggle {
+         z-index: 9;
+         opacity: 0;
+
+         &:checked {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+
+            & ~ .av-navigation {
+               display: initial;
+            }
+         }
+       }
+
+      .av-navigation {
+         display: none;
+         position: fixed;
+         top: 0;
+         right: 0;
+         bottom: 0;
+         z-index: 10;
+         padding: 10pt 10pt 10pt 0;
+         background-color: fadeout(@background, 10%);
+         box-shadow: -5px 0 5px 0 @border-color;
+         overflow: auto;
       }
    }
 }
@@ -849,6 +882,7 @@ h4 + .uk-comment-meta li:first-child {
 
 .jala-calendar {
    width: 100%;
+   max-width: 200px;
    text-align: center;
 
    tbody th {

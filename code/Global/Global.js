@@ -492,7 +492,7 @@ function story_macro(param, id, mode) {
     res.write(story.href());
     break;
     case 'link':
-    html.link({href: story.href()}, story.getTitle());
+    html.link({href: story.href()}, param.text || story.getTitle());
     break;
     default:
     var skin = param.skin ? 'Story#' + param.skin : '$Story#embed';

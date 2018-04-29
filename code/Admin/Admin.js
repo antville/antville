@@ -103,6 +103,13 @@ Admin.getPhaseOutModes = defineConstants(Admin, markgettext('Disabled'), markget
 Admin.getCreationScopes = defineConstants(Admin, markgettext('Privileged'), markgettext('Trusted'), markgettext('Regular'));
 
 /**
+ * @function
+ * @returns {String[]}
+ * @see defineConstants
+ */
+Admin.getLoginScopes = defineConstants(Admin, markgettext('Privileged'), markgettext('Trusted'), markgettext('Regular'), markgettext('None'));
+
+/**
  * Convenience method for easily queueing jobs.
  * @param {HopObject} target
  * @param {String} method
@@ -279,13 +286,14 @@ Admin.commitEntries = function() {
     }
 
     // Only log unique combinations of context, ip and referrer
-    referrer = String(referrer);
+    referrer = Admin.resolveUrl(referrer);
     var key = item.context._prototype + '-' + item.context._id + ':' +
         item.ip + ':' + referrer;
     if (history.indexOf(key) > -1) {
       continue;
     }
     history.push(key);
+    item.referrer = referrer;
 
     // Exclude requests coming from the same site
     if (item.site) {
@@ -371,6 +379,26 @@ Admin.updateDomains = function() {
   out.close();
   return;
 }
+
+Admin.resolveUrl = function(url) {
+  var http = new helma.Http();
+  http.setMethod('HEAD');
+  http.setFollowRedirects(false);
+
+  var response;
+  var location = url;
+
+  while (location) {
+    try {
+      response = http.getUrl(location);
+      location = response.location;
+    } catch (error) {
+      location = null;
+    }
+  };
+
+  return String(response ? response.url : url);
+};
 
 /**
  * The Admin prototype is mounted at root and provides actions needed
@@ -570,13 +598,16 @@ Admin.prototype.update = function(data) {
   root.map({
     creationScope: data.creationScope,
     creationDelay: data.creationDelay,
-    replyTo: data.replyTo,
+    loginScope: data.loginScope,
     notificationScope: data.notificationScope,
     phaseOutGracePeriod: data.phaseOutGracePeriod,
     phaseOutMode: data.phaseOutMode,
     phaseOutNotificationPeriod: data.phaseOutNotificationPeriod,
+    privacyStory: data.privacyStory,
     probationPeriod: data.probationPeriod,
-    quota: data.quota
+    quota: data.quota,
+    replyTo: data.replyTo,
+    termsStory: data.termsStory
   });
   return;
 }

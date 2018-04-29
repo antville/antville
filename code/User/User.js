@@ -260,10 +260,11 @@ User.logout = function() {
  * @param {String} requiredStatus
  * @returns {Boolean}
  */
-User.require = function(requiredStatus) {
+User.require = function(requiredStatus, user) {
+  if (!user) user = session.user;
   var status = [User.BLOCKED, User.REGULAR, User.TRUSTED, User.PRIVILEGED];
-  if (requiredStatus && session.user) {
-    return status.indexOf(session.user.status) >= status.indexOf(requiredStatus);
+  if (requiredStatus && user) {
+    return status.indexOf(user.status) >= status.indexOf(requiredStatus);
   }
   return false;
 }

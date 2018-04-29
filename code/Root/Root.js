@@ -46,13 +46,16 @@ Root.VERSION = (function (versionString, buildDate) {
 
 this.handleMetadata('creationDelay');
 this.handleMetadata('creationScope');
+this.handleMetadata('loginScope');
 this.handleMetadata('notificationScope');
 this.handleMetadata('phaseOutGracePeriod');
 this.handleMetadata('phaseOutNotificationPeriod');
 this.handleMetadata('phaseOutMode');
+this.handleMetadata('privacyStory');
 this.handleMetadata('probationPeriod');
 this.handleMetadata('quota');
 this.handleMetadata('replyTo');
+this.handleMetadata('termsStory');
 
 /**
  * Antville’s Root prototype is an extent of the Site prototype.
@@ -116,6 +119,7 @@ Root.prototype.main_action = function() {
     this.replyTo = 'root@localhost';
     this.locale = java.util.Locale.getDefault().getLanguage();
     this.timeZone = java.util.TimeZone.getDefault().getID();
+    this.loginScope = Admin.PRIVILEGED;
     this.layout.reset();
     res.redirect(this.members.href('register'));
   } else if (session.user && this.members.owners.size() < 1) {
@@ -361,6 +365,8 @@ Root.prototype.getFormOptions = function(name) {
   switch (name) {
     case 'creationScope':
     return Admin.getCreationScopes();
+    case 'loginScope':
+    return Admin.getLoginScopes();
     case 'notificationScope':
     return Admin.getNotificationScopes();
     case 'phaseOutMode':
