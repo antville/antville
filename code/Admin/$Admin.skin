@@ -60,7 +60,7 @@
             <% gettext 'Story about Terms and Conditions' %>
          </label>
          <div class='uk-form-controls'>
-            <% root.input termsStory class=uk-width-1-6 pattern="(?:[a-zA-Z0-9]+/)?[0-9]+" %>
+            <% root.input termsStory class=uk-width-1-4 pattern="[a-zA-Z0-9]+/[0-9]+" placeholder=<% gettext "e.g. {0}" www/12345 %> %>
             <a href='<% if <% root.termsStory %> is null then <% site.href stories %> else <% story <% root.termsStory %> url %> %>'>
                <i class='uk-icon-link'></i>
             </a>
@@ -71,7 +71,7 @@
             <% gettext 'Story about Data Privacy Statement' %>
          </label>
          <div class='uk-form-controls'>
-            <% root.input privacyStory class=uk-width-1-6 pattern="(?:[a-zA-Z0-9]+/)?[0-9]+" %>
+            <% root.input privacyStory class=uk-width-1-4 pattern="[a-zA-Z0-9]+/[0-9]+" placeholder=<% gettext "e.g. {0}" www/12345 %> %>
             <a href='<% if <% root.privacyStory %> is null then <% site.href stories %> else <% story <% root.privacyStory %> url %> %>'>
                <i class='uk-icon-link'></i>
             </a>

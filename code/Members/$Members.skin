@@ -64,8 +64,8 @@
       <a href='<% site.href %>' class="uk-button uk-button-link" tabindex=5><% gettext Cancel %></a>
    </div>
 </form>
-<% story <% root.termsStory %> link text=<% gettext "Terms and Conditions" %> prefix='<div class='uk-margin-top'><i class="uk-icon-legal"></i> ' suffix=</div> %>
-<% story <% root.privacyStory %> link text=<% gettext "Data Privacy Statement" %> prefix='<div class='uk-margin-top'><i class="uk-icon-cloud-upload"></i> ' suffix=</div> %>
+<% story <% root.termsStory %> link text=<% gettext "Terms and Conditions" %> prefix='<div class="uk-margin-top"><i class="uk-icon-legal"></i> ' suffix=</div> %>
+<% story <% root.privacyStory %> link text=<% gettext "Data Privacy Statement" %> prefix='<div><i class="uk-icon-cloud-upload"></i> ' suffix=</div> %>
 <script type="text/javascript">
    $("form#login").on('submit', function (event) {
       if ($('#digest').val()) {
@@ -157,6 +157,20 @@
       <% gettext "I understand and accept the {0}data privacy statement{1}" <% story <% root.privacyStory %> url prefix='<a href="' suffix='">' %> '</a>' %>
    </label>
 </div>
+
+<% #accept %>
+<h1><% response.title %></h1>
+<% gettext "We have updated our terms and conditions. Please reaffirm you understand and accept the following:" %>
+<form class='uk-margin-top uk-form uk-form-stacked'  method="post" action="<% response.action %>">
+   <% if <% root.termsStory %> is null then '' else <% members.skin $Members#terms %> %>
+   <% if <% root.privacyStory %> is null then '' then <% members.skin $Members#privacy %> %>
+   <div class='uk-form-row uk-margin-top'>
+      <button class='uk-button uk-button-primary' type="submit"" name="accept" value="1" tabindex=6>
+         <% gettext Accept %>
+      </button>
+      <a href='<% members.href logout %>' class="uk-button uk-button-link" tabindex=7><% gettext Logout context=verb %></a>
+   </div>
+</form>
 
 <% #reset %>
 <h1><% response.title %></h1>

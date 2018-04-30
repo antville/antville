@@ -59,7 +59,7 @@ HopObject.getFromPath = function(name, collection) {
       site = res.handlers.site;
     }
     if (site && site.getPermission('main')) {
-      return site[collection].get(name);
+      return (collection ? site[collection] : site).get(name);
     }
   }
   return null;

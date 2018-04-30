@@ -23,6 +23,7 @@ markgettext('Account');
 markgettext('account');
 markgettext('a account // accusative');
 
+this.handleMetadata('accepted');
 this.handleMetadata('hash');
 this.handleMetadata('notes');
 this.handleMetadata('salt');

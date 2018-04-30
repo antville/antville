@@ -40,6 +40,7 @@ markgettext('members');
  */
 Members.prototype.getPermission = function(action) {
   switch (action) {
+    case 'accept':
     case 'login':
     case 'logout':
     case 'reset':
@@ -167,8 +168,24 @@ Members.prototype.login_action = function() {
       if (!User.require(root.loginScope, user)) {
          throw Error(gettext('Sorry, logging in is currently not possible.'));
       }
+
+      // Check if terms and conditions have been updated
+
+      var accepted = user.accepted || 0;
+
+      if ([root.termsStory, root.privacyStory].some(story => {
+        if (story) {
+          story = HopObject.getFromPath(story, 'stories');
+          return story && story.modified - accepted > 0;
+        }
+      })) {
+        session.data.login = req.postParams;
+        res.redirect(this.href('accept'));
+      }
+
       User.login(req.postParams);
       res.message = gettext('Welcome to {0}, {1}. Have fun!', res.handlers.site.getTitle(), user.name);
+
       res.redirect(User.getLocation() || this._parent.href());
     } catch (ex) {
       res.message = ex;
@@ -321,6 +338,26 @@ Members.prototype.add_action = function() {
   res.handlers.site.renderSkin('Site#page');
   return;
 }
+
+Members.prototype.accept_action = function() {
+  if (!session.data.login) res.redirect(this._parent.href());
+  if (req.postParams.accept) {
+    try {
+      if (root.termsStory && !req.postParams.terms) throw Error('Please accept the terms and conditions.');
+      if (root.privacyStory && !req.postParams.privacy) throw Error('Please accept the data privacy statement.');
+      User.login(session.data.login);
+      session.data.login = null;
+      session.user.accepted = Date.now();
+      res.message = gettext('Welcome to {0}, {1}. Have fun!', res.handlers.site.getTitle(), session.user.name);
+      res.redirect(User.getLocation() || this._parent.href());
+    } catch (err) {
+      res.message = err.toString();
+    }
+  }
+  res.data.title = gettext('Updated Terms &amp; Conditions');
+  res.data.body = this.renderSkinAsString('$Members#accept');
+  res.handlers.site.renderSkin('Site#page');
+};
 
 /**
  *
