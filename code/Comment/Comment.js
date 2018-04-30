@@ -194,9 +194,9 @@ Comment.prototype.filter_action = function () {
 Comment.prototype.update = function(data) {
   if (!User.require(User.TRUSTED) && !Membership.require(Membership.CONTRIBUTOR)) {
     var spec = {
-      allowedTags: node.sanitizeHtml.defaults.allowedTags.concat(['img'])
+      allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img'])
     };
-    data.text = data.text ? node.sanitizeHtml(data.text, spec) : String.EMPTY;
+    data.text = data.text ? sanitizeHtml(data.text, spec) : String.EMPTY;
   }
 
   if (!data.text) {

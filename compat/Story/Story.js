@@ -83,7 +83,7 @@ Story.prototype.allowTextMacros = function(skin) {
 }
 
 Story.prototype.commentform_macro = function(param) {
-  if (this.commentMode === "closed") {
+  if (this.site.commentMode === Site.DISABLED || this.commentMode === Story.CLOSED) {
     return;
   }
   if (session.user) {

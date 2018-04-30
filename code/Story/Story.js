@@ -333,10 +333,10 @@ Story.prototype.comment_action = function() {
 }
 
 Story.prototype.amp_html_action = function() {
-  var spec = node.sanitizeHtml.defaults;
+  var spec = sanitizeHtml.defaults;
   var text = this.format_filter(this.text);
 
-  text = node.sanitizeHtml(text, spec);
+  text = sanitizeHtml(text, spec);
 
   this.renderSkin('$Story#amp', {
     text: text,
