@@ -874,6 +874,11 @@ h4 + .uk-comment-meta li:first-child {
    text-decoration: none !important;
 }
 
+.av-rtl {
+  unicode-bidi: bidi-override;
+  direction: rtl;
+}
+
 // Overwriting some Helma and Jala classes for debugging and calendar integration
 
 .helma-debug-line /*:has(script)*/ {
