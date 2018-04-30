@@ -22,8 +22,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Antville-<v>0</v>.<h>0</h>\n"
 "Report-Msgid-Bugs-To: mail@antville.org\n"
-"POT-Creation-Date: 2018-04-30 13:39+0200\n"
-"PO-Revision-Date: 2018-04-30 13:39+0200\n"
+"POT-Creation-Date: 2018-04-30 13:48+0200\n"
+"PO-Revision-Date: 2018-04-30 13:48+0200\n"
 "Language-Team: The Antville People <mail@antville.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -280,6 +280,7 @@ msgstr ""
 #: /Users/tobi/Projects/antville/current/code/Members/$Members.skin:193
 #: /Users/tobi/Projects/antville/current/code/Members/$Members.skin:64
 #: /Users/tobi/Projects/antville/current/code/Members/$Members.skin:132
+#: /Users/tobi/Projects/antville/current/code/Members/$Members.skin:171
 #: /Users/tobi/Projects/antville/current/code/Story/Story.skin:83
 #: /Users/tobi/Projects/antville/current/code/Membership/$Membership.skin:18
 #: /Users/tobi/Projects/antville/current/code/Membership/$Membership.skin:77
@@ -936,7 +937,6 @@ msgstr ""
 msgid "Login with {0}"
 msgstr ""
 
-#: /Users/tobi/Projects/antville/current/code/Members/$Members.skin:171
 #: /Users/tobi/Projects/antville/current/code/Membership/Membership.skin:7
 msgid "Logout // verb"
 msgstr ""

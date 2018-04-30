@@ -19,7 +19,7 @@ msgstr ""
 "Project-Id-Version: Antville-1.5\n"
 "Report-Msgid-Bugs-To: mail@antville.org\n"
 "POT-Creation-Date: 2018-04-30 13:39+0200\n"
-"PO-Revision-Date: 2018-04-30 13:41+0200\n"
+"PO-Revision-Date: 2018-04-30 13:50+0200\n"
 "Last-Translator: Tobi Schäfer <interface@p3k.org>\n"
 "Language-Team: The Antville People <mail@antville.org>\n"
 "Language: de\n"
@@ -2337,7 +2337,7 @@ msgstr "Aktualisieren"
 
 #: /Users/tobi/Projects/antville/current/code/Members/Members.js:357
 msgid "Updated Terms &amp; Conditions"
-msgstr "Überarbeitete Nutzungsbedingungen"
+msgstr "Geänderte Nutzungsbedingungen"
 
 #: /Users/tobi/Projects/antville/current/code/User/$User.skin:26
 #: /Users/tobi/Projects/antville/current/code/Members/Members.js:277
@@ -2393,6 +2393,8 @@ msgid ""
 "We have updated our terms and conditions. Please reaffirm you understand and "
 "accept the following:"
 msgstr ""
+"Wir haben unseres Nutzungsbedingungen geändert. Bitte bestätigen Sie im "
+"folgenden, dass Sie diese verstehen und akzeptieren:"
 
 #: /Users/tobi/Projects/antville/current/code/Site/Site.skin:10
 msgid "Welcome"

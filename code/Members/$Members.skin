@@ -168,7 +168,7 @@
       <button class='uk-button uk-button-primary' type="submit"" name="accept" value="1" tabindex=6>
          <% gettext Accept %>
       </button>
-      <a href='<% members.href logout %>' class="uk-button uk-button-link" tabindex=7><% gettext Logout context=verb %></a>
+      <a href='<% site.href %>' class="uk-button uk-button-link" tabindex=7><% gettext Cancel %></a>
    </div>
 </form>
 
