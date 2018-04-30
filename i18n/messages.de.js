@@ -438,7 +438,7 @@ global.messages['de'] = {
   "Vote": "Abstimmen",
   "Warning!": "Warnung!",
   "We are sorry to inform you that the user {0} has cancelled your membership of the site {1} at {2}.": "Wir bedauern Ihnen mitzuteilen, dass Ihre Mitgliedschaft bei der Website {1} unter {2} von {0} beendet wurde.",
-  "We have updated our terms and conditions. Please reaffirm you understand and accept the following:": "Wir haben unseres Nutzungsbedingungen geändert. Bitte bestätigen Sie im folgenden, dass Sie diese verstehen und akzeptieren:",
+  "We have updated our terms and conditions. Please reaffirm you understand and accept the following:": "Wir haben unsere Nutzungsbedingungen geändert. Bitte bestätigen Sie im folgenden, dass Sie diese verstehen und akzeptieren:",
   "Welcome": "Willkommen",
   "Welcome to {0}, {1}!": "Willkommen bei {0}, {1}!",
   "Welcome to {0}, {1}. Have fun!": "Willkommen bei {0}, {1}. Viel Spaß!",
