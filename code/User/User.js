@@ -394,9 +394,13 @@ User.prototype.edit_action = function () {
     } catch (err) {
       res.message = err.toString();
     }
+  } else if (req.postParams.export) {
+    var zip = Exporter.getArchive(this);
+    res.setHeader('Content-Disposition', 'attachment; filename=antville-' + this.name + '.zip');
+    res.writeBinary(zip.getData());
   }
   session.data.token = User.getSalt();
-  session.data.salt = session.user.salt;
+  session.data.salt = this.salt;
   res.data.title = 'Account ' + this.name;
   res.data.body = this.renderSkinAsString('$User#edit');
   res.handlers.site.renderSkin('Site#page');

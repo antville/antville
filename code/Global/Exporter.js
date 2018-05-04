@@ -100,4 +100,144 @@ Exporter.run = function(site, user) {
   // Reset the site’s export status
   site.job = null;
   return;
-}
+};
+
+Exporter.getArchive = account => {
+  const zip = new helma.Zip();
+  const sql = new Sql();
+  const FileUtils = Packages.org.apache.commons.io.FileUtils;
+  const baseDir = java.io.File('/tmp/export');
+
+  FileUtils.deleteDirectory(baseDir);
+  FileUtils.forceMkdir(baseDir);
+
+  const addMetadata = (object, Prototype) => {
+    object.metadata = {};
+    const sql = new Sql();
+    sql.retrieve("select name, value, type from metadata where parent_type = '$0' and parent_id = $1 order by lower(name)", Prototype.name, object.id);
+    sql.traverse(function() {
+      object.metadata[this.name] = global[this.type](this.value).valueOf();
+    });
+    return object;
+  };
+
+  const addAssets = site => {
+    const dir = site.getStaticFile();
+    if (dir.exists()) zip.add(dir, site.name);
+  };
+
+  const saveJSON = (object, dir, fname) => {
+    if (!fname) fname = object.id + '.json';
+    const targetDir = new java.io.File(baseDir, dir);
+    FileUtils.forceMkdir(targetDir);
+    const json = JSON.stringify(object);
+    FileUtils.writeStringToFile(java.io.File(targetDir, fname), json);
+  };
+
+  const index = {
+    accounts: [],
+    comments: [],
+    files: [],
+    images: [],
+    members: [],
+    memberships: [],
+    polls: [],
+    sites: [],
+    stories: []
+  };
+
+  sql.retrieve("select * from account where id = $0", account._id);
+  //sql.retrieve("select * from account where email = '$0' order by lower(name)", account.email);
+
+  sql.traverse(function() {
+    addMetadata(this, User);
+    index.accounts.push(this);
+  });
+
+  /*sql.retrieve('select * from site s, membership m where m.creator_id = $0 and s.id = m.site_id order by lower(s.name)', account._id);
+
+  sql.traverse(function() {
+    const site = Site.getById(this.id);
+    this.href = site.href();
+    addMetadata(this, Site);
+    addAssets(site);
+    index.sites.push(this);
+  });*/
+
+  sql.retrieve('select * from site s, membership m where m.creator_id = $0 and s.id = m.site_id order by lower(s.name)', account._id);
+
+  sql.traverse(function() {
+    const site = Site.getById(this.id);
+    this.href = site.href();
+    if (this.role === Membership.OWNER) {
+      addAssets(site);
+      addMetadata(this, Site);
+    }
+    index.sites.push(this);
+  });
+
+  sql.retrieve('select m.creator_id, m.name, m.role, m.site_id from site s, membership m where m.role = "$1" m.creator_id <> $0 and s.id = m.site_id order by lower(m.name)', account._id, Membership.OWNER);
+
+  sql.traverse(function() {
+    index.members.push(this);
+  });
+
+  sql.retrieve('select * from content where creator_id = $0 order by created desc', account._id);
+
+  sql.traverse(function() {
+    const content = Story.getById(this.id);
+    this.href = content.href();
+
+    addMetadata(this, Story);
+    this.rendered = content.format_filter(this.metadata.text, {}, 'markdown');
+
+    if (this.prototype === 'Story') {
+      index.stories.push(this);
+    } else {
+      index.comments.push(this);
+    }
+  });
+
+  sql.retrieve('select * from file where creator_id = $0 order by created desc', account._id);
+
+  sql.traverse(function() {
+    const file = File.getById(this.id);
+    this.href = file.href();
+    addMetadata(this, File);
+    index.files.push(this);
+  });
+
+  sql.retrieve('select * from image where creator_id = $0 order by created desc', account._id);
+
+  sql.traverse(function() {
+    const image = Image.getById(this.id);
+    this.href = image.href();
+    addMetadata(this, Image);
+    index.images.push(this);
+  });
+
+  sql.retrieve('select * from poll where creator_id = $0 order by created desc', account._id);
+
+  sql.traverse(function() {
+    const poll = Poll.getById(this.id);
+    this.href = poll.href();
+    this.choices = poll.list().map(choice => {
+      return {
+        id: choice._id,
+        title: choice.title,
+        votes: choice.size()
+      };
+    });
+    const vote = poll.votes.get(account.name);
+    if (vote) this.vote = vote.choice._id;
+    addMetadata(this, Poll);
+    index.polls.push(this);
+  });
+
+  const json = JSON.stringify(index);
+  const data = new java.lang.String(json).getBytes('UTF-8');
+
+  zip.addData(data, 'index.json');
+  zip.close();
+  return zip;
+};

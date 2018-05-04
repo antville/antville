@@ -99,6 +99,9 @@
       <button class='uk-button uk-button-primary' type="submit" id="submit" name="save" value="1">
          <% gettext Save %>
       </button>
+      <button class='uk-button uk-button-secondary' type="submit" name="export" value="1">
+         <% gettext Export %>
+      </button>
       <% user.link delete <% gettext 'Delete' %> class='uk-button' %>
       <a href='<% site.href %>' class="uk-button uk-button-link"><% gettext Cancel %></a>
    </div>

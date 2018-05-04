@@ -87,6 +87,7 @@ Members.prototype.register_action = function() {
       if (root.privacyStory && !req.postParams.privacy) throw Error('Please accept the data privacy statement.');
       var title = res.handlers.site.title;
       var user = User.register(req.postParams);
+      user.accepted = Date.now();
       var membership = Membership.add(user, Membership.SUBSCRIBER, this._parent);
       membership.notify(req.action, user.email,
           gettext('[{0}] Welcome to {1}!', root.title, title));
@@ -164,13 +165,13 @@ Members.prototype.reset_action = function() {
 Members.prototype.login_action = function() {
   if (req.postParams.login) {
     try {
-      var user = User.getByName(req.postParams.name)
+      var user = User.login(req.postParams);
+
       if (!User.require(root.loginScope, user)) {
-         throw Error(gettext('Sorry, logging in is currently not possible.'));
+        throw Error(gettext('Sorry, logging in is currently not possible.'));
       }
 
       // Check if terms and conditions have been updated
-
       var accepted = user.accepted || 0;
 
       if ([root.termsStory, root.privacyStory].some(story => {
@@ -179,13 +180,12 @@ Members.prototype.login_action = function() {
           return story && story.modified - accepted > 0;
         }
       })) {
+        User.logout();
         session.data.login = req.postParams;
         res.redirect(this.href('accept'));
       }
 
-      User.login(req.postParams);
       res.message = gettext('Welcome to {0}, {1}. Have fun!', res.handlers.site.getTitle(), user.name);
-
       res.redirect(User.getLocation() || this._parent.href());
     } catch (ex) {
       res.message = ex;
@@ -211,22 +211,8 @@ Members.prototype.logout_action = function() {
 }
 
 Members.prototype.edit_action = function() {
-  if (req.postParams.save) {
-    try {
-      session.user.update(req.postParams);
-      res.message = gettext('The changes were saved successfully.');
-      res.redirect(this.href(req.action));
-    } catch (err) {
-      res.message = err.toString();
-    }
-  }
-  session.data.token = User.getSalt();
-  session.data.salt = session.user.salt;
-  res.data.title = gettext('Account');
-  res.data.body = session.user.renderSkinAsString('$User#edit');
-  this._parent.renderSkin('Site#page');
-  return;
-}
+  return void User.prototype.edit_action.call(session.user);
+};
 
 Members.prototype.salt_txt_action = function() {
   res.contentType = 'text/plain';
