@@ -117,11 +117,18 @@ Exporter.saveSite = function(site, user) {
 Exporter.saveAccount = account => {
   const zip = new helma.Zip();
   const sql = new Sql();
-  const FileUtils = Packages.org.apache.commons.io.FileUtils;
-  const baseDir = java.io.File('/tmp/export');
 
-  FileUtils.deleteDirectory(baseDir);
-  FileUtils.forceMkdir(baseDir);
+  const dirName = app.appsProperties['static'] + '/export';
+  const fileName = 'antville-account-' + java.util.UUID.randomUUID() + '.zip';
+  const dir = new java.io.File(dirName);
+  const file = new java.io.File(dir, fileName);
+
+  if (!dir.exists()) dir.mkdirs();
+
+  if (account.export) {
+    const archive = new java.io.File(dirName, account.export.split('/').pop());
+    if (archive.exists()) archive['delete']();
+  }
 
   const addMetadata = (object, Prototype) => {
     object.metadata = {};
@@ -136,14 +143,6 @@ Exporter.saveAccount = account => {
   const addAssets = site => {
     const dir = site.getStaticFile();
     if (dir.exists()) zip.add(dir, site.name);
-  };
-
-  const saveJSON = (object, dir, fname) => {
-    if (!fname) fname = object.id + '.json';
-    const targetDir = new java.io.File(baseDir, dir);
-    FileUtils.forceMkdir(targetDir);
-    const json = JSON.stringify(object);
-    FileUtils.writeStringToFile(java.io.File(targetDir, fname), json);
   };
 
   const index = {
@@ -248,13 +247,6 @@ Exporter.saveAccount = account => {
   const data = new java.lang.String(json).getBytes('UTF-8');
 
   zip.addData(data, 'index.json');
-
-  const dirName = app.appsProperties['static'] + '/export';
-  const fileName = 'antville-account-' + java.util.UUID.randomUUID() + '.zip';
-  const dir = new java.io.File(dirName);
-  const file = new java.io.File(dir, fileName);
-
-  if (!dir.exists()) dir.makeDirectory();
   zip.save(file);
 
   account.export = app.appsProperties.staticMountpoint + '/export/' + fileName;
