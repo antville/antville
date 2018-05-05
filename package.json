@@ -30,6 +30,7 @@
   },
   "devDependencies": {
     "browserify": "^16.1.1",
+    "less": "^3.0.2",
     "less-plugin-clean-css": "^1.5.1",
     "minifyify": "^7.3.5"
   }
