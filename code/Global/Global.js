@@ -782,13 +782,10 @@ function list_macro(param, id, limit) {
  * @example <% value foo %> Renders the value of res.meta.value.foo
  */
 function value_macro(param, name, value) {
-  if (!name) {
-    return;
-  }
+  if (!name) return;
+  if (!res.meta.values) res.meta.values = {};
   name = name.toLowerCase();
-  if (!value) {
-    return res.meta.values[name];
-  }
+  if (!value) return res.meta.values[name];
   res.meta.values[name] = value;
   return;
 }
