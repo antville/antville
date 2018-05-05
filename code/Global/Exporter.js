@@ -204,7 +204,7 @@ Exporter.saveAccount = account => {
     commentsSql.retrieve('select c.*, a.name as creator_name from content c, account a where c.story_id = $0 and c.creator_id <> $1 and c.creator_id = a.id', this.id, account._id);
     commentsSql.traverse(function() {
       const comment = Comment.getById(this.id);
-      this.href = content.href();
+      this.href = comment.href();
       addMetadata(this, Comment);
       this.rendered = content.format_filter(this.metadata.text, {}, 'markdown');
       index.comments.push(this);
