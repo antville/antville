@@ -542,9 +542,8 @@ Admin.prototype.jobs_action = function() {
 };
 
 Admin.prototype.job_action = function () {
-  var site = Site.getById(req.data.delete);
-  if (site && site.job) {
-    var job = new Admin.Job(site.job);
+  if (req.data.name) {
+    const job = new Admin.Job(req.data.name);
     job.remove();
   }
   return res.redirect(req.data.http_referer);

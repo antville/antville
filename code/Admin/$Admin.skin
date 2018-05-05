@@ -381,7 +381,11 @@
    <td><% gettext <% item.method %> | titleize %></td>
    <td><a href='<% item.target.href %>'><% item.target.name %></a></td>
    <td><% item.user.name %></td>
-   <td class='uk-text-right'><% admin.link <% item.target.id prefix='job?delete=' %> "<i class='uk-icon-trash-o'></i>" %></td>
+   <td class='uk-text-right'><% item.name %>
+      <a href='<% admin.href job %>?name=<% item.name %>&amp;<% item.target.type %>&amp;id=<% item.target.id %>'>
+         <i class='uk-icon-trash-o'></i>
+      </a>
+   </td>
 </tr>
 
 <% #blockedSite %>
