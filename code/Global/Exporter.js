@@ -164,7 +164,7 @@ Exporter.saveAccount = account => {
     index.accounts.push(this);
   });
 
-  sql.retrieve('select * from site s, membership m where m.creator_id = $0 and s.id = m.site_id order by lower(s.name)', account._id);
+  sql.retrieve('select s.*, m.role from site s, membership m where m.creator_id = $0 and s.id = m.site_id order by lower(s.name)', account._id);
 
   sql.traverse(function() {
     app.log('Exporting site #' + this.id + ' (' + this.name + ')');
@@ -198,6 +198,17 @@ Exporter.saveAccount = account => {
     } else {
       index.comments.push(this);
     }
+
+    // Add each story’s comments (except those of the account already exported before)
+    const commentsSql = new Sql();
+    commentsSql.retrieve('select c.*, a.name as creator_name from content c, account a where c.story_id = $0 and c.creator_id <> $1 and c.creator_id = a.id', this.id, account._id);
+    commentsSql.traverse(function() {
+      const comment = Comment.getById(this.id);
+      this.href = content.href();
+      addMetadata(this, Comment);
+      this.rendered = content.format_filter(this.metadata.text, {}, 'markdown');
+      index.comments.push(this);
+    });
   });
 
   sql.retrieve('select * from file where creator_id = $0 order by created desc', account._id);

@@ -401,7 +401,7 @@ User.prototype.edit_action = function () {
   }
   session.data.token = User.getSalt();
   session.data.salt = this.salt;
-  res.data.title = 'Account ' + this.name;
+  res.data.title = this.name;
   res.data.body = this.renderSkinAsString('$User#edit');
   res.handlers.site.renderSkin('Site#page');
 };
