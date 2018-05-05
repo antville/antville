@@ -50,6 +50,9 @@
       <% gettext 'Last modified by {0} on {1}' <% user.name %> <% this.modified short %> prefix=<br> %>
    %>
 </div>
+<div class='uk-margin-top uk-margin-bottom'>
+  <% context.link export <% gettext Export %> %>
+</div>
 <form id='edit' class='uk-form uk-form-stacked uk-margin-top' method="post">
    <input type="hidden" name="digest" id="digest">
    <input type="hidden" name="hash" id="hash">
@@ -99,9 +102,6 @@
       <button class='uk-button uk-button-primary' type="submit" id="submit" name="save" value="1">
          <% gettext Save %>
       </button>
-      <button class='uk-button uk-button-secondary' type="submit" name="export" value="1">
-         <% gettext Export %>
-      </button>
       <% user.link delete <% gettext 'Delete' %> class='uk-button' %>
       <a href='<% site.href %>' class="uk-button uk-button-link"><% gettext Cancel %></a>
    </div>
@@ -150,6 +150,17 @@
    </div>
 </fieldset>
 
+<% #export %>
+<h1><% gettext "Export Account Data" %></h1>
+<p>
+   <% if <% param.status %> is null then <% if <% this.export %> is null then '' else <% gettext "{0}Download the archive{1} or click “Export” to create a new one." <% this.export prefix="<a href='" suffix="'>" %> "</a>" %> %> else <% param.status %> %>
+</p>
+<form action="<% context.href export %>" method="post">
+   <button type="submit" name="submit" value="<% if <% param.status %> is null then export else cancel %>" class='uk-button uk-button-primary'>
+      <% if <% param.status %> is null then <% gettext Export %> else <% gettext Cancel %> %>
+   </button>
+   <a href='<% context.href edit %>' class='uk-button uk-button-link'><% gettext Account %></a>
+</form>
 
 <% #notify_reset %>
 <% gettext 'Hello {0}.' <% user.name %> %>

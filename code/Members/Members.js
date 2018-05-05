@@ -55,6 +55,7 @@ Members.prototype.getPermission = function(action) {
 
   switch (action) {
     case 'edit':
+    case 'export':
     case 'subscriptions':
     case 'updates':
     return !!session.user;
@@ -211,7 +212,13 @@ Members.prototype.logout_action = function() {
 }
 
 Members.prototype.edit_action = function() {
+  res.handlers.context = this;
   return void User.prototype.edit_action.call(session.user);
+};
+
+Members.prototype.export_action = function() {
+  res.handlers.context = this;
+  return void User.prototype.export_action.call(session.user);
 };
 
 Members.prototype.salt_txt_action = function() {

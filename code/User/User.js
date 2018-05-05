@@ -24,7 +24,9 @@ markgettext('account');
 markgettext('a account // accusative');
 
 this.handleMetadata('accepted');
+this.handleMetadata('export');
 this.handleMetadata('hash');
+this.handleMetadata('job');
 this.handleMetadata('notes');
 this.handleMetadata('salt');
 this.handleMetadata('url');
@@ -386,18 +388,16 @@ User.prototype.getPermission = function(action) {
 }
 
 User.prototype.edit_action = function () {
+  if (!res.handlers.context) res.handlers.context = this;
+
   if (req.postParams.save) {
     try {
       this.update(req.postParams);
       res.message = gettext('The changes were saved successfully.');
-      res.redirect(this.href(req.action));
+      res.redirect(res.handlers.context.href(req.action));
     } catch (err) {
       res.message = err.toString();
     }
-  } else if (req.postParams.export) {
-    var zip = Exporter.getArchive(this);
-    res.setHeader('Content-Disposition', 'attachment; filename=antville-' + this.name + '.zip');
-    res.writeBinary(zip.getData());
   }
   session.data.token = User.getSalt();
   session.data.salt = this.salt;
@@ -411,9 +411,42 @@ User.prototype.block_action = function () {
   res.redirect(req.data.http_referer);
 };
 
+User.prototype.export_action = function() {
+  if (!res.handlers.context) res.handlers.context = this;
+
+  const data = req.postParams;
+  const param = {};
+  const href = res.handlers.context.href(req.action);
+  let job = new Admin.Job(this.job || {});
+
+  if (data.submit === 'export') {
+    try {
+      if (job.method && job.method !== 'export') {
+        throw Error(gettext('There is already another job queued for this account: {0}', job.method));
+      }
+      this.job = Admin.queue(this, 'export');
+      res.message = gettext('The account is queued for export.');
+    } catch (ex) {
+      res.message = ex.toString();
+      app.log(res.message);
+    }
+    res.redirect(href);
+  } else if (data.submit === 'cancel') {
+    this.job = job.remove();
+    res.redirect(href);
+  }
+
+  if (job.method === 'export') {
+    param.status = gettext('The account data will be available for download from here within the next days.');
+  }
+
+  res.data.title = 'Export Account ' + this.name;
+  res.data.body = this.renderSkinAsString('$User#export', param);
+  res.handlers.site.renderSkin('Site#page');
+};
+
 User.prototype.getConfirmText = function () {
-  return gettext('You are about to delete the account {0}.',
-      this.getTitle());
+  return gettext('You are about to delete the account {0}.', this.getTitle());
 };
 
 /**

@@ -31,7 +31,19 @@ var Exporter = {}
  * @param {Site} site The site to export.
  * @param {User} user The user whose content will be exported.
  */
-Exporter.run = function(site, user) {
+Exporter.run = function(target, user) {
+  switch (target.constructor) {
+    case Site:
+    Exporter.saveSite(target, user);
+    break;
+
+    case User:
+    Exporter.saveAccount(target);
+    break;
+  }
+};
+
+Exporter.saveSite = function(site, user) {
   try {
     var file;
     if (site.export_id && (file = File.getById(site.export_id))) {
@@ -102,7 +114,7 @@ Exporter.run = function(site, user) {
   return;
 };
 
-Exporter.getArchive = account => {
+Exporter.saveAccount = account => {
   const zip = new helma.Zip();
   const sql = new Sql();
   const FileUtils = Packages.org.apache.commons.io.FileUtils;
@@ -140,7 +152,6 @@ Exporter.getArchive = account => {
     files: [],
     images: [],
     members: [],
-    memberships: [],
     polls: [],
     sites: [],
     stories: []
@@ -153,16 +164,6 @@ Exporter.getArchive = account => {
     addMetadata(this, User);
     index.accounts.push(this);
   });
-
-  /*sql.retrieve('select * from site s, membership m where m.creator_id = $0 and s.id = m.site_id order by lower(s.name)', account._id);
-
-  sql.traverse(function() {
-    const site = Site.getById(this.id);
-    this.href = site.href();
-    addMetadata(this, Site);
-    addAssets(site);
-    index.sites.push(this);
-  });*/
 
   sql.retrieve('select * from site s, membership m where m.creator_id = $0 and s.id = m.site_id order by lower(s.name)', account._id);
 
@@ -238,6 +239,16 @@ Exporter.getArchive = account => {
   const data = new java.lang.String(json).getBytes('UTF-8');
 
   zip.addData(data, 'index.json');
-  zip.close();
+
+  const dirName = app.appsProperties['static'] + '/export';
+  const fileName = 'antville-account-' + java.util.UUID.randomUUID() + '.zip';
+  const dir = new java.io.File(dirName);
+  const file = new java.io.File(dir, fileName);
+
+  if (!dir.exists()) dir.makeDirectory();
+  zip.save(file);
+
+  account.export = app.appsProperties.staticMountpoint + '/export/' + fileName;
+  account.job = null;
   return zip;
 };

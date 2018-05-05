@@ -9,5 +9,5 @@ code/domains.map
 jobs/
 local/
 node_modules/
-static/sites/*
-static/scripts/*.map.json
+static/export/
+static/sites/
