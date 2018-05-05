@@ -189,6 +189,7 @@ Exporter.saveAccount = account => {
     app.log('Exporting story #' + this.id);
     const content = Story.getById(this.id);
     this.href = content.href();
+    this.creator_name = account.name;
 
     addMetadata(this, Story);
     this.rendered = content.format_filter(this.metadata.text, {}, 'markdown');
@@ -217,6 +218,7 @@ Exporter.saveAccount = account => {
     app.log('Exporting file #' + this.id);
     const file = File.getById(this.id);
     this.href = file.href();
+    this.creator_name = account.name;
     addMetadata(this, File);
     index.files.push(this);
   });
@@ -228,6 +230,7 @@ Exporter.saveAccount = account => {
     const image = Image.getById(this.id);
     if (image) {
       this.href = image.href();
+      this.creator_name = account.name;
       addMetadata(this, Image);
       index.images.push(this);
     } else {
@@ -241,6 +244,7 @@ Exporter.saveAccount = account => {
     app.log('Exporting poll #' + this.id);
     const poll = Poll.getById(this.id);
     this.href = poll.href();
+    this.creator_name = account.name;
     this.choices = poll.list().map(choice => {
       return {
         id: choice._id,
