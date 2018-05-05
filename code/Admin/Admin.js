@@ -815,7 +815,7 @@ Admin.prototype.log = function(context, action) {
  */
 
 Admin.prototype.href_macro = function (param, action, id) {
-  res.write(this.href.apply(this, arguments));
+  res.write(this.href.call(this, action, id));
   return;
 };
 
