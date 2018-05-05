@@ -457,12 +457,14 @@ Image.prototype.getUrl = function(name) {
   name || (name = this.fileName);
   if (this.parent_type === 'Layout') {
     var layout = this.parent || res.handlers.layout;
+    var url = String.EMPTY;
     try {
-      return layout.site.getStaticUrl('layout/' + name);
+      url = layout.site.getStaticUrl('layout/' + name);
     } catch (ex) {
       console.error(ex);
       console.error(this.toSource());
     }
+    return url;
   }
   var site = this.parent || res.handlers.site;
   return site.getStaticUrl('images/' + name);
