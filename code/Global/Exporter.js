@@ -168,6 +168,7 @@ Exporter.saveAccount = account => {
   sql.retrieve('select * from site s, membership m where m.creator_id = $0 and s.id = m.site_id order by lower(s.name)', account._id);
 
   sql.traverse(function() {
+    app.log('Exporting site #' + this.id + ' (' + this.name + ')');
     const site = Site.getById(this.id);
     this.href = site.href();
     if (this.role === Membership.OWNER) {
@@ -186,6 +187,7 @@ Exporter.saveAccount = account => {
   sql.retrieve('select * from content where creator_id = $0 order by created desc', account._id);
 
   sql.traverse(function() {
+    app.log('Exporting story #' + this.id);
     const content = Story.getById(this.id);
     this.href = content.href();
 
@@ -202,6 +204,7 @@ Exporter.saveAccount = account => {
   sql.retrieve('select * from file where creator_id = $0 order by created desc', account._id);
 
   sql.traverse(function() {
+    app.log('Exporting file #' + this.id);
     const file = File.getById(this.id);
     this.href = file.href();
     addMetadata(this, File);
@@ -211,15 +214,21 @@ Exporter.saveAccount = account => {
   sql.retrieve('select * from image where creator_id = $0 order by created desc', account._id);
 
   sql.traverse(function() {
+    app.log('Exporting image #' + this.id);
     const image = Image.getById(this.id);
-    this.href = image.href();
-    addMetadata(this, Image);
-    index.images.push(this);
+    if (image) {
+      this.href = image.href();
+      addMetadata(this, Image);
+      index.images.push(this);
+    } else {
+      app.logger.warn('Could not export Image #' + this.id + '; might be a cache problem');
+    }
   });
 
   sql.retrieve('select * from poll where creator_id = $0 order by created desc', account._id);
 
   sql.traverse(function() {
+    app.log('Exporting poll #' + this.id);
     const poll = Poll.getById(this.id);
     this.href = poll.href();
     this.choices = poll.list().map(choice => {
