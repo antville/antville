@@ -1,15 +1,15 @@
 <% #listItem %>
 <tr>
    <td class='uk-text-right'><% file.requests %></td>
+   <td class='uk-text-muted'><i class='uk-icon-file<% file.contentType generic prefix=- %>-o' title='<% file.contentType %>' data-uk-tooltip></i></td>
    <td class='uk-width-1-2 av-overflow'>
       <span title='<% file.description %>' data-uk-tooltip="{pos: 'top-left'}"><% file.name | file.link %></span>
    </td>
-   <!-- td class='uk-text-nowrap'><% //file.contentLength %></td -->
+   <td class='uk-text-nowrap'><% file.contentLength %></td>
    <td><% file.creator %></td>
    <td class='uk-text-nowrap' title='<% file.created short %>' data-uk-tooltip="{pos: 'top-left'}">
       <% file.modified text %>
    </td>
-   <td class='uk-text-muted'><i class='uk-icon-file<% file.contentType generic prefix=- %>-o' title='<% file.contentType %>' data-uk-tooltip></i></td>
    <td class='uk-text-right uk-text-nowrap'>
       <a href='javascript:' class='av-clipboard-copy' data-text='<% gettext 'Press CTRL & C to copy to clipboard.' %>' data-value="<% file.macro %>"><i class='uk-icon-clipboard'></i></a>
       <% file.link delete "<i class='uk-icon-trash-o'></i>" %>

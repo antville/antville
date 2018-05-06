@@ -10,11 +10,11 @@
    <thead>
       <tr>
          <th class='uk-text-right'><i class='uk-icon-download'></i></th>
+         <th></th>
          <th><% gettext Name %></th>
-         <!-- th><% gettext Size %></th -->
+         <th><% gettext Size %></th>
          <th><% gettext Account %></th>
          <th><% gettext Modified %></th>
-         <th></th>
          <th></th>
       </tr>
    </thead>
