@@ -149,14 +149,16 @@ User.register = function(data) {
  * @returns {Boolean}
  */
 User.isBlacklisted = function(data) {
-  var url;
-  var name = encodeURIComponent(data.name);
+  if (getProperty('enableBlacklistChecks') !== 'true') return false;
+
+  var url, mime;
+  var key = getProperty('botscout.apikey');
   var email = encodeURIComponent(data.email);
   var ip = encodeURIComponent(data.http_remotehost);
 
-  var key = getProperty('botscout.apikey');
   if (key) {
     url = ['http://botscout.com/test/?multi', '&key=', key, '&mail=', email, '&ip=', ip];
+
     try {
       mime = getURL(url.join(String.EMPTY));
       if (mime && mime.text && mime.text.startsWith('Y')) {
@@ -167,25 +169,28 @@ User.isBlacklisted = function(data) {
       app.log(ex);
     }
   }
+
   // We only get here if botscout.com does not already blacklist the ip or email address
   url = ['http://www.stopforumspam.com/api?f=json', '&email=', email];
-  if (ip.match(/^(?:\d{1,3}\.){3}\d{1,3}$/)) {
-    url.push('&ip=', ip);
-  }
+
+  if (ip.match(/^(?:\d{1,3}\.){3}\d{1,3}$/)) url.push('&ip=', ip);
+
   try {
     mime = getURL(url.join(String.EMPTY));
   } catch (ex) {
     app.log('Exception while trying to check blacklist URL ' + url);
     app.log(ex);
   }
-  if (mime && mime.text) {
-    var result = JSON.parse(mime.text);
+
+  if (mime && mime.content) {
+    var result = JSON.parse(new java.lang.String(mime.content));
     if (result.success) {
       return !!(result.email.appears || (result.ip && result.ip.appears));
     }
   }
+
   return false;
-}
+};
 
 /**
  *
