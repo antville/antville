@@ -416,6 +416,7 @@ global.messages['de-x-male'] = {
   "Thus, it is publicly accessible for every visitor.": "Daher ist sie für jeden Besucher öffentlich zugänglich.",
   "Thus, you will be notified whenever the site has undergone changes as specified in the site preferences.": "Daher werden Sie benachrichtigt, wenn die Website – wie in deren Einstellungen angegeben – geändert wird.",
   "Time Zone": "Zeitzone",
+  "Timeline": "Zeitleiste",
   "Title": "Titel",
   "Title or name of the site": "Titel oder Name der Website",
   "To confirm the request please click the link below.": "Bitte klicken Sie den folgenden Link, um die Anfrage zu bestätigen.",

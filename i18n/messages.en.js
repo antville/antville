@@ -416,6 +416,7 @@ global.messages['en'] = {
   "Thus, it is publicly accessible for every visitor.": "Thus, it is publicly accessible for every visitor.",
   "Thus, you will be notified whenever the site has undergone changes as specified in the site preferences.": "Thus, you will be notified whenever the site has undergone changes as specified in the site preferences.",
   "Time Zone": "Time Zone",
+  "Timeline": "Timeline",
   "Title": "Title",
   "Title or name of the site": "Title or name of the site",
   "To confirm the request please click the link below.": "To confirm the request please click the link below.",

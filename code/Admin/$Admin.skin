@@ -377,6 +377,18 @@
    </td>
 </tr>
 
+<% #timelineItem %>
+<tr>
+   <td><% param.icon %></td>
+   <td><% param.site %></td>
+   <td class='uk-text-truncate' title='<% param.date | format short %>' data-uk-tooltip="{pos: 'top-left'}">
+      <% param.date | format text %>
+   </td>
+   <td class='av-overflow'>
+      <a href='<% param.href %>'><% param.reference %></a>
+   </td>
+</tr>
+
 <% #job %>
 <tr>
    <td><% gettext <% item.method %> | titleize %></td>

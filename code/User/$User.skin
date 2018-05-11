@@ -51,6 +51,7 @@
    %>
 </div>
 <div class='uk-margin-top uk-margin-bottom'>
+  <% context.link timeline <% gettext Timeline %> %> |
   <% context.link export <% gettext Export %> %>
 </div>
 <form id='edit' class='uk-form uk-form-stacked uk-margin-top' method="post">
@@ -161,6 +162,24 @@
    </button>
    <a href='<% context.href edit %>' class='uk-button uk-button-link'><% gettext Account %></a>
 </form>
+
+<% #timeline %>
+<h1><% gettext Timeline %></h1>
+<% response.pager %>
+<table class='uk-table uk-table-striped uk-table-hover uk-table-condensed'>
+   <thead>
+      <tr>
+         <th></th>
+         <th><% gettext Site %></th>
+         <th><% gettext Created %></th>
+         <th class='uk-width-1-2'><% gettext Reference %></th>
+      </tr>
+   </thead>
+   <tbody>
+      <% response.list %>
+   </tbody>
+</table>
+<% response.pager %>
 
 <% #notify_reset %>
 <% gettext 'Hello {0}.' <% user.name %> %>

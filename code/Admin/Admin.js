@@ -717,7 +717,9 @@ Admin.prototype.renderItem = function(item) {
   return;
 }
 
-Admin.prototype.renderActivity = function (item) {
+Admin.prototype.renderActivity = function (item, skin) {
+  if (!skin) skin = '$Admin#activity';
+
   var param = {
     item: item,
     icon: getIcon(item),
@@ -726,11 +728,13 @@ Admin.prototype.renderActivity = function (item) {
     user: item.creator ? item.creator.name : item.name,
     href: item.href(item.constructor === User ? 'edit' : ''),
     linkCount: getLinkCount(item),
-    alert: getAlert(item)
-    //site: item.site && item.site.name
+    alert: getAlert(item),
+    site: (item.parent && item.parent.site || item.parent || item.site || {}).name
   };
+
   param.warn = param.linkCount > 2 ? true : false;
-  Admin.prototype.renderSkin('$Admin#activity', param);
+
+  Admin.prototype.renderSkin(skin, param);
 
   function getReference(item) {
     switch (item.constructor) {

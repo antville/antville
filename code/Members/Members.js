@@ -57,6 +57,7 @@ Members.prototype.getPermission = function(action) {
     case 'edit':
     case 'export':
     case 'subscriptions':
+    case 'timeline':
     case 'updates':
     return !!session.user;
 
@@ -219,6 +220,11 @@ Members.prototype.edit_action = function() {
 Members.prototype.export_action = function() {
   res.handlers.context = this;
   return void User.prototype.export_action.call(session.user);
+};
+
+Members.prototype.timeline_action = function() {
+  res.handlers.context = this;
+  return void User.prototype.timeline_action.call(session.user);
 };
 
 Members.prototype.salt_txt_action = function() {

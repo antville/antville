@@ -450,8 +450,34 @@ User.prototype.export_action = function() {
   res.handlers.site.renderSkin('Site#page');
 };
 
+User.prototype.timeline_action = function() {
+  const collection = [];
+  const sql = new Sql();
+  const page = req.queryParams.page;
+  const pageSize = 25;
+  const offset = (req.data.page || 0) * pageSize;
+
+  sql.retrieve("select created, id, 'Story' as prototype from content where creator_id = $0 union select created, id, 'Image' as prototype from image where creator_id = $0 union select created, id, 'File' as prototype from file where creator_id = $0 union select created, id, 'Poll' as prototype from poll where creator_id = $0 order by created desc offset $1", this._id, offset);
+
+  sql.traverse(function() {
+    const object = HopObject.getById(this.id, this.prototype);
+    collection.push(object);
+  });
+
+  res.data.list = renderList(collection, this.renderTimelineItem, 25, page);
+  res.data.pager = renderPager(collection, this.href(req.action), 25, page);
+  res.data.title = gettext('Timeline');
+  res.data.action = this.href(req.action);
+  res.data.body = this.renderSkinAsString('$User#timeline');
+  root.renderSkin('Site#page');
+};
+
 User.prototype.getConfirmText = function () {
   return gettext('You are about to delete the account {0}.', this.getTitle());
+};
+
+User.prototype.renderTimelineItem = function(item) {
+  Admin.prototype.renderActivity(item, '$Admin#timelineItem');
 };
 
 /**
