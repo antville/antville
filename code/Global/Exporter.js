@@ -177,7 +177,7 @@ global.Exporter = (function() {
       const data = new java.lang.String(json).getBytes('UTF-8');
       zip.addData(data, 'index.json');
 
-      var xml = Exporter.getSiteXml(site, user);
+      const xml = Exporter.getSiteXml(site);
       zip.addData(xml, site.name + '-export.xml');
 
       zip.close();
@@ -346,14 +346,11 @@ global.Exporter = (function() {
     return zip;
   };
 
-  Exporter.getSiteXml = (site, user) => {
-    var rssUrl = site.href('rss.xml');
-    var baseDir = site.getStaticFile();
-    var member = site.members.get(user.name);
+  Exporter.getSiteXml = site => {
+    const rssUrl = site.href('rss.xml');
+    const xml = [];
 
-    var xml = [];
-
-    var add = function(s) {
+    const add = function(s) {
       return xml.push(s);
     };
 
@@ -374,7 +371,8 @@ global.Exporter = (function() {
     // Currently, blogger.com does not accept other generators
     //add('<generator version="' + Root.VERSION + '" uri="' + root.href() + '">Antville</generator>');
     add('<generator version="7.00" uri="http://www.blogger.com">Blogger</generator>');
-    member.stories.forEach(function() {
+
+    site.stories.forEach(function() {
       add('<entry>');
       add('<id>tag:blogger.com,1999:blog-' + site._id + '.post-' + this._id + '</id>');
       add('<published>' + this.created.format(Date.ISOFORMAT) + '</published>');
@@ -385,7 +383,7 @@ global.Exporter = (function() {
       add('<category scheme="http://schemas.google.com/g/2005#kind" term="http://schemas.google.com/blogger/2008/kind#post"/>');
       add('<author>');
       add('<name>' + this.creator.name + '</name>');
-      this.creator.url && add('<uri>' + this.creator.url + '</uri>');
+      if (this.creator.url) add('<uri>' + this.creator.url + '</uri>');
       add('<email>' + this.creator.email + '</email>');
       add('</author>');
       add('</entry>');
