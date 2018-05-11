@@ -90,7 +90,8 @@ global.Exporter = (function() {
         polls: [],
         sites: [],
         skins: [],
-        stories: []
+        stories: [],
+        tags: []
       };
 
       sql.retrieve('select s.*, c.name as creator_name, m.name as modifier_name from site s, account c, account m where s.id = $0 and s.creator_id = c.id and s.modifier_id = m.id order by lower(s.name)', site._id);
@@ -171,6 +172,13 @@ global.Exporter = (function() {
         });
         addMetadata(this, Poll);
         index.polls.push(this);
+      });
+
+      sql.retrieve('select t.name, h.*  from tag t, tag_hub h where t.id = h.tag_id order by t.name');
+
+      sql.traverse(function() {
+        app.log('Exporting tag #' + this.id);
+        index.tags.push(this);
       });
 
       const json = JSON.stringify(index);
