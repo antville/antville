@@ -456,17 +456,24 @@ User.prototype.timeline_action = function() {
   const page = req.queryParams.page;
   const pageSize = 25;
   const offset = (req.data.page || 0) * pageSize;
+  let count = 0;
+
+  sql.retrieve("select (select count(*) from content where creator_id = $0) + (select count(*) from image where creator_id = $0) + (select count(*) from file where creator_id = $0) + (select count(*) from poll where creator_id = $0) as count", this._id);
+
+  sql.traverse(function() {
+    count = this.count;
+  });
 
   // MySQL needs the limit parameter -> https://stackoverflow.com/questions/255517/mysql-offset-infinite-rows
-  sql.retrieve("select created, id, 'Story' as prototype from content where creator_id = $0 union select created, id, 'Image' as prototype from image where creator_id = $0 union select created, id, 'File' as prototype from file where creator_id = $0 union select created, id, 'Poll' as prototype from poll where creator_id = $0 order by created desc limit $1 offset $2", this._id, 18446744073709551610, offset);
+  sql.retrieve("select created, id, 'Story' as prototype from content where creator_id = $0 union select created, id, 'Image' as prototype from image where creator_id = $0 union select created, id, 'File' as prototype from file where creator_id = $0 union select created, id, 'Poll' as prototype from poll where creator_id = $0 order by created desc limit $1 offset $2", this._id, pageSize, offset);
 
   sql.traverse(function() {
     const object = HopObject.getById(this.id, this.prototype);
     collection.push(object);
   });
 
-  res.data.list = renderList(collection, this.renderTimelineItem, 25, page);
-  res.data.pager = renderPager(collection, this.href(req.action), 25, page);
+  res.data.list = renderList(collection, this.renderTimelineItem, pageSize, page);
+  res.data.pager = renderPager(count, this.href(req.action), pageSize, page);
   res.data.title = gettext('Timeline');
   res.data.action = this.href(req.action);
   res.data.body = this.renderSkinAsString('$User#timeline');
