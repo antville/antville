@@ -19,37 +19,334 @@
  * @fileOverview Defines the Exporter namespace.
  */
 
-/**
- * The Exporter namespace provides methods for exporting a site.
- * @namespace
- */
-var Exporter = {}
+global.Exporter = (function() {
+  const addMetadata = (object, Prototype) => {
+    object.metadata = {};
+    const sql = new Sql();
+    sql.retrieve("select name, value, type from metadata where parent_type = '$0' and parent_id = $1 order by lower(name)", Prototype.name, object.id);
+    sql.traverse(function() {
+      object.metadata[this.name] = global[this.type](this.value).valueOf();
+    });
+    return object;
+  };
 
-/**
- * Exports a site with the specified user’s content
- * The created XML file will be added to the site’s file collection.
- * @param {Site} site The site to export.
- * @param {User} user The user whose content will be exported.
- */
-Exporter.run = function(target, user) {
-  switch (target.constructor) {
-    case Site:
-    Exporter.saveSite(target, user);
-    break;
+  const addImage = function(type, index) {
+    app.log('Exporting ' + type + ' image #' + this.id);
+    const image = Image.getById(this.id);
+    if (image) {
+      this.href = image.href();
+      addMetadata(this, Image);
+      index.images.push(this);
+    } else {
+      app.logger.warn('Could not export Image #' + this.id + '; might be a cache problem');
+    }
+  };
 
-    case User:
-    Exporter.saveAccount(target);
-    break;
-  }
-};
+  const addAssets = (site, zip) => {
+    const dir = site.getStaticFile();
+    if (dir.exists()) zip.add(dir, site.name);
+  };
 
-Exporter.saveSite = function(site, user) {
-  try {
-    var file;
-    if (site.export_id && (file = File.getById(site.export_id))) {
-      File.remove.call(file);
+  /**
+   * The Exporter namespace provides methods for exporting a site.
+   * @namespace
+   */
+  const Exporter = {}
+
+  /**
+   * Exports a site with the specified user’s content
+   * The created XML file will be added to the site’s file collection.
+   * @param {Site} site The site to export.
+   * @param {User} user The user whose content will be exported.
+   */
+  Exporter.run = function(target, user) {
+    switch (target.constructor) {
+      case Site:
+      Exporter.saveSite(target, user);
+      break;
+
+      case User:
+      Exporter.saveAccount(target);
+      break;
+    }
+  };
+
+  Exporter.saveSite = function(site, user) {
+    const sql = new Sql();
+    const zip = new helma.Zip();
+    const fileName = 'antville-site-' + java.util.UUID.randomUUID() + '.zip';
+
+    try {
+      if (site.export) {
+        let file = File.getById(site.export);
+        if (file) File.remove.call(file);
+      }
+
+      const index = {
+        comments: [],
+        files: [],
+        images: [],
+        members: [],
+        polls: [],
+        sites: [],
+        skins: [],
+        stories: []
+      };
+
+      sql.retrieve('select s.*, c.name as creator_name, m.name as modifier_name from site s, account c, account m where s.id = $0 and s.creator_id = c.id and s.modifier_id = m.id order by lower(s.name)', site._id);
+
+      sql.traverse(function() {
+        app.log('Exporting site #' + this.id + ' (' + this.name + ')');
+        const site = Site.getById(this.id);
+        this.href = site.href();
+        addAssets(site, zip);
+        addMetadata(this, Site);
+        index.sites.push(this);
+        const skinsSql = new Sql();
+        sql.retrieve('select * from skin where site_id = $0', this.id);
+        sql.traverse(function() {
+          app.log('Exporting skin #' + this.id);
+          index.skins.push(this);
+        });
+      });
+
+      sql.retrieve('select m.*, c.name as creator_name, mod.name as modifier_name from site s, membership m, account c, account mod where s.id = $0 and s.id = m.site_id and m.creator_id = c.id and m.modifier_id = mod.id order by lower(m.name)', site._id);
+
+      sql.traverse(function() {
+        app.log('Exporting membership #' + this.creator_id);
+        index.members.push(this);
+      });
+
+      sql.retrieve('select c.*, crt.name as creator_name, m.name as modifier_name from content c, account crt, account m where c.site_id = $0 and c.creator_id = crt.id and c.modifier_id = m.id order by created desc', site._id);
+
+      sql.traverse(function() {
+        app.log('Exporting story #' + this.id);
+        const content = Story.getById(this.id);
+        this.href = content.href();
+
+        addMetadata(this, Story);
+        this.rendered = content.format_filter(this.metadata.text, {}, 'markdown');
+
+        if (this.prototype === 'Story') {
+          index.stories.push(this);
+        } else {
+          index.comments.push(this);
+        }
+      });
+
+      sql.retrieve('select f.*, c.name as creator_name, m.name as modifier_name from file f, account c, account m where f.site_id = $0 and f.creator_id = c.id and f.modifier_id = m.id order by created desc', site._id);
+
+      sql.traverse(function() {
+        app.log('Exporting file #' + this.id);
+        const file = File.getById(this.id);
+        this.href = file.href();
+        addMetadata(this, File);
+        index.files.push(this);
+      });
+
+      sql.retrieve("select i.*, c.name as creator_name, m.name as modifier_name from image i, account c, account m where i.parent_type = 'Site' and i.parent_id = $0 and i.creator_id = c.id and i.modifier_id = m.id order by created desc", site._id);
+
+      sql.traverse(function() {
+        addImage.call(this, 'site', index);
+      });
+
+      sql.retrieve("select i.*, c.name as creator_name, m.name as modifier_name from image i, layout l, account c, account m where i.parent_type = 'Layout' and i.parent_id = l.id and l.site_id = $0 and i.creator_id = c.id and i.modifier_id = m.id order by created desc", site._id);
+
+      sql.traverse(function() {
+        addImage.call(this, 'layout', index);
+      });
+
+      sql.retrieve('select p.*, c.name as creator_name, m.name as modifier_name from poll p, account c, account m where p.site_id = $0 and p.creator_id = c.id and p.modifier_id = m.id order by created desc', site._id);
+
+      sql.traverse(function() {
+        app.log('Exporting poll #' + this.id);
+        const poll = Poll.getById(this.id);
+        this.href = poll.href();
+        this.choices = poll.list().map(choice => {
+          return {
+            id: choice._id,
+            title: choice.title,
+            votes: choice.size()
+          };
+        });
+        addMetadata(this, Poll);
+        index.polls.push(this);
+      });
+
+      const json = JSON.stringify(index);
+      const data = new java.lang.String(json).getBytes('UTF-8');
+      zip.addData(data, 'index.json');
+
+      var xml = Exporter.getSiteXml(site, user);
+      zip.addData(xml, site.name + '-export.xml');
+
+      zip.close();
+
+      const mime = {
+        file: new Packages.helma.util.MimePart(fileName, zip.getData(), 'application/zip'),
+        file_origin: site.href('export')
+      };
+
+      const file = File.add(mime, site, user);
+      site.export = file._id;
+    } catch (ex) {
+      app.log(ex.rhinoException);
     }
 
+    // Reset the site’s export status
+    site.job = null;
+    return;
+  };
+
+  Exporter.saveAccount = account => {
+    const zip = new helma.Zip();
+    const sql = new Sql();
+
+    const dirName = app.appsProperties['static'] + '/export';
+    const fileName = 'antville-account-' + java.util.UUID.randomUUID() + '.zip';
+    const dir = new java.io.File(dirName);
+    const file = new java.io.File(dir, fileName);
+
+    if (!dir.exists()) dir.mkdirs();
+
+    if (account.export) {
+      const archive = new java.io.File(dirName, account.export.split('/').pop());
+      if (archive.exists()) archive['delete']();
+    }
+
+    const index = {
+      accounts: [],
+      comments: [],
+      files: [],
+      images: [],
+      memberships: [],
+      polls: [],
+      sites: [],
+      skins: [],
+      stories: []
+    };
+
+    sql.retrieve("select * from account where id = $0", account._id);
+    // Cannot really include other accounts with the same e-mail address because we do not verify e-mail addresses
+    //sql.retrieve("select * from account where email = '$0' order by lower(name)", account.email);
+
+    sql.traverse(function() {
+      app.log('Exporting account #' + this.id + ' (' + this.name + ')');
+      addMetadata(this, User);
+      index.accounts.push(this);
+    });
+
+    sql.retrieve("select s.*, m.role, c.name as creator_name, mod.name as modifier_name from site s, membership m, account c, account mod where m.creator_id = $0 and m.site_id = s.id and s.creator_id = c.id and s.modifier_id = mod.id order by lower(s.name)", account._id);
+
+    sql.traverse(function() {
+      app.log('Exporting site #' + this.id + ' (' + this.name + ')');
+      const site = Site.getById(this.id);
+      this.href = site.href();
+      if (this.role === Membership.OWNER) addMetadata(this, Site);
+      index.sites.push(this);
+    });
+
+    sql.retrieve('select s.*, m.name as modifier_name from skin s, account m where s.creator_id = $0 and s.modifier_id = m.id', account._id);
+
+    sql.traverse(function() {
+      app.log('Exporting skin #' + this.id);
+      index.skins.push(this);
+    });
+
+    sql.retrieve('select m.*, mod.name as modifier_name from site s, membership m, account mod where m.creator_id = $0 and s.id = m.site_id and m.modifier_id = mod.id order by lower(m.name)', account._id);
+
+    sql.traverse(function() {
+      app.log('Exporting membership #' + this.id);
+      this.creator_name = account.name;
+      index.memberships.push(this);
+    });
+
+    sql.retrieve('select c.*, m.name as modifier_name from content c, account m where creator_id = $0 and c.modifier_id = m.id order by c.created desc', account._id);
+
+    sql.traverse(function() {
+      app.log('Exporting story #' + this.id);
+      const content = Story.getById(this.id);
+      this.href = content.href();
+      this.creator_name = account.name;
+
+      addMetadata(this, Story);
+      this.rendered = content.format_filter(this.metadata.text, {}, 'markdown');
+
+      if (this.prototype === 'Story') {
+        index.stories.push(this);
+      } else {
+        index.comments.push(this);
+      }
+    });
+
+    sql.retrieve('select f.*, m.name as modifier_name from file f, account m where f.creator_id = $0 and f.modifier_id = m.id order by f.created desc', account._id);
+
+    sql.traverse(function() {
+      app.log('Exporting file #' + this.id);
+      const file = File.getById(this.id);
+      const asset = file.getFile();
+      if (asset.exists()) zip.add(asset, file.site.name + '/files');
+      this.href = file.href();
+      this.creator_name = account.name;
+      addMetadata(this, File);
+      index.files.push(this);
+    });
+
+    sql.retrieve('select i.*, m.name as modifier_name from image i, account m where i.creator_id = $0 and i.modifier_id = m.id order by i.created desc', account._id);
+
+    sql.traverse(function() {
+      app.log('Exporting image #' + this.id);
+      const image = Image.getById(this.id);
+      if (image) {
+        try {
+          const asset = image.getFile();
+          const path = this.parent_type === 'Layout' ? image.parent.site.name + '/layout' : image.parent.name + '/images';
+          if (asset.exists()) zip.add(asset, path);
+        } catch (ex) {
+          console.warn('Could not export image #' + this.id);
+          console.warn(ex.rhinoException);
+        }
+        this.href = image.href();
+        this.creator_name = account.name;
+        addMetadata(this, Image);
+        index.images.push(this);
+      } else {
+        app.logger.warn('Could not export Image #' + this.id + '; might be a cache problem');
+      }
+    });
+
+    sql.retrieve('select p.*, m.name as modifier_name from poll p, account m where p.creator_id = $0 and p.modifier_id = m.id order by p.created desc', account._id);
+
+    sql.traverse(function() {
+      app.log('Exporting poll #' + this.id);
+      const poll = Poll.getById(this.id);
+      this.href = poll.href();
+      this.creator_name = account.name;
+      this.choices = poll.list().map(choice => {
+        return {
+          id: choice._id,
+          title: choice.title,
+          votes: choice.size()
+        };
+      });
+      const vote = poll.votes.get(account.name);
+      if (vote) this.vote = vote.choice._id;
+      addMetadata(this, Poll);
+      index.polls.push(this);
+    });
+
+    const json = JSON.stringify(index);
+    const data = new java.lang.String(json).getBytes('UTF-8');
+
+    zip.addData(data, 'index.json');
+    zip.save(file);
+
+    account.export = app.appsProperties.staticMountpoint + '/export/' + fileName;
+    account.job = null;
+    return zip;
+  };
+
+  Exporter.getSiteXml = (site, user) => {
     var rssUrl = site.href('rss.xml');
     var baseDir = site.getStaticFile();
     var member = site.members.get(user.name);
@@ -95,176 +392,8 @@ Exporter.saveSite = function(site, user) {
     });
     add('</feed>');
 
-    var name = site.name + '-export.xml';
-    var content = java.lang.String(xml.join(String.EMPTY)).getBytes('utf-8');
-
-    var data = {
-      file: new Packages.helma.util.MimePart(name, content, 'application/rss+xml'),
-      file_origin: site.href('export')
-    };
-
-    var file = File.add(data, site, user);
-    site.export_id = file._id;
-  } catch (ex) {
-    app.log(ex.rhinoException);
-  }
-
-  // Reset the site’s export status
-  site.job = null;
-  return;
-};
-
-Exporter.saveAccount = account => {
-  const zip = new helma.Zip();
-  const sql = new Sql();
-
-  const dirName = app.appsProperties['static'] + '/export';
-  const fileName = 'antville-account-' + java.util.UUID.randomUUID() + '.zip';
-  const dir = new java.io.File(dirName);
-  const file = new java.io.File(dir, fileName);
-
-  if (!dir.exists()) dir.mkdirs();
-
-  if (account.export) {
-    const archive = new java.io.File(dirName, account.export.split('/').pop());
-    if (archive.exists()) archive['delete']();
-  }
-
-  const addMetadata = (object, Prototype) => {
-    object.metadata = {};
-    const sql = new Sql();
-    sql.retrieve("select name, value, type from metadata where parent_type = '$0' and parent_id = $1 order by lower(name)", Prototype.name, object.id);
-    sql.traverse(function() {
-      object.metadata[this.name] = global[this.type](this.value).valueOf();
-    });
-    return object;
+    return java.lang.String(xml.join(String.EMPTY)).getBytes('utf-8');
   };
 
-  const addAssets = site => {
-    const dir = site.getStaticFile();
-    if (dir.exists()) zip.add(dir, site.name);
-  };
-
-  const index = {
-    accounts: [],
-    comments: [],
-    files: [],
-    images: [],
-    members: [],
-    polls: [],
-    sites: [],
-    stories: []
-  };
-
-  sql.retrieve("select * from account where id = $0", account._id);
-  //sql.retrieve("select * from account where email = '$0' order by lower(name)", account.email);
-
-  sql.traverse(function() {
-    addMetadata(this, User);
-    index.accounts.push(this);
-  });
-
-  sql.retrieve('select s.*, m.role from site s, membership m where m.creator_id = $0 and s.id = m.site_id order by lower(s.name)', account._id);
-
-  sql.traverse(function() {
-    app.log('Exporting site #' + this.id + ' (' + this.name + ')');
-    const site = Site.getById(this.id);
-    this.href = site.href();
-    if (this.role === Membership.OWNER) {
-      addAssets(site);
-      addMetadata(this, Site);
-    }
-    index.sites.push(this);
-  });
-
-  sql.retrieve('select m.creator_id, m.name, m.role, m.site_id from site s, membership m where m.role = "$1" m.creator_id <> $0 and s.id = m.site_id order by lower(m.name)', account._id, Membership.OWNER);
-
-  sql.traverse(function() {
-    index.members.push(this);
-  });
-
-  sql.retrieve('select * from content where creator_id = $0 order by created desc', account._id);
-
-  sql.traverse(function() {
-    app.log('Exporting story #' + this.id);
-    const content = Story.getById(this.id);
-    this.href = content.href();
-    this.creator_name = account.name;
-
-    addMetadata(this, Story);
-    this.rendered = content.format_filter(this.metadata.text, {}, 'markdown');
-
-    if (this.prototype === 'Story') {
-      index.stories.push(this);
-    } else {
-      index.comments.push(this);
-    }
-
-    // Add each story’s comments (except those of the account already exported before)
-    const commentsSql = new Sql();
-    commentsSql.retrieve('select c.*, a.name as creator_name from content c, account a where c.story_id = $0 and c.creator_id <> $1 and c.creator_id = a.id', this.id, account._id);
-    commentsSql.traverse(function() {
-      const comment = Comment.getById(this.id);
-      this.href = comment.href();
-      addMetadata(this, Comment);
-      this.rendered = content.format_filter(this.metadata.text, {}, 'markdown');
-      index.comments.push(this);
-    });
-  });
-
-  sql.retrieve('select * from file where creator_id = $0 order by created desc', account._id);
-
-  sql.traverse(function() {
-    app.log('Exporting file #' + this.id);
-    const file = File.getById(this.id);
-    this.href = file.href();
-    this.creator_name = account.name;
-    addMetadata(this, File);
-    index.files.push(this);
-  });
-
-  sql.retrieve('select * from image where creator_id = $0 order by created desc', account._id);
-
-  sql.traverse(function() {
-    app.log('Exporting image #' + this.id);
-    const image = Image.getById(this.id);
-    if (image) {
-      this.href = image.href();
-      this.creator_name = account.name;
-      addMetadata(this, Image);
-      index.images.push(this);
-    } else {
-      app.logger.warn('Could not export Image #' + this.id + '; might be a cache problem');
-    }
-  });
-
-  sql.retrieve('select * from poll where creator_id = $0 order by created desc', account._id);
-
-  sql.traverse(function() {
-    app.log('Exporting poll #' + this.id);
-    const poll = Poll.getById(this.id);
-    this.href = poll.href();
-    this.creator_name = account.name;
-    this.choices = poll.list().map(choice => {
-      return {
-        id: choice._id,
-        title: choice.title,
-        votes: choice.size()
-      };
-    });
-    const vote = poll.votes.get(account.name);
-    if (vote) this.vote = vote.choice._id;
-    addMetadata(this, Poll);
-    index.polls.push(this);
-  });
-
-  const json = JSON.stringify(index);
-  const data = new java.lang.String(json).getBytes('UTF-8');
-
-  zip.addData(data, 'index.json');
-  zip.save(file);
-
-  account.export = app.appsProperties.staticMountpoint + '/export/' + fileName;
-  account.job = null;
-  return zip;
-};
+  return Exporter;
+})();

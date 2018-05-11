@@ -30,7 +30,7 @@ this.handleMetadata('closed');
 this.handleMetadata('commentMode');
 this.handleMetadata('configured');
 this.handleMetadata('deleted');
-this.handleMetadata('export_id');
+this.handleMetadata('export');
 this.handleMetadata('imageDimensionLimits');
 this.handleMetadata('import_id');
 this.handleMetadata('job');
@@ -201,7 +201,7 @@ Site.require = function(mode) {
  * @property {Date} created The date and time of site creation
  * @property {User} creator A reference to a user who created a site
  * @property {Date} deleted
- * @property {String} export_id
+ * @property {String} export
  * @property {Files} files
  * @property {Tags} galleries
  * @property {Images} images
@@ -733,39 +733,36 @@ Site.prototype.unsubscribe_action = function() {
 }
 
 Site.prototype.export_action = function() {
-  var job = this.job && new Admin.Job(this.job);
+  const data = req.postParams;
+  const param = {};
+  const href = this.href(req.action);
+  let job = new Admin.Job(this.job || {});
 
-  var data = req.postParams;
-  if (data.submit === 'start') {
+  if (data.submit === 'export') {
     try {
-      if (!job) {
-        this.job = Admin.queue(this, 'export');
-        res.message = gettext('Site is scheduled for export.');
-      } else {
-        if (job.method !== 'export') {
-          throw Error(gettext('There is already another job queued for this site: {0}',
-              job.method));
-        }
+      if (job.method && job.method !== 'export') {
+        throw Error(gettext('There is already another job queued for this site: {0}', job.method));
       }
+      this.job = Admin.queue(this, 'export');
+      res.message = gettext('The site is queued for export.');
     } catch (ex) {
       res.message = ex.toString();
       app.log(res.message);
     }
-    res.redirect(this.href(req.action));
-  } else if (data.submit === 'stop') {
-    job && job.remove();
-    this.job = null;
-    res.redirect(this.href(req.action));
+    res.redirect(href);
+  } else if (data.submit === 'cancel') {
+    this.job = job.remove();
+    res.redirect(href);
   }
 
-  var param = {
-    status: (job && job.method === 'export') ?
-        gettext('A Blogger export file (.xml) will be created and available for download from here within 24 hours.') :
-        null
+  if (job.method === 'export') {
+    param.status = gettext('The site data will be available for download from here, soon.');
   }
-  res.handlers.file = File.getById(this.export_id) || {};
+
+  res.data.title = 'Export Site ' + this.name;
+  res.handlers.file = File.getById(this.export) || {};
   res.data.body = this.renderSkinAsString('$Site#export', param);
-  this.renderSkin('Site#page');
+  res.handlers.site.renderSkin('Site#page');
   return;
 }
 

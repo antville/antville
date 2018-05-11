@@ -20,9 +20,12 @@
       <% gettext 'Last modified by {0} on {1}' <% this.modifier %> <% this.configured | format short date %> prefix=<br> %>
    %>
 </div>
+<div class='uk-margin-top uk-margin-bottom'>
+  <% site.link export <% gettext Export %> %>
+</div>
 <form class='uk-form uk-form-stacked' id="edit" method="post" action="<% response.action %>">
    <fieldset>
-      <div class='uk-form-row uk-margin-top'>
+      <div class='uk-form-row'>
          <label class='uk-form-label' for='mode'>
             <% gettext Mode %>
          </label>
@@ -1187,13 +1190,13 @@ a.gs-title:hover {
 <% #export %>
 <h1><% gettext "Export Site Data" %></h1>
 <p>
-   <% if <% param.status %> is null then <% if <% file.self %> is null then '' else <% gettext "Download the file {0} or klick “Start” to create a new one." <% file.skin File#main %> '<small>' <% file.created | format short %> '</small>' %> %> else <% param.status %> %>
+   <% if <% param.status %> is null then <% if <% site.export %> is null then '' else <% gettext "{0}Download the archive{1} or click “Export” to create a new one." <% file.href prefix="<a href='" suffix="'>" %> "</a>" %> %> else <% param.status %> %>
 </p>
-<form action="" method="post">
-   <button type="submit" name="submit" value="<% if <% param.status %> is null then start else stop %>" class='uk-button uk-button-primary'>
-      <% if <% param.status %> is null then <% gettext Start %> else <% gettext Stop %> %>
+<form action="<% site.href export %>" method="post">
+   <button type="submit" name="submit" value="<% if <% param.status %> is null then export else cancel %>" class='uk-button uk-button-primary'>
+      <% if <% param.status %> is null then <% gettext Export %> else <% gettext Cancel %> %>
    </button>
-   <a href='<% site.href %>' class='uk-button uk-link-button'><% gettext Cancel %></a>
+   <a href='<% site.href edit %>' class='uk-button uk-button-link'><% gettext Settings %></a>
 </form>
 
 <% #import %>
