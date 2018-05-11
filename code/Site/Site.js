@@ -554,7 +554,7 @@ Site.prototype.renderPage = function (parts) {
         property: 'og:image',
         name: 'twitter:image',
         itemprop: 'image',
-        content: encodeURI(url)
+        content: url
       });
     }).join('\n');
   }
@@ -562,7 +562,7 @@ Site.prototype.renderPage = function (parts) {
     res.data.videos = parts.videos.map(function (url) {
       return html.tagAsString('meta', {
         property: 'og:video',
-        content: encodeURI(url)
+        content: url
       });
     }).join('\n');
   }
