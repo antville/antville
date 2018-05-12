@@ -80,6 +80,7 @@ User.remove = function() {
     HopObject.remove.call(this.subscriptions, {force: true});
     // We only delete metadata but don’t remove the account to prevent identity takeover
     this.deleteMetadata();
+    this.deleted = null; // Work-around for persisting metadata (tried invalidate and clearCache to no avail)
     this.email = String.EMPTY;
     // We gonna use the creation date as the deletion date from now on (until restoration of course)
     this.created = this.modified = new Date();
