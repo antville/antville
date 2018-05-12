@@ -348,7 +348,7 @@ function scheduler() {
   Admin.purgeAccounts();
   Admin.purgeSites();
   return app.properties.schedulerInterval;
-}
+};
 
 /**
  * The nightly scheduler.

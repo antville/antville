@@ -77,7 +77,7 @@ User.remove = function() {
     HopObject.remove.call(this.files);
     HopObject.remove.call(this.polls);
     HopObject.remove.call(this.votes);
-    HopObject.remove.call(this.subscriptions);
+    HopObject.remove.call(this.subscriptions, {force: true});
     // We only delete metadata but don’t remove the account to prevent identity takeover
     this.deleteMetadata();
     this.email = String.EMPTY;
@@ -408,14 +408,12 @@ User.prototype.onLogout = function() { /* ... */ }
  * @returns {Boolean}
  */
 User.prototype.getPermission = function(action) {
-  if (!User.require(User.PRIVILEGED)) return false;
-
   switch (action) {
     case 'delete':
-    return !this.deleted && this.status !== User.DELETED;
+    return !User.require(User.PRIVILEGED) && !this.deleted && this.status !== User.DELETED;
 
     default:
-    return true;
+    return User.require(User.PRIVILEGED);
   }
 }
 
@@ -574,6 +572,9 @@ User.prototype.update = function(data) {
   if (this.getPermission('edit')) {
     if (this.status === User.PRIVILEGED && data.status !== User.PRIVILEGED && root.admins.count() < 2) {
       throw Error(gettext('You cannot revoke permissions from the only privileged user.'));
+    }
+    if (this.status === User.PRIVILEGED && data.status === User.DELETED) {
+      throw Error(gettext('You cannot delete a privileged user.'));
     }
     if (data.status !== this.status) {
       this.deleted = data.status === User.DELETED ? User.getDeletionDate() : null;

@@ -55,7 +55,7 @@ Members.prototype.getPermission = function(action) {
 
   switch (action) {
     case 'delete':
-    return !session.user.deleted && session.user.status !== User.DELETED;
+    return session.user && session.user.getPermission(action);
 
     case 'edit':
     case 'export':
