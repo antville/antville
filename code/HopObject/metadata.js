@@ -118,7 +118,9 @@ HopObject.prototype.deleteMetadata = function(name) {
   var self = this;
 
   if (arguments.length === 0) {
-    return HopObject.remove.call(this.metadata);
+    HopObject.remove.call(this.metadata);
+    this.metadata.remove();
+    return;
   }
 
   Array.prototype.forEach.call(arguments, function(name) {
