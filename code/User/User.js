@@ -410,7 +410,7 @@ User.prototype.onLogout = function() { /* ... */ }
 User.prototype.getPermission = function(action) {
   switch (action) {
     case 'delete':
-    return !User.require(User.PRIVILEGED) && !this.deleted && this.status !== User.DELETED;
+    return this.status !== User.PRIVILEGED && this.status !== User.DELETED && !this.deleted;
 
     default:
     return User.require(User.PRIVILEGED);
