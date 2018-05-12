@@ -138,10 +138,10 @@ Admin.queue.dir.exists() || Admin.queue.dir.mkdirs();
  *
  */
 Admin.dequeue = function() {
-  var jobs = Admin.queue.dir.list();
+  var jobs = Admin.getJobs('desc');
   var max = Math.min(jobs.length, Admin.MAXBATCHSIZE);
   for (let i=0; i<max; i+=1) {
-    let job = new Admin.Job(jobs[i]);
+    let job = new Admin.Job(jobs[i].name);
     if (job.target) {
       try {
         app.log('Processing queued job ' + (i + 1) + ' of ' + max);
@@ -168,6 +168,13 @@ Admin.dequeue = function() {
   }
   return;
 }
+
+Admin.getJobs = function(sort) {
+  if (!sort) sort = 'asc';
+  return Admin.queue.dir.listFiles().sort((a, b) => {
+    return (a.lastModified() - b.lastModified()) * (sort === 'asc' ? -1 : 1);
+  });
+};
 
 /**
  *
@@ -551,7 +558,7 @@ Admin.prototype.activity_action = function () {
 }
 
 Admin.prototype.jobs_action = function() {
-  var files = Admin.queue.dir.listFiles();
+  var files = Admin.getJobs();
   res.data.count = files.length;
   res.data.list = renderList(files, this.renderItem);
   res.data.title = gettext('Jobs');
