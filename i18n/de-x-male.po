@@ -19,7 +19,7 @@ msgstr ""
 "Project-Id-Version: Antville-1.5\n"
 "Report-Msgid-Bugs-To: mail@antville.org\n"
 "POT-Creation-Date: 2018-05-12 17:34+0200\n"
-"PO-Revision-Date: 2018-05-12 17:36+0200\n"
+"PO-Revision-Date: 2018-05-12 17:48+0200\n"
 "Last-Translator: Tobi Schäfer <interface@p3k.org>\n"
 "Language-Team: The Antville People <mail@antville.org>\n"
 "Language: de\n"
@@ -322,7 +322,7 @@ msgstr "Claustra"
 
 #: /Users/tobi/Projects/antville/current/code/User/$User.skin:205
 msgid "Click to cancel deletion"
-msgstr ""
+msgstr "Löschauftrag widerrufen"
 
 #: /Users/tobi/Projects/antville/current/code/HopObject/$HopObject.skin:16
 msgid "Click “Cancel” now if you are not really sure you want to proceed."
@@ -1602,7 +1602,7 @@ msgstr "Speichern und starten"
 #: /Users/tobi/Projects/antville/current/code/User/$User.skin:204
 #, java-format
 msgid "Scheduled for deletion {0}"
-msgstr ""
+msgstr "Zur Löschung {0} vorgesehen"
 
 #: /Users/tobi/Projects/antville/current/code/Site/Site.skin:41
 #: /Users/tobi/Projects/antville/current/code/Site/Site.js:691
