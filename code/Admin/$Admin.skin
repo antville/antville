@@ -253,7 +253,7 @@
       </div>
       <div>
          <% gettext '{0} accounts sorted by {1} in {2} order.'
-            <% admin.dropdown name="display" <% markgettext all %> <% markgettext blocked %> <% markgettext trusted %> <% markgettext privileged %> %>
+            <% admin.dropdown name="display" <% markgettext all %> <% markgettext deleted %> <% markgettext blocked %> <% markgettext trusted %> <% markgettext privileged %> %>
             <% admin.dropdown name="sorting" <% markgettext Registration %> <% markgettext 'last login' %> <% markgettext Name %> %>
             <% admin.dropdown name="order" <% markgettext descending %> <% markgettext ascending %> %>
          %>
@@ -296,6 +296,7 @@
 <table class='uk-table uk-table-striped uk-table-hover uk-table-condensed'>
    <thead>
       <tr>
+         <th><% gettext Date %></th>
          <th><% gettext Method %></th>
          <th><% gettext Reference %></th>
          <th><% gettext Name %></th>
@@ -370,7 +371,7 @@
    <td>
       <% item.notes prefix="<span title='" suffix="' data-uk-tooltip><i class='uk-icon-info-circle uk-text-muted'></i></span>" %>
    </td>
-   <td class='uk-text-right uk-text-nowrap;'>
+   <td class='uk-text-right uk-text-nowrap'>
       <% item.link delete "<i class='uk-icon-trash-o'></i>" %>
       <% admin.link block "<i class='uk-icon-ban'></i>" <% item.self %> %>
       <% item.link edit "<i class='uk-icon-pencil'></i>" %>
@@ -391,6 +392,7 @@
 
 <% #job %>
 <tr>
+   <td><% item.date | format short %></td>
    <td><% gettext <% item.method %> | titleize %></td>
    <td><a href='<% item.target.href %>'><% item.target.name %></a></td>
    <td><% item.name %></td>
@@ -419,6 +421,9 @@
 
 <% #openSite %>
 <i class='uk-icon-globe'></i>
+
+<% #deletedUser %>
+<div class='uk-badge'><% gettext Deleted %></div>
 
 <% #blockedUser %>
 <div class='uk-badge uk-badge-danger'><% gettext Blocked %></div>

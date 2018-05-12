@@ -32,6 +32,7 @@ HopObject.remove = function(options) {
   var item;
   while (this.size() > 0) {
     item = this.get(0);
+    if (!item) return;
     if (item.constructor.remove) {
       item.constructor.remove.call(item, options);
     } else if (!options) {
@@ -107,6 +108,10 @@ HopObject.prototype.onRequest = function() {
   User.autoLogin();
   res.handlers.membership = User.getMembership();
 
+  if (session.user && !session.user.deleted && session.user.status === User.DELETED) {
+    User.logout();
+  }
+
   if (User.getCurrentStatus() === User.BLOCKED) {
     User.logout();
     res.status = 403;
@@ -117,8 +122,7 @@ HopObject.prototype.onRequest = function() {
   }
 
   // Simulate 404 for sites which are due for deletion by cronjob
-  if (res.handlers.site.job && !User.require(User.PRIVILEGED) ||
-      res.handlers.site.mode === Site.DELETED && !Membership.require(Membership.OWNER)) {
+  if (res.handlers.site.mode === Site.DELETED && !User.require(User.PRIVILEGED) && !Membership.require(Membership.OWNER)) {
     res.handlers.site = root;
     root.notfound_action();
     res.stop();
@@ -183,7 +187,8 @@ HopObject.prototype.delete_action = function() {
     }
   }
 
-  res.data.action = this.href(req.action);
+  if (!res.data.action) res.data.action = this.href(req.action);
+
   res.data.title = gettext('Confirm Deletion');
   res.data.body = this.renderSkinAsString('$HopObject#confirm', {
     text: this.getConfirmText(req.action),

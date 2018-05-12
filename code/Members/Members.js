@@ -54,6 +54,9 @@ Members.prototype.getPermission = function(action) {
   var sitePermission = this._parent.getPermission('main');
 
   switch (action) {
+    case 'delete':
+    return !session.user.deleted && session.user.status !== User.DELETED;
+
     case 'edit':
     case 'export':
     case 'subscriptions':
@@ -225,6 +228,11 @@ Members.prototype.export_action = function() {
 Members.prototype.timeline_action = function() {
   res.handlers.context = this;
   return void User.prototype.timeline_action.call(session.user);
+};
+
+Members.prototype.delete_action = function() {
+  res.handlers.context = this;
+  return void User.prototype.delete_action.call(session.user);
 };
 
 Members.prototype.salt_txt_action = function() {

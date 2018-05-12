@@ -28,18 +28,15 @@ HopObject.prototype.handleMetadata = function(name) {
   this.__defineGetter__(name, function() {
     return this.getMetadata(name);
   });
+
   this.__defineSetter__(name, function(value) {
     return this.setMetadata(name, value);
   });
+
   this[name + '_macro'] = function(param) {
-    var value;
-    if (value = this[name]) {
-      res.write(value);
-    }
-    return;
+    return this[name] || null;
   };
-  return;
-}
+};
 
 /**
  *

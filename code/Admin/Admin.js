@@ -34,8 +34,9 @@ Admin.MAXBATCHSIZE = 50;
  * @constructor
  */
 Admin.Job = function(target, method, user) {
-  var file;
-  user || (user = session.user);
+  if (!user) user = session.user;
+
+  var file, date;
 
   this.__defineGetter__('target', function() {
     return target;
@@ -51,6 +52,10 @@ Admin.Job = function(target, method, user) {
 
   this.__defineGetter__('name', function() {
     return file.getName();
+  });
+
+  this.__defineGetter__('date', function() {
+    return date;
   });
 
   this.remove = function(isCareless) {
@@ -69,6 +74,7 @@ Admin.Job = function(target, method, user) {
       target = global[data.type].getById(data.id);
       method = data.method;
       user = User.getById(data.user);
+      date = new Date(file.lastModified());
     }
   } else {
     throw Error('Insufficient arguments');
@@ -141,7 +147,10 @@ Admin.dequeue = function() {
         app.log('Processing queued job ' + (i + 1) + ' of ' + max);
         switch (job.method) {
           case 'remove':
-          Site.remove.call(job.target);
+          if (job.target.deleted) {
+            if (job.target.constructor === Site) Site.remove.call(job.target);
+            if (job.target.constructor === User) User.remove.call(job.target);
+          }
           break;
           case 'import':
           Importer.run(job.target, job.user);
@@ -167,12 +176,23 @@ Admin.getDeletionDate = function(site) {
   return new Date(site.deleted.getTime() + Date.ONEDAY * Admin.SITEREMOVALGRACEPERIOD);
 };
 
+Admin.purgeAccounts = function() {
+  var now = Date.now();
+
+  root.admin.deletedUsers.forEach(function() {
+    if (!this.deleted) return; // already gone
+    if (now - this.deleted > 0 && !this.job) {
+      this.job = Admin.queue(this, 'remove', this);
+    }
+  });
+};
+
 Admin.purgeSites = function() {
   var now = new Date;
 
   root.admin.deletedSites.forEach(function() {
     if (now > Admin.getDeletionDate(this)) {
-      if (this.job) return; // Site is already scheduled for deletion
+      if (this.job) return; // There is already a job scheduled for this site
       this.job = Admin.queue(this, 'remove', this.modifier);
     }
   });
@@ -662,9 +682,10 @@ Admin.prototype.filterUsers = function(data) {
   data || (data = {});
 
   var displays = {
-    1: "status = 'blocked'",
-    2: "status = 'trusted'",
-    3: "status = 'privileged'"
+    1: "status = 'deleted'",
+    2: "status = 'blocked'",
+    3: "status = 'trusted'",
+    4: "status = 'privileged'"
   };
 
   var sortings = {
@@ -885,7 +906,7 @@ Admin.prototype.link_macro = function (param, action, text, target) {
     switch (action) {
       case 'block':
       var user = target.creator || target;
-      if (user.status !== User.PRIVILEGED && user.status !== User.BLOCKED) {
+      if (user.status !== User.PRIVILEGED && user.status !== User.BLOCKED && (user.status !== User.DELETED || user.deleted)) {
         var url = user.href('block');
         return renderLink.call(global, param, url, text || String.EMPTY, this);
       }

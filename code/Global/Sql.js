@@ -166,7 +166,7 @@ Sql.REFERRERS = 'select referrer, count(*) as requests from ' +
     'by referrer order by requests desc, referrer asc';
 
 /**
- * SQL command for deleting all log entries older than 2 days.
+ * SQL command for deleting all log entries older than a specific period.
  * @constant
  */
 Sql.PURGEREFERRERS = "delete from log where action = 'main' and " +
@@ -184,7 +184,7 @@ Sql.COMMENT_SEARCH = "select comment.id from content as comment, content as stor
  * SQL query for searching accounts which are not already members of the desired site.
  * @constant
  */
-Sql.MEMBERSEARCH = "select id, name, created from account where name $0 '$1' order by name asc limit $2";
+Sql.MEMBERSEARCH = "select id, name, created, status from account where status not in ('blocked', 'deleted') and name $0 '$1' order by name asc limit $2";
 
 /**
  * SQL query for retrieving all story IDs in a site’s archive.

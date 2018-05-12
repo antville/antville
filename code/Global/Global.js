@@ -345,6 +345,7 @@ function scheduler() {
   Admin.invokeCallbacks();
   Admin.updateDomains();
   Admin.updateHealth();
+  Admin.purgeAccounts();
   Admin.purgeSites();
   return app.properties.schedulerInterval;
 }
@@ -1095,14 +1096,34 @@ function formatNumber(number, pattern) {
  * @returns {String} The formatted date string.
  */
 function formatDate(date, format) {
-  if (!date) {
-    return null;
-  }
+  if (!date) return null;
 
   var pattern;
   var site = res.handlers.site;
   var locale = site ? site.getLocale() : null;
   var timezone = site ? site.getTimeZone() : null;
+
+  const getExpiry = diff => {
+    let text;
+    if (diff < Date.ONEMINUTE) {
+      text = gettext('soon');
+    } else if (diff < Date.ONEHOUR) {
+      text = ngettext('in {0} minute', 'in {0} minutes', Math.round(diff / Date.ONEMINUTE));
+    } else if (diff < Date.ONEDAY) {
+      text = ngettext('in {0} hour', 'in {0} hours', Math.round(diff / Date.ONEHOUR));
+    } else if (diff < 2 * Date.ONEDAY) {
+      text = gettext('tomorrow');
+    } else if (diff < 7 * Date.ONEDAY) {
+      text = ngettext('in {0} day', 'in {0} days', Math.round(diff / Date.ONEDAY));
+    } else if (diff < 30 * Date.ONEDAY) {
+      text = ngettext('in {0} week', 'in {0} weeks', Math.round(diff / 7 / Date.ONEDAY));
+    } else if (diff < 365 * Date.ONEDAY) {
+      text = ngettext('in {0} month', 'in {0} months', Math.round(diff / 30 / Date.ONEDAY));
+    } else {
+      text = ngettext('in {0} year', 'in {0} years', Math.round(diff / 365 / Date.ONEDAY));
+    }
+    return text;
+  };
 
   switch (format) {
     case null:
@@ -1131,28 +1152,12 @@ function formatDate(date, format) {
     break;
 
     case 'text':
-    var text,
-        now = new Date,
-        diff = now - date;
+    var text;
+    var now = new Date;
+    var diff = now - date;
+
     if (diff < 0) {
-      diff = -diff;
-      if (diff < Date.ONEMINUTE) {
-        text = gettext('soon');
-      } else if (diff < Date.ONEHOUR) {
-        text = ngettext('in {0} minute', 'in {0} minutes', Math.round(diff / Date.ONEMINUTE));
-      } else if (diff < Date.ONEDAY) {
-        text = ngettext('in {0} hour', 'in {0} hours', Math.round(diff / Date.ONEHOUR));
-      } else if (diff < 2 * Date.ONEDAY) {
-        text = gettext('tomorrow');
-      } else if (diff < 7 * Date.ONEDAY) {
-        text = ngettext('in {0} day', 'in {0} days', Math.round(diff / Date.ONEDAY));
-      } else if (diff < 30 * Date.ONEDAY) {
-        text = ngettext('in {0} week', 'in {0} weeks', Math.round(diff / 7 / Date.ONEDAY));
-      } else if (diff < 365 * Date.ONEDAY) {
-        text = ngettext('in {0} month', 'in {0} months', Math.round(diff / 30 / Date.ONEDAY));
-      } else {
-        text = ngettext('in {0} year', 'in {0} years', Math.round(diff / 365 / Date.ONEDAY));
-      }
+      text = getExpiry(-diff);
     } else if (diff < Date.ONEMINUTE) {
       text = gettext('right now');
     } else if (diff < Date.ONEHOUR) {
@@ -1171,6 +1176,9 @@ function formatDate(date, format) {
       text = ngettext('{0} year ago', '{0} years ago', Math.round(diff / 365 / Date.ONEDAY));
     }
     return text.replace(/(\d+)\s+/, '$1\xa0'); // Add a no-break space after first digits
+
+    case 'expiry':
+    return getExpiry(date - new Date());
 
     default:
     pattern = format;

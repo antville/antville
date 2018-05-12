@@ -24,6 +24,7 @@ markgettext('account');
 markgettext('a account // accusative');
 
 this.handleMetadata('accepted');
+this.handleMetadata('deleted');
 this.handleMetadata('export');
 this.handleMetadata('hash');
 this.handleMetadata('job');
@@ -62,14 +63,29 @@ User.add = function(data) {
   return user;
 }
 
-/**
- * FIXME: Still needs a solution whether and how to remove a user’s sites
- */
 User.remove = function() {
-  // FIXME: Removing an account is non-trivial as even one single modifier_id could break things if the corresponding account relation simply was removed. Thus, we might need a `deleted` property or similar to flag a removal and then take appropriate measures for related objects.
-  throw Error(gettext('Currently, it is not possible to delete an account. Please accept our humble apologies.'));
-  return;
-}
+  if (this.constructor === User) {
+    this.ownerships.forEach(function() {
+      const site = this.site;
+      // Don’t delete sites with multiple owners
+      if (site.members.owners.count() > 1) return;
+      Site.remove.call(site);
+    });
+    HopObject.remove.call(this.comments);
+    HopObject.remove.call(this.stories);
+    HopObject.remove.call(this.images);
+    HopObject.remove.call(this.files);
+    HopObject.remove.call(this.polls);
+    HopObject.remove.call(this.votes);
+    HopObject.remove.call(this.subscriptions);
+    // We only delete metadata but don’t remove the account to prevent identity takeover
+    this.deleteMetadata();
+    this.email = String.EMPTY;
+    // We gonna use the creation date as the deletion date from now on (until restoration of course)
+    this.created = this.modified = new Date();
+    return User.require(User.PRIVILEGED) ? this.href('edit') : root.href();
+  }
+};
 
 /**
  *
@@ -85,7 +101,7 @@ User.getByName = function(name) {
  * @returns {String[]}
  * @see defineConstants
  */
-User.getStatus = defineConstants(User, markgettext('Blocked'), markgettext('Regular'), markgettext('Trusted'), markgettext('Privileged'));
+User.getStatus = defineConstants(User, markgettext('Deleted'), markgettext('Blocked'), markgettext('Regular'), markgettext('Trusted'), markgettext('Privileged'));
 
 /**
  * @returns {String}
@@ -270,7 +286,7 @@ User.logout = function() {
  */
 User.require = function(requiredStatus, user) {
   if (!user) user = session.user;
-  var status = [User.BLOCKED, User.REGULAR, User.TRUSTED, User.PRIVILEGED];
+  var status = [User.BLOCKED, User.REGULAR, User.DELETED, User.TRUSTED, User.PRIVILEGED];
   if (requiredStatus && user) {
     return status.indexOf(user.status) >= status.indexOf(requiredStatus);
   }
@@ -348,6 +364,10 @@ User.rename = function(currentName, newName) {
   return currentName;
 }
 
+User.getDeletionDate = function() {
+  return new Date(Date.now() + Date.ONEDAY * 0);
+};
+
 /**
  * A User object represents a login to Antville.
  * @name User
@@ -388,12 +408,26 @@ User.prototype.onLogout = function() { /* ... */ }
  * @returns {Boolean}
  */
 User.prototype.getPermission = function(action) {
-  if (action === 'delete') return false;
-  return User.require(User.PRIVILEGED);
+  if (!User.require(User.PRIVILEGED)) return false;
+
+  switch (action) {
+    case 'delete':
+    return !this.deleted && this.status !== User.DELETED;
+
+    default:
+    return true;
+  }
 }
 
 User.prototype.edit_action = function () {
+  console.log(this.countContributions());
   if (!res.handlers.context) res.handlers.context = this;
+
+  if (req.data.undelete) {
+    this.deleted = null;
+    this.status = User.REGULAR;
+    res.redirect(res.handlers.context.href('edit'));
+  }
 
   if (req.postParams.save) {
     try {
@@ -451,6 +485,8 @@ User.prototype.export_action = function() {
 };
 
 User.prototype.timeline_action = function() {
+  if (!res.handlers.context) res.handlers.context = this;
+
   const collection = [];
   const sql = new Sql();
   const page = req.queryParams.page;
@@ -472,20 +508,49 @@ User.prototype.timeline_action = function() {
     collection.push(object);
   });
 
-  res.data.list = renderList(collection, this.renderTimelineItem, pageSize, page);
+  res.data.list = renderList(collection, this.renderTimelineItem, null, page);
   res.data.pager = renderPager(count, this.href(req.action), pageSize, page);
   res.data.title = gettext('Timeline');
-  res.data.action = this.href(req.action);
   res.data.body = this.renderSkinAsString('$User#timeline');
   root.renderSkin('Site#page');
+};
+
+User.prototype.delete_action = function() {
+  if (!res.handlers.context) res.handlers.context = this;
+  res.data.action = res.handlers.context.href(req.action);
+  if (req.postParams.proceed) {
+    this.status = User.DELETED;
+    const total = this.countContributions();
+    if (total < 1) {
+      // If a site contains no content, delete it immediately
+      return void HopObject.prototype.delete_action.call(this);
+    }
+    // Otherwise, queue for deletion
+    this.deleted = User.getDeletionDate();
+    this.log(root, 'Deleted account ' + this.name);
+    res.message = gettext('The account {0} is queued for deletion.', this.name);
+    res.redirect(res.handlers.context.href('edit'));
+  } else {
+    HopObject.prototype.delete_action.call(this);
+  }
 };
 
 User.prototype.getConfirmText = function () {
   return gettext('You are about to delete the account {0}.', this.getTitle());
 };
 
+User.prototype.getConfirmExtra = function () {
+  return this.renderSkinAsString('$User#delete');
+};
+
 User.prototype.renderTimelineItem = function(item) {
   Admin.prototype.renderActivity(item, '$Admin#timelineItem');
+};
+
+User.prototype.countContributions = function() {
+  return [this.stories, this.images, this.files, this.polls, this.comments, this.votes].reduce((total, collection) => {
+    return total + collection.size();
+  }, 0);
 };
 
 /**
@@ -510,14 +575,15 @@ User.prototype.update = function(data) {
     if (this.status === User.PRIVILEGED && data.status !== User.PRIVILEGED && root.admins.count() < 2) {
       throw Error(gettext('You cannot revoke permissions from the only privileged user.'));
     }
+    if (data.status !== this.status) {
+      this.deleted = data.status === User.DELETED ? User.getDeletionDate() : null;
+    }
     this.status = data.status;
     this.notes = data.notes;
   }
   this.email = data.email;
   this.url = data.url;
-  if (this === session.user) {
-    this.touch();
-  }
+  if (this === session.user) this.touch();
   return this;
 }
 
@@ -526,6 +592,7 @@ User.prototype.update = function(data) {
  */
 User.prototype.touch = function() {
   this.modified = new Date;
+  if (session.user) this.modifier = session.
   return;
 }
 

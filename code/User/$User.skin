@@ -45,10 +45,7 @@
 <% #edit %>
 <h1><% response.title %></h1>
 <div class='uk-article-meta'>
-   <% gettext 'Created by {0} on {1}' <% user.name %> <% user.created short %> %>
-   <% if <% user.created %> is <% user.modified %> then '' else
-      <% gettext 'Last modified by {0} on {1}' <% user.name %> <% this.modified short %> prefix=<br> %>
-   %>
+   <% if <% user.status %> is 'deleted' then <% user.skin $User#deleted %> else <% user.skin $User#meta %> %>
 </div>
 <div class='uk-margin-top uk-margin-bottom'>
   <% context.link timeline <% gettext Timeline %> %> |
@@ -103,7 +100,7 @@
       <button class='uk-button uk-button-primary' type="submit" id="submit" name="save" value="1">
          <% gettext Save %>
       </button>
-      <% user.link delete <% gettext 'Delete' %> class='uk-button' %>
+      <% context.link delete <% gettext 'Delete' %> class='uk-button' %>
       <a href='<% site.href %>' class="uk-button uk-button-link"><% gettext Cancel %></a>
    </div>
 </form>
@@ -135,7 +132,7 @@
       <label class='uk-form-label' for='status'>
          <% gettext Information %>
       </label>
-      <div><% ngettext "{0} Site" "{0} Sites" <% count <% user.self sites %> %> %></div>
+      <div><% ngettext "{0} Site" "{0} Sites" <% count <% user.self ownerships %> %> %></div>
       <div><% ngettext "{0} Story" "{0} Stories" <% count <% user.self stories %> %> %></div>
       <div><% ngettext "{0} Comment" "{0} Comments" <% count <% user.self comments %> %> %></div>
       <div><% ngettext "{0} Image" "{0} Images" <% count <% user.self images %> %> %></div>
@@ -180,6 +177,34 @@
    </tbody>
 </table>
 <% response.pager %>
+
+<% #delete %>
+<div class='uk-alert uk-alert-danger'>
+   <% gettext 'You are about to delete the whole account which currently contains {0}, {1}, {2}, {3}, {4} and {5}.'
+      <% ngettext '{0} site' '{0} sites' <% count <% user.self ownerships %> %> %>
+      <% ngettext '{0} story' '{0} stories' <% count <% user.self stories %> %> %>
+      <% ngettext '{0} comment' '{0} comments' <% count <% user.self comments %> %> %>
+      <% ngettext '{0} image' '{0} images' <% count <% user.self images %> %> %>
+      <% ngettext '{0} file' '{0} files' <% count <% user.self files %> %> %>
+      <% ngettext '{0} poll' '{0} polls' <% count <% user.self polls %> %> %> %>
+   <strong><% gettext 'All of this will be deleted irreversibly.' %></strong>
+   <% gettext 'Are you sure you want to proceed?' %>
+</div>
+
+<% #meta %>
+<% gettext 'Created on {0}' <% user.created short %> %>
+<% if <% user.created %> is <% user.modified %> then '' else
+  <% gettext 'Last modified on {0}' <% this.modified short %> prefix=<br> %>
+%>
+
+<% #deleted %>
+<% if <% user.deleted %> is null then
+  <% gettext 'Deleted on {0}' <% user.created short %> %>
+else
+  <% gettext 'Scheduled for deletion {0}' <% user.deleted | format expiry %>
+    suffix=<% context.link 'edit?undelete=1' <% gettext "Click to cancel deletion" prefix="<i class='uk-icon-times-circle uk-margin-small-left' data-uk-tooltip=\"{pos: 'right'}\" title='" suffix="'></i>" %> %>
+  %>
+%>
 
 <% #notify_reset %>
 <% gettext 'Hello {0}.' <% user.name %> %>

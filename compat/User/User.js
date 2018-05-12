@@ -41,19 +41,6 @@ User.prototype.__defineSetter__("sysadmin", function(privileged) {
   this.status = privileged ? User.PRIVILEGED : User.DEFAULT;
 });
 
-User.prototype.status_macro = function(param) {
-  // This macro is allowed for privileged users only
-  if (!User.require(User.PRIVILEGED)) {
-    return;
-  }
-  if (param.as === "editor") {
-    this.select_macro(param, "status");
-  } else {
-    res.write(this.status);
-  }
-  return;
-}
-
 User.prototype.name_macro = function(param) {
   if (param.as === "link" && this.url) {
     link_filter(this.name, param, this.url);
