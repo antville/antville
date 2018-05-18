@@ -291,12 +291,10 @@
 <% if <% property search.provider %> is null then '' else <% site.skin $Site#moreResults %> %>
 
 <% #moreResults %>
-<div class='uk-text-center'>
-<a href='<% property search.provider %>?q=<% request.q %>+site:<% site.href %>' class='uk-button'>
-  <% gettext 'More results at {0}' <% property search.provider | replace 'https?://' '' %> %>
+<a href='<% property search.provider %>?q=<% request.q %>+site:<% site.href %>' class='uk-button uk-align-right'>
+  <% gettext 'Search with {0}' <% property search.provider | replace 'https?://' '' %> %>
   <i class='uk-icon uk-icon-arrow-circle-right'></i>
 </a>
-</div>
 
 <% #opensearchdescription %>
 <?xml version="1.0" encoding="UTF-8"?>
