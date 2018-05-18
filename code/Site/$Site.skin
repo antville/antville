@@ -288,6 +288,15 @@
 <dl class='uk-description-list-line'>
    <% response.result %>
 </dl>
+<% if <% property search.provider %> is null then '' else <% site.skin $Site#moreResults %> %>
+
+<% #moreResults %>
+<div class='uk-text-center'>
+<a href='<% property search.provider %>?q=<% request.q %>+site:<% site.href %>' class='uk-button'>
+  <% gettext 'More results at {0}' <% property search.provider | replace 'https?://' '' %> %>
+  <i class='uk-icon uk-icon-arrow-circle-right'></i>
+</a>
+</div>
 
 <% #opensearchdescription %>
 <?xml version="1.0" encoding="UTF-8"?>

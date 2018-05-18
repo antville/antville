@@ -234,7 +234,8 @@ Members.prototype.onCodeUpdate = function() {
     });
 
     helma.aspects.addBefore(this, 'search_action', function (args, func, site) {
-      if (getProperty('google-search') === 'true') {
+      const provider = getProperty('search.provider');
+      if (provider === 'google') {
         if (req.data.q) {
           if (!req.data.q.contains('site:')) {
             res.redirect(site.href(req.action) + '?q=' + encodeURIComponent(req.data.q + ' site:' + site.href().replace('test.www.', '')));
