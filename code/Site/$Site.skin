@@ -292,7 +292,7 @@
 
 <% #moreResults %>
 <a href='<% property search.provider %>?q=<% request.q %>+site:<% site.href %>' class='uk-button uk-align-right'>
-  <% gettext 'Search with {0}' <% property search.provider | replace 'https?://' '' %> %>
+  <% gettext 'Search with {0}' <% property search.provider | replace 'https?://([^/]+).*' '$1' %> %>
   <i class='uk-icon uk-icon-arrow-circle-right'></i>
 </a>
 
