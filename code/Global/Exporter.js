@@ -19,7 +19,38 @@
  * @fileOverview Defines the Exporter namespace.
  */
 
+app.addRepository(app.dir + '/../lib/gson-2.8.4.jar');
+
 global.Exporter = (function() {
+  const gson = new JavaImporter(
+    Packages.com.google.gson,
+    Packages.com.google.gson.stream
+  );
+
+  const getJsonWriter = (dir, fname) => {
+    const file = new java.io.File(dir, fname);
+    const stream = new java.io.FileOutputStream(file);
+    const writer = new java.io.OutputStreamWriter(stream, 'utf-8');
+    const jsonWriter = new gson.JsonWriter(writer);
+    jsonWriter.beginArray();
+
+    return {
+      push(data) {
+        jsonWriter.jsonValue(JSON.stringify(data));
+        return this;
+      },
+
+      close() {
+        jsonWriter.endArray();
+        jsonWriter.flush();
+        jsonWriter.close();
+        writer.close();
+        stream.close();
+        return this;
+      }
+    };
+  };
+
   const addMetadata = (object, Prototype) => {
     object.metadata = {};
     const sql = new Sql();
@@ -30,13 +61,13 @@ global.Exporter = (function() {
     return object;
   };
 
-  const addImage = function(type, index) {
+  const addImage = function(type, writer) {
     app.log('Exporting ' + type + ' image #' + this.id);
     const image = Image.getById(this.id);
     if (image) {
       this.href = image.href();
       addMetadata(this, Image);
-      index.images.push(this);
+      writer.push(this);
     } else {
       app.logger.warn('Could not export Image #' + this.id + '; might be a cache problem');
     }
@@ -44,7 +75,7 @@ global.Exporter = (function() {
 
   const addAssets = (site, zip) => {
     const dir = site.getStaticFile();
-    if (dir.exists()) zip.add(dir, site.name);
+    if (dir.exists()) zip.add(dir, 'static');
   };
 
   /**
@@ -94,6 +125,10 @@ global.Exporter = (function() {
         tags: []
       };
 
+      const dir = new java.io.File(java.nio.file.Files.createTempDirectory(site.name));
+      const skinWriter = getJsonWriter(dir, 'skins.json');
+      let writer = getJsonWriter(dir, 'index.json');
+
       sql.retrieve('select s.*, c.name as creator_name, m.name as modifier_name from site s, account c, account m where s.id = $0 and s.creator_id = c.id and s.modifier_id = m.id order by lower(s.name)', site._id);
 
       sql.traverse(function() {
@@ -102,21 +137,32 @@ global.Exporter = (function() {
         this.href = site.href();
         addAssets(site, zip);
         addMetadata(this, Site);
-        index.sites.push(this);
+        writer.push(this);
         const skinsSql = new Sql();
         sql.retrieve('select * from skin where site_id = $0', this.id);
         sql.traverse(function() {
           app.log('Exporting skin #' + this.id);
-          index.skins.push(this);
+          skinWriter.push(this);
         });
       });
+
+      writer.close();
+      skinWriter.close();
+
+      writer = getJsonWriter(dir, 'members.json');
 
       sql.retrieve('select m.*, c.name as creator_name, mod.name as modifier_name from site s, membership m, account c, account mod where s.id = $0 and s.id = m.site_id and m.creator_id = c.id and m.modifier_id = mod.id order by lower(m.name)', site._id);
 
       sql.traverse(function() {
         app.log('Exporting membership #' + this.creator_id);
-        index.members.push(this);
+        //index.members.push(this);
+        writer.push(this);
       });
+
+      writer.close();
+
+      const storyWriter = getJsonWriter(dir, 'stories.json');
+      const commentWriter = getJsonWriter(dir, 'comments.json');
 
       sql.retrieve('select c.*, crt.name as creator_name, m.name as modifier_name from content c, account crt, account m where c.site_id = $0 and c.creator_id = crt.id and c.modifier_id = m.id order by created desc', site._id);
 
@@ -129,11 +175,16 @@ global.Exporter = (function() {
         this.rendered = content.format_filter(this.metadata.text, {}, 'markdown');
 
         if (this.prototype === 'Story') {
-          index.stories.push(this);
+          storyWriter.push(this);
         } else {
-          index.comments.push(this);
+          commentWriter.push(this);
         }
       });
+
+      storyWriter.close();
+      commentWriter.close();
+
+      writer = getJsonWriter(dir, 'files.json');
 
       sql.retrieve('select f.*, c.name as creator_name, m.name as modifier_name from file f, account c, account m where f.site_id = $0 and f.creator_id = c.id and f.modifier_id = m.id order by created desc', site._id);
 
@@ -142,20 +193,28 @@ global.Exporter = (function() {
         const file = File.getById(this.id);
         this.href = file.href();
         addMetadata(this, File);
-        index.files.push(this);
+        writer.push(this);
       });
+
+      writer.close();
+
+      writer = getJsonWriter(dir, 'images.json');
 
       sql.retrieve("select i.*, c.name as creator_name, m.name as modifier_name from image i, account c, account m where i.parent_type = 'Site' and i.parent_id = $0 and i.creator_id = c.id and i.modifier_id = m.id order by created desc", site._id);
 
       sql.traverse(function() {
-        addImage.call(this, 'site', index);
+        addImage.call(this, 'site', writer);
       });
 
       sql.retrieve("select i.*, c.name as creator_name, m.name as modifier_name from image i, layout l, account c, account m where i.parent_type = 'Layout' and i.parent_id = l.id and l.site_id = $0 and i.creator_id = c.id and i.modifier_id = m.id order by created desc", site._id);
 
       sql.traverse(function() {
-        addImage.call(this, 'layout', index);
+        addImage.call(this, 'layout', writer);
       });
+
+      writer.close();
+
+      writer = getJsonWriter(dir, 'polls.json');
 
       sql.retrieve('select p.*, c.name as creator_name, m.name as modifier_name from poll p, account c, account m where p.site_id = $0 and p.creator_id = c.id and p.modifier_id = m.id order by created desc', site._id);
 
@@ -171,23 +230,24 @@ global.Exporter = (function() {
           };
         });
         addMetadata(this, Poll);
-        index.polls.push(this);
+        writer.push(this);
       });
+
+      writer.close();
+
+      writer = getJsonWriter(dir, 'tags.json');
 
       sql.retrieve('select t.name, h.*  from tag t, tag_hub h where t.id = h.tag_id order by t.name');
 
       sql.traverse(function() {
         app.log('Exporting tag #' + this.id);
-        index.tags.push(this);
+        writer.push(this);
       });
 
-      const json = JSON.stringify(index);
-      const data = new java.lang.String(json).getBytes('UTF-8');
-      zip.addData(data, 'index.json');
-
       const xml = Exporter.getSiteXml(site);
-      zip.addData(xml, site.name + '-export.xml');
+      zip.addData(xml, 'export.xml');
 
+      zip.add(dir);
       zip.close();
 
       const mime = {
