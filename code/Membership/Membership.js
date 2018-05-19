@@ -192,6 +192,7 @@ Membership.prototype.contact_action = function() {
       if (!req.postParams.text) {
         throw Error(gettext('Please enter the message text.'));
       }
+      Recaptcha.verify(req.postParams);
       this.notify(req.action, this.creator.email, session.user ?
           gettext('[{0}] Message from user {1}', root.title, session.user.name) :
           gettext('[{0}] Message from anonymous user', root.title));
@@ -206,7 +207,8 @@ Membership.prototype.contact_action = function() {
 
   res.data.action = this.href(req.action);
   res.data.title = gettext('Contact {0}', this.name);
-  res.data.body = this.renderSkinAsString('$Membership#contact');
+  var param = { recaptcha: Recaptcha.render(res.handlers.members) };
+  res.data.body = this.renderSkinAsString('$Membership#contact', param);
   this.site.renderSkin('Site#page');
   return;
 }

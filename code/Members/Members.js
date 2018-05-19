@@ -88,6 +88,7 @@ Members.prototype.main_action = function() {
 Members.prototype.register_action = function() {
   if (req.postParams.register) {
     try {
+      Recaptcha.verify(req.postParams);
       if (root.termsStory && !req.postParams.terms) throw Error('Please accept the terms and conditions.');
       if (root.privacyStory && !req.postParams.privacy) throw Error('Please accept the data privacy statement.');
       var title = res.handlers.site.title;
@@ -107,7 +108,8 @@ Members.prototype.register_action = function() {
   session.data.token = User.getSalt();
   res.data.action = this.href(req.action);
   res.data.title = gettext('Register');
-  res.data.body = this.renderSkinAsString('$Members#register');
+  var param = { recaptcha: Recaptcha.render(this) };
+  res.data.body = this.renderSkinAsString('$Members#register', param);
   this._parent.renderSkin('Site#page');
   return;
 }

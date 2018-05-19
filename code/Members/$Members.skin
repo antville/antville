@@ -125,6 +125,7 @@
    </div>
    <% if <% root.termsStory %> is null then '' else <% members.skin $Members#terms %> %>
    <% if <% root.privacyStory %> is null then '' then <% members.skin $Members#privacy %> %>
+   <% param.recaptcha prefix="<div class='uk-form-row'>" suffix="</div>" %>
    <div class='uk-form-row uk-margin-top'>
       <button class='uk-button uk-button-primary' type="submit" id="submit" name="register" value="1" tabindex=6>
          <% gettext Register %>
@@ -132,7 +133,7 @@
       <a href='<% members.href login %>' class="uk-button uk-button-link" tabindex=7><% gettext Cancel %></a>
    </div>
 </form>
-<script type="text/javascript">
+<script>
    $('form#register').submit(function() {
       var token = '<% session.token %>';
       var password = $('#password').val();
@@ -165,7 +166,7 @@
    <% if <% root.termsStory %> is null then '' else <% members.skin $Members#terms %> %>
    <% if <% root.privacyStory %> is null then '' then <% members.skin $Members#privacy %> %>
    <div class='uk-form-row uk-margin-top'>
-      <button class='uk-button uk-button-primary' type="submit"" name="accept" value="1" tabindex=6>
+      <button class='uk-button uk-button-primary' type="submit" name="accept" value="1" tabindex=6>
          <% gettext Accept %>
       </button>
       <a href='<% site.href %>' class="uk-button uk-button-link" tabindex=7><% gettext Cancel %></a>
@@ -257,3 +258,7 @@
       <a href='?name=<% param.name encoding=form %>'><i class='uk-icon-plus'></i></a>
    </td>
 </tr>
+
+<% #recaptcha %>
+<div class='uk-margin-top g-recaptcha' data-sitekey='<% property recaptcha.sitekey %>'></div>
+<script src='https://www.google.com/recaptcha/api.js?hl=<% site.locale %>'></script>
