@@ -45,12 +45,12 @@ HopObject.prototype.handleMetadata = function(name) {
  */
 HopObject.prototype.getMetadata = function(name) {
   if (!this.metadata) {
-    throw Error('No metadata collection defined for prototype ' + this.constructor.name);
-  } else {
-    this.metadata.prefetchChildren();
+    app.log('No metadata collection defined for prototype ' + this.constructor.name);
+    return name ? null : {};
   }
 
   var self = this;
+  this.metadata.prefetchChildren();
 
   if (!name) {
     var result = {};

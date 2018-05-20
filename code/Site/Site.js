@@ -163,20 +163,38 @@ Site.add = function(data, user) {
  * @param {Site} site
  */
 Site.remove = function() {
-  if (this.constructor === Site || this === root) {
-    HopObject.remove.call(this.stories);
-    HopObject.remove.call(this.images);
-    HopObject.remove.call(this.files);
-    HopObject.remove.call(this.polls);
-    HopObject.remove.call(this.entries);
-    HopObject.remove.call(this.members, {force: true});
-    Layout.remove.call(this.layout, {force: true});
-    this.getStaticFile().removeDirectory();
-    this.deleteMetadata();
-    this.remove();
-  }
-  return;
-}
+  if (this.constructor !== Site || this === root) return;
+
+  const sql = new Sql();
+  const id = this._id;
+  const dir = this.getStaticFile();
+
+  this.remove();
+  root.cache.sites = null;
+
+  sql.execute('delete from site where id = $0', id);
+
+  sql.execute('delete from membership where site_id = $0', id);
+  sql.execute('delete from content where site_id = $0', id);
+  sql.execute('delete from file where site_id = $0', id);
+
+  sql.execute("delete from image where parent_type = 'Site' and parent_id = $0", id);
+  sql.execute("delete from log where context_type = 'Site' and context_id = $0", id);
+  sql.execute("delete from metadata where parent_type = 'Site' and parent_id = $0", id);
+
+  sql.execute('delete from skin where layout_id in (select id from layout where site_id = $0)', id);
+  sql.execute('delete from layout where site_id = $0', id);
+
+  sql.execute('delete from tag_hub where tag_id in (select id from tag where site_id = $0)', id);
+  sql.execute('delete from tag where site_id = $0', id);
+
+  let subQuery = 'select id from poll where site_id';
+  sql.execute('delete from vote where choice_id in (select id from choice where poll_id in ($0 = $1))', subQuery, id);
+  sql.execute('delete from choice where poll_id in ($0 = $1)', subQuery, id);
+  sql.execute('delete from poll where site_id = $0', id);
+
+  dir.removeDirectory();
+};
 
 /**
  *

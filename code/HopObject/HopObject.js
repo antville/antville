@@ -108,7 +108,8 @@ HopObject.prototype.onRequest = function() {
   User.autoLogin();
   res.handlers.membership = User.getMembership();
 
-  if (session.user && !session.user.deleted && session.user.status === User.DELETED) {
+  // Logout persisting session if account has been deleted
+  if (User.getCurrentStatus() === User.DELETED && !session.user.deleted) {
     User.logout();
   }
 
@@ -121,20 +122,22 @@ HopObject.prototype.onRequest = function() {
     res.stop();
   }
 
-  // Simulate 404 for sites which are due for deletion by cronjob
-  if (res.handlers.site.mode === Site.DELETED && !User.require(User.PRIVILEGED) && !Membership.require(Membership.OWNER)) {
-    res.handlers.site = root;
-    root.notfound_action();
-    res.stop();
-  }
+  if (!User.require(User.PRIVILEGED)) {
+    // Simulate 404 for sites which are due for deletion by cronjob
+    if (res.handlers.site.mode === Site.DELETED) {
+      res.handlers.site = root;
+      root.notfound_action();
+      res.stop();
+    }
 
-  if (res.handlers.site.status === Site.BLOCKED && !User.require(User.PRIVILEGED)) {
-    res.status = 403;
-    res.handlers.site = root;
-    res.data.error = gettext('The site you requested has been blocked.') +
-        String.SPACE + gettext('Please contact an administrator for further information.');
-    root.error_action();
-    res.stop();
+    if (res.handlers.site.status === Site.BLOCKED) {
+      res.status = 403;
+      res.handlers.site = root;
+      res.data.error = gettext('The site you requested has been blocked.') +
+          String.SPACE + gettext('Please contact an administrator for further information.');
+      root.error_action();
+      res.stop();
+    }
   }
 
   HopObject.confirmConstructor(Layout);
@@ -178,8 +181,9 @@ HopObject.prototype.delete_action = function() {
   if (req.postParams.proceed) {
     try {
       var parent = this._parent;
+      var type = this._prototype;
       var url = this.constructor.remove.call(this, req.postParams) || parent.href();
-      res.message = gettext('{0} was successfully deleted.', gettext(this._prototype));
+      res.message = gettext('{0} was successfully deleted.', gettext(type));
       res.redirect(User.getLocation() || url);
     } catch(ex) {
       res.message = ex;
