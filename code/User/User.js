@@ -79,6 +79,8 @@ User.remove = function() {
   const sql = new Sql();
   const id = this._id;
 
+  app.log('Removing data from account #' + id);
+
   this.ownerships.forEach(function() {
     const owners = this.site.members.owners;
     if (owners.size() < 2) {
@@ -107,6 +109,7 @@ User.remove = function() {
   sql.retrieve('select id from file where creator_id = $0', id);
   sql.traverse(function() {
     const file = File.getById(this.id);
+    app.log('Removing from file system: file #' + this.id);
     file.getFile().remove();
   });
   deleteMetadata('File', 'file', id);
@@ -115,9 +118,10 @@ User.remove = function() {
 
   sql.retrieve('select id from skin where creator_id = $0', id);
   sql.traverse(function() {
+    // Instead of deleting, assign skins to another site owner
     const skin = Skin.getById(this.id);
     const creator = getAnotherOwner(skin.layout.site);
-    // Instead of deleting, assign skins to another site owner
+    app.log('Assigning new creator: skin #' + this.id);
     sql.execute('update skin set creator_id = $0 where creator_id = $1', creator._id, id);
   });
   sql.execute('update skin set modifier_id = creator_id where modifier_id = $0', id);
@@ -125,9 +129,10 @@ User.remove = function() {
   sql.retrieve('select id from image where creator_id = $0', id);
   sql.traverse(function() {
     const image = Image.getById(this.id);
-    const creator = getAnotherOwner(image.parent.site);
     if (image.parent_type === 'Layout' && image.parent) {
       // Instead of deleting, assign layout images to another site owner
+      const creator = getAnotherOwner(image.parent.site);
+      app.log('Assigning new creator: layout image #' + this.id);
       sql.execute('update image set creator_id = $0 where creator_id = $1', creator._id, id);
     } else {
       image.getFile().remove();
@@ -139,9 +144,10 @@ User.remove = function() {
 
   sql.retrieve('select id from layout where creator_id = $0', id);
   sql.traverse(function() {
+    // Instead of deleting, assign layouts to another site owner
     const layout = Layout.getById(this.id);
     const creator = getAnotherOwner(layout.site);
-    // Instead of deleting, assign layouts to another site owner
+    app.log('Assigning new creator: layout #' + this.id);
     sql.execute('update layout set creator_id = $0 where creator_id = $1', creator._id, id);
   });
   sql.execute('update layout set modifier_id = creator_id where modifier_id = $0', id);
