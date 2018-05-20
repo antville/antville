@@ -174,12 +174,11 @@ Site.remove = function() {
 
   sql.execute('delete from site where id = $0', id);
 
-  sql.execute('delete from membership where site_id = $0', id);
   sql.execute('delete from content where site_id = $0', id);
   sql.execute('delete from file where site_id = $0', id);
+  sql.execute('delete from membership where site_id = $0', id);
 
   sql.execute("delete from image where parent_type = 'Site' and parent_id = $0", id);
-  sql.execute("delete from log where context_type = 'Site' and context_id = $0", id);
   sql.execute("delete from metadata where parent_type = 'Site' and parent_id = $0", id);
 
   sql.execute('delete from skin where layout_id in (select id from layout where site_id = $0)', id);

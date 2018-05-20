@@ -64,23 +64,60 @@ User.add = function(data) {
 }
 
 User.remove = function() {
-  if (this.constructor === User) {
-    // Sites are scheduled for deletion in User.delete_action(), immediately
-    HopObject.remove.call(this.comments);
-    HopObject.remove.call(this.stories);
-    HopObject.remove.call(this.images);
-    HopObject.remove.call(this.files);
-    HopObject.remove.call(this.polls);
-    HopObject.remove.call(this.votes);
-    HopObject.remove.call(this.subscriptions, {force: true});
-    // We only delete metadata but don’t remove the account to prevent identity takeover
-    this.deleteMetadata();
-    this.deleted = null; // Work-around for persisting metadata (tried invalidate and clearCache to no avail)
-    this.email = String.EMPTY;
-    // We gonna use the creation date as the deletion date from now on (until restoration of course)
-    this.created = this.modified = new Date();
-    return User.require(User.PRIVILEGED) ? this.href('edit') : root.href();
-  }
+  if (this.constructor !== User) return;
+
+  const deleteMetadata = (type, table, id) => {
+    sql.execute("delete from metadata where parent_type = '$0' and parent_id in (select id from $1 where creator_id = $2)", type, table, id);
+  };
+
+  const sql = new Sql();
+  const id = this._id;
+
+  // Delegate deletion of Sites which user is the only owner of
+  this.ownerships.forEach(membership => {
+    const site = membership.site;
+    if (site.owners > 1) return;
+    Site.remove.call(site);
+  });
+
+  sql.execute("delete from membership where name = '$0'", this.name);
+
+  sql.execute("delete from tag_hub where tagged_type = 'Story' and tagged_id in (select id from content where creator_id = $0)", id);
+  sql.execute("delete from tag_hub where tagged_type = 'Image' and tagged_id in (select id from image where creator_id = $0)", id);
+  sql.execute('delete from tag where id not in (select tag_id from tag_hub)');
+
+  let subQuery = 'select id from poll where creator_id';
+  sql.execute('delete from vote where choice_id in (select id from choice where poll_id in ($0 = $1))', subQuery, id);
+  sql.execute('delete from choice where poll_id in ($0 = $1)', subQuery, id);
+  sql.execute('delete from poll where creator_id = $0', id);
+
+  deleteMetadata('Story', 'content', id);
+  sql.execute('delete from content where creator_id = $0', id);
+
+  sql.retrieve('select id from file where creator_id = $0', id);
+  sql.traverse(function() {
+    const file = File.getById(this.id);
+    file.getFile().remove();
+  });
+  deleteMetadata('File', 'file', id);
+  sql.execute('delete from file where creator_id = $0', id);
+
+  sql.retrieve("select id from image where creator_id = $0 and parent_type <> 'Layout'", id);
+  sql.traverse(function() {
+    const image = Image.getById(this.id);
+    image.getFile().remove();
+  });
+  deleteMetadata('Image', 'image', id);
+  sql.execute("delete from image where creator_id = $0 and parent_type <> 'Layout'", id); // Don’t remove layout images
+
+  app.clearCache();
+
+  this.deleted = null; // Work-around for persisting metadata (tried invalidate and clearCache to no avail)
+  this.email = String.EMPTY;
+
+  // We gonna use the creation date as the deletion date from now on (until restoration of course)
+  this.created = this.modified = new Date();
+  return User.require(User.PRIVILEGED) ? this.href('edit') : root.href();
 };
 
 /**
@@ -496,6 +533,7 @@ User.prototype.timeline_action = function() {
 
   // MySQL needs the limit parameter -> https://stackoverflow.com/questions/255517/mysql-offset-infinite-rows
   sql.retrieve("select created, id, 'Story' as prototype from content where creator_id = $0 union select created, id, 'Image' as prototype from image where creator_id = $0 union select created, id, 'File' as prototype from file where creator_id = $0 union select created, id, 'Poll' as prototype from poll where creator_id = $0 order by created desc limit $1 offset $2", this._id, pageSize, offset);
+  console.log(sql);
 
   sql.traverse(function() {
     const object = HopObject.getById(this.id, this.prototype);
@@ -520,12 +558,7 @@ User.prototype.delete_action = function() {
     } else {
       // Otherwise, queue for deletion
       this.deleted = User.getDeletionDate();
-      this.ownerships.forEach(membership => {
-        const site = membership.site;
-        if (site.owners > 1) return;
-        site.deleted = Site.getDeletionDate();
-        site.mode = Site.DELETED;
-      });
+      this.status = User.DELETED;
       res.message = gettext('The account {0} is queued for deletion.', this.name);
     }
     this.log(root, 'Deleted account ' + this.name);
