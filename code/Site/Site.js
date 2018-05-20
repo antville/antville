@@ -101,8 +101,8 @@ Site.getCallbackModes = defineConstants(Site, markgettext('disabled'),
 /**
  *
  */
-Site.getDeletionDate = function(site) {
-  return new Date(site.deleted.getTime() + Date.ONEDAY * 0);
+Site.getDeletionDate = function() {
+  return new Date(Date.now() + Date.ONEDAY * 0);
 };
 
 /**
@@ -911,15 +911,6 @@ Site.prototype.static_macro = function(param, name, mode) {
   return this.getStaticUrl(name);
 }
 
-/**
- *
- */
-Site.prototype.deleted_macro = function(param, format) {
-  var date = Admin.getDeletionDate(this);
-  if (!date) return;
-  if (!param.format && !format) return date;
-  res.write(formatDate(date, format));
-};
 
 /**
  *
