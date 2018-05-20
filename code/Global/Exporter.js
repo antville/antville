@@ -105,26 +105,17 @@ global.Exporter = (function() {
   Exporter.saveSite = function(site, user) {
     const sql = new Sql();
     const zip = new helma.Zip();
+
+    const dirName = app.appsProperties['static'] + '/export';
     const fileName = 'antville-site-' + java.util.UUID.randomUUID() + '.zip';
+    const file = new java.io.File(dirName, fileName);
+
+    if (site.export) {
+      const archive = new java.io.File(dirName, site.export.split('/').pop());
+      if (archive.exists()) archive['delete']();
+    }
 
     try {
-      if (site.export) {
-        let file = File.getById(site.export);
-        if (file) File.remove.call(file);
-      }
-
-      const index = {
-        comments: [],
-        files: [],
-        images: [],
-        members: [],
-        polls: [],
-        sites: [],
-        skins: [],
-        stories: [],
-        tags: []
-      };
-
       const dir = new java.io.File(java.nio.file.Files.createTempDirectory(site.name));
       const skinWriter = getJsonWriter(dir, 'skins.json');
       let writer = getJsonWriter(dir, 'index.json');
@@ -155,7 +146,6 @@ global.Exporter = (function() {
 
       sql.traverse(function() {
         app.log('Exporting membership #' + this.creator_id);
-        //index.members.push(this);
         writer.push(this);
       });
 
@@ -245,24 +235,17 @@ global.Exporter = (function() {
       });
 
       const xml = Exporter.getSiteXml(site);
+
       zip.addData(xml, 'export.xml');
-
       zip.add(dir);
-      zip.close();
+      zip.save(file);
 
-      const mime = {
-        file: new Packages.helma.util.MimePart(fileName, zip.getData(), 'application/zip'),
-        file_origin: site.href('export')
-      };
-
-      const file = File.add(mime, site, user);
-      site.export = file._id;
+      site.export = app.appsProperties.staticMountpoint + '/export/' + fileName;
+      site.job = null;
     } catch (ex) {
       app.log(ex.rhinoException);
     }
 
-    // Reset the site’s export status
-    site.job = null;
     return;
   };
 
