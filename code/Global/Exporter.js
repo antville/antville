@@ -108,7 +108,10 @@ global.Exporter = (function() {
 
     const dirName = app.appsProperties['static'] + '/export';
     const fileName = 'antville-site-' + java.util.UUID.randomUUID() + '.zip';
-    const file = new java.io.File(dirName, fileName);
+    const dir = new java.io.File(dirName);
+    const file = new java.io.File(dir, fileName);
+
+    if (!dir.exists()) dir.mkdirs();
 
     if (site.export) {
       const archive = new java.io.File(dirName, site.export.split('/').pop());
@@ -116,9 +119,9 @@ global.Exporter = (function() {
     }
 
     try {
-      const dir = new java.io.File(java.nio.file.Files.createTempDirectory(site.name));
-      const skinWriter = getJsonWriter(dir, 'skins.json');
-      let writer = getJsonWriter(dir, 'index.json');
+      const tempDir = new java.io.File(java.nio.file.Files.createTempDirectory(site.name));
+      const skinWriter = getJsonWriter(tempDir, 'skins.json');
+      let writer = getJsonWriter(tempDir, 'index.json');
 
       sql.retrieve('select s.*, c.name as creator_name, m.name as modifier_name from site s, account c, account m where s.id = $0 and s.creator_id = c.id and s.modifier_id = m.id order by lower(s.name)', site._id);
 
@@ -140,7 +143,7 @@ global.Exporter = (function() {
       writer.close();
       skinWriter.close();
 
-      writer = getJsonWriter(dir, 'members.json');
+      writer = getJsonWriter(tempDir, 'members.json');
 
       sql.retrieve('select m.*, c.name as creator_name, mod.name as modifier_name from site s, membership m, account c, account mod where s.id = $0 and s.id = m.site_id and m.creator_id = c.id and m.modifier_id = mod.id order by lower(m.name)', site._id);
 
@@ -151,8 +154,8 @@ global.Exporter = (function() {
 
       writer.close();
 
-      const storyWriter = getJsonWriter(dir, 'stories.json');
-      const commentWriter = getJsonWriter(dir, 'comments.json');
+      const storyWriter = getJsonWriter(tempDir, 'stories.json');
+      const commentWriter = getJsonWriter(tempDir, 'comments.json');
 
       sql.retrieve('select c.*, crt.name as creator_name, m.name as modifier_name from content c, account crt, account m where c.site_id = $0 and c.creator_id = crt.id and c.modifier_id = m.id order by created desc', site._id);
 
@@ -174,7 +177,7 @@ global.Exporter = (function() {
       storyWriter.close();
       commentWriter.close();
 
-      writer = getJsonWriter(dir, 'files.json');
+      writer = getJsonWriter(tempDir, 'files.json');
 
       sql.retrieve('select f.*, c.name as creator_name, m.name as modifier_name from file f, account c, account m where f.site_id = $0 and f.creator_id = c.id and f.modifier_id = m.id order by created desc', site._id);
 
@@ -188,7 +191,7 @@ global.Exporter = (function() {
 
       writer.close();
 
-      writer = getJsonWriter(dir, 'images.json');
+      writer = getJsonWriter(tempDir, 'images.json');
 
       sql.retrieve("select i.*, c.name as creator_name, m.name as modifier_name from image i, account c, account m where i.parent_type = 'Site' and i.parent_id = $0 and i.creator_id = c.id and i.modifier_id = m.id order by created desc", site._id);
 
@@ -204,7 +207,7 @@ global.Exporter = (function() {
 
       writer.close();
 
-      writer = getJsonWriter(dir, 'polls.json');
+      writer = getJsonWriter(tempDir, 'polls.json');
 
       sql.retrieve('select p.*, c.name as creator_name, m.name as modifier_name from poll p, account c, account m where p.site_id = $0 and p.creator_id = c.id and p.modifier_id = m.id order by created desc', site._id);
 
@@ -225,7 +228,7 @@ global.Exporter = (function() {
 
       writer.close();
 
-      writer = getJsonWriter(dir, 'tags.json');
+      writer = getJsonWriter(tempDir, 'tags.json');
 
       sql.retrieve('select t.name, h.*  from tag t, tag_hub h where t.id = h.tag_id order by t.name');
 
@@ -234,10 +237,12 @@ global.Exporter = (function() {
         writer.push(this);
       });
 
+      writer.close();
+
       const xml = Exporter.getSiteXml(site);
 
       zip.addData(xml, 'export.xml');
-      zip.add(dir);
+      zip.add(tempDir);
       zip.save(file);
 
       site.export = app.appsProperties.staticMountpoint + '/export/' + fileName;
@@ -265,17 +270,8 @@ global.Exporter = (function() {
       if (archive.exists()) archive['delete']();
     }
 
-    const index = {
-      accounts: [],
-      comments: [],
-      files: [],
-      images: [],
-      memberships: [],
-      polls: [],
-      sites: [],
-      skins: [],
-      stories: []
-    };
+    const tempDir = new java.io.File(java.nio.file.Files.createTempDirectory(account.name));
+    let writer = getJsonWriter(tempDir, 'index.json');
 
     sql.retrieve("select * from account where id = $0", account._id);
     // Cannot really include other accounts with the same e-mail address because we do not verify e-mail addresses
@@ -284,8 +280,12 @@ global.Exporter = (function() {
     sql.traverse(function() {
       app.log('Exporting account #' + this.id + ' (' + this.name + ')');
       addMetadata(this, User);
-      index.accounts.push(this);
+      writer.push(this);
     });
+
+    writer.close();
+
+    writer = getJsonWriter(tempDir, 'sites.json');
 
     sql.retrieve("select s.*, m.role, c.name as creator_name, mod.name as modifier_name from site s, membership m, account c, account mod where m.creator_id = $0 and m.site_id = s.id and s.creator_id = c.id and s.modifier_id = mod.id order by lower(s.name)", account._id);
 
@@ -294,23 +294,36 @@ global.Exporter = (function() {
       const site = Site.getById(this.id);
       this.href = site.href();
       if (this.role === Membership.OWNER) addMetadata(this, Site);
-      index.sites.push(this);
+      writer.push(this);
     });
+
+    writer.close();
+
+    writer = getJsonWriter(tempDir, 'skins.json');
 
     sql.retrieve('select s.*, m.name as modifier_name from skin s, account m where s.creator_id = $0 and s.modifier_id = m.id', account._id);
 
     sql.traverse(function() {
       app.log('Exporting skin #' + this.id);
-      index.skins.push(this);
+      writer.push(this);
     });
+
+    writer.close();
+
+    writer = getJsonWriter(tempDir, 'memberships.json');
 
     sql.retrieve('select m.*, mod.name as modifier_name from site s, membership m, account mod where m.creator_id = $0 and s.id = m.site_id and m.modifier_id = mod.id order by lower(m.name)', account._id);
 
     sql.traverse(function() {
       app.log('Exporting membership #' + this.id);
       this.creator_name = account.name;
-      index.memberships.push(this);
+      writer.push(this);
     });
+
+    writer.close();
+
+    writer = getJsonWriter(tempDir, 'stories.json');
+    const commentWriter = getJsonWriter(tempDir, 'comments.json');
 
     sql.retrieve('select c.*, m.name as modifier_name from content c, account m where creator_id = $0 and c.modifier_id = m.id order by c.created desc', account._id);
 
@@ -324,11 +337,16 @@ global.Exporter = (function() {
       this.rendered = content.format_filter(this.metadata.text, {}, 'markdown');
 
       if (this.prototype === 'Story') {
-        index.stories.push(this);
+        writer.push(this);
       } else {
-        index.comments.push(this);
+        commentWriter.push(this);
       }
     });
+
+    commentWriter.close();
+    writer.close()
+
+    writer = getJsonWriter(tempDir, 'files.json');
 
     sql.retrieve('select f.*, m.name as modifier_name from file f, account m where f.creator_id = $0 and f.modifier_id = m.id order by f.created desc', account._id);
 
@@ -340,8 +358,12 @@ global.Exporter = (function() {
       this.href = file.href();
       this.creator_name = account.name;
       addMetadata(this, File);
-      index.files.push(this);
+      writer.push(this);
     });
+
+    writer.close()
+
+    writer = getJsonWriter(tempDir, 'images.json');
 
     sql.retrieve('select i.*, m.name as modifier_name from image i, account m where i.creator_id = $0 and i.modifier_id = m.id order by i.created desc', account._id);
 
@@ -360,11 +382,15 @@ global.Exporter = (function() {
         this.href = image.href();
         this.creator_name = account.name;
         addMetadata(this, Image);
-        index.images.push(this);
+        writer.push(this);
       } else {
         app.logger.warn('Could not export Image #' + this.id + '; might be a cache problem');
       }
     });
+
+    writer.close()
+
+    writer = getJsonWriter(tempDir, 'polls.json');
 
     sql.retrieve('select p.*, m.name as modifier_name from poll p, account m where p.creator_id = $0 and p.modifier_id = m.id order by p.created desc', account._id);
 
@@ -383,13 +409,11 @@ global.Exporter = (function() {
       const vote = poll.votes.get(account.name);
       if (vote) this.vote = vote.choice._id;
       addMetadata(this, Poll);
-      index.polls.push(this);
+      writer.push(this);
     });
 
-    const json = JSON.stringify(index);
-    const data = new java.lang.String(json).getBytes('UTF-8');
-
-    zip.addData(data, 'index.json');
+    writer.close();
+    zip.add(tempDir);
     zip.save(file);
 
     account.export = app.appsProperties.staticMountpoint + '/export/' + fileName;
