@@ -1188,7 +1188,7 @@ a.gs-title:hover {
 <% #deleted %>
 <h1><% gettext 'Deleted Site' %></h1>
 <p>
-  <% gettext "This site is going to be deleted completely and irreversibly {0}." <% site.deleted | format text %> %>
+  <% gettext "This site is scheduled for deletion." %>
 </p>
 <div class='uk-alert'>
   <% gettext 'You still can revert the request for deletion in the {0}site settings{1}.' <% site.href edit prefix='<a href="' suffix='">' %> '</a>'  %>

@@ -65,12 +65,7 @@ User.add = function(data) {
 
 User.remove = function() {
   if (this.constructor === User) {
-    this.ownerships.forEach(function() {
-      const site = this.site;
-      // Don’t delete sites with multiple owners
-      if (site.members.owners.count() > 1) return;
-      Site.remove.call(site);
-    });
+    // Sites are scheduled for deletion in User.delete_action(), immediately
     HopObject.remove.call(this.comments);
     HopObject.remove.call(this.stories);
     HopObject.remove.call(this.images);
@@ -519,15 +514,21 @@ User.prototype.delete_action = function() {
   res.data.action = res.handlers.context.href(req.action);
   if (req.postParams.proceed) {
     this.status = User.DELETED;
-    const total = this.countContributions();
-    if (total < 1) {
+    if (this.countContributions() < 1) {
       // If a site contains no content, delete it immediately
-      return void HopObject.prototype.delete_action.call(this);
+      HopObject.prototype.delete_action.call(this);
+    } else {
+      // Otherwise, queue for deletion
+      this.deleted = User.getDeletionDate();
+      this.ownerships.forEach(membership => {
+        const site = membership.site;
+        if (site.owners > 1) return;
+        site.deleted = Site.getDeletionDate();
+        site.mode = Site.DELETED;
+      });
+      res.message = gettext('The account {0} is queued for deletion.', this.name);
     }
-    // Otherwise, queue for deletion
-    this.deleted = User.getDeletionDate();
     this.log(root, 'Deleted account ' + this.name);
-    res.message = gettext('The account {0} is queued for deletion.', this.name);
     res.redirect(res.handlers.context.href('edit'));
   } else {
     HopObject.prototype.delete_action.call(this);

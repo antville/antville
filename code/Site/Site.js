@@ -99,6 +99,13 @@ Site.getCallbackModes = defineConstants(Site, markgettext('disabled'),
     markgettext('enabled'));
 
 /**
+ *
+ */
+Site.getDeletionDate = function(site) {
+  return new Date(site.deleted.getTime() + Date.ONEDAY * 0);
+};
+
+/**
  * @param {String} name A unique identifier also used in the URL of a site
  * @param {String} title An arbitrary string branding a site
  * @param {User} user
@@ -330,8 +337,7 @@ Site.prototype.delete_action = function () {
       HopObject.prototype.delete_action.call(this);
     } else {
       // Otherwise, queue for deletion
-      this.deleted = new Date;
-      this.status = Site.BLOCKED;
+      this.deleted = Site.getDeletionDate();
       this.mode = Site.DELETED;
       res.message = gettext('The site {0} is queued for deletion.', this.name);
     }
@@ -404,12 +410,8 @@ Site.prototype.getConfirmExtra = function () {
  * @param {Object} data
  */
 Site.prototype.update = function(data) {
-  if (this.mode !== Site.DELETED && data.mode === Site.DELETED) {
-    this.deleted = new Date;
-  } else if (this.job && this.mode === Site.DELETED && data.mode !== Site.DELETED) {
-    var job = new Admin.Job(this.job);
-    job.remove();
-    this.job = null;
+  if (this.mode !== data.mode) {
+    this.deleted = data.mode === Site.DELETED ? new Date() : null;
   }
 
   data.maxImageWidth = Math.abs(data.maxImageWidth) || Infinity;

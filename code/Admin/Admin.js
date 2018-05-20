@@ -23,7 +23,6 @@ markgettext('export');
 markgettext('import');
 markgettext('remove');
 
-Admin.SITEREMOVALGRACEPERIOD = 14; // days
 Admin.MAXBATCHSIZE = 50;
 
 /**
@@ -176,13 +175,6 @@ Admin.getJobs = function(sort) {
   });
 };
 
-/**
- *
- */
-Admin.getDeletionDate = function(site) {
-  return new Date(site.deleted.getTime() + Date.ONEDAY * Admin.SITEREMOVALGRACEPERIOD);
-};
-
 Admin.purgeAccounts = function() {
   var now = Date.now();
 
@@ -198,8 +190,8 @@ Admin.purgeSites = function() {
   var now = new Date;
 
   root.admin.deletedSites.forEach(function() {
-    if (now > Admin.getDeletionDate(this)) {
-      if (this.job) return; // There is already a job scheduled for this site
+    if (!this.deleted) return;
+    if (now > this.deleted > 0 && !this.job) {
       this.job = Admin.queue(this, 'remove', this.modifier);
     }
   });
