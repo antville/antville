@@ -81,7 +81,7 @@ User.remove = function() {
       // Keep a record of another site owner for later
       siteOwners[this.site._id] = owners.list().filter(o => o.name !== this.name)[0].creator._id;
     } else {
-      Site.remove.call(site);
+      Site.remove.call(this.site);
     }
   });
 
