@@ -67,7 +67,7 @@ User.remove = function() {
   if (this.constructor !== User) return;
 
   const deleteMetadata = (type, table, id) => {
-    app.log('Removing metadata: ' + type + ' #' + id);
+    app.log('Removing ' + table + ' metadata for User #' + id);
     sql.execute("delete from metadata where parent_type = '$0' and parent_id in (select id from $1 where creator_id = $2)", type, table, id);
   };
 
