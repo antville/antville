@@ -67,6 +67,7 @@ User.remove = function() {
   if (this.constructor !== User) return;
 
   const deleteMetadata = (type, table, id) => {
+    app.log('Removing metadata: ' + type + ' #' + id);
     sql.execute("delete from metadata where parent_type = '$0' and parent_id in (select id from $1 where creator_id = $2)", type, table, id);
   };
 
@@ -116,20 +117,11 @@ User.remove = function() {
   sql.execute('delete from file where creator_id = $0', id);
   sql.execute('update file set modifier_id = creator_id where modifier_id = $0', id);
 
-  sql.retrieve('select id from skin where creator_id = $0', id);
-  sql.traverse(function() {
-    // Instead of deleting, assign skins to another site owner
-    const skin = Skin.getById(this.id);
-    const creator = getAnotherOwner(skin.layout.site);
-    app.log('Assigning new creator: skin #' + this.id);
-    sql.execute('update skin set creator_id = $0 where creator_id = $1', creator._id, id);
-  });
-  sql.execute('update skin set modifier_id = creator_id where modifier_id = $0', id);
-
   sql.retrieve('select id from image where creator_id = $0', id);
   sql.traverse(function() {
     const image = Image.getById(this.id);
-    if (image.parent_type === 'Layout' && image.parent) {
+    if (image.parent_type === 'Layout') {
+      if (!image.parent) return;
       // Instead of deleting, assign layout images to another site owner
       const creator = getAnotherOwner(image.parent.site);
       app.log('Assigning new creator: layout image #' + this.id);
@@ -141,6 +133,16 @@ User.remove = function() {
   deleteMetadata('Image', 'image', id);
   sql.execute('delete from image where creator_id = $0', id);
   sql.execute('update image set modifier_id = creator_id where modifier_id = $0', id);
+
+  sql.retrieve('select id from skin where creator_id = $0', id);
+  sql.traverse(function() {
+    // Instead of deleting, assign skins to another site owner
+    const skin = Skin.getById(this.id);
+    const creator = getAnotherOwner(skin.layout.site);
+    app.log('Assigning new creator: skin #' + this.id);
+    sql.execute('update skin set creator_id = $0 where creator_id = $1', creator._id, id);
+  });
+  sql.execute('update skin set modifier_id = creator_id where modifier_id = $0', id);
 
   sql.retrieve('select id from layout where creator_id = $0', id);
   sql.traverse(function() {
