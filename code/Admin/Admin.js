@@ -810,9 +810,9 @@ Admin.prototype.renderActivity = function (item, skin) {
   function getAlert(item) {
     switch (item.constructor) {
       case User:
-      return item.status !== User.BLOCKED && item.created - item.modified < 1;
+      return item.status !== User.BLOCKED && item.status !== User.DELETED && item.created - item.modified < 1;
       case Site:
-      return item.status !== Site.DELETED && item.created - item.modified < 1;
+      return item.mode !== Site.DELETED && item.created - item.modified < 1;
     }
     return false;
   }
