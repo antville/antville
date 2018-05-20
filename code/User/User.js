@@ -70,17 +70,19 @@ User.remove = function() {
     sql.execute("delete from metadata where parent_type = '$0' and parent_id in (select id from $1 where creator_id = $2)", type, table, id);
   };
 
+  const getAnotherOwner = site => {
+    const owners = site.members.owners;
+    if (owners.size() < 1) return null;
+    return owners.list().filter(owner => owner.name !== this.name)[0].creator;
+  };
+
   const sql = new Sql();
   const id = this._id;
-  const siteOwners = {};
 
-  // Delegate deletion of Sites which user is the only owner of
   this.ownerships.forEach(function() {
     const owners = this.site.members.owners;
-    if (owners.size() > 1) {
-      // Keep a record of another site owner for later
-      siteOwners[this.site._id] = owners.list().filter(o => o.name !== this.name)[0].creator._id;
-    } else {
+    if (owners.size() < 2) {
+      // Delegate deletion of Sites which user is the only owner of
       Site.remove.call(this.site);
     }
   });
@@ -114,17 +116,19 @@ User.remove = function() {
   sql.retrieve('select id from skin where creator_id = $0', id);
   sql.traverse(function() {
     const skin = Skin.getById(this.id);
-    // Instead of deleting, assign skins to another owner
-    sql.execute('update skin set creator_id = $0 where creator_id = $1', siteOwners[skin.layout.site._id], id);
+    const creator = getAnotherOwner(skin.layout.site);
+    // Instead of deleting, assign skins to another site owner
+    sql.execute('update skin set creator_id = $0 where creator_id = $1', creator._id, id);
   });
   sql.execute('update skin set modifier_id = creator_id where modifier_id = $0', id);
 
   sql.retrieve('select id from image where creator_id = $0', id);
   sql.traverse(function() {
     const image = Image.getById(this.id);
+    const creator = getAnotherOwner(image.parent.site);
     if (image.parent_type === 'Layout' && image.parent) {
-      // Instead of deleting, assign layout images to another owner
-      sql.execute('update image set creator_id = $0 where creator_id = $1', siteOwners[image.parent.site._id], id);
+      // Instead of deleting, assign layout images to another site owner
+      sql.execute('update image set creator_id = $0 where creator_id = $1', creator._id, id);
     } else {
       image.getFile().remove();
     }
@@ -135,9 +139,10 @@ User.remove = function() {
 
   sql.retrieve('select id from layout where creator_id = $0', id);
   sql.traverse(function() {
-    const skin = Layout.getById(this.id);
-    // Instead of deleting, assign layouts to another owner
-    sql.execute('update layout set creator_id = $0 where creator_id = $1', siteOwners[layout.site._id], id);
+    const layout = Layout.getById(this.id);
+    const creator = getAnotherOwner(layout.site);
+    // Instead of deleting, assign layouts to another site owner
+    sql.execute('update layout set creator_id = $0 where creator_id = $1', creator._id, id);
   });
   sql.execute('update layout set modifier_id = creator_id where modifier_id = $0', id);
 
@@ -584,13 +589,13 @@ User.prototype.delete_action = function() {
   if (req.postParams.proceed) {
     this.status = User.DELETED;
     if (this.countContributions() < 1) {
-      // If a site contains no content, delete it immediately
+      // If an account contains no content, delete it immediately
       HopObject.prototype.delete_action.call(this);
     } else {
       // Otherwise, queue for deletion
       this.deleted = User.getDeletionDate();
       this.status = User.DELETED;
-      res.message = gettext('The account {0} is queued for deletion.', this.name);
+      res.message = gettext('The account {0} is being deleted.', this.name);
     }
     this.log(root, 'Deleted account ' + this.name);
     res.redirect(res.handlers.context.href('edit'));
