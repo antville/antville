@@ -82,6 +82,7 @@ User.remove = function() {
 
   app.log('Removing data from account #' + id);
 
+  // Remove sites
   this.ownerships.forEach(function() {
     const owners = this.site.members.owners;
     if (owners.size() < 2) {
@@ -90,33 +91,48 @@ User.remove = function() {
     }
   });
 
+  // Re-assign site creators and modifiers
+  sql.retrieve('select id from site creator_id = $0', id);
+  sql.traverse(function() {
+    const site = Site.getById(this.id);
+    const creator = getAnotherOwner(site);
+    sql.execute('update site set creator_id = $0 where creator_id = $1', creator._id, id);
+  });
+  sql.execute('update site set modifier_id = creator_id where modifier_id = $0', id);
+
+  // Remove and re-assign memberships
   sql.execute("delete from membership where name = '$0'", this.name);
   sql.execute('update membership set modifier_id = creator_id where modifier_id = $0', id);
 
+  // Remove tags
   sql.execute("delete from tag_hub where tagged_type = 'Story' and tagged_id in (select id from content where creator_id = $0)", id);
   sql.execute("delete from tag_hub where tagged_type = 'Image' and tagged_id in (select id from image where creator_id = $0)", id);
   sql.execute('delete from tag where id not in (select tag_id from tag_hub)');
 
+  // Remove and re-assign polls, choices and votes
   let subQuery = 'select id from poll where creator_id';
   sql.execute('delete from vote where choice_id in (select id from choice where poll_id in ($0 = $1))', subQuery, id);
   sql.execute('delete from choice where poll_id in ($0 = $1)', subQuery, id);
   sql.execute('delete from poll where creator_id = $0', id);
   sql.execute('update poll set modifier_id = creator_id where modifier_id = $0', id);
 
+  // Remove and re-assign stories and comments
   deleteMetadata('Story', 'content', id);
   sql.execute('delete from content where creator_id = $0', id);
   sql.execute('update content set modifier_id = creator_id where modifier_id = $0', id);
 
+  // Remove and re-assign files
   sql.retrieve('select id from file where creator_id = $0', id);
   sql.traverse(function() {
     const file = File.getById(this.id);
-    app.log('Removing from file system: file #' + this.id);
+    app.log('Removing file #' + this.id + ' from file system');
     file.getFile().remove();
   });
   deleteMetadata('File', 'file', id);
   sql.execute('delete from file where creator_id = $0', id);
   sql.execute('update file set modifier_id = creator_id where modifier_id = $0', id);
 
+  // Remove and re-assign images
   sql.retrieve('select id from image where creator_id = $0', id);
   sql.traverse(function() {
     const image = Image.getById(this.id);
@@ -127,6 +143,7 @@ User.remove = function() {
       app.log('Assigning new creator: layout image #' + this.id);
       sql.execute('update image set creator_id = $0 where creator_id = $1', creator._id, id);
     } else {
+      app.log('Removing image #' + this.id + ' from file system')
       image.getFile().remove();
     }
   });
@@ -134,6 +151,7 @@ User.remove = function() {
   sql.execute('delete from image where creator_id = $0', id);
   sql.execute('update image set modifier_id = creator_id where modifier_id = $0', id);
 
+  // Remove and re-assign skins
   sql.retrieve('select id from skin where creator_id = $0', id);
   sql.traverse(function() {
     // Instead of deleting, assign skins to another site owner
@@ -144,6 +162,7 @@ User.remove = function() {
   });
   sql.execute('update skin set modifier_id = creator_id where modifier_id = $0', id);
 
+  // Remove and re-assign layouts
   sql.retrieve('select id from layout where creator_id = $0', id);
   sql.traverse(function() {
     // Instead of deleting, assign layouts to another site owner

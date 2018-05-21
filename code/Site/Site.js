@@ -169,6 +169,7 @@ Site.remove = function() {
   const id = this._id;
   const dir = this.getStaticFile();
 
+  app.log('Removing site #' + id);
   this.remove();
   root.cache.sites = null;
 
