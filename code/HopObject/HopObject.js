@@ -109,7 +109,7 @@ HopObject.prototype.onRequest = function() {
   res.handlers.membership = User.getMembership();
 
   // Logout persisting session if account has been deleted
-  if (User.getCurrentStatus() === User.DELETED && !session.user.deleted) {
+  if (User.getCurrentStatus() === User.DELETED) {
     User.logout();
   }
 
@@ -124,7 +124,7 @@ HopObject.prototype.onRequest = function() {
 
   if (!User.require(User.PRIVILEGED)) {
     // Simulate 404 for sites which are due for deletion by cronjob
-    if (res.handlers.site.mode === Site.DELETED) {
+    if (res.handlers.site.status === Site.DELETED) {
       res.handlers.site = root;
       root.notfound_action();
       res.stop();
@@ -143,7 +143,6 @@ HopObject.prototype.onRequest = function() {
   HopObject.confirmConstructor(Layout);
   res.handlers.layout = res.handlers.site.layout || new Layout;
   res.skinpath = res.handlers.layout.getSkinPath();
-  //res.skinpath = [app.dir];
 
   if (!this.getPermission(req.action)) {
     if (!session.user) {
@@ -177,6 +176,7 @@ markgettext('Image');
 markgettext('Membership');
 markgettext('Poll');
 markgettext('Story');
+markgettext('User');
 
 HopObject.prototype.delete_action = function() {
   if (req.postParams.proceed) {

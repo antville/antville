@@ -1185,15 +1185,6 @@ a.gs-title:hover {
    </td>
 </tr>
 
-<% #deleted %>
-<h1><% gettext 'Deleted Site' %></h1>
-<p>
-  <% gettext "This site is scheduled for deletion." %>
-</p>
-<div class='uk-alert'>
-  <% gettext 'You still can revert the request for deletion in the {0}site settings{1}.' <% site.href edit prefix='<a href="' suffix='">' %> '</a>'  %>
-</div>
-
 <% #export %>
 <h1><% gettext "Export Site Data" %></h1>
 <p>

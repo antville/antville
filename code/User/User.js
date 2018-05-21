@@ -71,7 +71,8 @@ User.remove = function() {
     sql.execute("delete from metadata where parent_type = '$0' and parent_id in (select id from $1 where creator_id = $2)", type, table, id);
   };
 
-  const getAnotherOwner = site => {
+  const getNewCreator = site => {
+    if (!site) return null;
     const owners = site.members.owners;
     if (owners.size() < 1) return null;
     return owners.list().filter(owner => owner.name !== this.name)[0].creator;
@@ -81,6 +82,7 @@ User.remove = function() {
   const id = this._id;
 
   app.log('Removing data from account #' + id);
+  sql.execute("delete from metadata where parent_type = 'User' and parent_id = $0", id);
 
   // Remove sites
   this.ownerships.forEach(function() {
@@ -95,7 +97,7 @@ User.remove = function() {
   sql.retrieve('select id from site where creator_id = $0', id);
   sql.traverse(function() {
     const site = Site.getById(this.id);
-    const creator = getAnotherOwner(site);
+    const creator = getNewCreator(site);
     sql.execute('update site set creator_id = $0 where creator_id = $1', creator._id, id);
   });
   sql.execute('update site set modifier_id = creator_id where modifier_id = $0', id);
@@ -124,8 +126,8 @@ User.remove = function() {
   // Remove and re-assign files
   sql.retrieve('select id from file where creator_id = $0', id);
   sql.traverse(function() {
-    const file = File.getById(this.id);
     app.log('Removing file #' + this.id + ' from file system');
+    const file = File.getById(this.id);
     file.getFile().remove();
   });
   deleteMetadata('File', 'file', id);
@@ -139,8 +141,8 @@ User.remove = function() {
     if (image.parent_type === 'Layout') {
       if (!image.parent) return;
       // Instead of deleting, assign layout images to another site owner
-      const creator = getAnotherOwner(image.parent.site);
       app.log('Assigning new creator: layout image #' + this.id);
+      const creator = getNewCreator(image.parent.site);
       sql.execute('update image set creator_id = $0 where creator_id = $1', creator._id, id);
     } else {
       app.log('Removing image #' + this.id + ' from file system')
@@ -155,9 +157,9 @@ User.remove = function() {
   sql.retrieve('select id from skin where creator_id = $0', id);
   sql.traverse(function() {
     // Instead of deleting, assign skins to another site owner
-    const skin = Skin.getById(this.id);
-    const creator = getAnotherOwner(skin.layout.site);
     app.log('Assigning new creator: skin #' + this.id);
+    const skin = Skin.getById(this.id);
+    const creator = getNewCreator(skin.layout.site);
     sql.execute('update skin set creator_id = $0 where creator_id = $1', creator._id, id);
   });
   sql.execute('update skin set modifier_id = creator_id where modifier_id = $0', id);
@@ -166,20 +168,18 @@ User.remove = function() {
   sql.retrieve('select id from layout where creator_id = $0', id);
   sql.traverse(function() {
     // Instead of deleting, assign layouts to another site owner
-    const layout = Layout.getById(this.id);
-    const creator = getAnotherOwner(layout.site);
     app.log('Assigning new creator: layout #' + this.id);
+    const layout = Layout.getById(this.id);
+    const creator = getNewCreator(layout.site);
     sql.execute('update layout set creator_id = $0 where creator_id = $1', creator._id, id);
   });
   sql.execute('update layout set modifier_id = creator_id where modifier_id = $0', id);
 
   app.clearCache();
 
-  this.deleted = null; // Work-around for persisting metadata (tried invalidate and clearCache to no avail)
+  this.deleted = new Date();
   this.email = String.EMPTY;
 
-  // We gonna use the creation date as the deletion date from now on (until restoration of course)
-  this.created = this.modified = new Date();
   return User.require(User.PRIVILEGED) ? this.href('edit') : root.href();
 };
 
@@ -226,7 +226,7 @@ User.register = function(data) {
   } else if (data.name !== stripTags(data.name) || NAMEPATTERN.test(data.name)) {
     throw Error(gettext('Please avoid special characters or HTML code in the name field.'));
   } else if (data.name !== root.users.getAccessName(data.name)) {
-    throw Error(gettext('Sorry, the user name you entered already exists. Please enter a different one.'));
+    throw Error(gettext('Sorry, the username you entered already exists. Please enter a different one.'));
   }
 
   data.email && (data.email = data.email.trim());
@@ -460,10 +460,6 @@ User.rename = function(currentName, newName) {
   return currentName;
 }
 
-User.getDeletionDate = function() {
-  return new Date(Date.now() + Date.ONEDAY * 0);
-};
-
 /**
  * A User object represents a login to Antville.
  * @name User
@@ -506,7 +502,7 @@ User.prototype.onLogout = function() { /* ... */ }
 User.prototype.getPermission = function(action) {
   switch (action) {
     case 'delete':
-    return this.status !== User.PRIVILEGED && this.status !== User.DELETED && !this.deleted;
+    return this.status !== User.PRIVILEGED && this.status !== User.DELETED;
 
     default:
     return User.require(User.PRIVILEGED);
@@ -514,14 +510,7 @@ User.prototype.getPermission = function(action) {
 }
 
 User.prototype.edit_action = function () {
-  console.log(this.countContributions());
   if (!res.handlers.context) res.handlers.context = this;
-
-  if (req.data.undelete) {
-    this.deleted = null;
-    this.status = User.REGULAR;
-    res.redirect(res.handlers.context.href('edit'));
-  }
 
   if (req.postParams.save) {
     try {
@@ -532,8 +521,10 @@ User.prototype.edit_action = function () {
       res.message = err.toString();
     }
   }
+
   session.data.token = User.getSalt();
   session.data.salt = this.salt;
+
   res.data.title = this.name;
   res.data.body = this.renderSkinAsString('$User#edit');
   res.handlers.site.renderSkin('Site#page');
@@ -614,18 +605,18 @@ User.prototype.delete_action = function() {
   if (!res.handlers.context) res.handlers.context = this;
   res.data.action = res.handlers.context.href(req.action);
   if (req.postParams.proceed) {
+    this.hash = String.EMPTY;
     this.status = User.DELETED;
+    this.deleted = null;
     if (this.countContributions() < 1) {
       // If an account contains no content, delete it immediately
       HopObject.prototype.delete_action.call(this);
     } else {
       // Otherwise, queue for deletion
-      this.deleted = User.getDeletionDate();
-      this.status = User.DELETED;
       res.message = gettext('The account {0} is being deleted.', this.name);
     }
     this.log(root, 'Deleted account ' + this.name);
-    res.redirect(res.handlers.context.href('edit'));
+    res.redirect(User.require(User.PRIVILEGED) ? res.handlers.context.href('edit') : root.href());
   } else {
     HopObject.prototype.delete_action.call(this);
   }
@@ -657,29 +648,40 @@ User.prototype.update = function(data) {
   if (!data.hash && data.password) {
     data.hash = (data.password + session.data.token).md5();
   }
+
   if (data.hash) {
     this.hash = data.hash;
     this.salt = session.data.token;
   }
+
   if (!(data.email = validateEmail(data.email))) {
     throw Error(gettext('Please enter a valid e-mail address'));
   }
+
   if (data.url && !(data.url = validateUrl(data.url))) {
     throw Error(gettext('Please enter a valid URL'));
   }
+
   if (this.getPermission('edit')) {
     if (this.status === User.PRIVILEGED && data.status !== User.PRIVILEGED && root.admins.count() < 2) {
-      throw Error(gettext('You cannot revoke permissions from the only privileged user.'));
+      throw Error(gettext('You cannot revoke permissions from the only privileged account.'));
     }
     if (this.status === User.PRIVILEGED && data.status === User.DELETED) {
-      throw Error(gettext('You cannot delete a privileged user.'));
+      throw Error(gettext('You cannot delete a privileged account.'));
     }
-    if (data.status !== this.status) {
-      this.deleted = data.status === User.DELETED ? User.getDeletionDate() : null;
+
+    // Remove the corresponding job if site deletion is cancelled
+    if (this.job && this.status === User.DELETED && this.status !== data.status) {
+      let job = new Admin.Job(this.job);
+      if (job.method === 'remove') job.remove();
+      this.deleted = null;
+      this.created = new Date();
     }
+
     this.status = data.status;
     this.notes = data.notes;
   }
+
   this.email = data.email;
   this.url = data.url;
   if (this === session.user) this.touch();

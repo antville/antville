@@ -29,7 +29,6 @@ this.handleMetadata('callbackUrl');
 this.handleMetadata('closed');
 this.handleMetadata('commentMode');
 this.handleMetadata('configured');
-this.handleMetadata('deleted');
 this.handleMetadata('export');
 this.handleMetadata('imageDimensionLimits');
 this.handleMetadata('import_id');
@@ -51,23 +50,21 @@ this.handleMetadata('trollFilter');
  * @returns {String[]}
  * @see defineConstants
  */
-Site.getStatus = defineConstants(Site, markgettext('Blocked'),
+Site.getStatus = defineConstants(Site, markgettext('Deleted'), markgettext('Blocked'),
     markgettext('Regular'), markgettext('Trusted'));
 /**
  * @function
  * @returns {String[]}
  * @see defineConstants
  */
-Site.getModes = defineConstants(Site, markgettext('Deleted'),
-    markgettext('Closed'), markgettext('Restricted'),
+Site.getModes = defineConstants(Site, markgettext('Closed'), markgettext('Restricted'),
     markgettext('Public'), markgettext('Open'));
 /**
  * @function
  * @returns {String[]}
  * @see defineConstants
  */
-Site.getPageModes = defineConstants(Site, markgettext('days') /* ,
-    markgettext('stories') */ );
+Site.getPageModes = defineConstants(Site, markgettext('days')/*, markgettext('stories') */ );
 /**
  * @function
  * @returns {String[]}
@@ -97,13 +94,6 @@ Site.getNotificationModes = defineConstants(Site, markgettext('Nobody'),
  */
 Site.getCallbackModes = defineConstants(Site, markgettext('disabled'),
     markgettext('enabled'));
-
-/**
- *
- */
-Site.getDeletionDate = function() {
-  return new Date(Date.now() + Date.ONEDAY * 0);
-};
 
 /**
  * @param {String} name A unique identifier also used in the URL of a site
@@ -225,7 +215,6 @@ Site.require = function(mode) {
  * @property {String} commentMode The way comments of a site are displayed
  * @property {Date} created The date and time of site creation
  * @property {User} creator A reference to a user who created a site
- * @property {Date} deleted
  * @property {String} export
  * @property {Files} files
  * @property {Tags} galleries
@@ -292,7 +281,7 @@ Site.prototype.getPermission = function(action) {
         User.require(User.PRIVILEGED);
 
     case 'delete':
-    return this !== root && this.getPermission('edit');
+    return this !== root && this.status !== Site.DELETED && this.getPermission('edit');
 
     case 'edit':
     case 'export':
@@ -321,7 +310,7 @@ Site.prototype.main_action = function() {
     schema: 'http://schema.org/WebSite',
     title: this.getTitle(),
     description: this.tagline || String.EMPTY,
-    body: this.renderSkinAsString(this.mode === Site.DELETED ? '$Site#deleted' : 'Site#main'),
+    body: this.renderSkinAsString('Site#main'),
     images: [(this.layout.images.get('favicon') || Images.Default['favicon.png']).getUrl()],
     links: this.renderSkinAsString('$Site#links')
   });
@@ -355,16 +344,15 @@ Site.prototype.delete_action = function () {
       HopObject.prototype.delete_action.call(this);
     } else {
       // Otherwise, queue for deletion
-      this.deleted = Site.getDeletionDate();
-      this.mode = Site.DELETED;
-      res.message = gettext('The site {0} is queued for deletion.', this.name);
+      this.status = Site.DELETED;
+      res.message = gettext('The site {0} is being deleted.', this.name);
     }
     this.log(root, 'Deleted site ' + this.name);
-    res.redirect(this.href());
+    res.redirect(root.href());
   } else {
     HopObject.prototype.delete_action.call(this);
   }
-}
+};
 
 /**
  *
@@ -428,8 +416,10 @@ Site.prototype.getConfirmExtra = function () {
  * @param {Object} data
  */
 Site.prototype.update = function(data) {
-  if (this.mode !== data.mode) {
-    this.deleted = data.mode === Site.DELETED ? new Date() : null;
+  // Remove the corresponding job if site deletion is cancelled
+  if (this.job && this.status === Site.DELETED && this.status !== data.status) {
+    let job = new Admin.Job(this.job);
+    if (job.method === 'remove') job.remove();
   }
 
   data.maxImageWidth = Math.abs(data.maxImageWidth) || Infinity;

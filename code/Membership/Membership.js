@@ -194,8 +194,8 @@ Membership.prototype.contact_action = function() {
       }
       Recaptcha.verify(req.postParams);
       this.notify(req.action, this.creator.email, session.user ?
-          gettext('[{0}] Message from user {1}', root.title, session.user.name) :
-          gettext('[{0}] Message from anonymous user', root.title));
+          gettext('[{0}] Message from {1}', root.title, session.user.name) :
+          gettext('[{0}] Message from anonymous', root.title));
       res.message = gettext('Your message was sent successfully.');
       res.redirect(this._parent.getPermission() ?
           this._parent.href() : this.site.href());
@@ -274,7 +274,7 @@ Membership.prototype.notify = function(action, recipient, subject) {
  * @returns {String}
  */
 Membership.prototype.getConfirmText = function() {
-  return gettext('You are about to delete the membership of user {0}.',
+  return gettext('You are about to delete the membership of {0}.',
       this.creator.name);
 }
 

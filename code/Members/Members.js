@@ -118,11 +118,11 @@ Members.prototype.reset_action = function() {
   if (req.postParams.reset) {
     try {
       if (!req.postParams.name || !req.postParams.email) {
-        throw Error(gettext('Please enter a user name and e-mail address.'));
+        throw Error(gettext('Please enter a username and e-mail address.'));
       }
       var user = User.getByName(req.postParams.name);
       if (!user || user.email !== req.postParams.email) {
-        throw Error(gettext('User name and e-mail address do not match.'))
+        throw Error(gettext('Username and e-mail address do not match.'))
       }
       var token = User.getSalt();
       user.setMetadata('resetToken', token);
@@ -409,7 +409,7 @@ Members.prototype.search = function(searchString, limit) {
 Members.prototype.addMembership = function(data) {
   var user = root.users.get(data.name);
   if (!user) {
-    throw Error(gettext('Sorry, your input did not match any registered user.'));
+    throw Error(gettext('Sorry, your input did not match any registered account.'));
   /*} else if (this.get(data.name)) {
     throw Error(gettext('This user is already a member of this site.'));*/
   }

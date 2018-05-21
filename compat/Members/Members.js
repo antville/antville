@@ -17,7 +17,7 @@
 
 Members.prototype.sendpwd_action = function() {
   res.data.title = gettext("Recover your password");
-  res.data.body = gettext("Due to security reasons user passwords are not stored in the Antville database any longer. Thus, your password cannot be sent to you, anymore.");
+  res.data.body = gettext("Due to security reasons passwords are not stored in the Antville database any longer. Thus, your password cannot be sent to you, anymore.");
   res.data.body += "<p>" + gettext('If you should really have forgotten your password, you can use the <a href="{0}">password reset</a> option.',
       this.href("reset")) + "</p>";
   this._parent.renderSkin("Site#page");

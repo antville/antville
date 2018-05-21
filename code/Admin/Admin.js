@@ -146,10 +146,8 @@ Admin.dequeue = function() {
         app.log('Processing queued job ' + (i + 1) + ' of ' + max);
         switch (job.method) {
           case 'remove':
-          if (job.target.deleted) {
-            if (job.target.constructor === Site) Site.remove.call(job.target);
-            if (job.target.constructor === User) User.remove.call(job.target);
-          }
+          if (job.target.constructor === Site) Site.remove.call(job.target);
+          if (job.target.constructor === User) User.remove.call(job.target);
           break;
           case 'import':
           Importer.run(job.target, job.user);
@@ -179,10 +177,8 @@ Admin.purgeAccounts = function() {
   var now = Date.now();
 
   root.admin.deletedUsers.forEach(function() {
-    if (!this.deleted) return; // already gone
-    if (now - this.deleted > 0 && !this.job) {
-      this.job = Admin.queue(this, 'remove', this);
-    }
+    if (this.job || this.deleted) return; // already gone
+    this.job = Admin.queue(this, 'remove', this);
   });
 };
 
@@ -190,10 +186,8 @@ Admin.purgeSites = function() {
   var now = new Date;
 
   root.admin.deletedSites.forEach(function() {
-    if (!this.deleted) return;
-    if (now > this.deleted > 0 && !this.job) {
-      this.job = Admin.queue(this, 'remove', this.modifier);
-    }
+    if (this.job) return;
+    this.job = Admin.queue(this, 'remove', this.modifier);
   });
 
   var notificationPeriod = root.phaseOutNotificationPeriod * Date.ONEDAY;
@@ -217,7 +211,7 @@ Admin.purgeSites = function() {
           });
           this.notified = now;
         } else if (now - this.notified > gracePeriod) {
-          this.mode = Site.DELETED;
+          this.status = Site.DELETED;
           this.deleted = now;
           this.notified = null;
         }
@@ -639,12 +633,12 @@ Admin.prototype.filterSites = function(data) {
 
   var displays = {
     1: "status = 'blocked'",
-    2: "status = 'trusted'",
-    3: "mode = 'open'",
-    4: "mode = 'restricted'",
-    5: "mode = 'public'",
-    6: "mode = 'closed'",
-    7: "mode = 'deleted'"
+    2: "status = 'deleted'",
+    3: "status = 'trusted'",
+    4: "mode = 'open'",
+    5: "mode = 'restricted'",
+    6: "mode = 'public'",
+    7: "mode = 'closed'"
   };
 
   var sortings = {
@@ -812,7 +806,7 @@ Admin.prototype.renderActivity = function (item, skin) {
       case User:
       return item.status !== User.BLOCKED && item.status !== User.DELETED && item.created - item.modified < 1;
       case Site:
-      return item.mode !== Site.DELETED && item.created - item.modified < 1;
+      return item.status !== Site.DELETED && item.created - item.modified < 1;
     }
     return false;
   }
@@ -905,7 +899,7 @@ Admin.prototype.link_macro = function (param, action, text, target) {
     switch (action) {
       case 'block':
       var user = target.creator || target;
-      if (user.status !== User.PRIVILEGED && user.status !== User.BLOCKED && (user.status !== User.DELETED || user.deleted)) {
+      if (user.status !== User.PRIVILEGED && user.status !== User.BLOCKED && user.status !== User.DELETED) {
         var url = user.href('block');
         return renderLink.call(global, param, url, text || String.EMPTY, this);
       }
@@ -913,7 +907,7 @@ Admin.prototype.link_macro = function (param, action, text, target) {
 
       case 'delete':
       var site = target.constructor === Site ? target : target.site;
-      if (site && site.getPermission(action) && site.mode !== Site.DELETED) {
+      if (site && site.getPermission(action) && site.status !== Site.DELETED) {
         var url = site.href('delete') + '?safemode';
         return renderLink.call(global, param, url, text || String.EMPTY, this);
       }

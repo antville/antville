@@ -36,7 +36,7 @@
    <div class="uk-width-1-1 av-upload-controls">
       <input class='uk-width-1-2' type="text" value="<% param.value %>">
       <button class='uk-button' id="<% param.name %>_control" name="<% param.name %>_control" type="button">
-         <% gettext "Browse" suffix=… %>
+         <% gettext "Select" suffix=… %>
       </button>
    </div>
 </div>

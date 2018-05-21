@@ -207,7 +207,7 @@
       </div>
       <div>
          <% gettext '{0} sites sorted by {1} in {2} order.'
-            <% admin.dropdown name="display" <% markgettext all %> <% markgettext blocked %> <% markgettext trusted %> <% markgettext open %> <% markgettext restricted %> <% markgettext public %> <% markgettext closed %> <% markgettext deleted %> %>
+            <% admin.dropdown name="display" <% markgettext all %> <% markgettext deleted %> <% markgettext blocked %> <% markgettext trusted %> <% markgettext open %> <% markgettext restricted %> <% markgettext public %> <% markgettext closed %> %>
             <% admin.dropdown name="sorting" <% markgettext modified %> <% markgettext created %> <% markgettext name %> %>
             <% admin.dropdown name="order" <% markgettext descending %> <% markgettext ascending %> %>
          %>
@@ -411,7 +411,7 @@
 <div class='uk-badge uk-badge-success'><% gettext Trusted %></div>
 
 <% #deletedSite %>
-<i class='uk-icon-ban'></i>
+<div class='uk-badge'><% gettext Deleted %></div>
 
 <% #closedSite %>
 <i class='uk-icon-lock'></i>
@@ -423,7 +423,7 @@
 <i class='uk-icon-globe'></i>
 
 <% #deletedUser %>
-<div class='uk-badge'><% gettext Deleted %></div>
+<div class='uk-badge uk-badge-warning'><% gettext Deleted %></div>
 
 <% #blockedUser %>
 <div class='uk-badge uk-badge-danger'><% gettext Blocked %></div>

@@ -45,7 +45,7 @@
 <% #edit %>
 <h1><% response.title %></h1>
 <div class='uk-article-meta'>
-   <% if <% user.status %> is 'deleted' then <% user.skin $User#deleted %> else <% user.skin $User#meta %> %>
+   <% if <% user.status %> is deleted then <% user.skin $User#deleted %> else <% user.skin $User#meta %> %>
 </div>
 <div class='uk-margin-top uk-margin-bottom'>
   <% context.link timeline <% gettext Timeline %> %> |
@@ -75,7 +75,7 @@
       <div class='uk-form-row'>
          <label class='uk-form-label' for='url'>
             <% gettext "Personal URL" %>
-            <i class='uk-icon-info-circle uk-text-muted' title='<% gettext "If you enter a URL here your user name will appear as link next to your posted items." %>' data-uk-tooltip="{pos: 'right'}"></i>
+            <i class='uk-icon-info-circle uk-text-muted' title='<% gettext "If you enter a URL here your username will appear as link next to your posted items." %>' data-uk-tooltip="{pos: 'right'}"></i>
          </label>
          <div class='uk-form-controls'>
             <% user.input url type=url class='uk-form uk-width-2-3' %>
@@ -199,11 +199,9 @@
 
 <% #deleted %>
 <% if <% user.deleted %> is null then
-  <% gettext 'Deleted on {0}' <% user.created short %> %>
+  <% gettext 'Account is being deleted' %>
 else
-  <% gettext 'Scheduled for deletion {0}' <% user.deleted | format expiry %>
-    suffix=<% context.link 'edit?undelete=1' <% gettext "Click to cancel deletion" prefix="<i class='uk-icon-times-circle uk-margin-small-left' data-uk-tooltip=\"{pos: 'right'}\" title='" suffix="'></i>" %> %>
-  %>
+  <% gettext 'Deleted on {0}' <% user.created short %> %>
 %>
 
 <% #notify_reset %>
