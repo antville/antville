@@ -143,6 +143,7 @@ HopObject.prototype.onRequest = function() {
   HopObject.confirmConstructor(Layout);
   res.handlers.layout = res.handlers.site.layout || new Layout;
   res.skinpath = res.handlers.layout.getSkinPath();
+  //res.skinpath = [app.dir];
 
   if (!this.getPermission(req.action)) {
     if (!session.user) {
@@ -345,7 +346,7 @@ HopObject.prototype.addTag = function(name) {
  */
 HopObject.prototype.removeTag = function(tag) {
   var parent = tag._parent;
-  if (parent.size() === 1) {
+  if (parent && parent.size() === 1) {
     parent.remove();
   }
   tag.remove();
