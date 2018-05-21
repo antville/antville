@@ -92,7 +92,7 @@ User.remove = function() {
   });
 
   // Re-assign site creators and modifiers
-  sql.retrieve('select id from site creator_id = $0', id);
+  sql.retrieve('select id from site where creator_id = $0', id);
   sql.traverse(function() {
     const site = Site.getById(this.id);
     const creator = getAnotherOwner(site);
