@@ -37,6 +37,10 @@ Open the desired file and ensure that the line beginning with `antville.url` poi
 
 Check that the password is set accordingly to the one you entered in the SQL script and save the file.
 
+## Installing client-side dependencies
+
+Antville's client-side dependencies are managed by [NPM](https://www.npmjs.com/). Once you have it installed execute `npm install` in the antville directory.
+
 ## Enabling an Application
 
 Finally, you need to tell Helma about the new application. This is done by adding the contents of the file `apps.properties` in the `extra` directory to the file `apps.properties` located in the top installation directory.
@@ -63,6 +67,7 @@ Have fun!
 4. Unpack Antville distribution file
 5. Move antville directory into helma/app directory
 6. Run the desired script in antville/db for either PostgreSQL or MySQL
-7. Copy contents of antville/extra/apps.properties to helma/apps.properties
-8. If necessary, enable MySQL compatibility in apps.properties
-9. Start up Helma and browse to [http://localhost:8080/antville]()
+7. Run npm install
+8. Copy contents of antville/extra/apps.properties to helma/apps.properties
+9. If necessary, enable MySQL compatibility in apps.properties
+10. Start up Helma and browse to [http://localhost:8080/antville]()
