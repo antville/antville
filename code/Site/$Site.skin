@@ -364,7 +364,7 @@ $(function () {
 // FIXME: compatibility
 
 @base-font: <% value 'base font' default='Helvetica Neue, Helvetica, Arial, sans-serif' %>;
-@base-font-size: <% value 'base font size' default="'14px / 20px'" %>;
+@base-font-size: <% value 'base font size' default="14px e('/') 20px" %>;
 @base-font-color: <% value 'base font color' default=#444 %>;
 
 @big-font: <% value 'big font' default=@base-font %>;
