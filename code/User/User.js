@@ -175,11 +175,8 @@ User.remove = function() {
   });
   sql.execute('update layout set modifier_id = creator_id where modifier_id = $0', id);
 
-  app.clearCache();
-
   this.deleted = new Date();
   this.email = String.EMPTY;
-
   return User.require(User.PRIVILEGED) ? this.href('edit') : root.href();
 };
 
@@ -206,7 +203,7 @@ User.getSalt = function() {
   var salt = java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE, 8);
   var random = java.security.SecureRandom.getInstance('SHA1PRNG');
   random.nextBytes(salt);
-  return Packages.sun.misc.BASE64Encoder().encode(salt);
+  return new java.lang.String(java.util.Base64.getMimeEncoder().encode(salt), 'utf-8');
 }
 
 /**
