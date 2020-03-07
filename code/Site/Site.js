@@ -305,6 +305,9 @@ Site.prototype.getPermission = function(action) {
 }
 
 Site.prototype.main_action = function() {
+  res.dependsOn(this.modified);
+  res.digest();
+
   this.renderPage({
     type: 'website',
     schema: 'http://schema.org/WebSite',
@@ -314,6 +317,7 @@ Site.prototype.main_action = function() {
     images: [(this.layout.images.get('favicon') || Images.Default['favicon.png']).getUrl()],
     links: this.renderSkinAsString('$Site#links')
   });
+
   this.log();
   return;
 };
