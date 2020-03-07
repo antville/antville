@@ -636,9 +636,9 @@ Site.prototype.renderXml = function(collection) {
   feed.setEntries(entries);
 
   var output = new rome.SyndFeedOutput();
-  res.servletResponse.setCharacterEncoding('utf-8');
-  output.output(feed, res.servletResponse.writer);
-  return;
+  var xml = output.outputString(feed);
+
+  return res.write(xml);
 }
 
 Site.prototype.rss_xsl_action = function() {
