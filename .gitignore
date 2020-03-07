@@ -6,6 +6,7 @@ build/work
 build/dist
 claustra/
 code/domains.map
+i18n/*.js
 jobs/
 local/
 node_modules/
