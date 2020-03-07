@@ -48,8 +48,8 @@
    <% if <% user.status %> is deleted then <% user.skin $User#deleted %> else <% user.skin $User#meta %> %>
 </div>
 <div class='uk-margin-top uk-margin-bottom'>
-  <% context.link timeline <% gettext Timeline %> %> |
-  <% context.link export <% gettext Export %> %>
+  <% context.link timeline <% gettext Timeline %> %>
+  <% context.link export <% gettext Export %> prefix='| ' %>
 </div>
 <form id='edit' class='uk-form uk-form-stacked uk-margin-top' method="post">
    <input type="hidden" name="digest" id="digest">
