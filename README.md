@@ -55,4 +55,3 @@ With Helma Object Publisher (sometimes simply referred to as Helma or Hop) you c
 HopObjects are extended JavaScript objects which can be scripted using server-side JavaScript. Beyond the common JavaScript features, Helma provides special “skin” and template functionalities which facilitate the rendering of objects via a web interface.
 
 Thanks to Helma’s relational database mapping technology, HopObjects create a hierarchical structure, the URL space of a Helma site. The parts between slashes in a Helma URL represent HopObjects (similar to the document tree in static sites). The Helma URL space can be thought of as an analogy to the Document Object Model (DOM) in client-side JavaScript.
-

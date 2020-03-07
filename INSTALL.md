@@ -12,8 +12,8 @@ For connecting Antville to the database the corresponding JDBC driver is also ne
 
 As of writing this installation guide the drivers could be downloaded via the following URLs:
 
-- [http://jdbc.postgresql.org/download.html]()
-- [http://dev.mysql.com/downloads/connector/j/]()
+- <http://jdbc.postgresql.org/download.html>
+- <http://dev.mysql.com/downloads/connector/j/>
 
 Of course you can also use a packet manager like aptitude or MacPorts if the JDBC driver is available from there. However, you then need to create a symbolic link to the driver from within Helma’s `lib/ext` directory.
 
@@ -43,7 +43,7 @@ Finally, you need to tell Helma about the new application. This is done by addin
 
 _Note:_ If you are using MySQL you need to edit and enable line 5 (the one defining `antville.repository.1`) of the file by removing the leading comment symbol `#`.
 
-## Starting Up!
+## Starting Up
 
 Now start up Helma and point your browser to
 
@@ -65,4 +65,4 @@ Have fun!
 6. Run the desired script in antville/db for either PostgreSQL or MySQL
 7. Copy contents of antville/extra/apps.properties to helma/apps.properties
 8. If necessary, enable MySQL compatibility in apps.properties
-9. Start up Helma and browse to [http://localhost:8080/antville]()
+9. Start up Helma and browse to <http://localhost:8080/antville>
