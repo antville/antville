@@ -1,6 +1,6 @@
 {
   "name": "antville",
-  "version": "1.6.1",
+  "version": "1.6.18",
   "description": "Antville is an open source project aimed at the development of a high performance, feature rich weblog hosting software. It can easily host up to several thousands of sites (the number of weblogs is rather limited by the installation owner’s choice and server power than by software limitations).",
   "main": "main.js",
   "directories": {
@@ -8,11 +8,18 @@
     "test": "tests"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "yarn build:fonts; yarn build:main; yarn build:editor",
+    "build:editor": "yarn build:editor:scripts; yarn build:editor:styles",
+    "build:editor:scripts": "browserify build/client/editor.js -o static/scripts/editor.min.js -d -p [minifyify --map /static/scripts/editor.min.map.json --output static/scripts/editor.min.map.json]",
+    "build:editor:styles": "lessc --clean-css build/client/editor.less static/styles/editor.min.css",
+    "build:fonts": "cp -Rp ./node_modules/uikit/dist/fonts static/",
+    "build:main": "yarn build:main:scripts; yarn build:main:styles",
+    "build:main:scripts": "browserify build/client/main.js -o static/scripts/main.min.js -d -p [minifyify --map /static/scripts/main.min.map.json --output static/scripts/main.min.map.json]",
+    "build:main:styles": "lessc --clean-css build/client/main.less static/styles/main.min.css"
   },
   "repository": {
     "type": "git",
-    "url": "https://code.google.com/p/antville"
+    "url": "https://github.com/antville/antville"
   },
   "author": "The Antville People",
   "license": "Apache-2.0",
