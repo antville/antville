@@ -675,12 +675,15 @@ Story.prototype.format_filter = function(value, param, mode) {
       }
       break;
 
-      default:
-      value = this.linebreak_filter(value, param, 'markdown');
+      case 'markdown':
       value = this.macro_filter(value, param);
       value = this.markdown_filter(value, param);
-      value = this.url_filter(value, param);
-      return value;
+      return this.url_filter(value, param);
+
+      default:
+      value = this.macro_filter(value, param);
+      value = this.linebreak_filter(value, param);
+      return this.url_filter(value, param);
     }
   }
 
@@ -689,6 +692,7 @@ Story.prototype.format_filter = function(value, param, mode) {
 
 Story.prototype.linebreak_filter = function (value, param, mode) {
   if (mode === 'markdown') {
+    // FIXME: should be obsolete
     var mdLineBreakMarker = new RegExp('<!--av-break-->', 'g');
     var mdQuoteMarker = new RegExp('<!--av-quote-->', 'g');
     var mdCodeMarker = new RegExp('<!--av-code-->', 'g');
