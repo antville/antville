@@ -27,7 +27,7 @@
     "minify": true
   },
   "dependencies": {
-    "codemirror": "^5.35.0",
+    "codemirror": "^5.52.2",
     "jquery": "^2.2.4",
     "jquery-collagePlus": "github:antville/jquery-collagePlus#0.3.4",
     "js-md5": "^0.7.3",
