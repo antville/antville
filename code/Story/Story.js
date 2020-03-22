@@ -209,7 +209,10 @@ Story.prototype.getDescription = function(limit) {
   var key = this + ':text:' + limit;
   if (!res.meta[key]) {
     if (this.text) {
-      res.meta[key] = stripTags(this.format_filter(this.text, {}, 'markdown')).clip(limit, String.ELLIPSIS, '\\s').replace(/\s+/g, String.SPACE).trim();
+      res.meta[key] = stripTags(this.format_filter(this.text, {}, 'markdown'))
+        .clip(limit, String.ELLIPSIS, '\\s')
+        .replace(/\s+/g, String.SPACE)
+        .trim();
     }
   }
   return res.meta[key] || String.EMPTY;
