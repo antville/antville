@@ -31,7 +31,7 @@
     "jquery": "^2.2.4",
     "jquery-collagePlus": "github:antville/jquery-collagePlus#0.3.4",
     "js-md5": "^0.7.3",
-    "marked": "=0.3.3",
+    "marked": "^0.8.2",
     "string-strip-html": "^4.3.18",
     "uikit": "^2.27.4"
   },
