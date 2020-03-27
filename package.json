@@ -15,7 +15,11 @@
     "build:fonts": "cp -Rp ./node_modules/uikit/dist/fonts static/",
     "build:main": "yarn build:main:scripts; yarn build:main:styles",
     "build:main:scripts": "browserify build/client/main.js -o static/scripts/main.min.js -d -p [minifyify --map /static/scripts/main.min.map.json --output static/scripts/main.min.map.json]",
-    "build:main:styles": "lessc --clean-css build/client/main.less static/styles/main.min.css"
+    "build:main:styles": "lessc --clean-css build/client/main.less static/styles/main.min.css",
+    "jars": "yarn jar:jdom; yarn jar:less; yarn jar:rome",
+    "jar:jdom": "(cd lib; curl -LO https://repo1.maven.org/maven2/jdom/jdom/1.0/jdom-1.0.jar)",
+    "jar:less": "(cd lib; curl -LO https://repo1.maven.org/maven2/org/lesscss/lesscss/1.7.0.1.1/lesscss-1.7.0.1.1.jar)",
+    "jar:rome": "(cd lib; curl -LO https://repo1.maven.org/maven2/rome/rome/1.0/rome-1.0.jar)"
   },
   "repository": {
     "type": "git",
