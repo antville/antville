@@ -23,6 +23,35 @@ markgettext('Comment');
 markgettext('comment');
 markgettext('a comment // accusative');
 
+Comment.DISABLED_HTML = [
+  'base',
+  'body',
+  'button',
+  'canvas',
+  'datalist',
+  'fieldset',
+  'form',
+  'head',
+  'html',
+  'input',
+  'label',
+  'legend',
+  'link',
+  'meta',
+  'meter',
+  'noscript',
+  'optgroup',
+  'option',
+  'output',
+  'progress',
+  'script',
+  'select',
+  'style',
+  'textarea',
+  'title'
+];
+
+
 /**
  * @see defineConstants
  */
@@ -193,9 +222,7 @@ Comment.prototype.filter_action = function () {
  */
 Comment.prototype.update = function(data) {
   if (!User.require(User.TRUSTED) && !Membership.require(Membership.CONTRIBUTOR)) {
-    var spec = {
-      allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img'])
-    };
+    const spec = { onlyStripTags: Comment.DISABLED_HTML };
     data.text = data.text ? sanitizeHtml(data.text, spec) : String.EMPTY;
   }
 

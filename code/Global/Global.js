@@ -232,7 +232,7 @@ var rome = new JavaImporter(
 );
 
 var marked = require('marked/lib/marked');
-var sanitizeHtml = require('sanitize-html/dist/sanitize-html');
+var sanitizeHtml = require('string-strip-html');
 
 /**
  * A simple and hackish implementation of the console instance of some browsers.
@@ -247,6 +247,7 @@ var console = function (type) {
   return function(text /*, text, … */) {
     var now = formatDate(new Date, 'yyyy/MM/dd HH:mm:ss');
     var argString = Array.prototype.join.call(arguments, String.SPACE);
+
     var shellColors = {
       debug: '\u001B[1;34m',
       error: '\u001B[1;97;101m',
