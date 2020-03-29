@@ -17,12 +17,12 @@ yarn docs
   echo Building client-side scripts…
 
   prefix=static/scripts/main.min
-  yarn browserify build/client/main.js -o $prefix.js -d -p [minifyify --map /$prefix.map.json --output $prefix.map.json]
-  yarn lessc --clean-css build/client/main.less static/styles/main.min.css
+  yarn browserify tools/client/main.js -o $prefix.js -d -p [minifyify --map /$prefix.map.json --output $prefix.map.json]
+  yarn lessc --clean-css tools/client/main.less static/styles/main.min.css
 
   prefix=static/scripts/editor.min
-  yarn browserify build/client/editor.js -o $prefix.js -d -p [minifyify --map /$prefix.map.json --output $prefix.map.json]
-  yarn lessc --clean-css build/client/editor.less static/styles/editor.min.css
+  yarn browserify tools/client/editor.js -o $prefix.js -d -p [minifyify --map /$prefix.map.json --output $prefix.map.json]
+  yarn lessc --clean-css tools/client/editor.less static/styles/editor.min.css
 
   echo Copying static files…
 

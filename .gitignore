@@ -10,8 +10,9 @@ local/
 lib/
 node_modules/
 
-static/export/
-static/sites/
+static/
+!static/img
+!static/formica.html
 
 code/domains.map
 i18n/*.js
