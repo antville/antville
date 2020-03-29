@@ -5,6 +5,7 @@
 # Build dependencies
 yarn export
 yarn jars
+yarn docs
 
 (
   cd $export_dir/antville
@@ -23,7 +24,7 @@ yarn jars
   yarn browserify build/client/editor.js -o $prefix.js -d -p [minifyify --map /$prefix.map.json --output $prefix.map.json]
   yarn lessc --clean-css build/client/editor.less static/styles/editor.min.css
 
-  echo Copying statcic files…
+  echo Copying static files…
 
   cp -Rp ./node_modules/uikit/dist/fonts static/
 

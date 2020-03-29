@@ -13,6 +13,7 @@
     "clean": "rm -rf build/work",
     "export": "tools/export.sh",
     "jars": "tools/jars.sh",
+    "docs": "tools/docs.sh",
     "package": "tools/package.sh"
   },
   "repository": {
@@ -35,6 +36,7 @@
   },
   "devDependencies": {
     "browserify": "^16.5.0",
+    "jsdoc": "^3.6.3",
     "less": "^3.11.1",
     "less-plugin-clean-css": "^1.5.1",
     "minifyify": "^7.3.5"
