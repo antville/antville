@@ -1,6 +1,6 @@
 {
   "name": "antville",
-  "version": "1.6.18",
+  "version": "1.618",
   "description": "Antville is an open source project aimed at the development of a high performance, feature rich weblog hosting software. It can easily host up to several thousands of sites (the number of weblogs is rather limited by the installation owner’s choice and server power than by software limitations).",
   "main": "main.js",
   "directories": {
@@ -8,18 +8,12 @@
     "test": "tests"
   },
   "scripts": {
-    "build": "yarn build:fonts; yarn build:main; yarn build:editor",
-    "build:editor": "yarn build:editor:scripts; yarn build:editor:styles",
-    "build:editor:scripts": "browserify build/client/editor.js -o static/scripts/editor.min.js -d -p [minifyify --map /static/scripts/editor.min.map.json --output static/scripts/editor.min.map.json]",
-    "build:editor:styles": "lessc --clean-css build/client/editor.less static/styles/editor.min.css",
-    "build:fonts": "cp -Rp ./node_modules/uikit/dist/fonts static/",
-    "build:main": "yarn build:main:scripts; yarn build:main:styles",
-    "build:main:scripts": "browserify build/client/main.js -o static/scripts/main.min.js -d -p [minifyify --map /static/scripts/main.min.map.json --output static/scripts/main.min.map.json]",
-    "build:main:styles": "lessc --clean-css build/client/main.less static/styles/main.min.css",
-    "jars": "yarn jar:jdom; yarn jar:less; yarn jar:rome",
-    "jar:jdom": "(cd lib; curl -LO https://repo1.maven.org/maven2/jdom/jdom/1.0/jdom-1.0.jar)",
-    "jar:less": "(cd lib; curl -LO https://repo1.maven.org/maven2/org/lesscss/lesscss/1.7.0.1.1/lesscss-1.7.0.1.1.jar)",
-    "jar:rome": "(cd lib; curl -LO https://repo1.maven.org/maven2/rome/rome/1.0/rome-1.0.jar)"
+    "antclick": "tools/antclick.sh",
+    "build": "tools/build.sh",
+    "clean": "rm -rf build/work",
+    "export": "tools/export.sh",
+    "jars": "tools/jars.sh",
+    "package": "tools/package.sh"
   },
   "repository": {
     "type": "git",

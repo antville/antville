@@ -177,6 +177,8 @@ create table metadata (
 
 create index metadata_parent_idx on metadata (parent_type, parent_id);
 create index metadata_name_idx on metadata (name);
+
+-- This returns an error in H2 database
 create index metadata_value_idx on metadata using hash (value);
 
 --!helma <% #end_of_metadata %>

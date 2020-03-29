@@ -50,6 +50,7 @@ app.addRepository('modules/jala/code/Utilities.js');
      fname.endsWith('.js') && app.addRepository(app.dir + '/../i18n/' + fname);
    }
 })();
+
 // I18n.js needs to be added *after* the message files or the translations get lost
 app.addRepository('modules/jala/code/I18n.js');
 
