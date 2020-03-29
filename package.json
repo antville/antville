@@ -8,13 +8,13 @@
     "test": "tests"
   },
   "scripts": {
-    "antclick": "tools/antclick.sh",
-    "build": "tools/build.sh",
+    "antclick": "tools/build/antclick.sh",
+    "build": "tools/build/antville.sh",
     "clean": "rm -rf build/work",
-    "export": "tools/export.sh",
-    "jars": "tools/jars.sh",
-    "docs": "tools/docs.sh",
-    "package": "tools/package.sh"
+    "export": "tools/build/export.sh",
+    "jars": "tools/build/jars.sh",
+    "docs": "tools/build/docs.sh",
+    "package": "tools/build/package.sh"
   },
   "repository": {
     "type": "git",

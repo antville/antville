@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-. tools/init.sh
+. tools/build/init.sh
 
 helma_package=https://github.com/antville/helma/releases/download/v20200321/helma-20200329.tgz
 

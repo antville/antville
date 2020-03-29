@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-. tools/init.sh
+. tools/build/init.sh
 
 # Build dependencies
 yarn build

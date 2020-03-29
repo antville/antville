@@ -1,18 +1,18 @@
 .*
 
-build/
-build/work
+/build/
+/build/work
 
-claustra/
-docs/
-jobs/
-local/
-lib/
-node_modules/
+/claustra/
+/docs/
+/jobs/
+/local/
+/lib/
+/node_modules/
 
-static/
-!static/img
-!static/formica.html
+/static/
+!/static/img
+!/static/formica.html
 
-code/domains.map
-i18n/*.js
+/code/domains.map
+/i18n/*.js

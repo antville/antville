@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-. tools/init.sh
+. tools/build/init.sh
 
 jar_dir=$export_dir/antville/lib
 license_dir=$export_dir/antville/licenses

@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-. tools/init.sh
+. tools/build/init.sh
 
 rm -rf $source_dir
 mkdir -p $source_dir
