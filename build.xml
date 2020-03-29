@@ -29,23 +29,13 @@
     <echo message="==========================="/>
     <echo message="Available targets are:"/>
     <echo message="  clean     Clean up build directory"/>
-    <echo message="  click     Generate the AntClick packages"/>
-    <echo message="  client    Build client-side scripts and styles"/>
-    <echo message="  dist      Generate the Antville and AntClick packages (default)"/>
-    <echo message="  docs      Generate the API documentation"/>
     <echo message="  help      Show these build instructions"/>
-    <echo message="  libs      Update Java libraries"/>
     <echo message="  messages  Generate JavaScript message files"/>
     <echo message="  patch     Apply patch file to Antville installation"/>
     <echo message="  pot       Extract gettext call strings into POT file"/>
-    <echo message="  ville     Generate the Antville packages"/>
     <echo message="  +claustra Scaffolds a new claustra, ready for implementation"/>
     <echo message="  +patch    Scaffolds a new patch, ready for implementation"/>
   </target>
-
-  <target name="dist" depends="antville, antclick"/>
-  <target name="all" depends="dist"/>
-  <target name="build" depends="dist"/>
 
   <target name="init">
     <tstamp>
@@ -89,139 +79,6 @@
     <property name="i18n.namespace" value=""/>
   </target>
 
-  <target name="export" depends="init">
-    <mkdir dir="${source.dir}"/>
-    <exec dir="${source.dir}" executable="git">
-      <arg line="clone ${antville.src}"/>
-    </exec>
-    <exec dir="${source.dir}/antville" executable="git">
-      <arg line="checkout-index -f -a --prefix=${antville.dir}/"/>
-    </exec>
-    <delete includeemptydirs="true">
-      <fileset dir="${antville.dir}" includes="build.xml build/** docs/** i18n/*.po*"/>
-    </delete>
-    <exec dir="${source.dir}/antville" executable="git" outputproperty="hash">
-      <arg line="rev-parse --short HEAD"/>
-    </exec>
-    <replace file="${antville.dir}/code/Root/Root.js" value="${version}">
-      <replacetoken><![CDATA[<v>0</v>]]></replacetoken>
-    </replace>
-    <replace file="${antville.dir}/code/Root/Root.js" value="${hash}">
-      <replacetoken><![CDATA[<h>0</h>]]></replacetoken>
-    </replace>
-    <replace file="${antville.dir}/code/Root/Root.js" value="${date}">
-      <replacetoken><![CDATA[<d/>]]></replacetoken>
-    </replace>
-  </target>
-
-  <target name="ville" depends="antville"/>
-  <target name="click" depends="antclick"/>
-
-  <target name="antville" depends="export">
-    <antcall target="make-tar">
-      <param name="filename" value="${package.name}"/>
-      <param name="path" value="${antville.dir}"/>
-    </antcall>
-    <antcall target="make-zip">
-      <param name="filename" value="${package.name}"/>
-      <param name="path" value="${antville.dir}"/>
-    </antcall>
-  </target>
-
-  <target name="antclick" depends="export">
-    <!-- Export the Helma and Jala repositories to a temporary directory -->
-    <exec dir="${source.dir}" executable="git">
-      <arg line="clone ${helma.src}"/>
-    </exec>
-    <exec dir="${source.dir}" executable="git">
-      <arg line="clone ${jala.src}"/>
-    </exec>
-
-    <!-- Checkout each repository index to the export directory -->
-    <mkdir dir="${export.dir}"/>
-    <exec dir="${source.dir}/helma" executable="git">
-      <arg line="checkout-index -f -a --prefix=${export.dir}/helma/"/>
-    </exec>
-    <exec dir="${source.dir}/helma-jala" executable="git">
-      <arg line="checkout-index -f -a --prefix=${export.dir}/helma/modules/jala/"/>
-    </exec>
-
-    <!-- Copy exported files to final destinations -->
-    <copy todir="${work.dir}">
-      <fileset dir="${export.dir}/helma" includes="lib/** licenses/**"/>
-    </copy>
-    <copy todir="${work.dir}/apps/antville">
-      <fileset dir="${antville.dir}"/>
-    </copy>
-    <copy todir="${work.dir}/modules">
-      <fileset dir="${modules.dir}" includes="core/** helma/** jala/**"/>
-    </copy>
-
-    <!-- Copy extra files to final destinations -->
-    <copy file="${export.dir}/helma/license.txt" tofile="${work.dir}/licenses/helma.txt"/>
-    <copy todir="${work.dir}">
-       <fileset dir="${extra.dir}"
-          includes="start.bat apps.properties server.properties launcher.jar"/>
-    </copy>
-    <exec dir="${extra.dir}" executable="cp">
-       <arg line="-p start.sh ${work.dir}"/>
-    </exec>
-
-    <copy file="${extra.dir}/helma.jar" todir="${work.dir}/lib"/>
-    <copy file="${extra.dir}/h2-1.3.176.jar" todir="${work.dir}/lib/ext"/>
-    <copy file="${extra.dir}/h2.txt" todir="${work.dir}/licenses"/>
-
-    <copy todir="${build.dir}/work/db">
-       <fileset dir="${extra.dir}" includes="antville.h2.db"/>
-    </copy>
-    <copy todir="${work.dir}/licenses">
-      <fileset dir="${antville.dir}/legal" includes="**"/>
-    </copy>
-    <copy file="${modules.dir}/jala/licenses/jala.txt" todir="${work.dir}/licenses"/>
-
-    <!-- Delete unnecessary files -->
-    <delete>
-      <fileset dir="${work.dir}/modules/helma" includes="*.jar Search.js Ssh.js Chart.js"/>
-    </delete>
-    <delete includeemptydirs="true">
-      <fileset dir="${work.dir}/modules/jala"
-          includes="build.properties docs/** lib/** licenses/** tests/** util/**"/>
-    </delete>
-    <delete dir="${work.dir}/apps/antville/legal"/>
-    <delete dir="${source.dir}"/>
-    <delete dir="${export.dir}"/>
-
-    <!-- Create the packages -->
-    <antcall target="make-zip">
-       <param name="filename" value="antclick-${version}"/>
-       <param name="path" value="${work.dir}"/>
-    </antcall>
-    <antcall target="make-tar">
-       <param name="filename" value="antclick-${version}"/>
-       <param name="path" value="${work.dir}"/>
-    </antcall>
-  </target>
-
-  <target name="client" depends="init">
-    <echo message="Building client-side files"/>
-    <exec executable="yarn">
-      <arg line="build"/>
-    </exec>
-  </target>
-
-  <target name="libs" depends="init">
-    <exec executable="${helma.dir}/gradlew">
-      <arg line="-b build/build.gradle"/>
-    </exec>
-  </target>
-
-  <target name="docs" depends="init">
-    <exec dir="${build.dir}/jsdoc/toolkit" executable="${build.dir}/jsdoc/jsrunwrapper.sh">
-      <arg line='-D="title:${docs.title}" -q -r=2 -p -t=../templates/codeview
-				-d=${docs.outfiles} ${docs.infiles}'/>
-    </exec>
-  </target>
-
   <target name="pot" depends="init">
     <java dir="${helma.dir}" classpath="${helma.dir}/launcher.jar"
         classname="helma.main.launcher.Commandline" fork="true">
@@ -243,35 +100,9 @@
     </java>
   </target>
 
-  <target name="make-tar" depends="init">
-    <mkdir dir="${dist.dir}"/>
-    <fixcrlf srcdir="${path}" eol="lf" eof="remove" includes="**/*.txt,
-    		**/*.properties, **/*.hac, **/*.js, **/*.skin, **/.xml, **/.sh"/>
-    <tar tarfile="${dist.dir}/${filename}.tar" basedir="${path}" excludes="**">
-      <tarfileset prefix="${filename}" dir="${path}" mode="755">
-        <include name="**/*.sh"/>
-      </tarfileset>
-      <tarfileset prefix="${filename}" dir="${path}">
-        <include name="**"/>
-        <exclude name="**/*.sh"/>
-      </tarfileset>
-    </tar>
-    <bzip2 zipfile="${dist.dir}/${filename}.tbz" src="${dist.dir}/${filename}.tar"/>
-    <delete file="${dist.dir}/${filename}.tar"/>
-  </target>
-
-  <target name="make-zip" depends="init">
-    <mkdir dir="${dist.dir}"/>
-    <fixcrlf srcdir="${path}" eol="crlf"
-        includes="**/*.txt, **/*.properties,	**/*.hac, **/*.js, **/*.skin, **/*.xml, **/.bat"/>
-    <zip zipfile="${dist.dir}/${filename}.zip">
-      <zipfileset dir="${path}" prefix="${filename}" includes="**"/>
-    </zip>
-  </target>
-
   <target name="patch" depends="init">
     <input message="Please enter the patch ID: " addproperty="patch.id"/>
-    <loadfile property="patch" srcFile="${basedir}/extra/updater/patch-${patch.id}.js"/>
+    <loadfile property="patch" srcFile="${basedir}/tools/updater/patch-${patch.id}.js"/>
     <echo message="${patch}"/>
     <input message="Apply the displayed patch? " validargs="y,n" addproperty="patch.confirm"/>
     <condition property="patch.abort">
@@ -286,7 +117,7 @@
   </target>
 
   <target name="+patch" depends="init">
-    <property name="patch.dir" value="extra/updater"/>
+    <property name="patch.dir" value="tools/updater"/>
     <echo file="${patch.dir}/patch-${file-date}.js"><!--
       -->// Apply with enabled updater repository using `ant patch -Dpatch.id=${file-date}`${line.separator}<!--
       -->var sql = new Sql();
