@@ -22,55 +22,33 @@
   ~ limitations under the License.
   -->
 
-<project name="antville" default="dist" basedir=".">
+<project name="antville" default="usage" basedir=".">
   <target name="help" depends="usage"/>
   <target name="usage">
     <echo message="Antville Build Instructions"/>
     <echo message="==========================="/>
     <echo message="Available targets are:"/>
-    <echo message="  clean     Clean up build directory"/>
     <echo message="  help      Show these build instructions"/>
     <echo message="  messages  Generate JavaScript message files"/>
     <echo message="  patch     Apply patch file to Antville installation"/>
     <echo message="  pot       Extract gettext call strings into POT file"/>
     <echo message="  +claustra Scaffolds a new claustra, ready for implementation"/>
     <echo message="  +patch    Scaffolds a new patch, ready for implementation"/>
+    <echo/>
+    <echo message="Everything else is built with yarn scripts:"/>
+    <exec executable="yarn">
+      <arg value="run"/>
+    </exec>
   </target>
 
   <target name="init">
     <tstamp>
-      <format property="date" pattern="d MMM yyyy" locale="en"/>
-    </tstamp>
-    <tstamp>
       <format property="file-date" pattern="yyyyMMdd" locale="en"/>
     </tstamp>
 
-    <property name="name" value="antville"/>
-    <property name="year" value="2001-${year}"/>
-    <property name="version" value="1.6"/>
-    <property name="package.name" value="${name}-${version}"/>
-
-    <property name="antville.src" value="https://github.com/antville/antville.git"/>
-    <property name="helma.src" value="https://github.com/antville/helma.git"/>
-    <property name="jala.src" value="https://github.com/antville/helma-jala.git"/>
-
-    <property name="uikit.dir" location="./node_modules/uikit/dist"/>
-
-    <property name="build.dir" location="${basedir}/build"/>
-    <property file="${build.dir}/build.properties"/>
-
     <property name="helma.dir" location="/opt/helma"/>
-    <property name="extra.dir" location="${build.dir}/extra"/>
-    <property name="dist.dir" location="${build.dir}/dist"/>
-    <property name="work.dir" location="${build.dir}/work"/>
-    <property name="source.dir" location="${work.dir}/src"/>
-    <property name="export.dir" location="${work.dir}/export"/>
-    <property name="modules.dir" location="${export.dir}/helma/modules"/>
-    <property name="antville.dir" location="${export.dir}/antville"/>
-
-    <property name="docs.title" value="Antville&amp;#32;${version}&amp;#32;API&amp;#32;Reference"/>
-    <property name="docs.infiles" location="${basedir}/code"/>
-    <property name="docs.outfiles" location="${basedir}/docs"/>
+    <property name="build.dir" location="${basedir}/build"/>
+    <property name="tools.dir" location="${basedir}/tools"/>
 
     <property name="i18n.scan" value="claustra code compat extra"/>
     <property name="i18n.destination" location="${basedir}/i18n"/>
@@ -84,7 +62,7 @@
         classname="helma.main.launcher.Commandline" fork="true">
       <!-- Root.extractMessages is currently located in Global/i18n.js -->
       <arg value="antville.extractMessages"/>
-      <arg value="${build.dir}/MessageParser.js"/>
+      <arg value="${tools.dir}/MessageParser.js"/>
       <arg value="${i18n.scan}"/>
       <arg value="${i18n.template}"/>
     </java>
@@ -93,7 +71,7 @@
   <target name="messages" depends="init">
     <java dir="${helma.dir}" classpath="${helma.dir}/lib/rhino-1.7.9.jar"
         classname="org.mozilla.javascript.tools.shell.Main">
-      <arg value="${build.dir}/PoParser.js"/>
+      <arg value="${tools.dir}/PoParser.js"/>
       <arg value="${i18n.poDirectory}"/>
       <arg value="${i18n.destination}"/>
       <arg value="${i18n.namespace}"/>
@@ -142,18 +120,5 @@
     <mkdir dir="${claustra.dir}/../Claustra"/>
     <echo file="${claustra.dir}/../Claustra/Claustra.properties" append="true"><!--
         -->${claustra.name} = mountpoint(${claustra.title})${line.separator}</echo>
-  </target>
-
-  <target name="clean" depends="init">
-    <delete dir="${work.dir}"/>
-    <delete dir="${dist.dir}"/>
-  </target>
-
-  <target name="file-exists" unless="file.exists">
-    <available property="file.exists" file="${file}"/>
-  </target>
-
-  <target name="debug" depends="init">
-    <!-- For debugging and testing purposes -->
   </target>
  </project>

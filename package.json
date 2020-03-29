@@ -10,7 +10,7 @@
   "scripts": {
     "antclick": "tools/build/antclick.sh",
     "build": "tools/build/antville.sh",
-    "clean": "rm -rf build/work",
+    "clean": "rm -rf build",
     "export": "tools/build/export.sh",
     "jars": "tools/build/jars.sh",
     "docs": "tools/build/docs.sh",
