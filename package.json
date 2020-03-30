@@ -24,7 +24,7 @@
     "jquery": "^2.2.4",
     "jquery-collagePlus": "github:antville/jquery-collagePlus#0.3.4",
     "js-md5": "^0.7.3",
-    "marked": "^0.3.17",
+    "marked": "^0.3.18",
     "sanitize-html": "^1.18.2",
     "uikit": "^2.27.4"
   },
