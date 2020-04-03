@@ -11,10 +11,12 @@
     "antclick": "tools/build/antclick.sh",
     "build": "tools/build/antville.sh",
     "clean": "rm -rf build",
+    "docs": "tools/build/docs.sh",
     "export": "tools/build/export.sh",
     "jars": "tools/build/jars.sh",
-    "docs": "tools/build/docs.sh",
-    "package": "tools/build/package.sh"
+    "messages": "tools/build/messages.sh",
+    "package": "tools/build/package.sh",
+    "pot": "tools/build/pot.sh"
   },
   "repository": {
     "type": "git",

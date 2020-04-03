@@ -29,9 +29,7 @@
     <echo message="==========================="/>
     <echo message="Available targets are:"/>
     <echo message="  help      Show these build instructions"/>
-    <echo message="  messages  Generate JavaScript message files"/>
     <echo message="  patch     Apply patch file to Antville installation"/>
-    <echo message="  pot       Extract gettext call strings into POT file"/>
     <echo message="  +claustra Scaffolds a new claustra, ready for implementation"/>
     <echo message="  +patch    Scaffolds a new patch, ready for implementation"/>
     <echo/>
@@ -47,35 +45,6 @@
     </tstamp>
 
     <property name="helma.dir" location="/opt/helma"/>
-    <property name="build.dir" location="${basedir}/build"/>
-    <property name="tools.dir" location="${basedir}/tools"/>
-
-    <property name="i18n.scan" value="claustra code compat extra"/>
-    <property name="i18n.destination" location="${basedir}/i18n"/>
-    <property name="i18n.poDirectory" location="${i18n.destination}"/>
-    <property name="i18n.template" location="${i18n.destination}/antville.pot"/>
-    <property name="i18n.namespace" value=""/>
-  </target>
-
-  <target name="pot" depends="init">
-    <java dir="${helma.dir}" classpath="${helma.dir}/launcher.jar"
-        classname="helma.main.launcher.Commandline" fork="true">
-      <!-- Root.extractMessages is currently located in Global/i18n.js -->
-      <arg value="antville.extractMessages"/>
-      <arg value="${tools.dir}/MessageParser.js"/>
-      <arg value="${i18n.scan}"/>
-      <arg value="${i18n.template}"/>
-    </java>
-  </target>
-
-  <target name="messages" depends="init">
-    <java dir="${helma.dir}" classpath="${helma.dir}/lib/rhino-1.7.9.jar"
-        classname="org.mozilla.javascript.tools.shell.Main">
-      <arg value="${tools.dir}/PoParser.js"/>
-      <arg value="${i18n.poDirectory}"/>
-      <arg value="${i18n.destination}"/>
-      <arg value="${i18n.namespace}"/>
-    </java>
   </target>
 
   <target name="patch" depends="init">
