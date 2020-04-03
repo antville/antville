@@ -3,11 +3,14 @@
   "version": "1.618",
   "description": "Antville is an open source project aimed at the development of a high performance, feature rich weblog hosting software. It can easily host up to several thousands of sites (the number of weblogs is rather limited by the installation owner’s choice and server power than by software limitations).",
   "main": "main.js",
+
   "directories": {
     "doc": "docs",
     "test": "tests"
   },
+
   "scripts": {
+    "add-patch": "tools/build/add-patch.sh",
     "antclick": "tools/build/antclick.sh",
     "build": "tools/build/antville.sh",
     "clean": "rm -rf build",
@@ -16,17 +19,21 @@
     "jars": "tools/build/jars.sh",
     "messages": "tools/build/messages.sh",
     "package": "tools/build/package.sh",
+    "patch": "tools/build/patch.js",
     "pot": "tools/build/pot.sh"
   },
+
   "repository": {
     "type": "git",
     "url": "https://github.com/antville/antville"
   },
+
   "author": "The Antville People",
   "license": "Apache-2.0",
   "browserify-css": {
     "minify": true
   },
+
   "dependencies": {
     "codemirror": "^5.52.2",
     "jquery": "^2.2.4",
@@ -36,6 +43,7 @@
     "string-strip-html": "^4.3.18",
     "uikit": "^2.27.4"
   },
+
   "devDependencies": {
     "browserify": "^16.5.0",
     "jsdoc": "^3.6.3",

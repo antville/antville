@@ -29,9 +29,7 @@
     <echo message="==========================="/>
     <echo message="Available targets are:"/>
     <echo message="  help      Show these build instructions"/>
-    <echo message="  patch     Apply patch file to Antville installation"/>
     <echo message="  +claustra Scaffolds a new claustra, ready for implementation"/>
-    <echo message="  +patch    Scaffolds a new patch, ready for implementation"/>
     <echo/>
     <echo message="Everything else is built with yarn scripts:"/>
     <exec executable="yarn">
@@ -39,39 +37,7 @@
     </exec>
   </target>
 
-  <target name="init">
-    <tstamp>
-      <format property="file-date" pattern="yyyyMMdd" locale="en"/>
-    </tstamp>
-
-    <property name="helma.dir" location="/opt/helma"/>
-  </target>
-
-  <target name="patch" depends="init">
-    <input message="Please enter the patch ID: " addproperty="patch.id"/>
-    <loadfile property="patch" srcFile="${basedir}/tools/updater/patch-${patch.id}.js"/>
-    <echo message="${patch}"/>
-    <input message="Apply the displayed patch? " validargs="y,n" addproperty="patch.confirm"/>
-    <condition property="patch.abort">
-      <equals arg1="${patch.confirm}" arg2="n" casesensitive="false" trim="true"/>
-    </condition>
-    <fail if="patch.abort">Build aborted by user.</fail>
-    <java dir="${helma.dir}" classpath="${helma.dir}/launcher.jar"
-        classname="helma.main.launcher.Commandline" fork="true">
-      <arg value="antville.patch"/>
-      <arg value="${patch}"/>
-    </java>
-  </target>
-
-  <target name="+patch" depends="init">
-    <property name="patch.dir" value="tools/updater"/>
-    <echo file="${patch.dir}/patch-${file-date}.js"><!--
-      -->// Apply with enabled updater repository using `ant patch -Dpatch.id=${file-date}`${line.separator}<!--
-      -->var sql = new Sql();
-    </echo>
-  </target>
-
-  <target name="+claustra" depends="init">
+  <target name="+claustra">
     <input message="Please enter the name of the new claustra: " addproperty="claustra.name"/>
     <script language="javascript"><![CDATA[
       name = project.getProperty('claustra.name');
