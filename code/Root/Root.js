@@ -144,7 +144,9 @@ Root.prototype.notfound_action = function() {
   res.status = 404;
   res.data.title = gettext('{0} {1} Error', root.getTitle(), res.status);
   res.data.body = root.renderSkinAsString('$Root#notfound', req);
-  root.renderSkin('Site#page');
+  let site = res.handlers.site;
+  if (site.status === Site.DELETED) site = root;
+  site.renderSkin('Site#page');
   return;
 }
 
