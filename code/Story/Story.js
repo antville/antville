@@ -335,18 +335,6 @@ Story.prototype.comment_action = function() {
   return;
 }
 
-Story.prototype.amp_html_action = function() {
-  var spec = sanitizeHtml.defaults;
-  var text = this.format_filter(this.text);
-
-  text = sanitizeHtml(text, spec);
-
-  this.renderSkin('$Story#amp', {
-    text: text,
-    title: this.title || formatDate(this.created, 'date')
-  });
-};
-
 /**
  *
  * @param {String} name
