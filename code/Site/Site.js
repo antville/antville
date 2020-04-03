@@ -620,18 +620,6 @@ Site.prototype.renderXml = function(collection) {
       // FIXME: Work-around for org.jdom.IllegalDataException caused by some ASCII control characters
       description.setValue(item.format_filter(item.text).replace(/[\x00-\x1f^\x0a^\x0d]/g, String.EMPTY));
       entry.setDescription(description);
-
-      if (item.constructor === Story) {
-        var content = new rome.SyndContentImpl();
-        content.setType('text/html');
-        content.setValue(item.renderSkinAsString('$Story#instant', {
-          text: stripTags(description.getValue())
-        }));
-
-        var contents = new java.util.ArrayList();
-        contents.add(content);
-        entry.setContents(contents);
-      }
     }
 
     entries.add(entry);
