@@ -8,21 +8,23 @@ Antville is entirely written in JavaScript (ECMAScript, to be precise) and based
 
 ## Status
 
-Antville can be considered stable quality code. It is heavily used by several thousands of users at [Antville.org](http://antville.org) and [several other sites](http://code.google.com/p/antville/wiki/AntvilleSites). Nevertheless, there still could be bugs hidden somewhere in this application.
+Antville can be considered stable quality code. It is being used by several thousands of users at [Antville.org](http://antville.org) for a long time.
+
+Nevertheless, there still could be bugs hidden somewhere in this application.
 
 Antville can be used for production purposes, but please bear in mind that the creators of Antville do not take any warranty, whichever kind.
 
 ## System Requirements
 
-To run Antville you need [Helma Object Publisher](http://helma.org) and a relational database in the backend. Antville was thoroughly tested with [PostgreSQL](http://postgresql.org) and [MySQL](http://mysql.com).
+To run Antville you need [Helma Object Publisher](http://helma.org) and a relational database in the backend. Antville was thoroughly tested with [PostgreSQL](http://postgresql.org) and [MySQL](http://mysql.com) – [MariaDB](https://mariadb.com) should work, too.
 
 For setting up Helma Object Publisher and the database of your choice please refer to the corresponding installation instructions.
 
 To enable Antville sending confirmation mails to users (e.g. after registration) you will also need access to an SMTP server.
 
-Helma comes with its own embedded webserver (Jetty) so you do not need to install one, although you can easily use Apache httpd as front-end webserver, too.
+Helma comes with its own embedded webserver (Jetty) so you do not need to install one, although you can easily use most popular webservers, too.
 
-Please refer to the Install.md file for detailed information on how to install Antville.
+Please refer to the `INSTALL.md` file for detailed information on how to install Antville.
 
 ## Documentation and Further Information
 
@@ -43,8 +45,6 @@ If you think you found a bug [please report it](http://project.antville.org).
 A good place for your feature requests or proposals is the [project development site](http://project.antville.org).
 
 Since Antville is open-source, you are definitely encouraged to modify the application, we would be happy to hear from your ideas, suggestions and changes – drop us a message via <mail@antville.org> or use any of the aforementioned channels.
-
-For those of you who demonstrated a commitment to collaborative open-source development through sustained participation and contributions within the development of Antville, there will also be other ways to participate.
 
 ## About Helma Object Publisher
 
