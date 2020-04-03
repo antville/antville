@@ -10,6 +10,7 @@
   },
 
   "scripts": {
+    "add-claustra": "tools/build/add-claustra.js",
     "add-patch": "tools/build/add-patch.sh",
     "antclick": "tools/build/antclick.sh",
     "build": "tools/build/antville.sh",
