@@ -494,18 +494,24 @@ Story.prototype.getMacroHandler = function(name) {
 
 Story.prototype.getAbstract = function (param) {
   param || (param = {});
+
   var limit = param.limit || 10;
   var ratio = 0.5; // Use title and text equivalently
-  var result = [], raw = [];
-  raw.push(this.title, this.text);
+  var raw = [this.title, this.text];
+  var result = [];
+
+  var text = this.format_filter(this.text, {}, 'markdown');
   var titleLimit = Math[ratio >= 0.5 ? 'ceil' : 'floor'](limit * ratio);
   var title = this.title && stripTags(this.title).clip(titleLimit, null, '\\s');
   var titleLength = title ? title.split(/\s/).length : 0;
+
   if (titleLength < titleLimit) {
     ratio = titleLength / limit;
   }
+
   var textLimit = Math[ratio < 0.5 ? 'ceil' : 'floor'](limit * (1 - ratio));
-  var text = this.text && stripTags(this.text).clip(textLimit, null, '\\s').trim();
+  text = stripTags(text).clip(textLimit, null, '\\s').trim();
+
   title && result.push('<b>' + title + '</b> ');
   text && result.push(text);
 
@@ -514,6 +520,7 @@ Story.prototype.getAbstract = function (param) {
   /*
   if (result.length < 1) {
     var contentArgs = Array.prototype.slice.call(arguments, 1); // Remove first argument (param)
+
     if (!contentArgs.length) {
       for (var key in this.getMetadata()) {
         if (key !== 'title' && key !== 'text') {
@@ -521,7 +528,9 @@ Story.prototype.getAbstract = function (param) {
         }
       }
     }
+
     ratio = 1 / contentArgs.length;
+
     for (var i = 0, buffer, key = contentArgs[i]; i < contentArgs.length; i += 1) {
       if (key && (buffer = this.getMetadata(key))) {
         raw.push(buffer);
@@ -535,6 +544,7 @@ Story.prototype.getAbstract = function (param) {
   if (result.length < 1 && typeof param['default'] !== 'string') {
     return '<i>' + ngettext('{0} character', '{0} characters', raw.join(String.EMPTY).length) + '</i>';
   }
+
   return result.join(String.SPACE);
 };
 

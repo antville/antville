@@ -618,7 +618,7 @@ Site.prototype.renderXml = function(collection) {
       description = new rome.SyndContentImpl();
       description.setType('text/html');
       // FIXME: Work-around for org.jdom.IllegalDataException caused by some ASCII control characters
-      description.setValue(item.format_filter(item.text).replace(/[\x00-\x1f^\x0a^\x0d]/g, String.EMPTY));
+      description.setValue(item.format_filter(item.text, {}, 'markdown').replace(/[\x00-\x1f^\x0a^\x0d]/g, String.EMPTY));
       entry.setDescription(description);
     }
 
