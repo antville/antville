@@ -3,358 +3,450 @@
 <meta charset='utf-8'>
 <title>Antville’s Formica Bookmarklet</title>
 
-<link rel="icon" type="image/x-icon" href="img/favicon.png">
-<link rel="shortcut icon" type="image/x-icon" href="img/favicon.png">
-<link rel="apple-touch-icon" href="img/favicon.png">
+<meta name='viewport' content='width=device-width, initial-scale=1'>
+
+<link rel='icon' type='image/x-icon' href='img/favicon.png'>
+<link rel='shortcut icon' type='image/x-icon' href='img/favicon.png'>
+<link rel='apple-touch-icon' href='img/favicon.png'>
+<link rel='stylesheet' href='https://antville.org/main.css'>
 
 <style>
-body {
-  margin: 1em;
-  padding: 1em;
-}
+  body {
+    margin: 1em;
+    padding: 1em;
+  }
 
-.image {
-  height: 192px;
-}
+  .image {
+    height: 192px;
+  }
 
-.image::after {
-  content: '';
-  background: center/10px url('img/favicon.png') !important;
-  opacity: 0.2;
-  top: 1px;
-  left: 1px;
-  bottom: 1px;
-  right: 1px;
-  position: absolute;
-  z-index: -1;
-}
+  .image::after {
+    content: '';
+    background: center/10px url('img/favicon.png') !important;
+    opacity: 0.2;
+    top: 1px;
+    left: 1px;
+    bottom: 1px;
+    right: 1px;
+    position: absolute;
+    z-index: -1;
+  }
 
-figure.uk-panel-box {
-   padding: 16px;
-}
+  figure.uk-panel-box {
+    padding: 16px;
+  }
 </style>
-<link rel='stylesheet' type='text/css' href='//antville.org/main.css'>
 
-<div class='uk-grid'>
-   <div class='uk-width-2-5 uk-hidden left'>
-   <figure class='uk-panel uk-panel-box uk-panel-box-secondary'>
+<div class='uk-grid' data-uk-grid-margin>
+  <div class='uk-width-medium-2-5 uk-hidden left'>
+    <figure class='uk-panel uk-panel-box uk-panel-box-secondary' onclick='onToggleImage(event)'>
       <div class='image uk-panel-teaser'>
-         <div id='dimensions' class='uk-panel-badge uk-badge uk-badge-success'>0×0</div>
-         <img class='loading uk-responsive-width uk-responsive-height' src=''>
+        <div id='dimensions' class='uk-panel-badge uk-badge'>0×0</div>
+        <img id='preview' class='loading uk-responsive-width uk-responsive-height'>
       </div>
       <figcaption>
-         <div class='info uk-float-left'></div>
-         <div class='controls uk-button-group uk-float-right'>
-         <a href='#previous' class='uk-button'>
+        <div id='info' class='info uk-float-left'></div>
+        <div class='controls uk-button-group uk-float-right'>
+          <a href='javascript:' class='uk-button' onclick='onChangeImage(event, -1)'>
             <i class='uk-icon-arrow-left'></i>
-         </a><a href='#next' class='uk-button'>
+          </a><a href='javascript:' class='uk-button' onclick='onChangeImage(event, +1)'>
             <i class='uk-icon-arrow-right'></i>
-         </a>
-         </div>
+          </a>
+        </div>
       </figcaption>
-   </figure>
-   </div>
-   <form class='uk-width-1-1 uk-form uk-form-stacked right'>
-   <div class='uk-form-row'>
-      <div class='uk-form-controls'>
-         <input id='title' class='uk-form uk-width-1-1' type='text' placeholder='Title'>
+    </figure>
+  </div>
+  <form class='uk-width-medium-1-1 uk-form uk-form-stacked right'>
+    <div class='uk-form-row'>
+      <div class='uk-form-controls uk-text-bold'>
+        <input id='title' class='uk-form uk-width-medium-1-1' type='text' placeholder='Title'>
       </div>
-   </div>
-   <div class='uk-form-row'>
+    </div>
+    <div class='uk-form-row'>
       <div class='uk-form-controls'>
-         <textarea id='text' class='uk-form uk-width-1-1' rows=10 placeholder='Description'></textarea>
+        <textarea id='text' class='uk-form uk-width-medium-1-1' rows=10 placeholder='Description'></textarea>
       </div>
-   </div>
-   <div class='uk-form-row uk-text-right'>
-      <div id='status' class='uk-float-left'></div>
-      <button id='submit' name='button' type='button' class='uk-button uk-button-primary'>
-         <i class='uk-icon-image uk-hidden' id='image'></i>
-         Publish
+    </div>
+    <div class='uk-form-row uk-text-right'>
+      <div id='feedback' class='uk-float-left'>
+        <i class='uk-icon-refresh uk-icon-spin'></i> Loading…
+      </div>
+      <button id='submit' name='button' type='button' class='uk-button uk-button-primary' onclick='onPublish(event)'>
+        <i class='uk-icon-image uk-hidden' id='image'></i>
+        Publish
       </button>
-   </div>
-   </form>
+    </div>
+  </form>
 </div>
 
-<script type='text/javascript' src='//antville.org/main.js'></script>
+<script src='https://antville.org/main.js'></script>
+
 <script>
-$(function() {
+  (() => {
+    const global = window;
+    const proxyUri = 'https://p3k-services.appspot.com/roxy';
+    //const proxyUri = 'http://localhost:8001/roxy'; // for development
 
-   var proxyUri = '//p3k-services.appspot.com/roxy';
-   // DEBUG
-   //proxyUri = 'http://localhost:8081/roxy';
-   var args, siteUri, sourceUri, images, currentIndex;
+    let _args;
+    let _currentIndex;
+    let _images;
+    let _siteUri;
+    let _sourceUri;
 
-   (function(search) {
+    (search => {
       search = String(search).substr(1);
-      if (search.length > 0) {
-         args = {};
-         var parts = search.split('&');
-         $.each(parts, function(index, item) {
-            parts = item.split('=');
-            args[parts[0]] = decodeURIComponent(parts[1]);
-         });
-      }
-   }(location.search));
 
-   $('.controls a').on('click', function(event) {
+      if (search.length > 0) {
+        let parts = search.split('&');
+        _args = {};
+
+        parts.forEach((item, index) => {
+          parts = item.split('=');
+          _args[parts[0]] = decodeURIComponent(parts[1]);
+        });
+      }
+    })(location.search);
+
+    global.onChangeImage = (event, direction = 1) => {
       event.preventDefault();
       event.stopPropagation();
-      var image = getNextImage($(this).attr('href') === '#next' ? 1 : -1);
-      displayImage(image);
-   });
 
-   $('figure').on('click', function(event) {
-      $(this).toggleClass('uk-panel-box-primary')
-         .toggleClass('uk-panel-box-secondary');
-      $('#image').toggleClass('uk-hidden');
-   });
+      let index = (_currentIndex || 0) + direction;
 
-   $('form button').on('click', function(event) {
+      if (index >= _images.length) {
+        index = 0;
+      } else if (index < 0) {
+        index = _images.length - 1;
+      }
+
+      _currentIndex = index;
+      displayImage(_images[index]);
+    };
+
+    global.onToggleImage = event => {
+      const classList = (event ? event.currentTarget : document.querySelector('figure')).classList;
+      classList.toggle('uk-panel-box-primary');
+      classList.toggle('uk-panel-box-secondary');
+      global.image.classList.toggle('uk-hidden');
+      global.image.hidden = !global.image.hidden;
+    };
+
+    global.onPublish = event => {
       event.preventDefault();
-      status(false);
-      $(this).attr('disabled', true);
-      var imageUri = $('#image').is(':visible') ? images[currentIndex].src : null;
-      post(sourceUri, imageUri);
-   });
+      feedback(false);
+      event.currentTarget.disabled = true;
+      const imageUri = global.image.hidden ? _images[_currentIndex].src : null;
+      post(_sourceUri, imageUri);
+    };
 
-   function main() {
-      if (!args.s || !args.l) {
-         return;
+    const main = () => {
+      if (!_args.s || !_args.l) return;
+
+      _siteUri = decodeURIComponent(_args.s);
+      _sourceUri = decodeURIComponent(_args.l);
+
+      if (!_siteUri || !_sourceUri) return;
+
+      _images = [];
+      _currentIndex = 0;
+
+      if (_sourceUri.match(new RegExp('(?:bmp|gif|jpg|jpeg|png)$', 'i'))) {
+        return addImage(_sourceUri);
       }
 
-      siteUri = decodeURIComponent(args.s);
-      sourceUri = decodeURIComponent(args.l);
+      const customCookie = decodeURIComponent(_args.k || '');
 
-      if (siteUri && sourceUri) {
-         images = [];
-         currentIndex = 0;
-
-         if (sourceUri.match(new RegExp('(?:bmp|gif|jpg|jpeg|png)$', 'i'))) {
-            addImage(sourceUri);
-            return;
-         }
-
-         var customCookie = decodeURIComponent(args.k || '');
-
-         var queryString = '?callback=?&url=' + encodeURIComponent(sourceUri);
-         queryString += '&cookie=' + encodeURIComponent(document.cookie + '; ' + customCookie);
-         queryString += '&ua=' + encodeURIComponent('Mozilla/5.0 (Formica Bookmarklet by Antville)');
-         queryString += '&ref=' + encodeURIComponent(location.href);
-
-         $.getJSON(proxyUri + queryString, function(data) {
-            if (data.content) {
-
-               var content = $(data.content);
-               var openGraphTitle = content.filter('meta[property="og:title"]').eq(0).attr('content');
-               var openGraphDescription = content.filter('meta[property="og:description"]').eq(0).attr('content');
-
-               var text;
-
-               if (args.c) text = $.trim(decodeURIComponent(args.c));
-               if (!text || text === openGraphTitle) text = openGraphDescription || '';
-
-               text = '[' + text + '](' + sourceUri + ')';
-               if (args.r) text += ' _(via ' + decodeURIComponent(args.r) + ')_.';
-
-               $('#title').val(openGraphTitle);
-               $('#text').val(text);
-
-               var baseHref = getBaseHref(data.content);
-               var match, re = /(?:\(|=|"|')([^\s\(\)'">]+\.(?:gif|jpg|jpeg|png))/gi;
-               while (match = re.exec(data.content)) {
-                  addImage(match[1], baseHref);
-               }
-            } else if (data.headers.error) {
-               status('URL error; no data.', arguments);
-            }
-         });
-      }
-   }
-
-   function getBaseHref(data) {
-      // jQuery does not return the correct value for $('base').attr('href').
-      // Thus, we directly crunch the base href value from the raw data.
-      var re = new RegExp('<base href=(?:[\'"])?([^>\'"]+)');
-      var match = data.match(re);
-
-      if (match && match.length > 1) {
-         return match[1];
+      const data = {
+        url: _sourceUri,
+        cookie: document.cookie + '; ' + customCookie,
+        ua: 'Mozilla/5.0 (Formica Bookmarklet by Antville)',
+        ref: location.href
       }
 
-      var index = sourceUri.lastIndexOf('/');
+      jsonp(proxyUri, data, (res, error) => {
+        if (error) return feedback(null, 'Could not fetch URL.');
 
-      if (index !== sourceUri.length - 1) {
-         return sourceUri.substring(0, index + 1);
+        if (!res.content) {
+          if (res.headers.error) return feedback('URL error; no data.');
+        }
+
+        // TODO: Probably unfeasible, but parsing client-side rendered HTML for images would be nice, too…
+        // const doc = document.implementation.createHTMLDocument('clone');
+
+        // doc.documentElement.innerHTML = res.content;
+
+        // const base = document.createElement('base');
+        // const url = new URL(_sourceUri);
+
+        // base.setAttribute('href', url.origin);
+        // doc.head.appendChild(base);
+
+        // const iframe = document.createElement('iframe');
+
+        // //iframe.src = _sourceUri;
+        // document.body.appendChild(iframe);
+
+        // iframe.onload = () => console.log('tobi', iframe.contentglobal.images)
+
+        // const iframeContent = iframe.contentDocument;
+        // const node = iframeContent.importNode(doc.documentElement, true);
+
+        // iframeContent.replaceChild(node, iframeContent.documentElement);
+
+        const parser = new DOMParser();
+        const sourceDocument = parser.parseFromString(res.content, 'text/html');
+
+        const openGraphTitle = (meta => meta ? meta.getAttribute('content') : null)(
+          sourceDocument.querySelector('meta[property="og:title"]')
+        );
+
+        const openGraphDescription = (meta => meta ? meta.getAttribute('content') : null)(
+          sourceDocument.querySelector('meta[property="og:description"]')
+        );
+
+        const openGraphImage = (meta => meta ? meta.getAttribute('content') : null)(
+          sourceDocument.querySelector('meta[property="og:image"]')
+        );
+
+        let text;
+
+        if (_args.c) text = decodeURIComponent(_args.c).trim();
+        if (!text || text === openGraphTitle) text = openGraphDescription;
+
+        text = text ? `[${text}](${_sourceUri})` : `<${_sourceUri}>`;
+
+        if (_args.r) text += ` _(via <${decodeURIComponent(_args.r)}>)_.`;
+
+        global.title.value = openGraphTitle || sourceDocument.title;
+        global.text.value = text;
+
+        const baseHref = getBaseHref(sourceDocument);
+
+        sourceDocument.querySelectorAll('img').forEach(img => {
+          addImage(img.src, baseHref);
+        });
+
+        if (openGraphImage) addImage(openGraphImage, baseHref);
+
+        const regexes = [
+          /(?:\(|=|"|')([^\s\(\)'">]+\.(?:gif|jpg|jpeg|png|webp))/gi
+        ];
+
+        regexes.forEach(regex => {
+          let match;
+
+          while (match = regex.exec(res.content)) {
+            if (match[1]) addImage(match[1], baseHref);
+          }
+        });
+
+        feedback();
+      });
+    };
+
+    const getBaseHref = doc => {
+      const base = doc.querySelector('base');
+
+      if (base) {
+        const href = base.getAttribute('href');
+        if (href) return href;
       }
 
-      return sourceUri;
-   }
+      const index = _sourceUri.lastIndexOf('/');
 
-   function addImage(url, baseUri) {
-      if (!url || images[url]) {
-         return;
+      if (index !== _sourceUri.length - 1) {
+        return _sourceUri.substring(0, index + 1);
       }
+
+      return _sourceUri;
+    };
+
+    const addImage = (url, baseUri) => {
+      if (!url || _images[url]) return;
 
       if (!addImage.counter) addImage.counter = 0;
-      images[url] = true;
+
+      _images[url] = true;
 
       if (url.charAt(0) === '/') {
-         if (url.charAt(1) !== '/') {
-            // url starts with one single slash: prepend root of sourceUri.
-            var index = sourceUri.indexOf('/', sourceUri.indexOf('://') + 3);
-            baseUri = index > -1 ? sourceUri.substring(0, index) : sourceUri;
-            url = baseUri + url;
-         }
+        if (url.charAt(1) !== '/') {
+          // url starts with one single slash: prepend root of _sourceUri.
+          const index = _sourceUri.indexOf('/', _sourceUri.indexOf('://') + 3);
+          baseUri = index > -1 ? _sourceUri.substring(0, index) : _sourceUri;
+          url = baseUri + url;
+        }
       } else if (url.indexOf('://') < 0) {
-         // url does neither start with a slash, nor contain
-         // a protocol: prepend sourceUri up to the final slash.
-         baseUri || (baseUri = sourceUri.substring(0, sourceUri.lastIndexOf('/') + 1));
-         url = baseUri + url;
+        // url does neither start with a slash, nor contain
+        // a protocol: prepend _sourceUri up to the final slash.
+        baseUri || (baseUri = _sourceUri.substring(0, _sourceUri.lastIndexOf('/') + 1));
+        url = baseUri + url;
       }
 
-      var image = new Image();
+      const image = new Image();
+
+      image.onload = function () {
+        if (this.width < 100 || this.height < 100) return;
+
+        _images.push(this);
+        displayImage(_images[0]);
+        addImage.counter += 1;
+
+        if (_images.length && addImage.counter) {
+          showImagePane();
+        }
+      };
+
       image.src = url;
+    };
 
-      image.onload = function() {
-         if (this.width > 100 || this.height > 100) {
-            images.push(this);
-            displayImage(images[0]);
-         }
-         addImage.counter += 1;
-         if (images.length && addImage.counter) {
-            showImage();
-         }
-      }
-   }
+    const displayImage = image => {
+      const MAX_WIDTH = 200;
+      const MAX_HEIGHT = 600;
 
-   function displayImage(image) {
-       var MAX_WIDTH = 200;
-       var MAX_HEIGHT = 600;
-       var width = image.width;
-       var height = image.height;
-       var factorH = 1, factorV = 1;
+      let width = image.width;
+      let height = image.height;
 
-       if (width > MAX_WIDTH) factorH = MAX_WIDTH / width;
-       if (height > MAX_HEIGHT) factorV = MAX_HEIGHT / height;
+      let factorH = 1;
+      let factorV = 1;
 
-       if (factorH !== 1 || factorV !== 1) {
-          width = Math.ceil(width * (factorH < factorV ? factorH : factorV));
-          height = Math.ceil(height * (factorH < factorV ? factorH : factorV));
-       }
+      if (width > MAX_WIDTH) factorH = MAX_WIDTH / width;
+      if (height > MAX_HEIGHT) factorV = MAX_HEIGHT / height;
 
-       $('.image img').attr({
-         src: image.src,
-         width: width,
-         height: height
-       });
-
-       $('#dimensions').html(image.width + '×' + image.height);
-       $('.info').html((currentIndex + 1) + ' of ' + images.length);
-       return;
-   }
-
-   function getNextImage(direction) {
-      var index = currentIndex || 0;
-      index += direction || 1;
-
-      if (index >= images.length) {
-         index = 0;
-      } else if (index < 0) {
-         index = images.length - 1;
+      if (factorH !== 1 || factorV !== 1) {
+        width = Math.ceil(width * (factorH < factorV ? factorH : factorV));
+        height = Math.ceil(height * (factorH < factorV ? factorH : factorV));
       }
 
-      var image = images[index];
-      currentIndex = index;
-      return image;
-   }
+      global.preview.width = width;
+      global.preview.height = height;
+      global.preview.src = image.src;
 
-   function post(url, imageUrl) {
+      global.dimensions.innerHTML = image.width + '×' + image.height;
+      info.innerHTML = (_currentIndex + 1) + ' of ' + _images.length;
+      return;
+    };
 
-      var postStory = function(imageName) {
-         status("<i class='uk-icon-refresh uk-icon-spin'></i> Posting story…");
+    const post = (url, imageUrl) => {
+      const postStory = imageName => {
+        feedback("<i class='uk-icon-refresh uk-icon-spin'></i> Posting story…");
 
-         var imageMacro = (imageName ? "\n\n<\x25 image '" +
-               imageName + "' box link='" + url + "' \x25>" : '');
+        let imageMacro = '';
 
-         $.getJSON(siteUri + '/stories/create?callback=?', {
-            save: 1,
-            title: $('#title').val(),
-            text: $('#text').val() + imageMacro,
-            'og:image': imageUrl
-         }).done(function(data) {
-            if (!data) {
-               status('Story error; maybe try again…', arguments);
-            } else if (window.opener) {
-               status("<i class='uk-icon-check-circle'></i> Success!");
-               setTimeout(function() {
-                  window.close();
-               }, 1000);
-            } else {
-               location.href = siteUri + '/stories/' + data;
-            }
-         }).fail(function() {
-            status('Access error; are you logged in?', arguments);
-         }).always(restore);
+        if (imageName) imageMacro = `\n\n<\x25 image '${imageName}' box link='${url}' \x25`;
+
+        const data = {
+          save: 1,
+          title: global.title.value,
+          text: global.text.value + imageMacro,
+          'og:image': imageUrl
+        }
+
+        return jsonp(_siteUri + '/stories/create', data, (res, error) => {
+          restore();
+
+          if (error) return feedback(null, 'Access error; are you logged in?');
+
+          if (!res) {
+            feedback(null, 'Story error; maybe try again…');
+          } else if (global.opener) {
+            feedback("<i class='uk-icon-check-circle'></i> Success!");
+            setTimeout(() => global.close(), 1000);
+          } else {
+            location.href = _siteUri + '/stories/' + res;
+          }
+        });
       }
 
       if (imageUrl) {
-         status("<i class='uk-icon-refresh uk-icon-spin'></i> Uploading image…");
+        feedback("<i class='uk-icon-refresh uk-icon-spin'></i> Uploading image…");
 
-         var name = 'image-' + Date.now();
+        const name = 'image-' + Date.now();
 
-         $.getJSON(siteUri + '/images/create?callback=?', {
-            save: 1,
-            file_origin: imageUrl,
-            name: name,
-            maxWidth: args.w || '',
-            maxHeight: args.h || ''
-         }).done(function(data) {
-            if (!data) {
-               status('Image error; maybe try again…', arguments);
-            } else {
-               postStory(name);
-            }
-         }).fail(function() {
-            status('Access error; are you logged in?', arguments);
-         }).always(restore);
+        const data = {
+          save: 1,
+          file_origin: imageUrl,
+          name: name,
+          maxWidth: _args.w || '',
+          maxHeight: _args.h || ''
+        };
 
+        jsonp(_siteUri + '/images/create', data, (res, error) => {
+          restore();
+
+          if (error) return feedback(null, 'Access error; are you logged in?');
+
+          if (!data) {
+            feedback(null, 'Image error; maybe try again…');
+          } else {
+            postStory(name);
+          }
+        });
       } else {
-         postStory();
+        postStory();
       }
 
       return;
-   }
+    }
 
-  function showImage() {
-      if ($('.right').hasClass('uk-width-1-1')) {
-         $('.right').toggleClass('uk-width-3-5')
-            .toggleClass('uk-width-1-1');
-         $('.left').toggleClass('uk-hidden');
-         $('figure').trigger('click');
+    const showImagePane = () => {
+      const rightPaneClasses = document.querySelector('.right').classList;
+
+      if (rightPaneClasses.contains('uk-width-medium-1-1')) {
+        rightPaneClasses.toggle('uk-width-medium-3-5');
+        rightPaneClasses.toggle('uk-width-medium-1-1');
+        document.querySelector('.left').classList.toggle('uk-hidden');
+        onToggleImage();
       }
-   }
+    };
 
-   function status(msg, args) {
-      if (msg && args) {
-         $('#status').html("<i class='uk-icon-warning'></i> " + msg);
-         console.group(msg);
-         Array.prototype.forEach.call(args, function(item) {
-            console.log(item);
-         });
-         console.groupEnd();
-      } else if (msg) {
-         $('#status').html(msg);
+    const feedback = (message, error) => {
+      if (error) {
+        global.feedback.innerHTML = "<i class='uk-icon-warning'></i> " + error;
+      } else if (message) {
+        global.feedback.innerHTML = message;
       } else {
-         $('#status').empty();
+        global.feedback.innerHTML = '';
       }
-   }
+    };
 
-   function restore() {
-      setTimeout(function() {
-         $('#submit').attr('disabled', false);
-      }, 3000);
-   }
+    const restore = () => {
+      setTimeout(() => global.submit.disabled = false, 3000);
+    };
 
-   main();
-});
+    const jsonp = (uri, data = {}, callback = () => {}) => {
+      const handlerId = 'jsonpHandler' + Date.now() +
+          parseInt(Math.random() * Math.pow(2, 16), 10);
+
+      window[handlerId] = (data, error) => {
+        window[handlerId] = null;
+        window['script-' + handlerId].remove();
+        return callback(data, error);
+      };
+
+      const script = document.createElement('script');
+
+      let queryString = '';
+
+      if (data) {
+        queryString = Object.keys(data).map(key => {
+          const value = data[key];
+          return `${key}=${encodeURIComponent(value)}`;
+        }).join('&');
+      }
+
+      script.src = `${uri}?${queryString}&callback=${handlerId}`;
+      script.id = 'script-' + handlerId;
+
+      script.onload = () => {
+        setTimeout(() => {
+          const handler = window[handlerId];
+          if (handler) handler(null, 'timeout');
+        }, 1000);
+      };
+
+      document.body.append(script);
+    }
+
+    main();
+  })();
 </script>
