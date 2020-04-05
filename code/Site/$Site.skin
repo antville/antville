@@ -12,6 +12,7 @@
 
 <% #edit %>
 <h1><% response.title %></h1>
+
 <div class='uk-article-meta'>
    <% if <% this.creator %> is null then '' else
       <% gettext 'Created by {0} on {1}' <% this.creator %> <% this.created short %> %>
@@ -20,49 +21,60 @@
       <% gettext 'Last modified by {0} on {1}' <% this.modifier %> <% this.configured | format short date %> prefix=<br> %>
    %>
 </div>
+
 <div class='uk-margin-top uk-margin-bottom'>
   <% site.link export <% gettext Export %> %>
 </div>
+
 <form class='uk-form uk-form-stacked' id="edit" method="post" action="<% response.action %>">
    <fieldset>
       <div class='uk-form-row'>
          <label class='uk-form-label' for='mode'>
             <% gettext Mode %>
          </label>
+
          <div class='uk-form-controls'>
             <% site.select mode %>
          </div>
       </div>
+
       <div class='uk-form-row'>
          <label class='uk-form-label' for='title'>
             <% gettext Title %>
          </label>
+
          <div class='uk-form-controls'>
             <% site.input title class='uk-width-1-1' %>
          </div>
       </div>
+
       <div class='uk-form-row'>
          <label class='uk-form-label' for='tagline'>
             <% gettext Description %>
          </label>
+
          <div class='uk-form-controls'>
             <% site.input tagline class='uk-width-1-1' %>
          </div>
       </div>
+
       <div class='uk-form-row'>
          <label class='uk-form-label' for='pageSize'>
             <% gettext Pagination %>
          </label>
+
          <div class='uk-form-controls'>
             <% site.input pageSize class='uk-width-1-6' type=number min=1 max=25 %>
             <% gettext "{0} per page" <% gettext "stories" %> %>
             <% // site.select pageMode %>
          </div>
       </div>
+
       <div class='uk-form-row'>
          <label class='uk-form-label' for='commentMode'>
             <% gettext Comments %>
          </label>
+
          <div class='uk-form-controls'>
             <label>
                <% site.checkbox commentMode %>
@@ -70,10 +82,12 @@
             </label>
          </div>
       </div>
+
       <div class='uk-form-row'>
          <label class='uk-form-label' for='archiveMode'>
             <% gettext Archive %>
          </label>
+
          <div class='uk-form-controls'>
             <label>
                <% site.checkbox archiveMode %>
@@ -81,56 +95,69 @@
             </label>
          </div>
       </div>
+
       <div class='uk-form-row'>
          <label class='uk-form-label' for='locale'>
             <% gettext Language %>
          </label>
+
          <div class='uk-form-controls'>
             <% site.select locale %>
          </div>
       </div>
+
       <div class='uk-form-row'>
          <label class='uk-form-label' for='timeZone'>
             <% gettext 'Time Zone' %>
          </label>
+
          <div class='uk-form-controls'>
             <% site.select timeZone %>
          </div>
       </div>
+
       <div class='uk-form-row'>
          <label class='uk-form-label' for='notificationMode'>
             <% gettext Notifications %>
          </label>
+
          <div class='uk-form-controls'>
             <% site.select notificationMode %>
          </div>
       </div>
    </fieldset>
+
    <fieldset class='uk-margin-top'>
       <legend><% gettext Advanced %></legend>
+
       <div class='uk-form-row'>
          <label class='uk-form-label' for='maxImageWidth'>
             <% gettext 'Image Dimension Limits' %>
             <i class='uk-icon-info-circle uk-text-muted' title='<% gettext "If you want to resize the image please specify your desired maximum width and/or maximum height in pixels. If you specify both the image will be resized to match both criterias, but the image ratio will be preserved. If the width or height of your image exceeds 100 pixels Antville automatically creates a thumbnail of it, too." %> ' data-uk-tooltip='{pos: "right"}'></i>
          </label>
+
          <div class='uk-form-controls'>
             <% site.input maxImageWidth type='number' min=1 class='uk-form-width-small' %>
             &times;
             <% site.input maxImageHeight type='number' min=1 class='uk-form-width-small' %> <% gettext Pixels %>
          </div>
       </div>
+
       <div class='uk-form-row'>
          <label class='uk-form-label' for='trollFilter'>
             <% gettext 'Troll Filter' %>
          </label>
+
          <div class='uk-form-controls'>
             <% site.textarea trollFilter rows=5 class='uk-width-1-1' %>
          </div>
       </div>
+
       <div class='uk-form-row'>
          <label class='uk-form-label' for='spamfilter' >
             <% gettext 'Referrer Filter' %>
          </label>
+
          <div class='uk-form-controls'>
             <% site.textarea spamfilter rows=5 class='uk-width-1-1' %>
             <p class="uk-form-help-block">
@@ -138,10 +165,12 @@
             </p>
          </div>
       </div>
+
       <div class='uk-form-row'>
          <label class='uk-form-label' for='callbackUrl'>
             <% gettext 'Callback URL' %>
          </label>
+
          <div class='uk-form-controls'>
             <% site.input callbackUrl type=url class='uk-width-1-1' %>
             <label>
@@ -150,58 +179,77 @@
             </label>
          </div>
       </div>
+
       <div class='uk-form-row'>
          <label class='uk-form-label'>
             <% gettext Bookmarklet %>
          </label>
+
          <div class='uk-form-controls'>
             <a class='uk-button' data-uk-tooltip='{pos: "right"}' href="javascript: void (() => {const F = {'🍪': '',  '⚓': '<% root.static %>../../formica.html', '🐜': '<% site.href %>', '📝': window.getSelection ? window.getSelection() : document.selection.createRange()}; F['📝'] = '' + (F['📝'].text || F['📝']); F['⚓'] += '?s=' + encodeURIComponent(F['🐜']) + '&amp;l=' + encodeURIComponent(location.href) + '&amp;r=' + encodeURIComponent(document.referrer) + '&amp;k=' + encodeURIComponent(F['🍪']) + '&c=' + encodeURIComponent(F['📝']); window.open(F['⚓'], '🐜', 'width=650, height=350');})()" title="<% gettext 'Drag to Bookmarks Bar' %>"><% gettext "Post to {0}" <% site.title %> %></a>
          </div>
       </div>
+
       <div class='uk-form-row'>
          <label class='uk-form-label'>
             <% gettext 'Disk Space' %>
          </label>
+
          <div class='uk-form-controls'>
             <% site.diskspace %>
          </div>
       </div>
    </fieldset>
+
    <% site.skin $Site#admin restricted=true %>
+
    <div class='uk-margin-top'>
       <button class='uk-button uk-button-primary' type="submit" id="submit" name="save" value="1">
          <% gettext Save %>
       </button>
+
       <% site.link delete <% gettext Delete %> class='uk-button' %>
       <a href='<% site.href %>' class="uk-button uk-button-link"><% gettext Cancel %></a>
    </div>
 </form>
-<script>
-   $('input#callbackMode').on('click', function(event) {
-      $('input#callbackUrl').prop('disabled', !this.checked);
-   });
-   $('input#callbackUrl').prop('disabled', !$('input#callbackMode').prop('checked'));
 
-   // Group related <option> elements by inserting additional <optgroup> elements.
-   var groups = [];
-   var element = $('form#edit #timeZone');
-   element.find('option').each(function(index, item) {
-      var zone = $(item);
-      var parts = zone.html().split('/'); // E.g. Europe/Vienna
-      var group = parts[0];
-      if ($.inArray(group, groups) < 0) {
-         groups.push(group);
-      }
-   });
-   groups.sort();
-   $.each(groups, function(index, group) {
-      var key = group + '/'; // E.g. Europe/
-      element.find('option:contains(' + key + ')')
-         .wrapAll($('<optgroup>').attr('label', group))
-         .each(function(index, item) {
-            $(item).html($(item).html().replace(key, ''));
-         });
-      });
+<script>
+  const dom = window;
+
+  dom.callbackMode.addEventListener('click', function(event) {
+    dom.callbackUrl.disabled = !this.checked;
+  });
+
+  // Group related <option> elements by inserting additional <optgroup> elements.
+  const groups = [];
+
+  dom.timeZone.querySelectorAll('option').forEach(function(item, index) {
+    const parts = item.innerHTML.split('/'); // E.g. Europe/Vienna
+    const group = parts[0];
+
+    if (groups.indexOf(group) < 0) {
+      groups.push(group);
+    }
+  });
+
+  groups.sort();
+
+  groups.forEach(function(group, index) {
+    const key = group + '/'; // E.g. Europe/
+    const optgroup = document.createElement('optgroup');
+
+    optgroup.setAttribute('label', group);
+
+    dom.timeZone.querySelectorAll('option[value^="' + key + '"]').forEach(function(option) {
+      option.innerHTML = option.innerHTML.replace(key, '');
+      optgroup.appendChild(option);
+    });
+
+    dom.timeZone.appendChild(optgroup);
+
+    // Correct the selected index
+    timeZone.selectedIndex = Array.from(timeZone.options).indexOf(timeZone.querySelector('option[selected]'));
+  });
 </script>
 
 <% #meta %>
