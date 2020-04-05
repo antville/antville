@@ -382,43 +382,48 @@
 </footer>
 
 <% #javascript %>
-const init = function() {
-  // Unhide hidden links triggering JavaScript
-  document.querySelectorAll('a[href="javascript:"]').forEach(element => {
-    element.style.display = 'initial';
-  });
+// Import the static JS file
+<% // site.skin #include href=<% root.static ../../scripts/main-20200405.min.js %> %>
 
-  // Injecting main.css if necessary for compatibility reasons
-  if (!document.querySelector('link[href="<% site.href main.css %>"]')) {
-    var link = document.createElement('link');
-    link.href = '<% site.href main.css %>';
-    link.rel = 'stylesheet';
-    link.type = 'text/css';
-    document.head.appendChild(link);
+// The void operator is necessary or we get some wicked error from browserify(?)
+void (function() {
+  const init = function() {
+    // Unhide hidden links triggering JavaScript
+    document.querySelectorAll('a[href="javascript:"]').forEach(element => {
+      element.style.display = 'inherit';
+    });
+
+    // Injecting main.css if necessary for compatibility reasons
+    if (!document.querySelector('link[href="<% site.href main.css %>"]')) {
+      const link = document.createElement('link');
+      link.href = '<% site.href main.css %>';
+      link.rel = 'stylesheet';
+      document.head.appendChild(link);
+    }
   }
-}
 
-if (
-  document.readyState === 'complete' ||
-  (document.readyState !== 'loading' && !document.documentElement.doScroll)
-) {
-  init();
-} else {
-  document.addEventListener('DOMContentLoaded', init);
-}
+  if (
+    document.readyState === 'complete' ||
+    (document.readyState !== 'loading' && !document.documentElement.doScroll)
+  ) {
+    init();
+  } else {
+    document.addEventListener('DOMContentLoaded', init);
+  }
+})();
 
 <% site.skin Site#javascript | script %>
 
 <% #include %>
-(function (url) {
-   var script = document.createElement('script');
-   script.type = 'text/javascript';
+// The void operator is necessary or we get some wicked error from browserify(?)
+void (function(url) {
+   const script = document.createElement('script');
    script.src = url;
    document.head.appendChild(script);
 })('<% param.href %>');
 
 <% #stylesheet %>
-@import '<% root.static ../../styles/main.min.css %>';
+@import '<% root.static ../../styles/main-20200405.min.css %>';
 
 // FIXME: compatibility
 

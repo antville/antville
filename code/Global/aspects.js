@@ -18,9 +18,9 @@
 app.addRepository('modules/helma/Aspects.js');
 
 (function() {
-
   function skinMayDisplayEditLink(name) {
     return req.cookies[User.COOKIE + 'LayoutSandbox'] &&
+      name !== 'Site#page' &&
       res.handlers.layout.getPermission('main') &&
       typeof name === 'string' &&
       !name.startsWith('$') &&
@@ -35,6 +35,7 @@ app.addRepository('modules/helma/Aspects.js');
       // Fix names using short form (ie. missing prototype)
       name = object.constructor.name + name;
     }
+
     var id = name.replace('#', '-').toLowerCase();
 
     if (skinMayDisplayEditLink(name) && !res.meta.skins[name]) {

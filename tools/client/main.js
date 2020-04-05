@@ -1,5 +1,6 @@
-window.$ = window.jQuery = require('jquery');
+window.Antville = {};
 window.md5 = require('js-md5/src/md5');
+window.$ = window.jQuery = require('jquery');
 
 require('jquery-collagePlus/jquery.collagePlus');
 require('jquery-collagePlus/extras/jquery.collageCaption');
@@ -10,163 +11,211 @@ require('uikit/dist/js/components/form-password');
 require('uikit/dist/js/components/tooltip');
 require('uikit/dist/js/components/upload');
 
-$(function() {
-   // Extend jQuery with selectText() method.
-   $.fn.selectText = function() {
-      var element = this.get(0);
-      if (document.body.createTextRange) { // ms
-         var range = document.body.createTextRange();
-         range.moveToElementText(element);
-         range.select();
-      } else if (window.getSelection) { // moz, opera, webkit
-         var selection = window.getSelection();
-         var range = document.createRange();
-         range.selectNodeContents(element);
-         selection.removeAllRanges();
-         selection.addRange(range);
-      }
-   };
+const init = function() {
+  // Highlight the current navigation menu item
+  const navItem = document.querySelector('.uk-nav a[href="' + location + '"]');
 
-   // Highlight the current navigation menu item
-   var counter = 0;
-   $('.uk-nav li').each(function (index, element) {
-      if (counter > 0) {
-         return;
-      }
-      var href = String($(element).find('a').attr('href')) + location.hash;
-      var index = location.href.lastIndexOf(href);
-      if (href && index > -1 && index + href.length === location.href.length) {
-         $(element).addClass('uk-active');
-         counter += 1;
-      }
-   });
+  if (navItem) navItem.parentElement.classList.add('uk-active');
 
-   // Prevent redundant submits of a form
-   $('form').one('submit', function (event) {
-      var submit = $(this).find('[type=submit]');
-      setTimeout(function () {
-         submit.attr('disabled', true);
-      }, 1);
-   });
+  // let counter = 0;
 
-   // Show prompt to copy macro code
-   $('a.av-clipboard-copy').on('click', function (event) {
-      event.preventDefault();
-      prompt($(this).data('text'), $(this).data('value'));
-   });
+  // document.querySelectorAll('.uk-nav li').forEach(function(element) {
+  //   return
+  //   if (counter > 0) return;
 
-   // Select the macro code when clicking on elements with the macro-code class.
-   // FIXME: Obsolete (should move to compat layer)
-   $('.macro-code').click(function(event) {
-      $(this).selectText();
-   });
+  //   const link = element.querySelector('a');
 
-   // Compatibility: Go back when cancel link is clicked
-   $('a.cancel').on('click', function (event) {
-      event.preventDefault();
-      history.back()
-   });
+  //   if (!link) return;
 
-   // Add the skin controls for the layout sandbox
-   /*$('body').prepend($('<div>').attr('class', 'layout-sandbox')
-      .append($('<div>')
-         .append($('<button>')
-            .html('Exit Sandbox')
-               .click(function() {
-                  location.replace($('a[href$='sandbox']').attr('href'));
-               }))));*/
-   $('.av-skin').each(function() {
-      var skinButton = $('<span class="av-skin-control"><a class="av-skin-edit-link">');
-      skinButton.find('a').attr({
-         'data-uk-tooltip': true,
-         href: $(this).data('href'),
-         title: 'Click to edit ' + $(this).data('name') + ' skin'
-      }).mouseover(function() {
-         $(this).parents('.av-skin').eq(0).addClass('av-skin-active');
-      }).mouseout(function() {
-         $(this).parents('.av-skin').eq(0).removeClass('av-skin-active');
-      }).html('<i class="uk-icon-pencil"></i>');
-      $(this).prepend(skinButton);
+  //   const href = element.getAttribute('href') + location.hash;
+  //   const index = location.href.lastIndexOf(href);
+
+  //   if (href && index > -1 && index + href.length === location.href.length) {
+  //       element.classList.add('uk-active');
+  //       counter += 1;
+  //   }
+  // });
+
+  // Prevent redundant submits of a form
+  document.querySelectorAll('form').forEach(function(form) {
+    form.addEventListener('submit', function() {
+      const submit = this.querySelector('[type=submit]');
+      if (!submit) return;
+      setTimeout(function() { submit.disabled = true; }, 1);
+    }, { once: true });
   });
-});
 
-Antville = {};
+
+  // Show prompt to copy macro code
+  document.querySelectorAll('a.av-clipboard-copy').forEach(function(element) {
+    element.addEventListener('click', function(event) {
+      event.preventDefault();
+      prompt(this.dataset.text, this.dataset.value);
+    });
+  });
+
+  // Select the macro code when clicking on elements with the macro-code class.
+  // FIXME: Obsolete (should move to compat layer)
+  document.querySelectorAll('.macro-code').forEach(function(element) {
+    element.addEventListener('click', function() {
+      selectText(this);
+    });
+  });
+
+  const selectText = function(element) {
+    if (document.body.createTextRange) { // ms
+      const range = document.body.createTextRange();
+      range.moveToElementText(element);
+      range.select();
+    } else if (window.getSelection) { // moz, opera, webkit
+      const selection = window.getSelection();
+      const range = document.createRange();
+      range.selectNodeContents(element);
+      selection.removeAllRanges();
+      selection.addRange(range);
+    }
+  };
+
+  // Compatibility: Go back when cancel link is clicked
+  document.querySelectorAll('a.cancel').forEach(function(element) {
+    element.addEventListener('click', function (event) {
+      event.preventDefault();
+      history.back();
+    });
+  });
+
+  document.querySelectorAll('.av-skin').forEach(function(element) {
+    const control = document.createElement('span');
+
+    control.classList.add('av-skin-control');
+    control.innerHTML = '<a class="av-skin-edit-link"></a>';
+
+    const button = control.querySelector('a');
+
+    button.innerHTML = '<i class="uk-icon-pencil"></i>';
+    button.setAttribute('data-uk-tooltip', true);
+    button.setAttribute('href', element.dataset.href);
+    button.setAttribute('title','Click to edit ' + element.dataset.name + ' skin');
+
+    button.addEventListener('mouseover', function() {
+      element.classList.add('av-skin-active');
+    });
+
+    button.addEventListener('mouseout', function() {
+      element.classList.remove('av-skin-active');
+    });
+
+    element.insertAdjacentElement('afterbegin', control);
+  });
+};
+
+if (
+  document.readyState === "complete" ||
+  (document.readyState !== "loading" && !document.documentElement.doScroll)
+) {
+  init();
+} else {
+  document.addEventListener('DOMContentLoaded', init);
+}
+
 Antville.prefix = 'Antville_';
 
 Antville.encode = function(str) {
-   var chars = ['&', '<', '>', '\''];
-   for (var i in chars) {
-      var c = chars[i];
-      var re = new RegExp(c, 'g');
-      str = str.replace(re, '&#' + c.charCodeAt() + ';');
-   }
-   return str;
+  const chars = ['&', '<', '>', '\''];
+
+  for (let i in chars) {
+    const c = chars[i];
+    const re = new RegExp(c, 'g');
+    str = str.replace(re, '&#' + c.charCodeAt() + ';');
+  }
+
+  return str;
 };
 
 Antville.decode = function(str) {
-   return str.replace(/&amp;/g, '&');
+  return str.replace(/&amp;/g, '&');
 };
 
 Antville.Referrer = function(url, text, count) {
-   this.url = url;
-   var re = new RegExp('https?://(?:www\.)?');
-   this.text = String(text).replace(re, '');
-   var pos = this.text.lastIndexOf('/');
-   if (pos === this.text.length - 1) {
-      this.text = this.text.substr(0, pos);
-   }
-   this.count = parseInt(count, 10);
-   this.compose = function(prefix, key) {
-      prefix || (prefix = '');
-      var query = new Antville.Query(this.url);
-      if (query[key]) {
-         return prefix + ' ' + Antville.encode(query[key]);
-      }
-      return this.text;
-   }
-   return this;
+  this.url = url;
+
+  const re = new RegExp('https?://(?:www\.)?');
+
+  this.text = String(text).replace(re, '');
+
+  const pos = this.text.lastIndexOf('/');
+
+  if (pos === this.text.length - 1) {
+    this.text = this.text.substr(0, pos);
+  }
+
+  this.count = parseInt(count, 10);
+
+  this.compose = function(prefix, key) {
+    prefix || (prefix = '');
+
+    const query = new Antville.Query(this.url);
+
+    if (query[key]) {
+      return prefix + ' ' + Antville.encode(query[key]);
+    }
+
+    return this.text;
+  }
+
+  return this;
 };
 
 Antville.Query = function(str) {
-   if (str == undefined)
-      var str = location.search.substring(1);
-   else if (str.indexOf('?') > -1)
-      var str = str.split('?')[1];
-   if (str == '')
-      return this;
-   var parts = Antville.decode(decodeURIComponent(str)).split('&');
-   for (var i in parts) {
-      var pair = parts[i].split('=');
-      var key = pair[0];
-      if (key) {
-         key = key.replace(/\+/g, ' ');
-         var value = pair[1];
-         if (value)
-           value = value.replace(/\+/g, ' ');
-         this[key] = value;
-      }
-   }
-   return this;
+  if (str == undefined) {
+    str = location.search.substring(1);
+  } else if (str.indexOf('?') > -1) {
+    str = str.split('?')[1];
+  }
+
+  if (str == '') return this;
+
+  const parts = Antville.decode(decodeURIComponent(str)).split('&');
+
+  for (let i in parts) {
+    const pair = parts[i].split('=');
+    let key = pair[0];
+
+    if (key) {
+      key = key.replace(/\+/g, ' ');
+      let value = pair[1];
+      if (value)
+        value = value.replace(/\+/g, ' ');
+      this[key] = value;
+    }
+  }
+
+  return this;
 };
 
 Antville.Filter = function(def, key) {
-   this.key = key;
-   if (def == null)
-      this.items = [];
-   else if (def instanceof Array)
-      this.items = def;
-   else
-      this.items = def.replace(/\r/g, '\n').split('\n');
-   this.test = function(str) {
-      if (!str)
-         return false;
-      str = str.replace(/&amp;/g, '&');
-      for (var n in this.items) {
-         var re = new RegExp(this.items[n], 'i');
-         if (re.test(str))
-            return true;
-      }
-      return false;
-   }
-   return this;
+  this.key = key;
+
+  if (def == null) {
+    this.items = [];
+  } else if (def instanceof Array) {
+    this.items = def;
+  } else {
+    this.items = def.replace(/\r/g, '\n').split('\n');
+  }
+
+  this.test = function(str) {
+    if (!str) return false;
+
+    str = str.replace(/&amp;/g, '&');
+
+    for (var n in this.items) {
+      var re = new RegExp(this.items[n], 'i');
+      if (re.test(str)) return true;
+    }
+
+    return false;
+  }
+
+  return this;
 };

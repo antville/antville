@@ -63,8 +63,8 @@ prefix="Last update: " default="None so far" %>)</span></li>
       <link rel='shortcut icon' type='image/x-icon' href='<% image /favicon.png url %>'>
       <link rel='apple-touch-icon' href='<% image /favicon.png url %>'>
       <% response.links %>
-      <link rel='stylesheet' type='text/css' href='<% site.href main.css %>'>
-      <script type='text/javascript' src='<% site.href main.js %>'></script>
+      <link rel='stylesheet' href='<% site.href main.css %>'>
+      <script src='<% site.href main.js %>'></script>
    </head>
    <body class='av-16'>
       <% site.skin $Site#header %>

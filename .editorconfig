@@ -13,5 +13,5 @@ trim_trailing_whitespace = true
 [*.md]
 trim_trailing_whitespace = false
 
-[*.{html,java,skin}]
+[*.{java}]
 indent_size = 3

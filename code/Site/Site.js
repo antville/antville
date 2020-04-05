@@ -497,7 +497,7 @@ Site.prototype.main_js_action = function() {
   HopObject.confirmConstructor(Skin);
   res.dependsOn((new Skin('Site', 'javascript')).getStaticFile().lastModified());
   res.digest();
-  var file = new java.io.File(root.getStaticFile('../../scripts/main.min.js'));
+  var file = new java.io.File(root.getStaticFile('../../scripts/main-20200405.min.js'));
   res.writeln(Packages.org.apache.commons.io.FileUtils.readFileToString(file, 'utf-8'));
   this.renderSkin('$Site#javascript');
   Claustra.invoke(req.path);
