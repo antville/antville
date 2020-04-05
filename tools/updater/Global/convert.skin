@@ -357,7 +357,7 @@ update user set status = 'regular';
 update user set status = 'blocked' where USER_ISBLOCKED = 1;
 update user set status = 'trusted' where USER_ISTRUSTED = 1;
 update user set status = 'privileged' where USER_ISSYSADMIN = 1;
-update user set salt = conv(floor(0 + (rand() * pow(2, 48))), 10, 16), hash = md5(concat(user_password, salt));
+update user set salt = conv(floor(0 + (rand() * pow(2, 48))), 10, 16), hash = window.md5(concat(user_password, salt));
 #!users
 alter table user drop column hash, drop column salt, drop column USER_URL, drop column USER_PASSWORD, drop column USER_EMAIL_ISPUBLIC, drop column USER_ISBLOCKED, drop column USER_ISTRUSTED, drop column USER_ISSYSADMIN;
 #alter table user convert to character set utf8 collate utf8_bin;

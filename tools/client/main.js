@@ -1,5 +1,5 @@
 window.$ = window.jQuery = require('jquery');
-jQuery.md5 = require('js-md5/src/md5');
+window.md5 = require('js-md5/src/md5');
 
 require('jquery-collagePlus/jquery.collagePlus');
 require('jquery-collagePlus/extras/jquery.collageCaption');

@@ -110,7 +110,7 @@
       var salt = "<% session.salt %>";
       var password = $("#password").val();
       if (password) {
-         var hash = $.md5(password + token);
+         var hash = window.md5(password + token);
          $("#hash").val(hash);
          $("#password").val("");
       }

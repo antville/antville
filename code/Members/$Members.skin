@@ -84,7 +84,7 @@
             var password = $("#password").val();
             var token = "<% session.token %>";
             $("input:password").val("");
-            $("#digest").val($.md5($.md5(password + salt) + token));
+            $("#digest").val(window.md5(window.md5(password + salt) + token));
             form.submit();
          }
       });
@@ -138,7 +138,7 @@
       var token = '<% session.token %>';
       var password = $('#password').val();
       $('input:password').val('');
-      var hash = $.md5(password + token);
+      var hash = window.md5(password + token);
       $('#hash').val(hash);
    });
 </script>
