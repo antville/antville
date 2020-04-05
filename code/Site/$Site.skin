@@ -382,19 +382,30 @@
 </footer>
 
 <% #javascript %>
-$(function () {
-   // Unhide hidden links triggering JavaScript
-   $('a[href="javascript:"]:hidden').css('display', 'inline-block');
+const init = function() {
+  // Unhide hidden links triggering JavaScript
+  document.querySelectorAll('a[href="javascript:"]').forEach(element => {
+    element.style.display = 'initial';
+  });
 
-   // Injecting main.css if necessary for compatibility reasons
-   if (!document.querySelector('link[href="<% site.href main.css %>"]')) {
-      var link = document.createElement('link');
-      link.href = '<% site.href main.css %>';
-      link.rel = 'stylesheet';
-      link.type = 'text/css';
-      document.head.appendChild(link);
-   }
-});
+  // Injecting main.css if necessary for compatibility reasons
+  if (!document.querySelector('link[href="<% site.href main.css %>"]')) {
+    var link = document.createElement('link');
+    link.href = '<% site.href main.css %>';
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    document.head.appendChild(link);
+  }
+}
+
+if (
+  document.readyState === 'complete' ||
+  (document.readyState !== 'loading' && !document.documentElement.doScroll)
+) {
+  init();
+} else {
+  document.addEventListener('DOMContentLoaded', init);
+}
 
 <% site.skin Site#javascript | script %>
 
@@ -459,9 +470,11 @@ h1, h2, h3, h4, h5, h6 {
 
 a {
    color: @link-color;
+
    &:hover {
      color: @hover-color;
    }
+
    &[href='javascript:'] {
       display: none;
    }
@@ -1229,7 +1242,7 @@ a.gs-title:hover {
       <% param.referrer | link %>
    </td>
    <td class='av-referrer-control uk-text-right'>
-      <a href='javascript:' class='uk-hidden'><i class='uk-icon uk-icon-filter'></i></a>
+      <a href='javascript:'><i class='uk-icon uk-icon-filter'></i></a>
    </td>
 </tr>
 
