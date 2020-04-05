@@ -382,36 +382,6 @@
 </footer>
 
 <% #javascript %>
-// Import the static JS file
-<% // site.skin #include href=<% root.static ../../scripts/main-20200405.min.js %> %>
-
-// The void operator is necessary or we get some wicked error from browserify(?)
-void (function() {
-  const init = function() {
-    // Unhide hidden links triggering JavaScript
-    document.querySelectorAll('a[href="javascript:"]').forEach(element => {
-      element.style.display = 'inherit';
-    });
-
-    // Injecting main.css if necessary for compatibility reasons
-    if (!document.querySelector('link[href="<% site.href main.css %>"]')) {
-      const link = document.createElement('link');
-      link.href = '<% site.href main.css %>';
-      link.rel = 'stylesheet';
-      document.head.appendChild(link);
-    }
-  }
-
-  if (
-    document.readyState === 'complete' ||
-    (document.readyState !== 'loading' && !document.documentElement.doScroll)
-  ) {
-    init();
-  } else {
-    document.addEventListener('DOMContentLoaded', init);
-  }
-})();
-
 <% site.skin Site#javascript | script %>
 
 <% #include %>

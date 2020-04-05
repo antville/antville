@@ -17,24 +17,10 @@ const init = function() {
 
   if (navItem) navItem.parentElement.classList.add('uk-active');
 
-  // let counter = 0;
-
-  // document.querySelectorAll('.uk-nav li').forEach(function(element) {
-  //   return
-  //   if (counter > 0) return;
-
-  //   const link = element.querySelector('a');
-
-  //   if (!link) return;
-
-  //   const href = element.getAttribute('href') + location.hash;
-  //   const index = location.href.lastIndexOf(href);
-
-  //   if (href && index > -1 && index + href.length === location.href.length) {
-  //       element.classList.add('uk-active');
-  //       counter += 1;
-  //   }
-  // });
+  // Display hidden links triggering JavaScript
+  document.querySelectorAll('a[href="javascript:"]').forEach(element => {
+    element.style.display = 'inherit';
+  });
 
   // Prevent redundant submits of a form
   document.querySelectorAll('form').forEach(function(form) {
@@ -52,6 +38,31 @@ const init = function() {
       event.preventDefault();
       prompt(this.dataset.text, this.dataset.value);
     });
+  });
+
+  // Inject skin controls
+  document.querySelectorAll('.av-skin').forEach(function(element) {
+    const control = document.createElement('span');
+
+    control.classList.add('av-skin-control');
+    control.innerHTML = '<a class="av-skin-edit-link"></a>';
+
+    const button = control.querySelector('a');
+
+    button.innerHTML = '<i class="uk-icon-pencil"></i>';
+    button.setAttribute('data-uk-tooltip', true);
+    button.setAttribute('href', element.dataset.href);
+    button.setAttribute('title','Click to edit ' + element.dataset.name + ' skin');
+
+    button.addEventListener('mouseover', function() {
+      element.classList.add('av-skin-active');
+    });
+
+    button.addEventListener('mouseout', function() {
+      element.classList.remove('av-skin-active');
+    });
+
+    element.insertAdjacentElement('afterbegin', control);
   });
 
   // Select the macro code when clicking on elements with the macro-code class.
@@ -84,29 +95,13 @@ const init = function() {
     });
   });
 
-  document.querySelectorAll('.av-skin').forEach(function(element) {
-    const control = document.createElement('span');
-
-    control.classList.add('av-skin-control');
-    control.innerHTML = '<a class="av-skin-edit-link"></a>';
-
-    const button = control.querySelector('a');
-
-    button.innerHTML = '<i class="uk-icon-pencil"></i>';
-    button.setAttribute('data-uk-tooltip', true);
-    button.setAttribute('href', element.dataset.href);
-    button.setAttribute('title','Click to edit ' + element.dataset.name + ' skin');
-
-    button.addEventListener('mouseover', function() {
-      element.classList.add('av-skin-active');
-    });
-
-    button.addEventListener('mouseout', function() {
-      element.classList.remove('av-skin-active');
-    });
-
-    element.insertAdjacentElement('afterbegin', control);
-  });
+  // Injecting main.css if necessary for compatibility reasons
+  if (!document.querySelector('link[href="<% site.href main.css %>"]')) {
+    const link = document.createElement('link');
+    link.href = '<% site.href main.css %>';
+    link.rel = 'stylesheet';
+    document.head.appendChild(link);
+  }
 };
 
 if (
