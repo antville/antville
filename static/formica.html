@@ -170,29 +170,6 @@
           if (res.headers.error) return feedback('URL error; no data.');
         }
 
-        // TODO: Probably unfeasible, but parsing client-side rendered HTML for images would be nice, too…
-        // const doc = document.implementation.createHTMLDocument('clone');
-
-        // doc.documentElement.innerHTML = res.content;
-
-        // const base = document.createElement('base');
-        // const url = new URL(_sourceUri);
-
-        // base.setAttribute('href', url.origin);
-        // doc.head.appendChild(base);
-
-        // const iframe = document.createElement('iframe');
-
-        // //iframe.src = _sourceUri;
-        // document.body.appendChild(iframe);
-
-        // iframe.onload = () => console.log('tobi', iframe.contentglobal.images)
-
-        // const iframeContent = iframe.contentDocument;
-        // const node = iframeContent.importNode(doc.documentElement, true);
-
-        // iframeContent.replaceChild(node, iframeContent.documentElement);
-
         const parser = new DOMParser();
         const sourceDocument = parser.parseFromString(res.content, 'text/html');
 
