@@ -8,7 +8,36 @@
 <link rel='icon' type='image/x-icon' href='img/favicon.png'>
 <link rel='shortcut icon' type='image/x-icon' href='img/favicon.png'>
 <link rel='apple-touch-icon' href='img/favicon.png'>
-<link rel='stylesheet' href='https://antville.org/main.css'>
+
+<script>
+  const global = window;
+  const settings = {};
+
+  let proxyUri;
+
+  (search => {
+    search = String(search).substr(1);
+
+    if (search.length > 0) {
+      let parts = search.split('&');
+
+      parts.forEach((item, index) => {
+        parts = item.split('=');
+        settings[parts[0]] = decodeURIComponent(parts[1]);
+      });
+    }
+
+    proxyUri = settings.b + 'claustra/proxy';
+
+    const link = document.createElement('link');
+
+    link.rel = 'stylesheet';
+    link.href = settings.b + 'main.css';
+    link.onload = () => document.querySelector('main').hidden = false;
+
+    document.head.appendChild(link);
+  })(location.search);
+</script>
 
 <style>
   body {
@@ -37,7 +66,7 @@
   }
 </style>
 
-<div class='uk-grid' data-uk-grid-margin>
+<main hidden class='uk-grid' data-uk-grid-margin>
   <div class='uk-width-medium-2-5 uk-hidden left'>
     <figure class='uk-panel uk-panel-box uk-panel-box-secondary' onclick='onToggleImage(event)'>
       <div class='image uk-panel-teaser'>
@@ -49,7 +78,8 @@
         <div class='controls uk-button-group uk-float-right'>
           <a href='javascript:' class='uk-button' onclick='onChangeImage(event, -1)'>
             <i class='uk-icon-arrow-left'></i>
-          </a><a href='javascript:' class='uk-button' onclick='onChangeImage(event, +1)'>
+          </a>
+          <a href='javascript:' class='uk-button' onclick='onChangeImage(event, +1)'>
             <i class='uk-icon-arrow-right'></i>
           </a>
         </div>
@@ -77,35 +107,19 @@
       </button>
     </div>
   </form>
-</div>
-
-<script src='https://antville.org/main.js'></script>
+</main>
 
 <script>
   (() => {
-    const global = window;
-    //const proxyUri = 'https://p3k-services.appspot.com/roxy';
-    const proxyUri = 'http://localhost:8001/roxy'; // for development
+    const script = document.createElement('script');
 
-    let _args;
+    script.src = settings.b + 'main.js';
+    document.body.appendChild(script);
+
     let _currentIndex;
     let _images;
     let _siteUri;
     let _sourceUri;
-
-    (search => {
-      search = String(search).substr(1);
-
-      if (search.length > 0) {
-        let parts = search.split('&');
-        _args = {};
-
-        parts.forEach((item, index) => {
-          parts = item.split('=');
-          _args[parts[0]] = decodeURIComponent(parts[1]);
-        });
-      }
-    })(location.search);
 
     global.onChangeImage = (event, direction = 1) => {
       event.preventDefault();
@@ -140,10 +154,10 @@
     };
 
     const main = () => {
-      if (!_args.s || !_args.l) return;
+      if (!settings.s || !settings.l) return;
 
-      _siteUri = decodeURIComponent(_args.s);
-      _sourceUri = decodeURIComponent(_args.l);
+      _siteUri = decodeURIComponent(settings.s);
+      _sourceUri = decodeURIComponent(settings.l);
 
       if (!_siteUri || !_sourceUri) return;
 
@@ -151,10 +165,11 @@
       _currentIndex = 0;
 
       if (_sourceUri.match(new RegExp('(?:bmp|gif|jpg|jpeg|png)$', 'i'))) {
+        feedback();
         return addImage(_sourceUri);
       }
 
-      const customCookie = decodeURIComponent(_args.k || '');
+      const customCookie = decodeURIComponent(settings.k || '');
 
       const data = {
         url: _sourceUri,
@@ -163,15 +178,24 @@
         ref: location.href
       }
 
-      jsonp(proxyUri, data, (res, error) => {
-        if (error) return feedback(null, 'Could not fetch URL.');
+      jsonp(proxyUri, data, (content, error) => {
+        let text = '';
 
-        if (!res.content) {
-          if (res.headers.error) return feedback('URL error; no data.');
+        if (settings.c) text = decodeURIComponent(settings.c).trim();
+
+        if (error) {
+          text = `[${text}](${_sourceUri})`;
+          if (settings.r) text += ` _(via ${decodeURIComponent(settings.r)})_.`;
+          global.text.value = text;
+          return feedback(null, 'Could not fetch URL; are you logged in?');
+        }
+
+        if (!content) {
+          return feedback('URL error; no data.');
         }
 
         const parser = new DOMParser();
-        const sourceDocument = parser.parseFromString(res.content, 'text/html');
+        const sourceDocument = parser.parseFromString(content, 'text/html');
 
         const openGraphTitle = (meta => meta ? meta.getAttribute('content') : null)(
           sourceDocument.querySelector('meta[property="og:title"]')
@@ -185,14 +209,11 @@
           sourceDocument.querySelector('meta[property="og:image"]')
         );
 
-        let text;
+        if (!text || text === openGraphTitle) text = openGraphDescription || '';
 
-        if (_args.c) text = decodeURIComponent(_args.c).trim();
-        if (!text || text === openGraphTitle) text = openGraphDescription;
+        text = `[${text}](${_sourceUri})`;
 
-        text = text ? `[${text}](${_sourceUri})` : `<${_sourceUri}>`;
-
-        if (_args.r) text += ` _(via <${decodeURIComponent(_args.r)}>)_.`;
+        if (settings.r) text += ` _(via ${decodeURIComponent(settings.r)})_.`;
 
         global.title.value = openGraphTitle || sourceDocument.title;
         global.text.value = text;
@@ -212,7 +233,7 @@
         regexes.forEach(regex => {
           let match;
 
-          while (match = regex.exec(res.content)) {
+          while (match = regex.exec(content)) {
             if (match[1]) addImage(match[1], baseHref);
           }
         });
@@ -343,8 +364,8 @@
           save: 1,
           file_origin: imageUrl,
           name: name,
-          maxWidth: _args.w || '',
-          maxHeight: _args.h || ''
+          maxWidth: settings.w || '',
+          maxHeight: settings.h || ''
         };
 
         jsonp(_siteUri + '/images/create', data, (res, error) => {

@@ -19,7 +19,7 @@ const init = function() {
 
   // Display hidden links triggering JavaScript
   document.querySelectorAll('a[href="javascript:"]').forEach(element => {
-    element.style.display = 'inherit';
+    element.style.display = 'inline-block';
   });
 
   // Prevent redundant submits of a form
