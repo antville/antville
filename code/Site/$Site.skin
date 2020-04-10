@@ -401,7 +401,7 @@ void (function(url) {
 })('<% param.href %>');
 
 <% #stylesheet %>
-@import '<% root.static ../../styles/main-20200405.min.css %>';
+@import '<% root.static ../../styles/main.min.css %>';
 
 // FIXME: compatibility
 
