@@ -94,14 +94,6 @@ const init = function() {
       history.back();
     });
   });
-
-  // Injecting main.css if necessary for compatibility reasons
-  if (!document.querySelector('link[href="<% site.href main.css %>"]')) {
-    const link = document.createElement('link');
-    link.href = '<% site.href main.css %>';
-    link.rel = 'stylesheet';
-    document.head.appendChild(link);
-  }
 };
 
 if (
