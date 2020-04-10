@@ -264,8 +264,16 @@ Image.prototype.update = function(data) {
     if (origin && origin !== this.origin) {
 
       var http = new helma.Http();
-      http.setHeader('Referer', origin);
+
       http.setBinaryMode(true);
+
+      http.setHeader('Accept', 'image/*');
+      http.setHeader('Accept-Encoding', 'gzip');
+      http.setHeader('Cache-Control', 'no-cache');
+      http.setHeader('Pragma', 'no-cache');
+      http.setHeader('Referer', origin);
+      http.setHeader('User-Agent', req.data.http_browser);
+
       var response = http.getUrl(origin);
 
       mime = new Packages.helma.util.MimePart(
