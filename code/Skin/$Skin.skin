@@ -35,8 +35,10 @@
    </div>
    <% skin.textarea source %>
 </form>
-<script type='text/javascript'>
-   var mode;
+
+<script>
+   let mode;
+
    if (location.href.indexOf('stylesheet') > -1) {
       mode = 'text/css';
    } else if (location.href.indexOf('javascript') > -1) {
@@ -44,7 +46,8 @@
    } else {
       mode = 'application/x-helma-skin';
    }
-   var editor = CodeMirror.fromTextArea($('#source').get(0), {
+
+   CodeMirror.fromTextArea(document.querySelector('#source'), {
       autofocus: true,
       enterMode: 'keep',
       indentUnit: 3,
@@ -56,7 +59,8 @@
       tabSize: 3,
       viewportMargin: Infinity
    });
-   $('.av-skin-editor').removeClass('av-invisible');
+
+   document.querySelector('.av-skin-editor').classList.remove('av-invisible');
 </script>
 
 <% #compare %>

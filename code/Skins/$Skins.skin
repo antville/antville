@@ -30,8 +30,8 @@
             background-color: #f2fae3;
          }
       </style>
-      <script type='text/javascript' src='<% site.href main.js %>'></script>
-      <script type='text/javascript' src='<% root.static ../../scripts/editor.min.js %>'></script>
+      <script src='<% site.href main.js %>'></script>
+      <script src='<% root.static ../../scripts/editor.min.js %>'></script>
    </head>
    <body>
       <span class='uk-margin-right uk-float-right'>

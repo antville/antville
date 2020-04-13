@@ -23,20 +23,27 @@
       <label for="confirm"><% ngettext "Yes, really erase {0} comment" "Yes, really erase {0} comments" <% comment.related.size %> %></label>
    </div>
 </div>
-<script type="text/javascript">
-   $('#confirmation').hide();
-   $('#mode').on('click', function() {
-      if ($(this).prop('checked')) {
-         $('#confirm').attr('checked', false);
-         $('#confirmation').show();
-         $('button').attr('disabled', true);
-      } else {
-         $('#confirmation').hide();
-         $('button').attr('disabled', false);
-      }
-   });
-   $('#confirm').on('click', function() {
-      $('button').attr('disabled', !$(this).prop('checked'));
-   });
-   $('.av-alert-confirm').removeClass('uk-hidden');
+
+<script>
+  confirmation.hidden = true;
+
+  mode.addEventListener('click', event => {
+    const button = document.querySelector('button');
+    const input = document.querySelector('#confirm');
+
+    if (event.currentTarget.checked) {
+      input.checked = false;
+      confirmation.hidden = false;
+      button.disabled = true;
+    } else {
+      confirmation.hidden = true;
+      button.disabled = false;
+    }
+
+    input.addEventListener('click', event => {
+      document.querySelector('button').disabled = !event.currentTarget.checked;
+    });
+  });
+
+  document.querySelector('.av-alert-confirm').classList.remove('uk-hidden');
 </script>

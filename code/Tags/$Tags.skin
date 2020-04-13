@@ -1,7 +1,9 @@
 <% #main %>
 <h1><% response.title %></h1>
+
 <% site.skin $Site#noscript %>
 <% response.pager %>
+
 <table class='uk-table uk-table-striped uk-table-hover uk-table-condensed'>
    <thead>
       <tr>
@@ -20,22 +22,32 @@
       <% response.list %>
    </tbody>
 </table>
+
 <% response.pager %>
-<script type='text/javascript'>
-  $('.av-rename-tag').removeClass('uk-hidden').on('click', function (event) {
-    event.preventDefault();
-    var name = prompt("<% gettext 'Please enter a new name for this tag' suffix=: %>")
-    if (name) {
-      var url = $(this).data('av-tag-url');
-      location.href = url + '?name=' + name;
-    }
+
+<script>
+  document.querySelectorAll('.av-rename-tag').forEach(renameButton => {
+    renameButton.classList.remove('uk-hidden');
+
+    renameButton.addEventListener('click', event => {
+      event.preventDefault();
+
+      const url = event.currentTarget.dataset.avTagUrl;
+      const name = prompt("<% gettext 'Please enter a new name for this tag' suffix=: %>")
+
+      if (name) location.href = url + '?name=' + name;
+    });
   });
 
-  $('.av-delete-tag').removeClass('uk-hidden').on('click', function (event) {
-    event.preventDefault();
-    if (confirm("<% gettext 'Are you sure you want to remove this tag?' %>")) {
-      var url = $(this).data('av-tag-url');
-      location.href = url;
-    }
+  document.querySelectorAll('.av-delete-tag').forEach(deleteButton => {
+    deleteButton.classList.remove('uk-hidden');
+
+    deleteButton.addEventListener('click', event => {
+      event.preventDefault();
+
+      if (confirm("<% gettext 'Are you sure you want to remove this tag?' %>")) {
+        location.href = event.currentTarget.dataset.avTagUrl;
+      }
+    });
   });
 </script>

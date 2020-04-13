@@ -40,45 +40,63 @@
       <a href='..' class='uk-button uk-button-link'><% gettext Cancel %></a>
    </div>
 </form>
-<script type='text/javascript'>
-   $('.av-values').on('mouseover', '.av-value-row', function () {
-      $(this).find('.av-value-controls').removeClass('uk-hidden');
-   }).on('mouseout', '.av-value-row', function () {
-      $(this).find('.av-value-controls').addClass('uk-hidden');
-   }).on('click', '.av-value-remove', function () {
-      $(this).parents('.av-value-row').remove();
+
+<script>
+  const pane = document.querySelector('.av-values');
+
+  pane.addEventListener('mouseover', event => {
+    const row = event.target.closest('.av-value-row');
+    if (row) row.querySelector('.av-value-controls').classList.remove('uk-hidden');
+  });
+
+  pane.addEventListener('mouseout', event => {
+    const row = event.target.closest('.av-value-row');
+    if (row) row.querySelector('.av-value-controls').classList.add('uk-hidden');
+  });
+
+  pane.addEventListener('click', event => {
+    const control = event.target.closest('.av-value-remove');
+    if (control) control.closest('.av-value-row').remove();
    });
 
-   $('#av-add-value').removeClass('uk-hidden')
-      .find('a')
-      .on('click', function (event) {
-      event.preventDefault();
-      var name = prompt('<% gettext "Please enter the name of the new setting:" %>');
-      if (name) {
-         var key = 'av-value ' + name;
-         var valueRow = $('.av-value-row').eq(0).clone()
-            .removeClass('uk-hidden')
-         valueRow.find('.av-value-title').html(name);
-         valueRow.find('.uk-form-controls input').attr({
-            id: key.replace(new RegExp(' ', 'g'), '-'),
-            name: key,
-            value: '',
-            type: getType(key)
-         });
-         $('.av-value-row:last').after(valueRow);
-         $(valueRow).find('.av-clipboard-copy').remove();
-         $(valueRow).find('input').focus();
-      }
-   });
+  const addButton = pane.querySelector('#av-add-value');
 
-   function getType(name) {
-      var parts = name.split(' ');
-      var typePart = parts.pop();
-      var types = {
-         color: 'color'
-      };
-      return types[typePart] || 'text';
-   }
+  addButton.classList.remove('uk-hidden');
+
+  addButton.querySelector('a').addEventListener('click', event => {
+    event.preventDefault();
+
+    const name = prompt('<% gettext "Please enter the name of the new setting:" %>');
+
+    if (!name) return;
+
+    const key = 'av-value ' + name;
+    const valueRow = document.querySelector('.av-value-row:last-child');
+    console.log(valueRow)
+    const clone = valueRow.cloneNode(true);
+
+    clone.classList.remove('uk-hidden');
+    clone.querySelector('.av-value-title').innerHTML = name;
+    clone.querySelector('.av-clipboard-copy').remove();
+
+    const input = clone.querySelector('.uk-form-controls input');
+
+    input.setAttribute('id', key.replace(/\s/g, '-'));
+    input.setAttribute('name', key);
+    input.setAttribute('value', '');
+    input.setAttribute('type', getType(key));
+
+    valueRow.insertAdjacentElement('afterend', clone);
+    clone.querySelector('input').focus();
+  });
+
+  const getType = name => {
+    const type = name.split(' ').pop();
+    const types = {
+      color: 'color'
+    };
+    return types[type] || 'text';
+  }
 </script>
 
 <% #value %>

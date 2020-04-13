@@ -206,3 +206,59 @@ Antville.Filter = function(def, key) {
 
   return this;
 };
+
+Antville.trigger = (element, eventType) => {
+  const event = document.createEvent('HTMLEvents');
+  event.initEvent(eventType, false, true);
+  element.dispatchEvent(event);
+  return this;
+};
+
+Antville.http = (method, url, options) => {
+  method = method.toUpperCase();
+
+  const httpClient = new XMLHttpRequest();
+
+  const extendUrl = function(str) {
+    const delimiter = url.indexOf('?') > -1 ? '&' : '?';
+    url += delimiter + str;
+  };
+
+  let _data = null;
+
+  if (options) {
+    if (options.callback && options.callback.constructor === Function) {
+      httpClient.onload = function() {
+        options.callback(this.responseText, null, httpClient);
+      };
+
+      httpClient.onerror = function() {
+        console.log(arguments, this)
+        options.callback(null, this.status, httpClient);
+      };
+    }
+
+    if (options.data) {
+      _data = Object.keys(options.data).map(function(key) {
+        return encodeURIComponent(key) + '=' + encodeURIComponent(options.data[key]);
+      }).join('&');
+
+      if (method !== 'POST') {
+        extendUrl(_data);
+        _data = null;
+      }
+    }
+  }
+
+  // Bypass cache
+  extendUrl('T=' + Date.now());
+
+  httpClient.open(method, url);
+
+  if (method === 'POST') {
+    httpClient.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+  }
+
+  httpClient.send(_data);
+  return this;
+};

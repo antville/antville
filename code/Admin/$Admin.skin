@@ -139,17 +139,20 @@
       <a href='..' class="uk-button uk-button-link"><% gettext Cancel %></a>
    </div>
 </form>
-<script type="text/javascript">
-   $("#creationScope").on('change', function() {
-      var disabled = $(this).val() === "regular" ? false : true;
-      $("#probationPeriod").attr("disabled", disabled);
-      $("#creationDelay").attr("disabled", disabled);
-   }).change();
-   $("#phaseOutMode").on('change', function() {
-      var disabled = $(this).val() !== "disabled" ? false : true;
-      $("#phaseOutNotificationPeriod").attr("disabled", disabled);
-      $("#phaseOutGracePeriod").attr("disabled", disabled);
-   }).change();
+
+<script>
+  creationScope.addEventListener('change', event => {
+    const disabled = event.currentTarget.value !== 'regular';
+    probationPeriod.disabled = creationDelay.disabled = disabled;
+  });
+
+  phaseOutMode.addEventListener('change', event => {
+    const disabled = event.currentTarget.value === "disabled";
+    phaseOutNotificationPeriod.disabled = phaseOutGracePeriod.disabled = disabled;
+  })
+
+  Antville.trigger(creationScope, 'change');
+  Antville.trigger(phaseOutMode, 'change');
 </script>
 
 <% #activities %>

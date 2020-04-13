@@ -64,31 +64,34 @@
       <a href='<% site.href %>' class="uk-button uk-button-link" tabindex=5><% gettext Cancel %></a>
    </div>
 </form>
+
 <% story <% root.termsStory %> link text=<% gettext "Terms and Conditions" %> prefix='<div class="uk-margin-top"><i class="uk-icon-legal"></i> ' suffix=</div> %>
 <% story <% root.privacyStory %> link text=<% gettext "Data Privacy Statement" %> prefix='<div><i class="uk-icon-cloud-upload"></i> ' suffix=</div> %>
-<script type="text/javascript">
-   $("form#login").on('submit', function (event) {
-      if ($('#digest').val()) {
-         return true;
+
+<script>
+  document.querySelector('#login').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    if (document.querySelector('#digest').value) return true;
+
+    const form = event.currentTarget;
+    const name = document.querySelector('#name').value;
+
+    const options = {
+      data: {user: name},
+
+      callback: function(salt, error) {
+        if (error) return;
+        const password = document.querySelector('#password').value;
+        const token = '<% session.token %>';
+        document.querySelector('input[type=password]').value = '';
+        document.querySelector('#digest').value = window.md5(window.md5(password + salt) + token);
+        form.submit();
       }
-      var form = $(this);
-      event.preventDefault();
-      var name = $("#name").val();
-      $.ajax({
-         url: '<% members.href salt.txt %>',
-         data: "user=" + encodeURIComponent(name),
-         dataType: "text",
-         cache: false,
-         error: function() { /* ... */ },
-         success: function(salt, status, xhr) {
-            var password = $("#password").val();
-            var token = "<% session.token %>";
-            $("input:password").val("");
-            $("#digest").val(window.md5(window.md5(password + salt) + token));
-            form.submit();
-         }
-      });
-   });
+    };
+
+    Antville.http('get', '<% members.href salt.txt %>', options);
+  });
 </script>
 
 <% #register %>
@@ -133,14 +136,16 @@
       <a href='<% members.href login %>' class="uk-button uk-button-link" tabindex=7><% gettext Cancel %></a>
    </div>
 </form>
+
 <script>
-   $('form#register').submit(function() {
-      var token = '<% session.token %>';
-      var password = $('#password').val();
-      $('input:password').val('');
-      var hash = window.md5(password + token);
-      $('#hash').val(hash);
-   });
+  document.querySelector('#register').addEventListener('submit', function() {
+    debugger;
+    const token = '<% session.token %>';
+    const password = document.querySelector('#password');
+    const hash = window.md5(password.value + token);
+    password.value = '';
+    document.querySelector('#hash').value = hash;
+  });
 </script>
 
 <% #terms %>

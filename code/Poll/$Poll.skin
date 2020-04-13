@@ -120,15 +120,27 @@
       <a href='.' class='uk-button uk-button-link'><% gettext Cancel %></a>
    </div>
 </form>
-<script type="text/javascript">
-   var index = $(".av-choice").length + 1;
-   $("#av-add-choice").removeClass('uk-hidden').find('a').on('click', function (event) {
-      event.preventDefault();
-      var choice = $(".av-choice:last").clone();
-      choice.find(".uk-form-label").text('#' + index);
-      choice.find("input").attr("value", '');
-      $(".av-choice:last").after(choice);
-      $(".av-choice:last").find("input").focus();
-      index += 1;
-   });
+
+<script>
+  const addButton = document.querySelector('#av-add-choice');
+
+  addButton.classList.remove('uk-hidden');
+
+  addButton.querySelector('a').addEventListener('click', event => {
+    event.preventDefault();
+
+    const choices = document.querySelectorAll('.av-choice');
+    const choice = choices[choices.length - 1];
+    const clone = choice.cloneNode(true);
+    const input = clone.querySelector('input');
+
+    let index = choices.length + 1;
+
+    clone.querySelector('.uk-form-label').innerText = '#' + index;
+    choice.insertAdjacentElement('afterEnd', clone);
+    input.value = '';
+    input.focus();
+
+    index += 1;
+  });
 </script>

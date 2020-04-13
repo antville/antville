@@ -104,17 +104,20 @@
       <a href='<% site.href %>' class="uk-button uk-button-link"><% gettext Cancel %></a>
    </div>
 </form>
-<script type="text/javascript">
-   $("#submit").on('click', function (event) {
-      var token = "<% session.token %>";
-      var salt = "<% session.salt %>";
-      var password = $("#password").val();
-      if (password) {
-         var hash = window.md5(password + token);
-         $("#hash").val(hash);
-         $("#password").val("");
-      }
-   });
+
+<script>
+  document.querySelector('#submit').addEventListener('click', function(event) {
+    const password = document.querySelector('#password');
+
+    if (!password.value) return;
+
+    const token = '<% session.token %>';
+    const salt = '<% session.salt %>';
+    const hash = window.md5(password.value + token);
+
+    document.querySelector('#hash').value = hash;
+    password.value = '';
+  });
 </script>
 
 <% #admin %>

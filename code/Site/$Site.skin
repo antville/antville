@@ -1093,129 +1093,127 @@ a.gs-title:hover {
       <% response.list %>
    </tbody>
 </table>
-<script type="text/javascript">
-   $('.av-referrers').addClass('uk-hidden');
-   $('.av-referrer-control a').removeClass('uk-hidden');
 
-   var query = new Antville.Query();
-   var spamFilter = new Antville.Filter([<% site.spamfilter %>]);
-   var searchFilter = new Antville.Filter(query.filter);
+<script>
+  document.querySelector('.av-referrers').classList.add('uk-hidden');
 
-   var searchEngineFilters = [
-      new Antville.Filter('//.*altavista.*/\\?', 'q'),
-      new Antville.Filter('//.*baidu.com/s\\?', 'wd'),
-      new Antville.Filter('//.*bing\\..*/search\\?', 'q'),
-      new Antville.Filter('//.*duckduckgo.com/\\?', 'q'),
-      new Antville.Filter('//.*google\\..*/imgres\\?', 'imgurl'),
-      new Antville.Filter('//.*google\\..*/\\?.*q=[^&]', 'q'),
-      new Antville.Filter('//.*haosou\\.com/s\\?', 'q'),
-      new Antville.Filter('//.*search\\.yahoo\\..*/\\?', 'p'),
-      new Antville.Filter('//.*search\\.ask\\.com/web\\?', '1'),
-      new Antville.Filter('//.*yandex\\..*/\\?', 'text')
-   ];
+  const query = new Antville.Query();
+  const spamFilter = new Antville.Filter(JSON.parse('<% site.spamfilter %>'));
+  const searchFilter = new Antville.Filter(query.filter);
 
-   var urlShortenerCounter = 0;
-   var urlShortenerFilters = [
-      new Antville.Filter('//.*baidu.com/link'),
-      new Antville.Filter('//bit\\.ly/'),
-      new Antville.Filter('//.*duckduckgo.com/l/\\?'),
-      new Antville.Filter('//l.facebook.com/lrs.php'),
-      new Antville.Filter('//goo\\.gl/'),
-      new Antville.Filter('//.*google\\..*/url\\?'),
-      new Antville.Filter('//ift.tt'),
-      new Antville.Filter('//owl\\.ly/'),
-      new Antville.Filter('//t\\.co/'),
-      new Antville.Filter('//tinyurl\\.com/'),
-      new Antville.Filter('//.*stumbleupon\\.com/refer\\.php\\?'),
-      new Antville.Filter('//.*search\\.yahoo\\..*/.+/RU=')
-   ];
+  const searchEngineFilters = [
+    new Antville.Filter('//.*altavista.*/\\?', 'q'),
+    new Antville.Filter('//.*baidu.com/s\\?', 'wd'),
+    new Antville.Filter('//.*bing\\..*/search\\?', 'q'),
+    new Antville.Filter('//.*duckduckgo.com/\\?', 'q'),
+    new Antville.Filter('//.*google\\..*/imgres\\?', 'imgurl'),
+    new Antville.Filter('//.*google\\..*/\\?.*q=[^&]', 'q'),
+    new Antville.Filter('//.*haosou\\.com/s\\?', 'q'),
+    new Antville.Filter('//.*search\\.yahoo\\..*/\\?', 'p'),
+    new Antville.Filter('//.*search\\.ask\\.com/web\\?', '1'),
+    new Antville.Filter('//.*yandex\\..*/\\?', 'text')
+  ];
 
-   $('.av-referrer-row').each(function (index) {
-      var row = $(this);
-      var ref = row.find('.av-referrer a');
-      var url = ref.attr('href');
-      var count = row.find('.av-referrer-count').html();
-      var control = row.find('.av-referrer-control a');
+  const urlShortenerFilters = [
+    new Antville.Filter('//.*baidu.com/link'),
+    new Antville.Filter('//bit\\.ly/'),
+    new Antville.Filter('//.*duckduckgo.com/l/\\?'),
+    new Antville.Filter('//l.facebook.com/lrs.php'),
+    new Antville.Filter('//goo\\.gl/'),
+    new Antville.Filter('//.*google\\..*/url\\?'),
+    new Antville.Filter('//ift.tt'),
+    new Antville.Filter('//owl\\.ly/'),
+    new Antville.Filter('//t\\.co/'),
+    new Antville.Filter('//tinyurl\\.com/'),
+    new Antville.Filter('//.*stumbleupon\\.com/refer\\.php\\?'),
+    new Antville.Filter('//.*search\\.yahoo\\..*/.+/RU=')
+  ];
 
-      control.on('click', function (event) {
-         event.preventDefault();
-         var input = prompt("<% gettext 'Are you sure you want to add this URL to the referrer  filter? Edit it below to filter a pattern only.' %>", url);
-         if (input) {
-            location.href = '<% site.href referrers %>?submit=1&permanent=' + encodeURIComponent(input);
-         }
-      });
+  let urlShortenerCounter = 0;
 
-      var referrer = new Antville.Referrer(url, url, count);
-      ref.html(referrer.text);
+  document.querySelectorAll('.av-referrer-row').forEach(function(row) {
+    const ref = row.querySelector('.av-referrer a');
+    const url = ref.getAttribute('href');
+    const count = row.querySelector('.av-referrer-count').innerText;
+    const control = row.querySelector('.av-referrer-control a');
+    const referrer = new Antville.Referrer(url, url, count);
 
-      if (spamFilter.test(url)) {
-         if (query.includeSpam) {
-            ref.addClass('uk-text-muted');
-            control.remove();
-         } else {
-            row.remove();
-         }
+    ref.innerHTML = referrer.text;
+
+    control.addEventListener('click', function(event) {
+      event.preventDefault();
+      const input = prompt("<% gettext 'Are you sure you want to add this URL to the referrer  filter? Edit it below to filter a pattern only.' %>", url);
+      if (!input) return;
+      location.href = '<% site.href referrers %>?submit=1&permanent=' + encodeURIComponent(input);
+    });
+
+    if (spamFilter.test(url)) {
+      if (query.includeSpam) {
+        ref.classList.add('uk-text-muted');
+        control.remove();
+      } else {
+        row.remove();
       }
+    }
 
-      if (query.filter && !searchFilter.test(url)) {
-         row.remove();
+    if (query.filter && !searchFilter.test(url)) {
+      row.remove();
+    }
+
+    const re = new RegExp('[:/].*$');
+
+    searchEngineFilters.forEach(function(filter) {
+      if (filter.test(url)) {
+        const host = referrer.text.replace(re, '');
+        ref.innerHTML = referrer.compose('<i><% gettext Search %>:</i>', filter.key);
       }
+    });
 
-      var re = new RegExp('[:/].*$');
-
-      for (var i = 0, filter; i < searchEngineFilters.length; i += 1) {
-         filter = searchEngineFilters[i];
-         if (filter.test(url)) {
-            var host = referrer.text.replace(re, '');
-            ref.html(referrer.compose('<i><% gettext Search %>:</i>', filter.key));
-            return;
-         }
+    urlShortenerFilters.forEach(function(filter) {
+      if (filter.test(url)) {
+        urlShortenerCounter += parseInt(count, 10);
+        const host = referrer.text.replace(re, '');
+        const url = referrer.url.replace(new RegExp('^(.+//[^/]+).*'), '$1');
+        ref.setAttribute('href', url);
+        ref.innerHTML = host;
       }
+    });
+  });
 
-      for (var i = 0, filter; i < urlShortenerFilters.length; i += 1) {
-         filter = urlShortenerFilters[i];
-         if (filter.test(url)) {
-            urlShortenerCounter += parseInt(count, 10);
-            var host = referrer.text.replace(re, '');
-            var url = referrer.url.replace(new RegExp('^(.+//[^/]+).*'), '$1');
-            ref.attr('href', url).html(host);
-            return;
-         }
+  document.querySelectorAll('.av-referrer a').forEach(function(element, index) {
+    const html = element.innerHTML;
+    const countElement = document.querySelectorAll('.av-referrer-count')[index];
+    let count = 0;
+
+    document.querySelectorAll('.av-referrer a').forEach(function(element2, index2) {
+      if (index2 <= index) return;
+
+      if (element2.innerHTML === html) {
+        count += parseInt(document.querySelector('.av-referrer-count')[index2].innerText, 10);
+        element2.closest('.av-referrer-row').classList.add('av-delete');
       }
-   });
+    });
 
-   $('.av-referrer a').each(function (index) {
-      var html = $(this).html();
-      var countElement = $('.av-referrer-count').eq(index);
-      var count = 0;
-      $('.av-referrer a').each(function (index2) {
-         if (index2 <= index) return;
-         if ($(this).html() === html) {
-            count += parseInt($('.av-referrer-count').eq(index2).html(), 10);
-            $(this).parents('.av-referrer-row').addClass('av-delete');
-         }
-      });
-      if (count) {
-         countElement.html(parseInt(countElement.html(), 10) + count);
-      }
-   });
+    if (count) countElement.innerHTML = parseInt(countElement.html(), 10) + count;
+  });
 
-   $('.av-referrer-row.av-delete').remove();
+  document.querySelectorAll('.av-referrer-row.av-delete').forEach(function(element) {
+    element.remove();
+  });
 
-   var table = $('.av-referrers');
-   var rows = $('tbody > tr', table);
-   rows.sort(function (a, b) {
-      var countA = parseInt($('.av-referrer-count', a).text(), 10);
-      var countB = parseInt($('.av-referrer-count', b).text(), 10);
-      return countB - countA;
-   });
-   rows.each(function () {
-      table.append(this);
-   });
+  const table = document.querySelector('.av-referrers tbody');
+  const rows = table.querySelectorAll('tr');
 
-   if ($('.av-referrers tbody').children().length > 0) {
-      $('.av-referrers').removeClass('uk-hidden');
-   }
+  const sortedRows = Array.prototype.slice.call(rows).sort(function(a, b) {
+    return parseInt(b.querySelector('.av-referrer-count').innerText, 10) -
+      parseInt(a.querySelector('.av-referrer-count').innerText, 10);
+  });
+
+  sortedRows.forEach(function(row) { table.appendChild(row); });
+
+  if (document.querySelector('.av-referrers tbody *')) {
+    document.querySelector('.av-referrers').classList.remove('uk-hidden');
+  }
 </script>
 
 <% #referrer %>
@@ -1291,12 +1289,11 @@ a.gs-title:hover {
 </noscript>
 
 <% #menuExt %>
-<script type="text/javascript" defer="defer">
-   var win = external.menuArguments;
-   var url = "<% site.url %>stories/create?text=";
-   var link = escape('<a href="' + win.location.href + '">' +
-      win.document.title + "</a>: ");
-   var text = escape(win.document.selection.createRange().text);
+<script defer='defer'>
+   const win = external.menuArguments;
+   const url = '<% site.url %>stories/create?text=';
+   const link = escape('<a href="' + win.location.href + '">' + win.document.title + '</a>: ');
+   const text = escape(win.document.selection.createRange().text);
    win.location.href = url + link + text;
 </script>
 

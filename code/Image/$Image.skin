@@ -90,14 +90,12 @@
       <a href='.' class="uk-button uk-button-link"><% gettext Cancel %></a>
    </div>
 </form>
-<script type="text/javascript">
-$(function() {
-   if ('<% image.name %>') {
-      $('#name').attr('disabled', true);
-   }
-   $('.av-name-row').removeClass('uk-hidden');
-   if (location.href.indexOf('/layout/') < 0) {
-      $('.av-tags-row').removeClass('uk-hidden');
-   }
-});
+
+<script>
+  if ('<% image.name %>') document.querySelector('#name').disabled = true;
+  document.querySelector('.av-name-row').classList.remove('uk-hidden');
+
+  if (location.href.indexOf('/layout/') < 0) {
+    document.querySelector('.av-tags-row').classList.remove('uk-hidden');
+  }
 </script>

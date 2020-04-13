@@ -31,6 +31,7 @@
 <noscript>
    <input type="file" id="<% param.name %>" name="<% param.name %>">
 </noscript>
+
 <div class="av-upload uk-hidden">
    <input type="file">
    <div class="uk-width-1-1 av-upload-controls">
@@ -40,29 +41,32 @@
       </button>
    </div>
 </div>
+
 <script>
-   $('noscript').remove();
-   $('.av-upload').removeClass('uk-hidden');
-   $('.av-upload input[type="file"]')
-      .attr('id', '<% param.name %>')
-      .attr('name', '<% param.name %>')
-      .on('change', function (event) {
-         $('#<% param.name %>_origin').val($(this).val());
-      });
-   $('.av-upload input[type="text"]')
-      .attr('id', '<% param.name %>_origin')
-      .attr('name', '<% param.name %>_origin')
-      .on('blur', function (event) {
-         $('#<% param.name %>').val('');
-      });
-   $('.av-upload button').on('click', function (event) {
-      $('#<% param.name %>').click();
-   });
+  document.querySelector('noscript').remove();
+  document.querySelector('.av-upload').classList.remove('uk-hidden');
+
+  const textInput = document.querySelector('.av-upload input[type="text"]');
+  const fileInput = document.querySelector('.av-upload input[type="file"]');
+
+  textInput.id = textInput.name = '<% param.name %>_origin';
+  fileInput.id = fileInput.name = '<% param.name %>';
+
+  textInput.addEventListener('blur', () => {
+    fileInput.value = '';
+  });
+
+  fileInput.addEventListener('change', event => {
+    textInput.value = event.currentTarget.value;
+  });
+
+  document.querySelector('.av-upload button')
+    .addEventListener('click', () => fileInput.click());
 </script>
 
 <% #listItemFlag %>
 <td rowspan="2" width="10" align="center" valign="top" nowrap="nowrap"
-      class="listItemFlag"><% param.text %></td>
+    class="listItemFlag"><% param.text %></td>
 <td rowspan="2" width="5" nowrap="nowrap"></td>
 
 <% #mailFooter %>

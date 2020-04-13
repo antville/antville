@@ -15,32 +15,38 @@
 <div class='av-tag'>
    <% list.render skin="$TagHub#main" %>
 </div>
+
 <ul class='uk-pagination uk-text-left'>
   <% list.prevLink text="<i class='uk-icon-arrow-left'></i>" prefix=<li> suffix=</li> default="<li class='uk-disabled'><span><i class='uk-icon-arrow-left'></i></span></li>" %>
   <% list.nextLink text="<i class='uk-icon-arrow-right'></i>" prefix=<li> suffix=</li> default="<li class='uk-disabled'><span><i class='uk-icon-arrow-right'></i></span></li>" %>
 </ul>
-<script type='text/javascript'>
-   if ('<% tag.type parent %>' === 'Image') {
-      $('.av-tag').addClass('av-collage');
-   }
-   $(window).load(function() {
-      var resizeTimer = null;
-      $('.av-collage').collageCaption();
-      $(window).bind('resize', function() {
-         $('.av-tagged-image').css('opacity', 0);
-         if (resizeTimer) clearTimeout(resizeTimer);
-         resizeTimer = setTimeout(collage, 200);
+
+<script>
+  if ('<% tag.type parent %>' === 'Image') {
+    document.querySelector('.av-tag').classList.add('av-collage');
+  }
+
+  // Collage is a jQuery plugin
+  $(window).load(function() {
+    const resizeTimer = null;
+
+    const collage = () => {
+      $('.av-collage').removeWhitespace().collagePlus({
+        allowPartialLastRow: true,
+        fadeSpeed: 'slow'
       });
+    };
 
-      collage();
+    $('.av-collage').collageCaption();
 
-      function collage() {
-         $('.av-collage').removeWhitespace().collagePlus({
-            allowPartialLastRow: true,
-            fadeSpeed: 'slow'
-         });
-      }
-   });
+    $(window).bind('resize', function() {
+        $('.av-tagged-image').css('opacity', 0);
+        if (resizeTimer) clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(collage, 200);
+    });
+
+    collage();
+  });
 </script>
 
 <% #simple %>

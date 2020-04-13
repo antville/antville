@@ -327,7 +327,7 @@ Site.prototype.skin_macro = function (param, name) {
     case 'Site#javascript':
     case 'javascript':
     if (!res.meta.javascript) {
-      res.writeln("<script type='text/javascript' src='" + this.href('main.js') + "'></script>");
+      res.writeln("<script src='" + this.href('main.js') + "'></script>");
       res.meta.javascript = true;
     }
     break;

@@ -33,48 +33,55 @@
 <div class='uk-hidden av-upload-drop'>
    <i class='uk-icon uk-icon-cloud-upload'></i>
 </div>
-<script type='text/javascript'>
-(function () {
-   var dropTimer, dropHasHilite;
-   var dropElement = $('.av-upload-drop');
 
-   var parent = location.href.lastIndexOf('/layout/images/') > -1 ? 'layout' : 'site';
-   var uploadUrl = '<% site.images.href upload %>?parent=' + parent;
+<script>
+(function() {
+  const dropElement = document.querySelector('.av-upload-drop');
+  const parent = location.href.lastIndexOf('/layout/images/') > -1 ? 'layout' : 'site';
+  const uploadUrl = '<% site.images.href upload %>?parent=' + parent;
 
-   var target = $(document).on('dragstart dragenter dragover', function () {
+  let dropTimer;
+  let dropHasHilite;
+
+  ['dragstart', 'dragenter', 'dragover'].forEach(function(type) {
+    document.addEventListener(type, function() {
       if (!dropHasHilite) {
-         dropElement.removeClass('uk-hidden');
-         dropHasHilite = true;
+        dropElement.classList.remove('uk-hidden');
+        dropHasHilite = true;
       }
-   }).on('dragleave dragend', function () {
-      dropHasHilite = false;
-      clearTimeout(dropTimer);
-      dropTimer = setTimeout(function () {
-         dropHasHilite || dropElement.addClass('uk-hidden');
-      }, 100);
-   });
+    });
+  });
 
-   var restoreDrop = function () {
-      dropElement.addClass('uk-hidden')
-         .find('i').removeClass('av-upload-glow');
-   };
+  ['dragleave', 'dragend'].forEach(function(type) {
+    dropHasHilite = false;
+    clearTimeout(dropTimer);
+    dropTimer = setTimeout(function() {
+      dropHasHilite || dropElement.classList.add('uk-hidden');
+    }, 100);
+  });
 
-   var uploadDrop = UIkit.uploadDrop(target, {
-      action: uploadUrl,
-      allow: '*.(jpg|jpeg|gif|png)',
-      loadstart: function (event) {
-         dropElement.find('i')
-            .addClass('av-upload-glow');
-      },
-      progress: function (percent) {
-         //console.log(percent, '% progress');
-      },
-      allcomplete: function (response) {
-         location.href = response;
-      },
-      notallowed: restoreDrop,
-      error: restoreDrop,
-      abort: restoreDrop
-   });
+  const restoreDrop = function() {
+    dropElement.classList.add('uk-hidden');
+    dropElement.querySelector('i').classList.remove('av-upload-glow');
+  };
+
+  UIkit.uploadDrop(document, {
+    action: uploadUrl,
+    allow: '*.(jpg|jpeg|gif|png)',
+
+    loadstart: function() {
+      dropElement.querySelector('i').classList.add('av-upload-glow');
+    },
+
+    //progress: function(percent) {},
+
+    allcomplete: function(response) {
+      location.href = response;
+    },
+
+    notallowed: restoreDrop,
+    error: restoreDrop,
+    abort: restoreDrop
+  });
 })();
 </script>

@@ -129,7 +129,7 @@ Stories.prototype.top_action = function() {
 }
 
 Stories.prototype.render_json_action = function () {
-  var content = String(req.postParams.http_post_remainder);
+  var content = String(req.postParams.content);
   var story = new Story;
   story.site = res.handlers.site;
   var result = Story.prototype.format_filter.call(story, content, {}, 'markdown');

@@ -3,15 +3,17 @@
 
 <% #urlPreview %>
 <a id='av-site-url-preview'></a>
-<script type='text/javascript'>
-  $('#name').on('keyup', function (event) {
-    var name = $(this).val();
-    if (name) {
-      var url = '<% root.href %>' + name;
-      var html = '<% root.href %>' + '<b>' + name + '</b>';
-      $('#av-site-url-preview').html(html).attr('href', url);
+
+<script>
+  document.querySelector('#name').addEventListener('keyup', event => {
+    const name = event.target.value;
+    const preview = document.querySelector('#av-site-url-preview');
+
+    if (name) {;
+      preview.innerHTML = `<% root.href %><strong>${name}</strong>`;
+      preview.setAttribute('href', '<% root.href %>' + name);
     } else {
-      $('#av-site-url-preview').html(name);
+      preview.innerHTML = '<% root.href %>';
     }
   });
 </script>

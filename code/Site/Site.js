@@ -645,10 +645,11 @@ Site.prototype.referrers_action = function() {
     var urls = req.data.permanent_array;
     res.push();
     res.write(this.getMetadata('spamfilter'));
-    for (var i in urls) {
-      res.write('\n');
-      res.write(urls[i].replace(/\?/g, '\\\\?'));
-    }
+    res.write(
+      urls.map(function(url) {
+        return url.replace(/\?/g, '\\\\?');
+      }).join('\n')
+    );
     this.setMetadata('spamfilter', res.pop());
     res.redirect(req.data.http_referer);
     return;
@@ -916,19 +917,10 @@ Site.prototype.static_macro = function(param, name, mode) {
  *
  */
 Site.prototype.spamfilter_macro = function() {
-  var str = this.getMetadata('spamfilter');
-  if (!str) {
-    return;
-  }
-  var items = str.replace(/\r/g, '').split('\n');
-  for (var i in items) {
-    res.write('"');
-    res.write(items[i]);
-    res.write('"');
-    if (i < items.length-1) {
-      res.write(',');
-    }
-  }
+  const str = this.getMetadata('spamfilter');
+  if (!str) return;
+  const urls = str.replace(/\r/g, '').split('\n');
+  res.write(JSON.stringify(urls));
   return;
 };
 

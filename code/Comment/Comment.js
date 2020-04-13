@@ -241,14 +241,19 @@ Comment.prototype.update = function(data) {
     this.status = Comment.PENDING;
   } else if (delta > 50) {
     this.modified = new Date;
+
     if (this.story.status !== Story.CLOSED) {
       this.site.modified = this.modified;
     }
+
     // We need persistence for adding the callback
-    this.isTransient() && this.persist();
+    if (this.isTransient()) this.persist();
+
     res.handlers.site.callback(this);
+
     // Notification is sent in Story.comment_action()
   }
+
   this.clearCache();
   this.modifier = session.user;
   return;
