@@ -1,0 +1,41 @@
+<% #main %>
+window.onload = function() {
+  const tape = document.createElement('div');
+
+  tape.setAttribute('title', '⚠️ <strong>Warning!</strong> This is a test installation. Any content may be deleted at any time.');
+  tape.dataset.ukTooltip = "{ pos: 'right' }";
+
+  tape.style.position = 'fixed';
+  tape.style.top = '0';
+  tape.style.bottom = '0';
+  tape.style.left = '0';
+  tape.style.width = '15px';
+  tape.style.height = '100%';
+
+  tape.style.background = 'url(data:image/png;base64,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)';
+
+  const margin = parseInt(document.body.style.paddingLeft, 10) || 0;
+
+  document.body.appendChild(tape);
+  document.body.style.paddingLeft = margin + 15;
+
+  // TODO: What exactly is this code needed for? 🤔
+  const html = document.createElement('div');
+
+  html.classList.add('uk-modal');
+  html.id = 'uk-modal';
+  html.innerHTML = '<div class="uk-modal-dialog"><div class="uk-modal-header"></div><div class="uk-modal-footer"></div></div></div>';
+
+  document.body.appendChild(html);
+
+  const modal = UIkit.modal('#uk-modal');
+
+  document.addEventListener('show-modal', function() {
+    document.style.paddingRight = '';
+    modal.show();
+  });
+
+  document.addEventListener('hide-modal', function() {
+    modal.hide();
+  });
+};
