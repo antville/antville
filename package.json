@@ -36,18 +36,18 @@
   },
 
   "dependencies": {
-    "codemirror": "^5.52.2",
+    "codemirror": "^5.53.2",
     "jquery": "^2.2.4",
     "jquery-collagePlus": "github:antville/jquery-collagePlus#0.3.4",
     "js-md5": "^0.7.3",
-    "marked": "^0.8.2",
-    "string-strip-html": "^4.3.18",
+    "marked": "^1.0.0",
+    "string-strip-html": "^4.3.22",
     "uikit": "^2.27.4"
   },
 
   "devDependencies": {
-    "browserify": "^16.5.0",
-    "jsdoc": "^3.6.3",
+    "browserify": "^16.5.1",
+    "jsdoc": "^3.6.4",
     "less": "^3.11.1",
     "less-plugin-clean-css": "^1.5.1",
     "minifyify": "^7.3.5"
