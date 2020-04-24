@@ -53,7 +53,7 @@ Proxy.prototype.main_action = function () {
     }
 
     // The String() call prevents stack overflow
-    res.write(JSON.pad(String(content), callback));
+    res.write(JSON.pad({ content: String(content) }, callback));
   } else {
     res.contentType = data.type;
 

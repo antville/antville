@@ -178,7 +178,8 @@
         ref: location.href
       }
 
-      jsonp(proxyUri, data, (content, error) => {
+      jsonp(proxyUri, data, (result, error) => {
+        const content = result.content;
         let text = '';
 
         if (settings.c) text = decodeURIComponent(settings.c).trim();

@@ -9,9 +9,7 @@ Object.prototype.dontEnum('parseJSON');
  * @param {Object} data An arbitrary JavaScript object
  */
 JSON.pad = function(data, callback) {
-  if (!callback) {
-    return;
-  }
+  if (!callback) return;
   return callback + '(' + JSON.stringify(data) + ')';
 }
 
