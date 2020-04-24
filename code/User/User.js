@@ -584,7 +584,6 @@ User.prototype.timeline_action = function() {
 
   // MySQL needs the limit parameter -> https://stackoverflow.com/questions/255517/mysql-offset-infinite-rows
   sql.retrieve("select created, id, 'Story' as prototype from content where creator_id = $0 union select created, id, 'Image' as prototype from image where creator_id = $0 union select created, id, 'File' as prototype from file where creator_id = $0 union select created, id, 'Poll' as prototype from poll where creator_id = $0 order by created desc limit $1 offset $2", this._id, pageSize, offset);
-  console.log(sql);
 
   sql.traverse(function() {
     const object = HopObject.getById(this.id, this.prototype);

@@ -239,10 +239,8 @@ Members.prototype.delete_action = function() {
 
 Members.prototype.salt_txt_action = function() {
   res.contentType = 'text/plain';
-  var user;
-  if (user = User.getByName(req.queryParams.user)) {
-    res.write(user.salt || String.EMPTY);
-  }
+  const user = User.getByName(req.queryParams.user);
+  if (user) res.write(user.salt || String.EMPTY);
   return;
 }
 
