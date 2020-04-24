@@ -19,8 +19,6 @@
  * @fileoverview Defines the Antville proxy Feature.
  */
 
-"http://code.google.com/p/antville/wiki/ProxyFeature"
-
 Proxy.prototype.main_action = function () {
   const url = req.data.url;
 
