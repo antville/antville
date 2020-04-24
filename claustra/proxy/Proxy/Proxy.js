@@ -22,7 +22,7 @@
 Proxy.prototype.main_action = function () {
   const url = req.data.url;
 
-  if (!url) return;
+  if (!url) return res.status = 400;
 
   const callback = req.data.callback;
   const http = new helma.Http();
