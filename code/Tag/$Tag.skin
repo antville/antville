@@ -30,7 +30,7 @@
 
     script.onload = function() {
       // Collage is a jQuery plugin
-      $(window).load(function() {
+      $(function() {
         const resizeTimer = null;
 
         const collage = () => {
