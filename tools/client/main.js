@@ -2,6 +2,7 @@ window.Antville = {};
 window.md5 = require('js-md5/src/md5');
 window.$ = window.jQuery = require('jquery');
 
+require('alpinejs');
 
 require('uikit/dist/js/uikit');
 require('uikit/dist/js/components/form-password');
