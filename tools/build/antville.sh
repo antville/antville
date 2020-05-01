@@ -24,6 +24,9 @@ yarn docs
   yarn browserify tools/client/editor.js -o $prefix.js -g uglifyify
   yarn lessc --clean-css tools/client/editor.less static/styles/editor.min.css
 
+  prefix=static/scripts/gallery.min
+  yarn browserify tools/client/gallery.js -o $prefix.js -g uglifyify
+
   echo Copying static files…
 
   cp -Rp ./node_modules/uikit/dist/fonts static/

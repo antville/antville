@@ -2,9 +2,6 @@ window.Antville = {};
 window.md5 = require('js-md5/src/md5');
 window.$ = window.jQuery = require('jquery');
 
-require('jquery-collagePlus/jquery.collagePlus');
-require('jquery-collagePlus/extras/jquery.collageCaption');
-require('jquery-collagePlus/extras/jquery.removeWhitespace');
 
 require('uikit/dist/js/uikit');
 require('uikit/dist/js/components/form-password');

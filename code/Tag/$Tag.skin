@@ -23,30 +23,38 @@
 
 <script>
   if ('<% tag.type parent %>' === 'Image') {
-    document.querySelector('.av-tag').classList.add('av-collage');
-  }
+    const script = document.createElement('script');
 
-  // Collage is a jQuery plugin
-  $(window).load(function() {
-    const resizeTimer = null;
+    // Load an extra script for the gallery
+    script.src = '<% root.static ../../scripts/gallery.min.js %>';
 
-    const collage = () => {
-      $('.av-collage').removeWhitespace().collagePlus({
-        allowPartialLastRow: true,
-        fadeSpeed: 'slow'
+    script.onload = function() {
+      // Collage is a jQuery plugin
+      $(window).load(function() {
+        const resizeTimer = null;
+
+        const collage = () => {
+          $('.av-collage').removeWhitespace().collagePlus({
+            allowPartialLastRow: true,
+            fadeSpeed: 'slow'
+          });
+        };
+
+        $('.av-collage').collageCaption();
+
+        $(window).bind('resize', function() {
+            $('.av-tagged-image').css('opacity', 0);
+            if (resizeTimer) clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(collage, 200);
+        });
+
+        collage();
       });
     };
 
-    $('.av-collage').collageCaption();
-
-    $(window).bind('resize', function() {
-        $('.av-tagged-image').css('opacity', 0);
-        if (resizeTimer) clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(collage, 200);
-    });
-
-    collage();
-  });
+    document.head.appendChild(script);
+    document.querySelector('.av-tag').classList.add('av-collage');
+  }
 </script>
 
 <% #simple %>
