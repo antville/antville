@@ -44,12 +44,11 @@
     "string-strip-html": "^4.3.22",
     "uikit": "^2.27.4"
   },
-
   "devDependencies": {
     "browserify": "^16.5.1",
     "jsdoc": "^3.6.4",
     "less": "^3.11.1",
     "less-plugin-clean-css": "^1.5.1",
-    "minifyify": "^7.3.5"
+    "uglifyify": "^5.0.2"
   }
 }
