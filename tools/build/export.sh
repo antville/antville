@@ -16,7 +16,7 @@ mkdir -p $source_dir
   echo Exporting application…
 
   cd antville
-  git checkout develop
+  git checkout main
   git checkout-index -f -a --prefix=$export_dir/
 
   hash=$(git rev-parse --short HEAD)
