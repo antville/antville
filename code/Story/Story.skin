@@ -83,7 +83,6 @@
       <a href='.' class="uk-button uk-button-link"><% gettext Cancel %></a>
    </div>
 </form>
-<script src='<% root.static ../../scripts/editor.min.js %>'></script>
 
 <% #comment %>
 <% story.skin Story#date %>

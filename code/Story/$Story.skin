@@ -61,235 +61,240 @@ else
 
 <% #editor %>
 <script>
+  // Load additonal scripts and styles for UIkit’s HTML editor plugin
   (function() {
     const _form = document.querySelector('#av-story-form');
 
-    if (!window.UIkit.htmleditor || !_form) return;
-
-    UIkit.plugin('htmleditor', 'antville', {
-      init: function(editor) {
-        const addAction = function(name, replace, mode) {
-          editor.off('action.' + name);
-
-          editor.on('action.' + name, function() {
-            editor[mode === 'replaceLine' ? mode : 'replaceSelection'](replace);
-          });
-        };
-
-        editor.addButtons({
-          file: {
-            title: "<% gettext 'File' %>",
-            label: '<i class="uk-icon-file-o"></i>'
-          },
-
-          poll: {
-            title: "<% gettext 'Poll' %>",
-            label: '<i class="uk-icon-bar-chart"></i>'
-          }
-        });
-
-        addAction('file', "\<% file '$1' %\>");
-        addAction('image', "\<% image '$1' %\>");
-        addAction('link', "\<% link 'https://' '$1' %\>");
-        addAction('poll', "\<% poll '$1' %\>");
-      }
-    });
+    if (!_form) return;
 
     const link = document.createElement('link');
     link.rel = 'stylesheet';
     link.href = '<% root.static ../../styles/editor.min.css %>';
+    link.onload = loadScripts;
     document.head.appendChild(link);
 
-    /* FIXME: Causes “Cannot read property 'replace' of undefined” in htmleditor.js:62
-    const script = document.createElement('script');
-    script.src = '<% root.static ../../scripts/editor.min.js %>';
-    document.head.appendChild(script);
-    */
+    function loadScripts() {
+      const script = document.createElement('script');
+      script.src = '<% root.static ../../scripts/editor.min.js %>';
+      script.onload = setupEditor;
+      document.head.appendChild(script);
+    }
 
-    const _url = '<% site.href backup.js %>';
+    function setupEditor() {
+      UIkit.plugin('htmleditor', 'antville', {
+        init: function(editor) {
+          const addAction = function(name, replace, mode) {
+            editor.off('action.' + name);
 
-    let _editor;
-    let _lastKeyPressed;
-    let _submitElement;
+            editor.on('action.' + name, function() {
+              editor[mode === 'replaceLine' ? mode : 'replaceSelection'](replace);
+            });
+          };
 
-    const enableOnBeforeUnload = function() {
-      window.onbeforeunload = function(event) {
-        return event.returnValue = "<% gettext 'You are going to discard unsaved content.' %>";
+          editor.addButtons({
+            file: {
+              title: "<% gettext 'File' %>",
+              label: '<i class="uk-icon-file-o"></i>'
+            },
+
+            poll: {
+              title: "<% gettext 'Poll' %>",
+              label: '<i class="uk-icon-bar-chart"></i>'
+            }
+          });
+
+          addAction('file', "\<% file '$1' %\>");
+          addAction('image', "\<% image '$1' %\>");
+          addAction('link', "\<% link 'https://' '$1' %\>");
+          addAction('poll', "\<% poll '$1' %\>");
+        }
+      });
+
+      const _url = '<% site.href backup.js %>';
+
+      let _editor;
+      let _lastKeyPressed;
+      let _submitElement;
+
+      const enableOnBeforeUnload = function() {
+        window.onbeforeunload = function(event) {
+          return event.returnValue = "<% gettext 'You are going to discard unsaved content.' %>";
+        };
       };
-    };
 
-    const disableOnBeforeUnload = function() {
-      window.onbeforeunload = null;
-    };
+      const disableOnBeforeUnload = function() {
+        window.onbeforeunload = null;
+      };
 
-    const update = function() {
-      if (!window.onbeforeunload) enableOnBeforeUnload();
-      _lastKeyPressed = new Date();
-    };
+      const update = function() {
+        if (!window.onbeforeunload) enableOnBeforeUnload();
+        _lastKeyPressed = new Date();
+      };
 
-    const scheduler = function() {
-      const now = new Date();
+      const scheduler = function() {
+        const now = new Date();
 
-      if (_lastKeyPressed && (now - _lastKeyPressed > 1000)) {
-        const data = {};
+        if (_lastKeyPressed && (now - _lastKeyPressed > 1000)) {
+          const data = {};
 
-        _form.querySelectorAll('input, select, textarea').forEach(function(element) {
-          if (element.id) data[element.id] = element.value.trim();
+          _form.querySelectorAll('input, select, textarea').forEach(function(element) {
+            if (element.id) data[element.id] = element.value.trim();
+          });
+
+          if (_editor) {
+            data.text = _editor.editor.getValue().trim();
+          }
+
+          Antville.http('post', _url, { data: data });
+          _lastKeyPressed = null;
+        }
+
+        setTimeout(scheduler, 100);
+      };
+
+      // TODO: This would probably be better done server-side
+      const parse = function(data) {
+        const html = document.createElement('div');
+        const assets = [];
+
+        html.innerHTML = data;
+
+        html.querySelectorAll('[src]').forEach(function(element) {
+          const url = element.src;
+          let re = new RegExp('\.(?:gif|jpg|jpeg|png)$', 'i');
+
+          if (url.match(re)) assets.push(url);
+
+          re = new RegExp('^.+://[^/]*(youtube)[^/]+/embed/([^/?]+)', 'i');
+          let match = url.match(re);
+
+          if (match) {
+            const input = document.createElement('input');
+
+            input.hidden = true;
+            input.name = 'og:video';
+            input.value = 'https://' + match[1] + '.com/v/' + match[2];
+
+            _form.appendChild(input);
+            assets.push('https://img.' + match[1] + '.com/vi/' + match[2] + '/0.jpg');
+          }
         });
 
-        if (_editor) {
-          data.text = _editor.editor.getValue().trim();
-        }
+        if (!assets.length) resubmit();
 
-        Antville.http('post', _url, { data: data });
-        _lastKeyPressed = null;
-      }
+        assets.forEach(function(url, index) {
+          const img = new Image;
 
-      setTimeout(scheduler, 100);
-    };
+          img.src = url;
 
-    // TODO: This would probably be better done server-side
-    const parse = function(data) {
-      const html = document.createElement('div');
-      const assets = [];
+          img.onload = function() {
+            const input = document.createElement('input');
 
-      html.innerHTML = data;
+            input.hidden = true;
+            input.name = 'og:image';
+            input.value = url;
 
-      html.querySelectorAll('[src]').forEach(function(element) {
-        const url = element.src;
-        let re = new RegExp('\.(?:gif|jpg|jpeg|png)$', 'i');
+            _form.appendChild(input);
+            assets.shift();
 
-        if (url.match(re)) assets.push(url);
+            if (!assets.length) resubmit();
+          };
 
-        re = new RegExp('^.+://[^/]*(youtube)[^/]+/embed/([^/?]+)', 'i');
-        let match = url.match(re);
+          img.onerror = function() {
+            assets.shift();
+            if (!assets.length) resubmit();
+          };
+        });
+      };
 
-        if (match) {
-          const input = document.createElement('input');
+      const resubmit = function() {
+        // Turn the clicked (or default) submit button into a hidden value to be sure it is submitted again
+        const submit = _submitElement || _form.find(':submit:first');
+        const input = document.createElement('input');
 
-          input.hidden = true;
-          input.name = 'og:video';
-          input.value = 'https://' + match[1] + '.com/v/' + match[2];
+        _submitElement = null;
+        input.hidden = true;
+        input.name = submit.name;
+        input.value = submit.value;
 
-          _form.appendChild(input);
-          assets.push('https://img.' + match[1] + '.com/vi/' + match[2] + '/0.jpg');
+        _form.appendChild(input);
+        _form.submit();
+      };
+
+      // UIkit’s editor requires jQuery
+      _editor = UIkit.htmleditor(document.querySelector('#text'), {
+        mode: 'tab',
+        markdown: true,
+        lblPreview: '<% gettext Preview %>',
+        lblCodeview: '<% gettext HTML %>',
+        lblMarkedview: '<% gettext Markdown %>',
+        toolbar: ['bold', 'italic', 'strike', 'link', 'image', 'file', 'poll', 'blockquote', 'listUl', 'listOl']
+      });
+
+      _editor.editor.on('keyup', update);
+
+      _editor.htmleditor.on('click', '.uk-htmleditor-button-code, .uk-htmleditor-button-preview', function(event) {
+        if (event.currentTarget.classList.contains('uk-htmleditor-button-preview')) {
+          // TODO: Still a good idea to render the macros via AJAX call?
+          const content = _editor.editor.getValue();
+
+          if (!content) return;
+
+          Antville.http('post', '<% stories.href render.json %>', {
+            data: { content: content },
+            callback: function(data, error) {
+              if (error) return;
+              document.querySelector('.uk-htmleditor-preview div').innerHTML = data;
+            }
+          });
         }
       });
 
-      if (!assets.length) resubmit();
+      _form.addEventListener('keyup', update);
 
-      assets.forEach(function(url, index) {
-        const img = new Image;
-
-        img.src = url;
-
-        img.onload = function() {
-          const input = document.createElement('input');
-
-          input.hidden = true;
-          input.name = 'og:image';
-          input.value = url;
-
-          _form.appendChild(input);
-          assets.shift();
-
-          if (!assets.length) resubmit();
-        };
-
-        img.onerror = function() {
-          assets.shift();
-          if (!assets.length) resubmit();
-        };
+      _form.querySelectorAll('.uk-button').forEach(function(element) {
+        element.addEventListener('click', disableOnBeforeUnload);
       });
-    };
 
-    const resubmit = function() {
-      // Turn the clicked (or default) submit button into a hidden value to be sure it is submitted again
-      const submit = _submitElement || _form.find(':submit:first');
-      const input = document.createElement('input');
+      _form.addEventListener('submit', function(event) {
+          event.preventDefault();
 
-      _submitElement = null;
-      input.hidden = true;
-      input.name = submit.name;
-      input.value = submit.value;
+          const form = event.currentTarget;
+          const submit = form.querySelector('[type=submit]');
 
-      _form.appendChild(input);
-      _form.submit();
-    };
+          if (form.dataset.isProcessed) return;
 
-    // UIkit’s editor requires jQuery
-    _editor = UIkit.htmleditor(document.querySelector('#text'), {
-      mode: 'tab',
-      markdown: true,
-      lblPreview: '<% gettext Preview %>',
-      lblCodeview: '<% gettext HTML %>',
-      lblMarkedview: '<% gettext Markdown %>',
-      toolbar: ['bold', 'italic', 'strike', 'link', 'image', 'file', 'poll', 'blockquote', 'listUl', 'listOl']
-    });
+          form.dataset.isProcessed = true;
+          _submitElement = submit;
 
-    _editor.editor.on('keyup', update);
+          const elementList = form.querySelectorAll('button, input, select, textarea');
 
-    _editor.htmleditor.on('click', '.uk-htmleditor-button-code, .uk-htmleditor-button-preview', function(event) {
-      if (event.currentTarget.classList.contains('uk-htmleditor-button-preview')) {
-        // TODO: Still a good idea to render the macros via AJAX call?
-        const content = _editor.editor.getValue();
+          const buffer = Array.prototype.slice.call(elementList).map(function(element) {
+            return element.value;
+          });
 
-        if (!content) return;
+          const raw = encodeURIComponent(buffer.join(' '));
 
-        Antville.http('post', '<% stories.href render.json %>', {
-          data: { content: content },
-          callback: function(data, error) {
-            if (error) return;
-            document.querySelector('.uk-htmleditor-preview div').innerHTML = data;
+          Antville.http('post', '<% stories.href render.json %>', {
+            data: { content: buffer.join(' ') },
+            callback: parse
+          });
+        });
+
+      // Restore backup text if available and if the editor refers to a new story
+      if (location.href.match('/create$') && '<% session.backup %>') {
+        Antville.http('GET', _url, {
+          callback: function(json, error) {
+            const data = JSON.parse(json);
+            Object.keys(data).forEach(function(key) {
+              document.querySelector('#' + key).value = data[key];
+            });
+            _editor && _editor.editor.setValue(data.text);
           }
         });
       }
-    });
 
-    _form.addEventListener('keyup', update);
-
-    _form.querySelectorAll('.uk-button').forEach(function(element) {
-      element.addEventListener('click', disableOnBeforeUnload);
-    });
-
-    _form.addEventListener('submit', function(event) {
-        event.preventDefault();
-
-        const form = event.currentTarget;
-        const submit = form.querySelector('[type=submit]');
-
-        if (form.dataset.isProcessed) return;
-
-        form.dataset.isProcessed = true;
-        _submitElement = submit;
-
-        const elementList = form.querySelectorAll('button, input, select, textarea');
-
-        const buffer = Array.prototype.slice.call(elementList).map(function(element) {
-          return element.value;
-        });
-
-        const raw = encodeURIComponent(buffer.join(' '));
-
-        Antville.http('post', '<% stories.href render.json %>', {
-          data: { content: buffer.join(' ') },
-          callback: parse
-        });
-      });
-
-    // Restore backup text if available and if the editor refers to a new story
-    if (location.href.match('/create$') && '<% session.backup %>') {
-      Antville.http('GET', _url, {
-        callback: function(json, error) {
-          const data = JSON.parse(json);
-          Object.keys(data).forEach(function(key) {
-            document.querySelector('#' + key).value = data[key];
-          });
-          _editor && _editor.editor.setValue(data.text);
-        }
-      });
+      scheduler();
     }
-
-    scheduler();
   })();
 </script>
