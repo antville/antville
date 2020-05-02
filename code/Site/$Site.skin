@@ -214,42 +214,39 @@
 </form>
 
 <script>
-  const dom = window;
+  (function() {
+    // Group related <option> elements by inserting additional <optgroup> elements.
+    const dom = window;
+    const groups = [];
 
-  dom.callbackMode.addEventListener('click', function(event) {
-    dom.callbackUrl.disabled = !this.checked;
-  });
+    dom.timeZone.querySelectorAll('option').forEach(function(item, index) {
+      const parts = item.innerHTML.split('/'); // E.g. Europe/Vienna
+      const group = parts[0];
 
-  // Group related <option> elements by inserting additional <optgroup> elements.
-  const groups = [];
-
-  dom.timeZone.querySelectorAll('option').forEach(function(item, index) {
-    const parts = item.innerHTML.split('/'); // E.g. Europe/Vienna
-    const group = parts[0];
-
-    if (groups.indexOf(group) < 0) {
-      groups.push(group);
-    }
-  });
-
-  groups.sort();
-
-  groups.forEach(function(group, index) {
-    const key = group + '/'; // E.g. Europe/
-    const optgroup = document.createElement('optgroup');
-
-    optgroup.setAttribute('label', group);
-
-    dom.timeZone.querySelectorAll('option[value^="' + key + '"]').forEach(function(option) {
-      option.innerHTML = option.innerHTML.replace(key, '');
-      optgroup.appendChild(option);
+      if (groups.indexOf(group) < 0) {
+        groups.push(group);
+      }
     });
 
-    dom.timeZone.appendChild(optgroup);
+    groups.sort();
 
-    // Correct the selected index
-    timeZone.selectedIndex = Array.from(timeZone.options).indexOf(timeZone.querySelector('option[selected]'));
-  });
+    groups.forEach(function(group, index) {
+      const key = group + '/'; // E.g. Europe/
+      const optgroup = document.createElement('optgroup');
+
+      optgroup.setAttribute('label', group);
+
+      dom.timeZone.querySelectorAll('option[value^="' + key + '"]').forEach(function(option) {
+        option.innerHTML = option.innerHTML.replace(key, '');
+        optgroup.appendChild(option);
+      });
+
+      dom.timeZone.appendChild(optgroup);
+
+      // Correct the selected index
+      timeZone.selectedIndex = Array.from(timeZone.options).indexOf(timeZone.querySelector('option[selected]'));
+    });
+  })();
 </script>
 
 <% #meta %>
@@ -1095,125 +1092,121 @@ a.gs-title:hover {
 </table>
 
 <script>
-  document.querySelector('.av-referrers').classList.add('uk-hidden');
+  (function() {
+    const query = new Antville.Query();
+    const spamFilter = new Antville.Filter(JSON.parse('<% site.spamfilter %>'));
+    const searchFilter = new Antville.Filter(query.filter);
 
-  const query = new Antville.Query();
-  const spamFilter = new Antville.Filter(JSON.parse('<% site.spamfilter %>'));
-  const searchFilter = new Antville.Filter(query.filter);
+    const searchEngineFilters = [
+      new Antville.Filter('//.*altavista.*/\\?', 'q'),
+      new Antville.Filter('//.*baidu.com/s\\?', 'wd'),
+      new Antville.Filter('//.*bing\\..*/search\\?', 'q'),
+      new Antville.Filter('//.*duckduckgo.com/\\?', 'q'),
+      new Antville.Filter('//.*google\\..*/imgres\\?', 'imgurl'),
+      new Antville.Filter('//.*google\\..*/\\?.*q=[^&]', 'q'),
+      new Antville.Filter('//.*haosou\\.com/s\\?', 'q'),
+      new Antville.Filter('//.*search\\.yahoo\\..*/\\?', 'p'),
+      new Antville.Filter('//.*search\\.ask\\.com/web\\?', '1'),
+      new Antville.Filter('//.*yandex\\..*/\\?', 'text')
+    ];
 
-  const searchEngineFilters = [
-    new Antville.Filter('//.*altavista.*/\\?', 'q'),
-    new Antville.Filter('//.*baidu.com/s\\?', 'wd'),
-    new Antville.Filter('//.*bing\\..*/search\\?', 'q'),
-    new Antville.Filter('//.*duckduckgo.com/\\?', 'q'),
-    new Antville.Filter('//.*google\\..*/imgres\\?', 'imgurl'),
-    new Antville.Filter('//.*google\\..*/\\?.*q=[^&]', 'q'),
-    new Antville.Filter('//.*haosou\\.com/s\\?', 'q'),
-    new Antville.Filter('//.*search\\.yahoo\\..*/\\?', 'p'),
-    new Antville.Filter('//.*search\\.ask\\.com/web\\?', '1'),
-    new Antville.Filter('//.*yandex\\..*/\\?', 'text')
-  ];
+    const urlShortenerFilters = [
+      new Antville.Filter('//.*baidu.com/link'),
+      new Antville.Filter('//bit\\.ly/'),
+      new Antville.Filter('//.*duckduckgo.com/l/\\?'),
+      new Antville.Filter('//l.facebook.com/lrs.php'),
+      new Antville.Filter('//goo\\.gl/'),
+      new Antville.Filter('//.*google\\..*/url\\?'),
+      new Antville.Filter('//ift.tt'),
+      new Antville.Filter('//owl\\.ly/'),
+      new Antville.Filter('//t\\.co/'),
+      new Antville.Filter('//tinyurl\\.com/'),
+      new Antville.Filter('//.*stumbleupon\\.com/refer\\.php\\?'),
+      new Antville.Filter('//.*search\\.yahoo\\..*/.+/RU=')
+    ];
 
-  const urlShortenerFilters = [
-    new Antville.Filter('//.*baidu.com/link'),
-    new Antville.Filter('//bit\\.ly/'),
-    new Antville.Filter('//.*duckduckgo.com/l/\\?'),
-    new Antville.Filter('//l.facebook.com/lrs.php'),
-    new Antville.Filter('//goo\\.gl/'),
-    new Antville.Filter('//.*google\\..*/url\\?'),
-    new Antville.Filter('//ift.tt'),
-    new Antville.Filter('//owl\\.ly/'),
-    new Antville.Filter('//t\\.co/'),
-    new Antville.Filter('//tinyurl\\.com/'),
-    new Antville.Filter('//.*stumbleupon\\.com/refer\\.php\\?'),
-    new Antville.Filter('//.*search\\.yahoo\\..*/.+/RU=')
-  ];
+    let urlShortenerCounter = 0;
 
-  let urlShortenerCounter = 0;
+    document.querySelectorAll('.av-referrer-row').forEach(function(row) {
+      const ref = row.querySelector('.av-referrer a');
+      const url = ref.getAttribute('href');
+      const count = row.querySelector('.av-referrer-count').innerText;
+      const control = row.querySelector('.av-referrer-control a');
+      const referrer = new Antville.Referrer(url, url, count);
 
-  document.querySelectorAll('.av-referrer-row').forEach(function(row) {
-    const ref = row.querySelector('.av-referrer a');
-    const url = ref.getAttribute('href');
-    const count = row.querySelector('.av-referrer-count').innerText;
-    const control = row.querySelector('.av-referrer-control a');
-    const referrer = new Antville.Referrer(url, url, count);
+      ref.innerHTML = referrer.text;
 
-    ref.innerHTML = referrer.text;
+      control.addEventListener('click', function(event) {
+        event.preventDefault();
+        const input = prompt("<% gettext 'Are you sure you want to add this URL to the referrer filter? Edit it below to filter a pattern only.' %>", url);
+        if (!input) return;
+        location.href = '<% site.href referrers %>?submit=1&permanent=' + encodeURIComponent(input);
+      });
 
-    control.addEventListener('click', function(event) {
-      event.preventDefault();
-      const input = prompt("<% gettext 'Are you sure you want to add this URL to the referrer  filter? Edit it below to filter a pattern only.' %>", url);
-      if (!input) return;
-      location.href = '<% site.href referrers %>?submit=1&permanent=' + encodeURIComponent(input);
-    });
+      if (spamFilter.test(url)) {
+        if (query.includeSpam) {
+          ref.classList.add('uk-text-muted');
+          control.remove();
+        } else {
+          row.remove();
+        }
+      }
 
-    if (spamFilter.test(url)) {
-      if (query.includeSpam) {
-        ref.classList.add('uk-text-muted');
-        control.remove();
-      } else {
+      if (query.filter && !searchFilter.test(url)) {
         row.remove();
       }
-    }
 
-    if (query.filter && !searchFilter.test(url)) {
-      row.remove();
-    }
+      const re = new RegExp('[:/].*$');
 
-    const re = new RegExp('[:/].*$');
+      searchEngineFilters.forEach(function(filter) {
+        if (filter.test(url)) {
+          const host = referrer.text.replace(re, '');
+          ref.innerHTML = referrer.compose('<i><% gettext Search %>:</i>', filter.key);
+        }
+      });
 
-    searchEngineFilters.forEach(function(filter) {
-      if (filter.test(url)) {
-        const host = referrer.text.replace(re, '');
-        ref.innerHTML = referrer.compose('<i><% gettext Search %>:</i>', filter.key);
-      }
+      urlShortenerFilters.forEach(function(filter) {
+        if (filter.test(url)) {
+          urlShortenerCounter += parseInt(count, 10);
+          const host = referrer.text.replace(re, '');
+          const url = referrer.url.replace(new RegExp('^(.+//[^/]+).*'), '$1');
+          ref.setAttribute('href', url);
+          ref.innerHTML = host;
+        }
+      });
     });
 
-    urlShortenerFilters.forEach(function(filter) {
-      if (filter.test(url)) {
-        urlShortenerCounter += parseInt(count, 10);
-        const host = referrer.text.replace(re, '');
-        const url = referrer.url.replace(new RegExp('^(.+//[^/]+).*'), '$1');
-        ref.setAttribute('href', url);
-        ref.innerHTML = host;
-      }
-    });
-  });
+    document.querySelectorAll('.av-referrer a').forEach(function(element, index) {
+      const html = element.innerHTML;
+      const countElement = document.querySelectorAll('.av-referrer-count')[index];
+      let count = 0;
 
-  document.querySelectorAll('.av-referrer a').forEach(function(element, index) {
-    const html = element.innerHTML;
-    const countElement = document.querySelectorAll('.av-referrer-count')[index];
-    let count = 0;
+      document.querySelectorAll('.av-referrer a').forEach(function(element2, index2) {
+        if (index2 <= index) return;
 
-    document.querySelectorAll('.av-referrer a').forEach(function(element2, index2) {
-      if (index2 <= index) return;
+        if (element2.innerHTML === html) {
+          count += parseInt(document.querySelector('.av-referrer-count')[index2].innerText, 10);
+          element2.closest('.av-referrer-row').classList.add('av-delete');
+        }
+      });
 
-      if (element2.innerHTML === html) {
-        count += parseInt(document.querySelector('.av-referrer-count')[index2].innerText, 10);
-        element2.closest('.av-referrer-row').classList.add('av-delete');
-      }
+      if (count) countElement.innerHTML = parseInt(countElement.html(), 10) + count;
     });
 
-    if (count) countElement.innerHTML = parseInt(countElement.html(), 10) + count;
-  });
+    document.querySelectorAll('.av-referrer-row.av-delete').forEach(function(element) {
+      element.remove();
+    });
 
-  document.querySelectorAll('.av-referrer-row.av-delete').forEach(function(element) {
-    element.remove();
-  });
+    const table = document.querySelector('.av-referrers tbody');
+    const rows = table.querySelectorAll('tr');
 
-  const table = document.querySelector('.av-referrers tbody');
-  const rows = table.querySelectorAll('tr');
+    const sortedRows = Array.prototype.slice.call(rows).sort(function(a, b) {
+      return parseInt(b.querySelector('.av-referrer-count').innerText, 10) -
+        parseInt(a.querySelector('.av-referrer-count').innerText, 10);
+    });
 
-  const sortedRows = Array.prototype.slice.call(rows).sort(function(a, b) {
-    return parseInt(b.querySelector('.av-referrer-count').innerText, 10) -
-      parseInt(a.querySelector('.av-referrer-count').innerText, 10);
-  });
-
-  sortedRows.forEach(function(row) { table.appendChild(row); });
-
-  if (document.querySelector('.av-referrers tbody *')) {
-    document.querySelector('.av-referrers').classList.remove('uk-hidden');
-  }
+    sortedRows.forEach(function(row) { table.appendChild(row); });
+  })();
 </script>
 
 <% #referrer %>

@@ -1,109 +1,99 @@
 <% #main %>
 <h1><% response.title %></h1>
+
 <div class='uk-article-meta'><% layout.skin $HopObject#meta %></div>
+
 <div class='uk-margin-top'>
-   <% layout.link skins <% gettext Skins %> %>
-   <% layout.link images <% gettext Images %> prefix=' | ' %>
-   <% layout.link import <% gettext Import %> prefix=' | ' %>
-   <% layout.link export <% gettext Export %> prefix=' | ' %>
+  <% layout.link skins <% gettext Skins %> %>
+  <% layout.link images <% gettext Images %> prefix=' | ' %>
+  <% layout.link import <% gettext Import %> prefix=' | ' %>
+  <% layout.link export <% gettext Export %> prefix=' | ' %>
 </div>
+
 <% site.skin $Site#noscript %>
+
 <form class='uk-margin-top uk-form uk-form-stacked' id='prefs' method='post'>
-   <div class='uk-form-row'>
-      <div class='uk-form-label'>
-         <% gettext 'Show Controls' %>
+  <div class='uk-form-row'>
+    <div class='uk-form-label'>
+      <% gettext 'Show Controls' %>
+    </div>
+
+    <div class='uk-form-controls'>
+      <input id='sandbox' name='sandbox' type='checkbox' <% if <% layout.sandbox %> is true then checked %>>
+      <label for='sandbox'><% gettext enabled %></label>
+    </div>
+  </div>
+
+  <div class='uk-form-row uk-margin-top' x-data='{
+    showControls: function(event) {
+      event.currentTarget.querySelector(".av-value-controls").hidden = false;
+    },
+
+    hideControls: function(event) {
+      event.currentTarget.querySelector(".av-value-controls").hidden = true;
+    },
+
+    addSetting: function(event) {
+      const name = prompt("<% gettext "Please enter the name of the new setting:" %>");
+
+      if (!name) return;
+
+      const key = "av-value " + name;
+      const valueRow = document.querySelector(".av-value-row:last-child");
+      const clone = valueRow.cloneNode(true);
+
+      clone.classList.remove("uk-hidden");
+      clone.querySelector(".av-value-title").innerHTML = name;
+      clone.querySelector(".av-clipboard-copy").remove();
+
+      const input = clone.querySelector(".uk-form-controls input");
+
+      input.setAttribute("id", key.replace(/\s/g, "-"));
+      input.setAttribute("name", key);
+      input.setAttribute("value", "");
+      input.setAttribute("type", this.getType(key));
+
+      valueRow.insertAdjacentElement("afterend", clone);
+      clone.querySelector("input").focus();
+    },
+
+    removeSetting: function(event) {
+      event.currentTarget.remove();
+    },
+
+    getType: function(name) {
+      const type = name.split(" ").pop();
+      const types = { color: "color" };
+      return types[type] || "text";
+    }
+  }'>
+    <fieldset class='avvalues'>
+      <legend>
+        <% gettext Settings %>
+      </legend>
+      <div class='uk-grid'>
+        <% layout.values %>
       </div>
-      <div class='uk-form-controls'>
-         <input id='sandbox' name='sandbox' type='checkbox' <% if <% layout.sandbox %> is true then checked %>>
-         <label for='sandbox'><% gettext enabled %></label>
+      <div id='av-add-value' class='uk-margin-bottom uk-margin-top' hidden :hidden='false'>
+        <a href='javascript:' class='uk-icon-button uk-icon-plus uk-text-middle' @click='addSetting'></a>
       </div>
-   </div>
-   <div class='uk-form-row uk-margin-top'>
-      <fieldset class='av-values'>
-         <legend>
-            <% gettext Settings %>
-         </legend>
-         <div class='uk-grid'>
-            <% layout.values %>
-         </div>
-         <div id='av-add-value' class='uk-margin-bottom uk-hidden'>
-            <div class='uk-form-label'>&#160;</div>
-            <a href='javascript:' class='uk-icon-button uk-icon-plus uk-text-middle'></a>
-         </div>
-      </fieldset>
-   </div>
-   <div class='uk-margin-top'>
-      <button class='uk-button uk-button-primary' type='submit' id='submit' name='save' value='1'>
-         <% gettext Save %>
-      </button>
-      <% layout.link reset <% gettext Reset %> class='uk-button' %>
-      <a href='..' class='uk-button uk-button-link'><% gettext Cancel %></a>
-   </div>
+    </fieldset>
+  </div>
+
+  <div class='uk-margin-top'>
+    <button class='uk-button uk-button-primary' type='submit' id='submit' name='save' value='1'>
+      <% gettext Save %>
+    </button>
+    <% layout.link reset <% gettext Reset %> class='uk-button' %>
+    <a href='..' class='uk-button uk-button-link'><% gettext Cancel %></a>
+  </div>
 </form>
 
-<script>
-  const pane = document.querySelector('.av-values');
-
-  pane.addEventListener('mouseover', event => {
-    const row = event.target.closest('.av-value-row');
-    if (row) row.querySelector('.av-value-controls').classList.remove('uk-hidden');
-  });
-
-  pane.addEventListener('mouseout', event => {
-    const row = event.target.closest('.av-value-row');
-    if (row) row.querySelector('.av-value-controls').classList.add('uk-hidden');
-  });
-
-  pane.addEventListener('click', event => {
-    const control = event.target.closest('.av-value-remove');
-    if (control) control.closest('.av-value-row').remove();
-   });
-
-  const addButton = pane.querySelector('#av-add-value');
-
-  addButton.classList.remove('uk-hidden');
-
-  addButton.querySelector('a').addEventListener('click', event => {
-    event.preventDefault();
-
-    const name = prompt('<% gettext "Please enter the name of the new setting:" %>');
-
-    if (!name) return;
-
-    const key = 'av-value ' + name;
-    const valueRow = document.querySelector('.av-value-row:last-child');
-    console.log(valueRow)
-    const clone = valueRow.cloneNode(true);
-
-    clone.classList.remove('uk-hidden');
-    clone.querySelector('.av-value-title').innerHTML = name;
-    clone.querySelector('.av-clipboard-copy').remove();
-
-    const input = clone.querySelector('.uk-form-controls input');
-
-    input.setAttribute('id', key.replace(/\s/g, '-'));
-    input.setAttribute('name', key);
-    input.setAttribute('value', '');
-    input.setAttribute('type', getType(key));
-
-    valueRow.insertAdjacentElement('afterend', clone);
-    clone.querySelector('input').focus();
-  });
-
-  const getType = name => {
-    const type = name.split(' ').pop();
-    const types = {
-      color: 'color'
-    };
-    return types[type] || 'text';
-  }
-</script>
-
 <% #value %>
-<div class='uk-width-1-2 uk-margin-bottom av-value-row <% param.class %>'>
+<div class='uk-width-1-2 uk-margin-bottom av-value-row <% param.class %>' @mouseover='showControls($event)' @mouseout='hideControls($event)' @click='removeSetting($event)'>
    <div class='uk-form-label'>
       <span class='av-value-title'><% param.title %></span>
-      <span class='av-value-controls uk-hidden'>
+      <span class='av-value-controls' hidden>
          <a href='javascript:' class='av-value-remove'><i class='uk-icon-trash-o'></i></a>
          <a href='javascript:' class='av-clipboard-copy' data-text='<% gettext 'Press CTRL & C to copy to clipboard.' %>' data-value="<% param.macro %>"><i class='uk-icon-clipboard'></i></a>
       </span>
