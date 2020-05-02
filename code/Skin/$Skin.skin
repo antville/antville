@@ -15,7 +15,7 @@
 </tr>
 
 <% #edit %>
-<form class='uk-form av-invisible av-skin-editor' method="post" action="<% response.action %>">
+<form class='uk-form av-skin-editor' method="post" action="<% response.action %>">
    <div class='uk-margin-top uk-margin-left uk-margin-right uk-clearfix'>
       <h1 class='uk-margin-large-right uk-float-left'><% response.title %></h1>
       <span style='line-height: 39px;'>
@@ -37,17 +37,17 @@
 </form>
 
 <script>
-   let mode;
+  (function() {
+    // Setup skin editor
+    let mode = 'application/x-helma-skin';
 
-   if (location.href.indexOf('stylesheet') > -1) {
+    if (location.href.indexOf('stylesheet') > -1) {
       mode = 'text/css';
-   } else if (location.href.indexOf('javascript') > -1) {
+    } else if (location.href.indexOf('javascript') > -1) {
       mode = 'text/javascript';
-   } else {
-      mode = 'application/x-helma-skin';
-   }
+    }
 
-   CodeMirror.fromTextArea(document.querySelector('#source'), {
+    CodeMirror.fromTextArea(document.querySelector('#source'), {
       autofocus: true,
       enterMode: 'keep',
       indentUnit: 3,
@@ -58,9 +58,8 @@
       tabMode: 'shift',
       tabSize: 3,
       viewportMargin: Infinity
-   });
-
-   document.querySelector('.av-skin-editor').classList.remove('av-invisible');
+    });
+  })();
 </script>
 
 <% #compare %>
