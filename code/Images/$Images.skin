@@ -35,53 +35,54 @@
 </div>
 
 <script>
-(function() {
-  const dropElement = document.querySelector('.av-upload-drop');
-  const parent = location.href.lastIndexOf('/layout/images/') > -1 ? 'layout' : 'site';
-  const uploadUrl = '<% site.images.href upload %>?parent=' + parent;
+  // Setup drag&drop for image uploads
+  (function() {
+    const dropElement = document.querySelector('.av-upload-drop');
+    const parent = location.href.lastIndexOf('/layout/images/') > -1 ? 'layout' : 'site';
+    const uploadUrl = '<% site.images.href upload %>?parent=' + parent;
 
-  let dropTimer;
-  let dropHasHilite;
+    let dropTimer;
+    let dropHasHilite;
 
-  ['dragstart', 'dragenter', 'dragover'].forEach(function(type) {
-    document.addEventListener(type, function() {
-      if (!dropHasHilite) {
-        dropElement.classList.remove('uk-hidden');
-        dropHasHilite = true;
-      }
+    ['dragstart', 'dragenter', 'dragover'].forEach(function(type) {
+      document.addEventListener(type, function() {
+        if (!dropHasHilite) {
+          dropElement.classList.remove('uk-hidden');
+          dropHasHilite = true;
+        }
+      });
     });
-  });
 
-  ['dragleave', 'dragend'].forEach(function(type) {
-    dropHasHilite = false;
-    clearTimeout(dropTimer);
-    dropTimer = setTimeout(function() {
-      dropHasHilite || dropElement.classList.add('uk-hidden');
-    }, 100);
-  });
+    ['dragleave', 'dragend'].forEach(function(type) {
+      dropHasHilite = false;
+      clearTimeout(dropTimer);
+      dropTimer = setTimeout(function() {
+        dropHasHilite || dropElement.classList.add('uk-hidden');
+      }, 100);
+    });
 
-  const restoreDrop = function() {
-    dropElement.classList.add('uk-hidden');
-    dropElement.querySelector('i').classList.remove('av-upload-glow');
-  };
+    const restoreDrop = function() {
+      dropElement.classList.add('uk-hidden');
+      dropElement.querySelector('i').classList.remove('av-upload-glow');
+    };
 
-  UIkit.uploadDrop(document, {
-    action: uploadUrl,
-    allow: '*.(jpg|jpeg|gif|png)',
+    UIkit.uploadDrop(document, {
+      action: uploadUrl,
+      allow: '*.(jpg|jpeg|gif|png)',
 
-    loadstart: function() {
-      dropElement.querySelector('i').classList.add('av-upload-glow');
-    },
+      loadstart: function() {
+        dropElement.querySelector('i').classList.add('av-upload-glow');
+      },
 
-    //progress: function(percent) {},
+      //progress: function(percent) {},
 
-    allcomplete: function(response) {
-      location.href = response;
-    },
+      allcomplete: function(response) {
+        location.href = response;
+      },
 
-    notallowed: restoreDrop,
-    error: restoreDrop,
-    abort: restoreDrop
-  });
-})();
+      notallowed: restoreDrop,
+      error: restoreDrop,
+      abort: restoreDrop
+    });
+  })();
 </script>

@@ -1,13 +1,15 @@
-window.Antville = {};
-window.md5 = require('js-md5/src/md5');
 window.$ = window.jQuery = require('jquery');
-
-require('alpinejs');
 
 require('uikit/dist/js/uikit');
 require('uikit/dist/js/components/form-password');
 require('uikit/dist/js/components/tooltip');
 require('uikit/dist/js/components/upload');
+
+require('alpinejs');
+
+const Antville = window.Antville = {};
+
+Antville.hash = require('js-md5/src/md5');
 
 const init = function() {
   // Highlight the current navigation menu item

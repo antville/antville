@@ -78,14 +78,14 @@
          </div>
       </div>
    </fieldset>
-   <fieldset class='uk-margin-top'>
+   <fieldset class='uk-margin-top' x-data='{ creationScope: "<% root.creationScope %>" }'>
       <legend><% gettext 'Site Creation' %></legend>
       <div class='uk-form-row'>
          <label class='uk-form-label' for='creationScope'>
             <% gettext 'Required Account Status' %>
          </label>
          <div class='uk-form-controls'>
-            <% root.select creationScope %>
+            <% root.select creationScope x-model='creationScope' %>
          </div>
       </div>
       <div class='uk-form-row'>
@@ -93,7 +93,7 @@
             <% gettext 'Probation Period' %>
          </label>
          <div class='uk-form-controls'>
-            <% root.input probationPeriod class=uk-width-1-6 type=number min=0 %> <% gettext days %>
+            <% root.input probationPeriod class=uk-width-1-6 type=number min=0 :disabled="creationScope !== 'regular'" %> <% gettext days %>
          </div>
       </div>
       <div class='uk-form-row'>
@@ -101,18 +101,18 @@
             <% gettext Interval %>
          </label>
          <div class='uk-form-controls'>
-            <% root.input creationDelay class=uk-width-1-6 type=number min=0 %> <% gettext days %>
+            <% root.input creationDelay class=uk-width-1-6 type=number min=0 :disabled="creationScope !== 'regular'" %> <% gettext days %>
          </div>
       </div>
    </fieldset>
-   <fieldset class='uk-margin-top'>
+   <fieldset class='uk-margin-top' x-data='{ phaseOutMode: "<% root.phaseOutMode %>" }'>
       <legend><% gettext 'Site Phase-Out' %></legend>
       <div class='uk-form-row'>
          <label class='uk-form-label' for='phaseOutMode'>
             <% gettext Mode %>
          </label>
          <div class='uk-form-controls'>
-            <% root.select phaseOutMode %>
+            <% root.select phaseOutMode x-model='phaseOutMode' %>
          </div>
       </div>
       <div class='uk-form-row'>
@@ -120,7 +120,7 @@
             <% gettext 'Notification Period' %>
          </label>
          <div class='uk-form-controls'>
-         <% root.input phaseOutNotificationPeriod class=uk-width-1-6 type=number min=1 %> <% gettext days %>
+         <% root.input phaseOutNotificationPeriod class=uk-width-1-6 type=number min=1 :disabled="phaseOutMode === 'disabled'" %> <% gettext days %>
          </div>
       </div>
       <div class='uk-form-row'>
@@ -128,7 +128,7 @@
             <% gettext 'Grace Period' %>
          </label>
          <div class='uk-form-controls'>
-            <% root.input phaseOutGracePeriod class=uk-width-1-6 type=number min=1 %> <% gettext days %>
+            <% root.input phaseOutGracePeriod class=uk-width-1-6 type=number min=1 :disabled="phaseOutMode === 'disabled'" %> <% gettext days %>
          </div>
       </div>
    </fieldset>
@@ -139,21 +139,6 @@
       <a href='..' class="uk-button uk-button-link"><% gettext Cancel %></a>
    </div>
 </form>
-
-<script>
-  creationScope.addEventListener('change', event => {
-    const disabled = event.currentTarget.value !== 'regular';
-    probationPeriod.disabled = creationDelay.disabled = disabled;
-  });
-
-  phaseOutMode.addEventListener('change', event => {
-    const disabled = event.currentTarget.value === "disabled";
-    phaseOutNotificationPeriod.disabled = phaseOutGracePeriod.disabled = disabled;
-  })
-
-  Antville.trigger(creationScope, 'change');
-  Antville.trigger(phaseOutMode, 'change');
-</script>
 
 <% #activities %>
 <h1><% response.title %></h1>

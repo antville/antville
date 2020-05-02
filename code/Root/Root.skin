@@ -2,18 +2,7 @@
 <% gettext 'System is up and running.' %>
 
 <% #urlPreview %>
-<a id='av-site-url-preview'></a>
-
-<script>
-  document.querySelector('#name').addEventListener('keyup', event => {
-    const name = event.target.value;
-    const preview = document.querySelector('#av-site-url-preview');
-
-    if (name) {;
-      preview.innerHTML = `<% root.href %><strong>${name}</strong>`;
-      preview.setAttribute('href', '<% root.href %>' + name);
-    } else {
-      preview.innerHTML = '<% root.href %>';
-    }
-  });
-</script>
+<% // This snippet contains additional markup to be rendered client-side by Alpine %>
+<a :href='"<% root.href %>" + name'>
+  <strong x-show='name' x-text='"<% root.href %>" + name'></strong>
+</a>

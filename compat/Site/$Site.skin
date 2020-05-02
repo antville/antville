@@ -1,5 +1,6 @@
 <% #googleSearch %>
 <h1><% response.title %></h1>
+
 <form class='uk-form' method='get' action='<% site.href search %>'>
    <div class='uk-form-controls'>
       <input type='text' class='uk-width-1-2' name='q' value='<% request.q encoding="form" %>' required>
@@ -9,7 +10,11 @@
       <a href='<% site.href %>' class='uk-button uk-button-link'><% gettext Cancel %></a>
    </div>
 </form>
+
+<gcse:searchresults-only></gcse:searchresults-only>
+
 <script>
+  // Load additional script for Google’s custom search
   (function() {
     var cx = '008141500676255803966:bw4l-wnuz44';
     var gcse = document.createElement('script');
@@ -21,4 +26,3 @@
     s.parentNode.insertBefore(gcse, s);
   })();
 </script>
-<gcse:searchresults-only></gcse:searchresults-only>

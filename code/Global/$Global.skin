@@ -32,37 +32,15 @@
    <input type="file" id="<% param.name %>" name="<% param.name %>">
 </noscript>
 
-<div class="av-upload uk-hidden">
-   <input type="file">
+<div class="av-upload" hidden :hidden='false'>
+   <input type="file" x-ref='file' :name='"<% param.name %>"' @change='$refs.text.value = $event.currentTarget.value'>
    <div class="uk-width-1-1 av-upload-controls">
-      <input class='uk-width-1-2' type="text" value="<% param.value %>">
-      <button class='uk-button' id="<% param.name %>_control" name="<% param.name %>_control" type="button">
+      <input class='uk-width-1-2' type="text" value="<% param.value %>" x-ref='text' :name='"<% param.name %>_origin"' @blur='$refs.file.value = ""'>
+      <button class='uk-button' id="<% param.name %>_control" name="<% param.name %>_control" type="button" @click='$refs.file.click()'>
          <% gettext "Select" suffix=… %>
       </button>
    </div>
 </div>
-
-<script>
-  document.querySelector('noscript').remove();
-  document.querySelector('.av-upload').classList.remove('uk-hidden');
-
-  const textInput = document.querySelector('.av-upload input[type="text"]');
-  const fileInput = document.querySelector('.av-upload input[type="file"]');
-
-  textInput.id = textInput.name = '<% param.name %>_origin';
-  fileInput.id = fileInput.name = '<% param.name %>';
-
-  textInput.addEventListener('blur', () => {
-    fileInput.value = '';
-  });
-
-  fileInput.addEventListener('change', event => {
-    textInput.value = event.currentTarget.value;
-  });
-
-  document.querySelector('.av-upload button')
-    .addEventListener('click', () => fileInput.click());
-</script>
 
 <% #listItemFlag %>
 <td rowspan="2" width="10" align="center" valign="top" nowrap="nowrap"

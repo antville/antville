@@ -6,13 +6,13 @@
    </td>
    <td class='uk-text-right uk-text-nowrap'>
       <% tag.link rss.xml "<i class='uk-icon-rss'></i>" %>
-      <% tag.link delete "<i class='uk-icon-trash-o'></i>" class='av-delete-tag uk-hidden' data-av-tag-url=<% tag.href delete %> %>
-      <% tag.link rename "<i class='uk-icon-pencil'></i>" class='av-rename-tag uk-hidden' data-av-tag-url=<% tag.href rename %> %>
+      <% tag.link delete "<i class='uk-icon-trash-o'></i>" @click.prevent=<% tag.name prefix='remove(\'' suffix='\', $event)' %> hidden=hidden :hidden='false' %>
+      <% tag.link rename "<i class='uk-icon-pencil'></i>" @click.prevent=<% tag.name prefix='rename(\'' suffix='\', $event)' %> hidden=hidden :hidden='false' %>
    </td>
 </tr>
 
 <% #main %>
-<div class='av-tag'>
+<div class='av-tag' :class='"<% tag.type parent %>" === "Image" ? "av-collage" : ""' x-data='{}'>
    <% list.render skin="$TagHub#main" %>
 </div>
 
@@ -22,16 +22,13 @@
 </ul>
 
 <script>
+  // Load additional script for Collage jQuery plugin
   if ('<% tag.type parent %>' === 'Image') {
     const script = document.createElement('script');
 
-    // Load an extra script for the gallery
-    script.src = '<% root.static ../../scripts/gallery.min.js %>';
-
     script.onload = function() {
-      // Collage is a jQuery plugin
       $(function() {
-        const resizeTimer = null;
+        let resizeTimer = null;
 
         const collage = () => {
           $('.av-collage').removeWhitespace().collagePlus({
@@ -52,8 +49,8 @@
       });
     };
 
+    script.src = '<% root.static ../../scripts/gallery.min.js %>';
     document.head.appendChild(script);
-    document.querySelector('.av-tag').classList.add('av-collage');
   }
 </script>
 

@@ -42,23 +42,24 @@
       const valueRow = document.querySelector(".av-value-row:last-child");
       const clone = valueRow.cloneNode(true);
 
-      clone.classList.remove("uk-hidden");
       clone.querySelector(".av-value-title").innerHTML = name;
-      clone.querySelector(".av-clipboard-copy").remove();
+
+      const clipboard = clone.querySelector(".av-clipboard-copy");
+      if (clipboard) clipboard.remove();
 
       const input = clone.querySelector(".uk-form-controls input");
 
-      input.setAttribute("id", key.replace(/\s/g, "-"));
-      input.setAttribute("name", key);
-      input.setAttribute("value", "");
-      input.setAttribute("type", this.getType(key));
+      input.id = key.replace(/\s/g, "-");
+      input.name = key;
+      input.value = "";
+      input.type = this.getType(key);
 
       valueRow.insertAdjacentElement("afterend", clone);
       clone.querySelector("input").focus();
     },
 
     removeSetting: function(event) {
-      event.currentTarget.remove();
+      event.currentTarget.closest(".av-value-row").remove();
     },
 
     getType: function(name) {
@@ -90,11 +91,11 @@
 </form>
 
 <% #value %>
-<div class='uk-width-1-2 uk-margin-bottom av-value-row <% param.class %>' @mouseover='showControls($event)' @mouseout='hideControls($event)' @click='removeSetting($event)'>
+<div class='uk-width-1-2 uk-margin-bottom av-value-row <% param.class %>' @mouseover='showControls($event)' @mouseout='hideControls($event)'>
    <div class='uk-form-label'>
       <span class='av-value-title'><% param.title %></span>
       <span class='av-value-controls' hidden>
-         <a href='javascript:' class='av-value-remove'><i class='uk-icon-trash-o'></i></a>
+         <a href='javascript:' class='av-value-remove' @click='removeSetting($event)'><i class='uk-icon-trash-o'></i></a>
          <a href='javascript:' class='av-clipboard-copy' data-text='<% gettext 'Press CTRL & C to copy to clipboard.' %>' data-value="<% param.macro %>"><i class='uk-icon-clipboard'></i></a>
       </span>
    </div>

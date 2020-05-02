@@ -5,8 +5,8 @@
       <label class='uk-form-label' for='name'>
          <% gettext Name %> <i class='uk-icon uk-icon-info-circle uk-text-muted' data-uk-tooltip title="<% gettext "Please note that you cannot change the name after the site was created." %>"></i>
       </label>
-      <div class='uk-form-controls'>
-         <% newSite.input name class=uk-form-width-medium maxlength=25 tabindex=1 %>
+      <div class='uk-form-controls' x-data="{ name: '' }">
+         <% newSite.input name class=uk-form-width-medium maxlength=25 tabindex=1 x-model="name" %>
          <div class='uk-form-help-inline'>
             <% gettext 'The name will be part of the URL of your site.' %>
          </div>

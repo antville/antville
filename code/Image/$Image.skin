@@ -41,7 +41,7 @@
    <% image.link . ' ' class='uk-icon-button uk-icon-link uk-text-middle' %>
 </h1>
 <div class='uk-article-meta'><% image.skin $HopObject#meta %></div>
-<form class='uk-margin-top uk-form uk-form-stacked' method="post" action="<% response.action %>" enctype="multipart/form-data">
+<form class='uk-margin-top uk-form uk-form-stacked' method="post" action="<% response.action %>" enctype="multipart/form-data" x-data="{ name: '<% image.name %>', layout: location.href.indexOf('/layout/') > -1 }">
    <div class='uk-form-row'>
       <label class='uk-form-label' for='file'>
          <% gettext File %>
@@ -50,13 +50,13 @@
          <% image.upload file %>
       </div>
    </div>
-   <div class='uk-form-row uk-hidden av-name-row'>
+   <div class='uk-form-row av-name-row' hidden :hidden='false'>
       <label class='uk-form-label' for='name'>
          <% gettext Name %>
          <i class='uk-icon-info-circle uk-text-muted' title='<% gettext "If you do not specify a name Antville will create one based on the filename." %>' data-uk-tooltip='{pos: "right"}'></i>
       </label>
       <div class='uk-form-controls'>
-         <% image.input name class='uk-width-1-2' %>
+         <% image.input name class='uk-width-1-2' :disabled='name' %>
       </div>
    </div>
    <div class='uk-form-row'>
@@ -67,7 +67,7 @@
          <% image.input description class='uk-width-1-1' %>
       </div>
    </div>
-   <div class='uk-form-row uk-hidden av-tags-row'>
+   <div class='uk-form-row av-tags-row' x-show='!layout'>
       <label class='uk-form-label' for='tags'>
          <% gettext Tags %>
          <i class='uk-icon-info-circle uk-text-muted' title='<% gettext 'Separated by commas' %>' data-uk-tooltip='{pos: "right"}'></i>
@@ -90,12 +90,3 @@
       <a href='.' class="uk-button uk-button-link"><% gettext Cancel %></a>
    </div>
 </form>
-
-<script>
-  if ('<% image.name %>') document.querySelector('#name').disabled = true;
-  document.querySelector('.av-name-row').classList.remove('uk-hidden');
-
-  if (location.href.indexOf('/layout/') < 0) {
-    document.querySelector('.av-tags-row').classList.remove('uk-hidden');
-  }
-</script>

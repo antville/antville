@@ -171,10 +171,10 @@
             <% gettext 'Callback URL' %>
          </label>
 
-         <div class='uk-form-controls'>
-            <% site.input callbackUrl type=url class='uk-width-1-1' %>
+         <div class='uk-form-controls' x-data='{ callbackMode: false }'>
+            <% site.input callbackUrl type=url class='uk-width-1-1' :disabled='!callbackMode' %>
             <label>
-               <% site.checkbox callbackMode %>
+               <% site.checkbox callbackMode x-model='callbackMode' %>
                <% gettext enabled %>
             </label>
          </div>
@@ -186,7 +186,7 @@
          </label>
 
          <div class='uk-form-controls'>
-            <a class='uk-button' data-uk-tooltip='{pos: "right"}' href="javascript: void (() => {const F = {'🍪': '',  '🐜': '<% root.static %>../../formica.html', '🎯': '<% site.href %>', '🌐': '<% root.href %>', '📝': window.getSelection ? window.getSelection() : document.selection.createRange()}; F['📝'] = '' + (F['📝'].text || F['📝']); F['🐜'] += '?s=' + encodeURIComponent(F['🎯']) + '&amp;l=' + encodeURIComponent(location.href) + '&amp;r=' + encodeURIComponent(document.referrer) + '&amp;k=' + encodeURIComponent(F['🍪']) + '&c=' + encodeURIComponent(F['📝']) + '&b=' + encodeURIComponent(F['🌐']); window.open(F['🐜'], '🐜', 'width=650, height=350');})()" title="<% gettext 'Drag to Bookmarks Bar' %>"><% gettext "Post to {0}" <% site.title %> %></a>
+            <a class='uk-button' data-uk-tooltip='{ pos: "right" }' href="javascript: void (() => { const F = { '🍪': '',  '🐜': '<% root.static %>../../formica.html', '🎯': '<% site.href %>', '🌐': '<% root.href %>', '📝': window.getSelection ? window.getSelection() : document.selection.createRange() }; F['📝'] = '' + (F['📝'].text || F['📝']); F['🐜'] += '?s=' + encodeURIComponent(F['🎯']) + '&amp;l=' + encodeURIComponent(location.href) + '&amp;r=' + encodeURIComponent(document.referrer) + '&amp;k=' + encodeURIComponent(F['🍪']) + '&c=' + encodeURIComponent(F['📝']) + '&b=' + encodeURIComponent(F['🌐']); window.open(F['🐜'], '🐜', 'width=650, height=350'); })()" title="<% gettext 'Drag to Bookmarks Bar' %>"><% gettext "Post to {0}" <% site.title %> %></a>
          </div>
       </div>
 

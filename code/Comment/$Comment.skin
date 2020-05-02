@@ -15,35 +15,11 @@
 </tr>
 
 <% #delete %>
-<div class='uk-alert uk-alert-warning uk-hidden av-alert-confirm'>
-   <input type="checkbox" id="mode" name="mode" value="user" />
-   <label for="mode"><% gettext "Erase all comments of user {0}" <% comment.creator %> %></label>
-   <div id="confirmation">
-      <input type="checkbox" id="confirm" name="confirm" value="1" />
-      <label for="confirm"><% ngettext "Yes, really erase {0} comment" "Yes, really erase {0} comments" <% comment.related.size %> %></label>
-   </div>
+<div class='uk-alert uk-alert-warning av-alert-confirm' x-data='{ confirm: false, confirmed: false }' hidden :hidden='false'>
+  <input type="checkbox" id="mode" name="mode" value="user" @click='confirm = document.querySelector("button").disabled = !confirm'/>
+  <label for="mode"><% gettext "Erase all comments of user {0}" <% comment.creator %> %></label>
+  <div id="confirmation" x-show='confirm'>
+    <input type="checkbox" id="confirm" name="confirm" value="1" x-model='confirmed' @click='confirmed = !confirmed; document.querySelector("button").disabled = !confirmed'/>
+    <label for="confirm"><% ngettext "Yes, really erase {0} comment" "Yes, really erase {0} comments" <% comment.related.size %> %></label>
+  </div>
 </div>
-
-<script>
-  confirmation.hidden = true;
-
-  mode.addEventListener('click', event => {
-    const button = document.querySelector('button');
-    const input = document.querySelector('#confirm');
-
-    if (event.currentTarget.checked) {
-      input.checked = false;
-      confirmation.hidden = false;
-      button.disabled = true;
-    } else {
-      confirmation.hidden = true;
-      button.disabled = false;
-    }
-
-    input.addEventListener('click', event => {
-      document.querySelector('button').disabled = !event.currentTarget.checked;
-    });
-  });
-
-  document.querySelector('.av-alert-confirm').classList.remove('uk-hidden');
-</script>
