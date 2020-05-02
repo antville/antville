@@ -531,6 +531,7 @@ hr {
       border-color: @link-color;
       text-shadow: initial;
    }
+
    &:hover {
       background-color: @background;
       color: @hover-color;
@@ -539,7 +540,7 @@ hr {
    }
 }
 
-.uk-button:not(.uk-button-success) {
+.uk-button:not(.uk-button-success):not([disabled]) {
    text-shadow: initial !important;
 
    &, &:link, &:visited {
@@ -547,26 +548,32 @@ hr {
       color: @text-color;
       border-color: @text-color;
    }
+
    &:hover {
       background-color: @background;
       color: @hover-color;
       border-color: @hover-color;
    }
+
    &.uk-button-link {
       border: initial;
+
       &:link, &:visited {
          color: @link-color;
       }
+
       &:hover {
          color: @hover-color;
       }
    }
+
    &.uk-button-primary {
       background-color: @background;
       border-style: double;
       border-color: @link-color;
       color: @link-color;
       font-weight: bold;
+
       &:hover {
          background: inherit;
          border-color: @hover-color;
@@ -575,24 +582,31 @@ hr {
    }
 }
 
+&.uk-button-primary[disabled] {
+  font-weight: bold;
+}
+
 .uk-pagination {
    & > li > a {
       background: @background;
       color: @link-color;
       border-color: @link-color;
       text-shadow: initial;
+
       &:hover {
          background: @background;
          color: @hover-color;
          border-color: @hover-color;
       }
    }
+
    & > .uk-active > span {
       background: @background;
       border-color: @text-color;
       color: @text-color;
       font-weight: bold;
    }
+
    & > .uk-disabled > span {
       background: @muted-background;
       color: @muted-color;
@@ -605,6 +619,7 @@ hr {
    &:link, &:visited {
       color: @link-color;
    }
+
    &:hover {
       color: @hover-color;
    }
@@ -627,6 +642,7 @@ h1 a, .uk-table a {
    &:visited {
       color: @link-color;
    }
+
    &:hover {
       color: @hover-color;
    }
@@ -643,7 +659,23 @@ h1 a, .uk-table a {
    width: 100%;
 }
 
-.uk-form select, .uk-form textarea, .uk-form input:not([type]), .uk-form input[type="text"], .uk-form input[type="password"], .uk-form input[type="datetime"], .uk-form input[type="datetime-local"], .uk-form input[type="date"], .uk-form input[type="month"], .uk-form input[type="time"], .uk-form input[type="week"], .uk-form input[type="number"], .uk-form input[type="email"], .uk-form input[type="url"], .uk-form input[type="search"], .uk-form input[type="tel"], .uk-form input[type="color"] {
+.uk-form select,
+.uk-form textarea,
+.uk-form input:not([type]),
+.uk-form input[type="text"],
+.uk-form input[type="password"],
+.uk-form input[type="datetime"],
+.uk-form input[type="datetime-local"],
+.uk-form input[type="date"],
+.uk-form input[type="month"],
+.uk-form input[type="time"],
+.uk-form input[type="week"],
+.uk-form input[type="number"],
+.uk-form input[type="email"],
+.uk-form input[type="url"],
+.uk-form input[type="search"],
+.uk-form input[type="tel"],
+.uk-form input[type="color"] {
    border-color: @border-color;
 }
 
@@ -756,8 +788,10 @@ h4 + .uk-comment-meta li:first-child {
 
 .av-collage {
    padding: 0;
+
    .av-tagged-image {
       opacity: 0;
+
       img {
          max-width: 100%;
          display: inline-block;
@@ -766,6 +800,7 @@ h4 + .uk-comment-meta li:first-child {
          vertical-align: bottom;
          opacity: 1;
       }
+
       .Caption_Content {
          color: #fff;
          padding: 10px;
