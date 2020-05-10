@@ -39,7 +39,7 @@
     "jquery-collagePlus": "github:antville/jquery-collagePlus#0.3.4",
     "js-md5": "^0.7.3",
     "marked": "^1.0.0",
-    "string-strip-html": "^4.3.22",
+    "string-strip-html": "=4.3.18",
     "uikit": "^2.27.4"
   },
   "devDependencies": {
@@ -48,5 +48,8 @@
     "less": "^3.11.1",
     "less-plugin-clean-css": "^1.5.1",
     "uglifyify": "^5.0.2"
+  },
+  "resolutions": {
+    "**/punycode": "^1.4.1"
   }
 }
