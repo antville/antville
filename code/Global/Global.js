@@ -22,8 +22,9 @@
 String.ELLIPSIS = '…';
 
 app.addRepository(app.dir + '/../lib/jdom-1.0.jar');
-app.addRepository(app.dir + '/../lib/rome-1.0.jar');
+app.addRepository(app.dir + '/../lib/jsoup-1.13.1.jar');
 app.addRepository(app.dir + '/../lib/lesscss-1.7.0.1.1.jar');
+app.addRepository(app.dir + '/../lib/rome-1.0.jar');
 
 app.addRepository('modules/core/Global.js');
 app.addRepository('modules/core/HopObject.js');
@@ -250,7 +251,7 @@ var rome = new JavaImporter(
 })(new java.io.File(app.dir + '/' + getProperty('commonjs.dir')));
 
 var marked = require('marked/lib/marked');
-var sanitizeHtml = require('string-strip-html');
+var sanitizeHtml = Packages.org.jsoup.Jsoup.clean;
 
 /**
  * A simple and hackish implementation of the console instance of some browsers.

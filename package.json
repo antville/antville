@@ -3,12 +3,10 @@
   "version": "1.618",
   "description": "Antville is an open source project aimed at the development of a high performance, feature rich weblog hosting software. It can easily host up to several thousands of sites (the number of weblogs is rather limited by the installation owner’s choice and server power than by software limitations).",
   "main": "main.js",
-
   "directories": {
     "doc": "docs",
     "test": "tests"
   },
-
   "scripts": {
     "add-claustra": "tools/build/add-claustra.js",
     "add-patch": "tools/build/add-patch.sh",
@@ -39,7 +37,6 @@
     "jquery-collagePlus": "github:antville/jquery-collagePlus#0.3.4",
     "js-md5": "^0.7.3",
     "marked": "^1.0.0",
-    "string-strip-html": "=4.3.18",
     "uikit": "^2.27.4"
   },
   "devDependencies": {
@@ -48,8 +45,5 @@
     "less": "^3.11.1",
     "less-plugin-clean-css": "^1.5.1",
     "uglifyify": "^5.0.2"
-  },
-  "resolutions": {
-    "**/punycode": "^1.4.1"
   }
 }

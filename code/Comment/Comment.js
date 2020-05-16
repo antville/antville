@@ -23,34 +23,7 @@ markgettext('Comment');
 markgettext('comment');
 markgettext('a comment // accusative');
 
-Comment.DISABLED_HTML = [
-  'base',
-  'body',
-  'button',
-  'canvas',
-  'datalist',
-  'fieldset',
-  'form',
-  'head',
-  'html',
-  'input',
-  'label',
-  'legend',
-  'link',
-  'meta',
-  'meter',
-  'noscript',
-  'optgroup',
-  'option',
-  'output',
-  'progress',
-  'script',
-  'select',
-  'style',
-  'textarea',
-  'title'
-];
-
+Comment.HTML_WHITELIST = Packages.org.jsoup.safety.Whitelist.relaxed();
 
 /**
  * @see defineConstants
@@ -221,9 +194,8 @@ Comment.prototype.filter_action = function () {
  * @param {Object} data
  */
 Comment.prototype.update = function(data) {
-  if (!User.require(User.TRUSTED) && !Membership.require(Membership.CONTRIBUTOR)) {
-    const spec = { onlyStripTags: Comment.DISABLED_HTML };
-    data.text = data.text ? sanitizeHtml(data.text, spec) : String.EMPTY;
+  if (data.text && !User.require(User.TRUSTED) && !Membership.require(Membership.CONTRIBUTOR)) {
+    data.text = sanitizeHtml(data.text, Comment.HTML_WHITELIST);
   }
 
   if (!data.text) {
