@@ -1,0 +1,260 @@
+plugins {
+  id 'base'
+  id 'java'
+
+  id 'com.github.node-gradle.node' version '2.2.3'
+  id 'org.ajoberstar.grgit' version '4.0.2' apply false
+}
+
+import org.ajoberstar.grgit.Grgit
+
+def antvilleBuildDir = "${project.buildDir}/install/antville"
+
+tasks.build.dependsOn 'assemble'
+
+node {
+  version = '12.16.3'
+  yarnVersion = '1.22.4'
+  download = true
+}
+
+allprojects {
+  apply plugin: 'java'
+
+  repositories {
+    mavenCentral()
+    jcenter()
+  }
+
+  project.ext.distVersion = { ->
+    def json = new groovy.json.JsonSlurper()
+    def packageData = json.parse(file("${rootProject.projectDir}/package.json"))
+    return packageData.version
+  }
+
+  // Hide some purely Java-related tasks
+  project.tasks.buildDependents.group = null;
+  project.tasks.buildNeeded.group = null;
+  project.tasks.classes.group = null;
+  project.tasks.jar.group = null;
+  project.tasks.testClasses.group = null;
+}
+
+dependencies {
+  implementation 'com.atlassian.commonmark:commonmark:0.14.0'
+  implementation 'jdom:jdom:1.0'
+  implementation 'org.jsoup:jsoup:1.13.1'
+  implementation 'org.lesscss:lesscss:1.7.0.1.1'
+  implementation 'rome:rome:1.0'
+}
+
+assemble {
+  dependsOn 'installAntville'
+  dependsOn 'installJars'
+  dependsOn 'buildStaticFiles'
+}
+
+task installAntville {
+  description 'Clone the Antville repository and remove all unnecessary files.'
+  group 'installation'
+
+  outputs.dir antvilleBuildDir
+
+  doFirst {
+    Grgit.clone(dir: antvilleBuildDir, uri: project.ext['antville.repo.url'])
+  }
+
+  doLast {
+    delete "$antvilleBuildDir/.git"
+
+    delete fileTree("$antvilleBuildDir").matching {
+      include '.gitattributes'
+      include '.gitignore'
+      include 'i18n/*.po*'
+    }
+  }
+}
+
+task installJars(type: Copy) {
+  description 'Download required JAR libraries.'
+  group 'installation'
+  dependsOn 'installAntville'
+
+  def outputDir = "$antvilleBuildDir/lib"
+
+  outputs.dir outputDir
+
+  from configurations.runtimeClasspath
+  into outputDir
+
+  doLast {
+    delete "$outputDir/rhino-1.7R4.jar"
+    delete "$outputDir/slf4j-api-1.7.2.jar"
+    delete "$outputDir/slf4j-simple-1.7.2.jar"
+  }
+}
+
+task installNodeModules(type: YarnTask) {
+  description 'Download required Node modules.'
+  group 'build'
+  dependsOn 'installAntville'
+
+  inputs.files "$antvilleBuildDir/package.json"
+  outputs.dir "$antvilleBuildDir/node_modules"
+
+  args = ['install']
+
+  execOverrides {
+    it.workingDir = antvilleBuildDir
+  }
+}
+
+task buildStaticFiles {
+  description 'Build fonts, client-side scripts and stylesheets.'
+  group 'build'
+
+  dependsOn 'installAntville'
+  dependsOn 'installNodeModules'
+  dependsOn 'buildMainScript'
+  dependsOn 'buildMainStyles'
+  dependsOn 'buildEditorScript'
+  dependsOn 'buildEditorStyles'
+  dependsOn 'buildGalleryScript'
+  dependsOn 'buildLicenses'
+
+  def inputDir = "$antvilleBuildDir/node_modules/uikit/dist/fonts"
+  def outputDir = "$antvilleBuildDir/static"
+
+  inputs.dir inputDir
+  outputs.dirs "$outputDir/**"
+
+  doFirst {
+    copy {
+      from "$inputDir/**"
+      into "$outputDir/fonts"
+    }
+  }
+
+  doLast {
+    delete "$antvilleBuildDir/node_modules"
+  }
+}
+
+['main', 'editor', 'gallery'].each { name ->
+  task "build${name.capitalize()}Script" (type: YarnTask) {
+    description "Build the ${name} client-side scripts."
+    group 'build'
+    dependsOn 'installNodeModules'
+
+    def inputFile = "tools/client/${name}.js"
+    def outputFile = "static/scripts/${name}.min.js"
+
+    inputs.files "$antvilleBuildDir/$inputFile"
+    outputs.files "$antvilleBuildDir/$outputFile"
+
+    args = ['browserify', inputFile, '-o', outputFile, '-g', 'uglifyify']
+
+    execOverrides {
+      it.workingDir = antvilleBuildDir
+    }
+  }
+}
+
+['main', 'editor'].each { name ->
+  task "build${name.capitalize()}Styles" (type: YarnTask) {
+    description "Build the ${name} stylesheet."
+    group 'build'
+    dependsOn 'installNodeModules'
+
+    def inputFile = "tools/client/${name}.less"
+    def outputFile = "static/styles/${name}.min.css"
+
+    inputs.files "$antvilleBuildDir/$inputFile"
+    outputs.files "$antvilleBuildDir/$outputFile"
+
+    args = ['lessc', '--clean-css', inputFile, outputFile]
+
+    execOverrides {
+      it.workingDir = antvilleBuildDir
+    }
+  }
+}
+
+task buildLicenses(type: YarnTask) {
+  description 'Build licenses file from client-side dependecies.'
+  group 'build'
+  dependsOn 'installNodeModules'
+
+  inputs.file "$antvilleBuildDir/package.json"
+
+  args = ['licenses', 'generate-disclaimer']
+
+  execOverrides {
+    it.workingDir = antvilleBuildDir
+  }
+}
+
+task jsdoc(type: YarnTask) {
+  description 'Generates JavaScript API documentation for the main source code.'
+  group 'documentation'
+  dependsOn 'installNodeModules'
+
+  def inputDir = 'code'
+  def outputDir = 'docs'
+
+  inputs.dir "$antvilleBuildDir/$inputDir"
+  outputs.dir "$antvilleBuildDir/$outputDir"
+
+  args = ['jsdoc', '-r', '-d', outputDir, inputDir]
+
+  execOverrides {
+    it.workingDir = antvilleBuildDir
+  }
+}
+
+task assembleDist {
+  description 'Creates the Antville download packages.'
+  group 'distribution'
+
+  dependsOn 'build'
+  dependsOn 'cleanInstallNodeModules'
+  dependsOn 'distZip'
+  dependsOn 'distTar'
+
+  outputs.dir "${project.buildDir}/distributions"
+}
+
+task distZip(type: Zip) {
+  description 'Creates the Antville download package as Zip file.'
+  group 'distribution'
+  dependsOn 'buildStaticFiles'
+
+  def version = project.distVersion()
+  def outputDir = "${project.buildDir}/distributions"
+  def outputFile = "antville-${version}.zip"
+
+  inputs.dir antvilleBuildDir
+  outputs.file "$outputDir/$outputFile"
+
+  from antvilleBuildDir
+  destinationDirectory = file(outputDir)
+  archiveFileName = outputFile
+}
+
+task distTar(type: Tar) {
+  description 'Creates the Antville download package as Bzip2 file.'
+  group 'distribution'
+  dependsOn 'buildStaticFiles'
+
+  def version = project.distVersion()
+  def outputDir = "${project.buildDir}/distributions"
+  def outputFile = "antville-${version}.tbz"
+
+  inputs.dir antvilleBuildDir
+  outputs.file "$outputDir/$outputFile"
+
+  from antvilleBuildDir
+  compression = Compression.BZIP2
+  destinationDirectory = file(outputDir)
+  archiveFileName = outputFile
+}

@@ -1,0 +1,13 @@
+rootProject.name = 'antville'
+
+// Copy task ignores multiple files per default
+// See https://github.com/gradle/gradle/issues/11176
+org.apache.tools.ant.DirectoryScanner.removeDefaultExclude('**/.git')
+org.apache.tools.ant.DirectoryScanner.removeDefaultExclude('**/.git/**')
+org.apache.tools.ant.DirectoryScanner.removeDefaultExclude('**/.gitattributes')
+org.apache.tools.ant.DirectoryScanner.removeDefaultExclude('**/.gitignore')
+
+include 'antclick'
+project(':antclick').projectDir = file('tools/antclick')
+
+startParameter.excludedTaskNames = ['jar']

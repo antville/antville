@@ -1,0 +1,174 @@
+def antvilleBuildDir = "${rootProject.buildDir}/install/antville"
+def helmaInstallDir = "${rootProject.buildDir}/install/antclick"
+
+tasks.build.dependsOn ':build', 'assemble'
+
+dependencies {
+  implementation 'com.h2database:h2:1.4.200'
+}
+
+configurations {
+  // Wrapping implementation because it does not allow access to its files
+  // (i.e. cannot be resolved)
+  library.extendsFrom implementation
+}
+
+task assemble(type: Copy, overwrite: true) {
+  group 'build'
+  dependsOn ':assemble'
+
+  dependsOn 'installHelma'
+  dependsOn 'buildDatabase'
+
+  inputs.dir antvilleBuildDir
+  outputs.dir helmaInstallDir
+
+  from antvilleBuildDir
+  into ("$helmaInstallDir/apps/antville")
+
+  doFirst {
+    copy {
+      from "$antvilleBuildDir/tools/antclick/apps.properties"
+      into helmaInstallDir
+    }
+  }
+
+  doLast {
+    delete "$helmaInstallDir/apps/test"
+    delete "$helmaInstallDir/apps/welcome"
+    delete "$helmaInstallDir/db/welcome"
+    delete "$helmaInstallDir/docs"
+    delete "$helmaInstallDir/extras"
+  }
+}
+
+task downloadHelma {
+  def url = rootProject.ext['helma.download.url']
+  def outputFile = file("${rootProject.buildDir}/tmp/helma.tgz")
+
+  outputs.file outputFile
+
+  doLast {
+    new URL(url).withInputStream { inputStream ->
+      outputFile.withOutputStream { it << inputStream }
+    }
+  }
+}
+
+// See https://docs.gradle.org/current/userguide/working_with_files.html#sec:unpacking_archives_example
+task installHelma(type: Copy) {
+  description 'Download and extract the Helma package.'
+  group 'installation'
+  dependsOn 'downloadHelma'
+
+  def inputFile = "${rootProject.buildDir}/tmp/helma.tgz"
+  def outputDir = helmaInstallDir
+
+  inputs.file inputFile
+  outputs.dir outputDir
+
+  from(tarTree(inputFile)) {
+    eachFile { f ->
+      f.relativePath = new RelativePath(true, f.relativePath.segments.drop(1))
+    }
+    includeEmptyDirs = false
+  } into outputDir
+}
+
+task installJars(type: Copy) {
+  description 'Download required JAR libraries.'
+  group 'Installation'
+
+  def outputDir = "$helmaInstallDir/lib/ext"
+
+  outputs.dir outputDir
+
+  from configurations.runtimeClasspath
+  into outputDir
+}
+
+task installNodeModules(type: YarnTask) {
+  description 'Download required Node modules.'
+  group 'build'
+
+  inputs.files "$antvilleBuildDir/package.json"
+  outputs.dir "$antvilleBuildDir/node_modules"
+
+  args = ['install', '--production=true']
+
+  execOverrides {
+    it.workingDir = antvilleBuildDir
+  }
+}
+
+task buildDatabase(type: JavaExec) {
+  description 'Builds the H2 SQL database file.'
+  group 'build'
+  dependsOn 'installJars'
+
+  def inputFile = "$antvilleBuildDir/db/postgre.sql"
+  def outputDir = "$helmaInstallDir/db"
+
+  inputs.file inputFile
+  outputs.files "$outputDir/antville.mv.db"
+
+  def h2Jar = configurations.library.files.find { jar ->
+    jar.name.startsWith('h2')
+  }
+
+  classpath = files(h2Jar)
+  main = 'org.h2.tools.RunScript'
+
+  args = [
+    '-continueOnError',
+    '-script', inputFile,
+    '-url', "jdbc:h2:$outputDir/antville",
+    '-user', 'antville',
+    '-password', 'antville'
+  ]
+}
+
+task assembleDist {
+  description 'Creates the AntClick download packages.'
+  group 'distribution'
+
+  dependsOn 'build'
+  dependsOn ':cleanInstallNodeModules'
+  dependsOn 'distZip'
+  dependsOn 'distTar'
+
+  outputs.dir "${rootProject.buildDir}/distributions"
+}
+
+task distZip(type: Zip) {
+  description 'Creates the AntClick download package as Zip file.'
+  group 'distribution'
+
+  def version = project.distVersion()
+  def outputDir = "${rootProject.buildDir}/distributions"
+  def outputFile = "antclick-${version}.zip"
+
+  inputs.dir helmaInstallDir
+  outputs.file "$outputDir/$outputFile"
+
+  from helmaInstallDir
+  destinationDirectory = file(outputDir)
+  archiveFileName = outputFile
+}
+
+task distTar(type: Tar) {
+  description 'Creates the AntClick download package as Bzip2 file.'
+  group 'distribution'
+
+  def version = project.distVersion()
+  def outputDir = "${rootProject.buildDir}/distributions"
+  def outputFile = "antclick-${version}.tbz"
+
+  inputs.dir helmaInstallDir
+  outputs.file "$outputDir/$outputFile"
+
+  from helmaInstallDir
+  compression = Compression.BZIP2
+  destinationDirectory = file(outputDir)
+  archiveFileName = outputFile
+}
