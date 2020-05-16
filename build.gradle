@@ -42,6 +42,9 @@ allprojects {
 
 dependencies {
   implementation 'com.atlassian.commonmark:commonmark:0.14.0'
+  implementation 'com.atlassian.commonmark:commonmark-ext-autolink:0.14.0'
+  implementation 'com.atlassian.commonmark:commonmark-ext-gfm-strikethrough:0.14.0'
+  implementation 'com.atlassian.commonmark:commonmark-ext-gfm-tables:0.14.0'
   implementation 'jdom:jdom:1.0'
   implementation 'org.jsoup:jsoup:1.13.1'
   implementation 'org.lesscss:lesscss:1.7.0.1.1'

@@ -233,24 +233,6 @@ var rome = new JavaImporter(
   Packages.com.sun.syndication.feed.synd
 );
 
-(function(nodeModulesDir) {
-  if (nodeModulesDir.exists()) return;
-
-  const workingDir = app.dir + '/..';
-  const runtime = java.lang.Runtime.getRuntime();
-  const process = runtime.exec(workingDir + '/gradlew yarn', null, java.io.File(workingDir));
-
-  process.waitFor();
-
-  const result = process.exitValue();
-
-  if (result) app.log('Error:', result);
-
-  writeln('\n\033[1;32mInstalled Node modules – please re-run Helma now.\033[0m');
-  runtime.halt(0);
-})(new java.io.File(app.dir + '/' + getProperty('commonjs.dir')));
-
-var marked = require('marked/lib/marked');
 var sanitizeHtml = Packages.org.jsoup.Jsoup.clean;
 
 /**

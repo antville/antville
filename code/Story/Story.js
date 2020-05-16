@@ -786,7 +786,7 @@ Story.prototype.url_filter = function(value, param, mode) {
 };
 
 Story.prototype.markdown_filter = function (value, param) {
-  return marked(value);
+  return renderMarkdown(value);
 };
 
 /**
