@@ -239,7 +239,7 @@ var sanitizeHtml = require('string-strip-html');
  * A simple and hackish implementation of the console instance of some browsers.
  * @namespace
  */
-var console = function (type) {
+var console = function(type) {
   /**
    * Convenience method for bridging log output from the server to the client.
    * @methodOf console
@@ -250,17 +250,18 @@ var console = function (type) {
     var argString = Array.prototype.join.call(arguments, String.SPACE);
 
     var shellColors = {
-      debug: '\u001B[1;34m',
-      error: '\u001B[1;97;101m',
-      info: '\u001B[34m',
-      log: '\u001B[90m',
-      warn: '\u001B[1;103m'
+      debug: '\u001B[0m',
+      error: '\u001B[0;31m',
+      fatal: '\u001B[1;31m',
+      info: '\u001B[0m',
+      log: '\u001B[0m',
+      warn: '\u001B[0;33m'
     };
 
     var output = [
       shellColors[type],
       '[', now, '] ',
-      '[', type.toUpperCase(), '] ',
+      '[', type === 'log' ? 'INFO' : type.toUpperCase(), '] ',
       '[console] ',
       argString,
       '\u001B[0m'
