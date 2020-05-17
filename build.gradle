@@ -107,7 +107,7 @@ task installNodeModules(type: YarnTask) {
   inputs.files "$antvilleBuildDir/package.json"
   outputs.dir "$antvilleBuildDir/node_modules"
 
-  args = ['install']
+  args = ['-s', 'install']
 
   execOverrides {
     it.workingDir = antvilleBuildDir
@@ -149,7 +149,7 @@ task buildStaticFiles(type: Copy) {
     inputs.files "$antvilleBuildDir/$inputFile"
     outputs.files "$antvilleBuildDir/$outputFile"
 
-    args = ['browserify', inputFile, '-o', outputFile, '-g', 'uglifyify']
+    args = ['-s', 'browserify', inputFile, '-o', outputFile, '-g', 'uglifyify']
 
     execOverrides {
       it.workingDir = antvilleBuildDir
@@ -169,7 +169,7 @@ task buildStaticFiles(type: Copy) {
     inputs.files "$antvilleBuildDir/$inputFile"
     outputs.files "$antvilleBuildDir/$outputFile"
 
-    args = ['lessc', '--clean-css', inputFile, outputFile]
+    args = ['-s', 'lessc', '--clean-css', inputFile, outputFile]
 
     execOverrides {
       it.workingDir = antvilleBuildDir
@@ -184,7 +184,7 @@ task buildLicenses(type: YarnTask) {
 
   inputs.file "$antvilleBuildDir/package.json"
 
-  args = ['licenses', 'generate-disclaimer']
+  args = ['-s', 'licenses', 'generate-disclaimer']
 
   execOverrides {
     it.workingDir = antvilleBuildDir
@@ -202,7 +202,7 @@ task jsdoc(type: YarnTask) {
   inputs.dir "$antvilleBuildDir/$inputDir"
   outputs.dir "$antvilleBuildDir/$outputDir"
 
-  args = ['jsdoc', '-r', '-d', outputDir, inputDir]
+  args = ['-s', 'jsdoc', '-r', '-d', outputDir, inputDir]
 
   execOverrides {
     it.workingDir = antvilleBuildDir
