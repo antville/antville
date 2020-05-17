@@ -75,7 +75,6 @@ task installAntville(type: Copy) {
   doLast {
     copy {
       from "$antvilleBuildDir/tools/antclick/apps.properties"
-      from "$antvilleBuildDir/tools/antclick/server.properties"
       into helmaInstallDir
     }
   }
