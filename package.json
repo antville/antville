@@ -8,18 +8,9 @@
     "test": "tests"
   },
   "scripts": {
-    "add-claustra": "tools/build/add-claustra.js",
-    "add-patch": "tools/build/add-patch.sh",
-    "antclick": "tools/build/antclick.sh",
-    "build": "tools/build/antville.sh",
-    "clean": "rm -rf build",
-    "docs": "tools/build/docs.sh",
-    "export": "tools/build/export.sh",
-    "jars": "tools/build/jars.sh",
-    "messages": "tools/build/messages.sh",
-    "package": "tools/build/package.sh",
-    "patch": "tools/build/patch.js",
-    "pot": "tools/build/pot.sh"
+    "add-claustra": "tools/claustra/add-claustra.js",
+    "add-patch": "tools/updater/add-patch.js",
+    "patch": "tools/updater/run-patch.js"
   },
   "repository": {
     "type": "git",
