@@ -56,7 +56,7 @@
          <i class='uk-icon-info-circle uk-text-muted' title='<% gettext "If you do not specify a name Antville will create one based on the filename." %>' data-uk-tooltip='{pos: "right"}'></i>
       </label>
       <div class='uk-form-controls'>
-         <% image.input name class='uk-width-1-2' :disabled='name' %>
+         <% image.input name class='uk-width-1-2' :disabled='!!name' %>
       </div>
    </div>
    <div class='uk-form-row'>
