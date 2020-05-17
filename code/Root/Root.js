@@ -20,7 +20,7 @@
  */
 
 /** @constant */
-Root.VERSION = (function (versionString, buildDate) {
+Root.VERSION = (function(versionString, buildDate) {
   // A valid version string is e.g. '1.2.3alpha.c0ffee'.
   // Repositories could add something like '-compatible' to it,
   // FIXME: This should be refactored for modular extension.
@@ -32,7 +32,7 @@ Root.VERSION = (function (versionString, buildDate) {
       toString: function() {return parts[0]},
       major: parseInt(parts[1]),
       hash: parts[5],
-      date: new Date(buildDate)
+      date: new Date(buildDate).toLocaleDateString()
     };
     result.minor = result.major + parseInt(parts[2] || 0) / 10;
     result.bugfix = result.minor + '.' + (parts[3] || 0);
@@ -42,7 +42,7 @@ Root.VERSION = (function (versionString, buildDate) {
     return result;
   }
   return versionString;
-})('<v>0</v>.<h>0</h>', '<d/>');
+})(getProperty('version', '0.0.0'), getProperty('buildDate', '18 Oct 1971'));
 
 this.handleMetadata('creationDelay');
 this.handleMetadata('creationScope');

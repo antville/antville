@@ -118,7 +118,7 @@
       <dd><% version %></dd>
       <dt><% gettext Build %></dt>
       <dd>
-         <% link <% version hash prefix='https://github.com/antville/antville/commit/' %> <% version hash %> %> (<% version date | format date %>)
+         <% link <% version hash prefix='https://github.com/antville/antville/commit/' %> <% version hash %> %> (<% version date %>)
       </dd>
       <dt><% gettext 'Helma Version' %></dt>
       <dd><% param.helma %></dd>
