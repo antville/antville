@@ -8,8 +8,6 @@ plugins {
 
 import org.ajoberstar.grgit.Grgit
 
-def antvilleBuildDir = "${project.buildDir}/install/antville"
-
 tasks.build.dependsOn 'assemble'
 
 node {
@@ -32,6 +30,22 @@ allprojects {
     return packageData.version
   }
 
+  project.ext.antvilleBuildDir = "${rootProject.buildDir}/install/antville"
+
+  project.ext.antvilleDistFiles = copySpec {
+    from fileTree(antvilleBuildDir).matching {
+      exclude '*gradle*'
+      exclude '.*'
+      exclude 'node_modules'
+      exclude 'package.json'
+      exclude 'i18n/*.po*'
+      exclude 'tests'
+      exclude 'tools/antclick'
+      exclude 'tools/client'
+      exclude 'yarn.lock'
+    }
+  }
+
   // Hide some purely Java-related tasks
   project.tasks.buildDependents.group = null;
   project.tasks.buildNeeded.group = null;
@@ -45,10 +59,14 @@ dependencies {
   implementation 'com.atlassian.commonmark:commonmark-ext-autolink:0.14.0'
   implementation 'com.atlassian.commonmark:commonmark-ext-gfm-strikethrough:0.14.0'
   implementation 'com.atlassian.commonmark:commonmark-ext-gfm-tables:0.14.0'
-  implementation 'jdom:jdom:1.0'
   implementation 'org.jsoup:jsoup:1.13.1'
-  implementation 'org.lesscss:lesscss:1.7.0.1.1'
   implementation 'rome:rome:1.0'
+
+  implementation('org.lesscss:lesscss:1.7.0.1.1') {
+    exclude group: 'org.mozilla', module: 'rhino'
+    exclude group: 'org.slf4j', module: 'slf4j-api'
+    exclude group: 'org.slf4j', module: 'slf4j-simple'
+  }
 }
 
 assemble {
@@ -66,16 +84,6 @@ task installAntville {
   doFirst {
     Grgit.clone(dir: antvilleBuildDir, uri: project.ext['antville.repo.url'])
   }
-
-  doLast {
-    delete "$antvilleBuildDir/.git"
-
-    delete fileTree("$antvilleBuildDir").matching {
-      include '.gitattributes'
-      include '.gitignore'
-      include 'i18n/*.po*'
-    }
-  }
 }
 
 task installJars(type: Copy) {
@@ -89,12 +97,6 @@ task installJars(type: Copy) {
 
   from configurations.runtimeClasspath
   into outputDir
-
-  doLast {
-    delete "$outputDir/rhino-1.7R4.jar"
-    delete "$outputDir/slf4j-api-1.7.2.jar"
-    delete "$outputDir/slf4j-simple-1.7.2.jar"
-  }
 }
 
 task installNodeModules(type: YarnTask) {
@@ -112,7 +114,7 @@ task installNodeModules(type: YarnTask) {
   }
 }
 
-task buildStaticFiles {
+task buildStaticFiles(type: Copy) {
   description 'Build fonts, client-side scripts and stylesheets.'
   group 'build'
 
@@ -126,21 +128,13 @@ task buildStaticFiles {
   dependsOn 'buildLicenses'
 
   def inputDir = "$antvilleBuildDir/node_modules/uikit/dist/fonts"
-  def outputDir = "$antvilleBuildDir/static"
+  def outputDir = "$antvilleBuildDir/static/fonts"
 
   inputs.dir inputDir
-  outputs.dirs "$outputDir/**"
+  outputs.dir outputDir
 
-  doFirst {
-    copy {
-      from "$inputDir/**"
-      into "$outputDir/fonts"
-    }
-  }
-
-  doLast {
-    delete "$antvilleBuildDir/node_modules"
-  }
+  from inputDir
+  into outputDir
 }
 
 ['main', 'editor', 'gallery'].each { name ->
@@ -219,18 +213,18 @@ task assembleDist {
   description 'Creates the Antville download packages.'
   group 'distribution'
 
-  dependsOn 'build'
-  dependsOn 'cleanInstallNodeModules'
+  dependsOn 'assemble'
   dependsOn 'distZip'
   dependsOn 'distTar'
 
+  inputs.dir antvilleBuildDir
   outputs.dir "${project.buildDir}/distributions"
 }
 
 task distZip(type: Zip) {
   description 'Creates the Antville download package as Zip file.'
   group 'distribution'
-  dependsOn 'buildStaticFiles'
+  dependsOn 'assemble'
 
   def version = project.distVersion()
   def outputDir = "${project.buildDir}/distributions"
@@ -239,7 +233,7 @@ task distZip(type: Zip) {
   inputs.dir antvilleBuildDir
   outputs.file "$outputDir/$outputFile"
 
-  from antvilleBuildDir
+  with(antvilleDistFiles)
   destinationDirectory = file(outputDir)
   archiveFileName = outputFile
 }
@@ -247,7 +241,7 @@ task distZip(type: Zip) {
 task distTar(type: Tar) {
   description 'Creates the Antville download package as Bzip2 file.'
   group 'distribution'
-  dependsOn 'buildStaticFiles'
+  dependsOn 'assemble'
 
   def version = project.distVersion()
   def outputDir = "${project.buildDir}/distributions"
@@ -256,7 +250,7 @@ task distTar(type: Tar) {
   inputs.dir antvilleBuildDir
   outputs.file "$outputDir/$outputFile"
 
-  from antvilleBuildDir
+  with(antvilleDistFiles)
   compression = Compression.BZIP2
   destinationDirectory = file(outputDir)
   archiveFileName = outputFile

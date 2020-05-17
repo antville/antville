@@ -1,4 +1,3 @@
-def antvilleBuildDir = "${rootProject.buildDir}/install/antville"
 def helmaInstallDir = "${rootProject.buildDir}/install/antclick"
 
 tasks.build.dependsOn ':build', 'assemble'
@@ -13,33 +12,13 @@ configurations {
   library.extendsFrom implementation
 }
 
-task assemble(type: Copy, overwrite: true) {
+assemble {
   group 'build'
   dependsOn ':assemble'
-
   dependsOn 'installHelma'
+  dependsOn 'installAntville'
+  dependsOn 'installJars'
   dependsOn 'buildDatabase'
-
-  inputs.dir antvilleBuildDir
-  outputs.dir helmaInstallDir
-
-  from antvilleBuildDir
-  into ("$helmaInstallDir/apps/antville")
-
-  doFirst {
-    copy {
-      from "$antvilleBuildDir/tools/antclick/apps.properties"
-      into helmaInstallDir
-    }
-  }
-
-  doLast {
-    delete "$helmaInstallDir/apps/test"
-    delete "$helmaInstallDir/apps/welcome"
-    delete "$helmaInstallDir/db/welcome"
-    delete "$helmaInstallDir/docs"
-    delete "$helmaInstallDir/extras"
-  }
 }
 
 task downloadHelma {
@@ -67,44 +46,58 @@ task installHelma(type: Copy) {
   inputs.file inputFile
   outputs.dir outputDir
 
-  from(tarTree(inputFile)) {
+  from tarTree(inputFile).matching {
+    exclude '*/apps/test/**'
+    exclude '*/apps/welcome/**'
+    exclude '*/db/welcome/**'
+    exclude '*/docs/**'
+    exclude '*/extras/**'
+
     eachFile { f ->
       f.relativePath = new RelativePath(true, f.relativePath.segments.drop(1))
     }
+
     includeEmptyDirs = false
   } into outputDir
 }
 
+task installAntville(type: Copy) {
+  description 'Install Antville as Helma application'
+  group 'installation'
+  dependsOn 'installHelma'
+
+  inputs.dir antvilleBuildDir
+  outputs.dir helmaInstallDir
+
+  with antvilleDistFiles
+  into "$helmaInstallDir/apps/antville"
+
+  doLast {
+    copy {
+      from "$antvilleBuildDir/tools/antclick/apps.properties"
+      from "$antvilleBuildDir/tools/antclick/server.properties"
+      into helmaInstallDir
+    }
+  }
+}
+
 task installJars(type: Copy) {
-  description 'Download required JAR libraries.'
+  description 'Download additional JAR libraries.'
   group 'Installation'
+  dependsOn 'installHelma'
 
   def outputDir = "$helmaInstallDir/lib/ext"
 
+  inputs.files configurations.runtimeClasspath
   outputs.dir outputDir
 
   from configurations.runtimeClasspath
   into outputDir
 }
 
-task installNodeModules(type: YarnTask) {
-  description 'Download required Node modules.'
-  group 'build'
-
-  inputs.files "$antvilleBuildDir/package.json"
-  outputs.dir "$antvilleBuildDir/node_modules"
-
-  args = ['install', '--production=true']
-
-  execOverrides {
-    it.workingDir = antvilleBuildDir
-  }
-}
-
 task buildDatabase(type: JavaExec) {
   description 'Builds the H2 SQL database file.'
   group 'build'
-  dependsOn 'installJars'
 
   def inputFile = "$antvilleBuildDir/db/postgre.sql"
   def outputDir = "$helmaInstallDir/db"
@@ -132,8 +125,7 @@ task assembleDist {
   description 'Creates the AntClick download packages.'
   group 'distribution'
 
-  dependsOn 'build'
-  dependsOn ':cleanInstallNodeModules'
+  dependsOn 'assemble'
   dependsOn 'distZip'
   dependsOn 'distTar'
 
@@ -143,6 +135,7 @@ task assembleDist {
 task distZip(type: Zip) {
   description 'Creates the AntClick download package as Zip file.'
   group 'distribution'
+  dependsOn 'assemble'
 
   def version = project.distVersion()
   def outputDir = "${rootProject.buildDir}/distributions"
@@ -159,6 +152,7 @@ task distZip(type: Zip) {
 task distTar(type: Tar) {
   description 'Creates the AntClick download package as Bzip2 file.'
   group 'distribution'
+  dependsOn 'assemble'
 
   def version = project.distVersion()
   def outputDir = "${rootProject.buildDir}/distributions"
