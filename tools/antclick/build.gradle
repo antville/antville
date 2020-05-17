@@ -1,3 +1,7 @@
+plugins {
+  id 'com.github.jk1.dependency-license-report' version '1.13'
+}
+
 def helmaInstallDir = "${rootProject.buildDir}/install/antclick"
 
 tasks.build.dependsOn ':build', 'assemble'
@@ -118,6 +122,15 @@ task buildDatabase(type: JavaExec) {
     '-user', 'antville',
     '-password', 'antville'
   ]
+}
+
+task buildLicenses(type: Copy) {
+  description 'Build license files from server-side dependecies.'
+  group 'build'
+  dependsOn 'installJars'
+
+  from("${project.buildDir}/reports/dependency-license")
+  into "$antvilleBuildDir/licenses"
 }
 
 task assembleDist {
