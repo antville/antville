@@ -30,19 +30,11 @@ allprojects {
     return packageData.version
   }
 
-  project.ext.antvilleBuildDir = "${rootProject.buildDir}/install/antville"
+  project.ext.antvilleBuildDir = "${rootProject.buildDir}/tmp/antville"
+  project.ext.antvilleInstallDir = "${rootProject.buildDir}/install/antville"
 
   project.ext.antvilleDistFiles = copySpec {
     from fileTree(antvilleBuildDir).matching {
-      exclude '*gradle*'
-      exclude '.*'
-      exclude 'node_modules'
-      exclude 'package.json'
-      exclude 'i18n/*.po*'
-      exclude 'tests'
-      exclude 'tools/antclick'
-      exclude 'tools/client'
-      exclude 'yarn.lock'
     }
   }
 
@@ -54,6 +46,8 @@ allprojects {
   project.tasks.javadoc.group = null;
   project.tasks.testClasses.group = null;
 }
+
+version = distVersion()
 
 dependencies {
   implementation 'com.atlassian.commonmark:commonmark:0.14.0'
@@ -70,20 +64,54 @@ dependencies {
   }
 }
 
-assemble {
+task assemble(type: Copy, overwrite: true) {
   dependsOn 'installAntville'
   dependsOn 'installJars'
   dependsOn 'buildStaticFiles'
+
+  from fileTree(antvilleBuildDir).matching {
+    exclude 'node_modules'
+    exclude 'package.json'
+    exclude 'tests'
+    exclude 'tools/client'
+    exclude 'tools/antclick'
+    exclude 'yarn.lock'
+  } into antvilleInstallDir
 }
 
 task installAntville {
   description 'Clone the Antville repository and remove all unnecessary files.'
   group 'installation'
 
-  outputs.dir antvilleBuildDir
+  def tempDir = "$project.buildDir/tmp/repo"
+
+  outputs.dirs tempDir, antvilleBuildDir
 
   doFirst {
-    Grgit.clone(dir: antvilleBuildDir, uri: project.ext['antville.repo.url'])
+    Grgit.clone(dir: tempDir, uri: project.ext['antville.repo.url'])
+  }
+
+  doLast {
+    def git = Grgit.open(dir: tempDir)
+    def hash = git.head().abbreviatedId
+    def date = new Date().format('d MMM yyyy')
+
+    copy {
+      from "$tempDir/code/app.properties"
+      into "$antvilleBuildDir/code"
+      filter { line -> line.replaceAll('(version =) 0.0.0', "\$1 $version.$hash")
+        .replaceAll('(buildDate =) 18 Oct 1971', "\$1 $date")
+      }
+    }
+
+    copy {
+      from fileTree(tempDir).matching {
+        exclude 'code/app.properties'
+        exclude '*gradle*'
+        exclude '.*'
+        exclude 'i18n/*.po*'
+      } into antvilleBuildDir
+    }
   }
 }
 
@@ -232,10 +260,10 @@ task distZip(type: Zip) {
   def outputDir = "${project.buildDir}/distributions"
   def outputFile = "antville-${version}.zip"
 
-  inputs.dir antvilleBuildDir
+  inputs.dir antvilleInstallDir
   outputs.file "$outputDir/$outputFile"
 
-  with(antvilleDistFiles)
+  from antvilleInstallDir
   destinationDirectory = file(outputDir)
   archiveFileName = outputFile
 }
@@ -249,10 +277,10 @@ task distTar(type: Tar) {
   def outputDir = "${project.buildDir}/distributions"
   def outputFile = "antville-${version}.tbz"
 
-  inputs.dir antvilleBuildDir
+  inputs.dir antvilleInstallDir
   outputs.file "$outputDir/$outputFile"
 
-  with(antvilleDistFiles)
+  from antvilleInstallDir
   compression = Compression.BZIP2
   destinationDirectory = file(outputDir)
   archiveFileName = outputFile

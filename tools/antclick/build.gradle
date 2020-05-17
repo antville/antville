@@ -6,6 +6,10 @@ def helmaInstallDir = "${rootProject.buildDir}/install/antclick"
 
 tasks.build.dependsOn ':build', 'assemble'
 
+clean {
+  delete helmaInstallDir
+}
+
 dependencies {
   implementation 'com.h2database:h2:1.4.200'
 }
@@ -23,6 +27,7 @@ assemble {
   dependsOn 'installAntville'
   dependsOn 'installJars'
   dependsOn 'buildDatabase'
+  dependsOn 'buildLicenses'
 }
 
 task downloadHelma {
@@ -70,15 +75,21 @@ task installAntville(type: Copy) {
   group 'installation'
   dependsOn 'installHelma'
 
-  inputs.dir antvilleBuildDir
-  outputs.dir helmaInstallDir
+  def appsProperties = "$antvilleBuildDir/tools/antclick/apps.properties"
+  def outputDir = "$helmaInstallDir/apps/antville"
 
-  with antvilleDistFiles
-  into "$helmaInstallDir/apps/antville"
+  inputs.dir antvilleInstallDir
+  inputs.file appsProperties
+
+  outputs.dir outputDir
+  outputs.file appsProperties
+
+  from antvilleInstallDir
+  into outputDir
 
   doLast {
     copy {
-      from "$antvilleBuildDir/tools/antclick/apps.properties"
+      from appsProperties
       into helmaInstallDir
     }
   }
@@ -102,7 +113,7 @@ task buildDatabase(type: JavaExec) {
   description 'Builds the H2 SQL database file.'
   group 'build'
 
-  def inputFile = "$antvilleBuildDir/db/postgre.sql"
+  def inputFile = "$antvilleInstallDir/db/postgre.sql"
   def outputDir = "$helmaInstallDir/db"
 
   inputs.file inputFile
@@ -122,6 +133,9 @@ task buildDatabase(type: JavaExec) {
     '-user', 'antville',
     '-password', 'antville'
   ]
+
+  standardOutput = new ByteArrayOutputStream()
+  ignoreExitValue true
 }
 
 task buildLicenses(type: Copy) {
@@ -129,8 +143,13 @@ task buildLicenses(type: Copy) {
   group 'build'
   dependsOn 'installJars'
 
-  from("${project.buildDir}/reports/dependency-license")
-  into "$antvilleBuildDir/licenses"
+  def licensesDir = "$antvilleInstallDir/licenses"
+
+  inputs.files generateLicenseReport
+  outputs.dir licensesDir
+
+  from generateLicenseReport
+  into licensesDir
 }
 
 task assembleDist {
@@ -140,8 +159,6 @@ task assembleDist {
   dependsOn 'assemble'
   dependsOn 'distZip'
   dependsOn 'distTar'
-
-  outputs.dir "${rootProject.buildDir}/distributions"
 }
 
 task distZip(type: Zip) {
