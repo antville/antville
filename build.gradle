@@ -51,6 +51,7 @@ allprojects {
   project.tasks.buildNeeded.group = null;
   project.tasks.classes.group = null;
   project.tasks.jar.group = null;
+  project.tasks.javadoc.group = null;
   project.tasks.testClasses.group = null;
 }
 
@@ -196,11 +197,11 @@ task jsdoc(type: YarnTask) {
   group 'documentation'
   dependsOn 'installNodeModules'
 
-  def inputDir = 'code'
-  def outputDir = 'docs'
+  def inputDir = "$antvilleBuildDir/code"
+  def outputDir = "${project.buildDir}/docs/jsdoc"
 
-  inputs.dir "$antvilleBuildDir/$inputDir"
-  outputs.dir "$antvilleBuildDir/$outputDir"
+  inputs.dir inputDir
+  outputs.dir outputDir
 
   args = ['-s', 'jsdoc', '-r', '-d', outputDir, inputDir]
 
@@ -216,9 +217,6 @@ task assembleDist {
   dependsOn 'assemble'
   dependsOn 'distZip'
   dependsOn 'distTar'
-
-  inputs.dir antvilleBuildDir
-  outputs.dir "${project.buildDir}/distributions"
 }
 
 task distZip(type: Zip) {

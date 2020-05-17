@@ -10,4 +10,4 @@ org.apache.tools.ant.DirectoryScanner.removeDefaultExclude('**/.gitignore')
 include 'antclick'
 project(':antclick').projectDir = file('tools/antclick')
 
-startParameter.excludedTaskNames = ['jar']
+startParameter.excludedTaskNames = ['jar', 'javadoc']
