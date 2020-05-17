@@ -183,12 +183,16 @@ task buildLicenses(type: YarnTask) {
   group 'build'
   dependsOn 'installNodeModules'
 
+  def outputFile = "$antvilleBuildDir/static/licenses.txt"
+
   inputs.file "$antvilleBuildDir/package.json"
+  outputs.file outputFile
 
   args = ['-s', 'licenses', 'generate-disclaimer']
 
   execOverrides {
     it.workingDir = antvilleBuildDir
+    it.standardOutput = new FileOutputStream(outputFile)
   }
 }
 
