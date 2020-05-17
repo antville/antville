@@ -44,10 +44,10 @@ ajv@^6.5.5:
     json-schema-traverse "^0.4.1"
     uri-js "^4.2.2"
 
-alpinejs@^2.3.1:
-  version "2.3.5"
-  resolved "https://registry.yarnpkg.com/alpinejs/-/alpinejs-2.3.5.tgz#f077d535979cc7e565d8af3365779cee3b5246e1"
-  integrity sha512-/zQiqmiM3gBVKD+yeP7p9XzOXfhxxDMAfoaJRpXiAJykGaeSe3L+bvp/a6uRQMygPV+UUdgAk8fdfToJttRcUQ==
+alpinejs@=2.3.3:
+  version "2.3.3"
+  resolved "https://registry.yarnpkg.com/alpinejs/-/alpinejs-2.3.3.tgz#720e7a46f52fba5d5dc2bedad059bec14ae58d76"
+  integrity sha512-bdypevdAMNpt2X4s4bebiQ3M5Otxy1OvIhpJDxu6bezbO0k7sVQq7ZWhD251lIQILGZ0s1Y4skyci1DZ+heN9w==
 
 amdefine@>=0.0.4:
   version "1.0.1"

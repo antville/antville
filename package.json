@@ -31,7 +31,7 @@
     "minify": true
   },
   "dependencies": {
-    "alpinejs": "^2.3.1",
+    "alpinejs": "=2.3.3",
     "codemirror": "^5.53.2",
     "jquery": "^3.5.0",
     "jquery-collagePlus": "github:antville/jquery-collagePlus#0.3.4",
