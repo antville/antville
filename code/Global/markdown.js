@@ -10,6 +10,7 @@ var renderMarkdown = (function() {
     Packages.org.commonmark.ext.gfm.strikethrough,
     Packages.org.commonmark.ext.gfm.tables,
     Packages.org.commonmark.parser.Parser,
+    Packages.org.commonmark.renderer.html.AttributeProvider,
     Packages.org.commonmark.renderer.html.HtmlRenderer
   );
 
@@ -19,8 +20,26 @@ var renderMarkdown = (function() {
     commonMark.TablesExtension.create()
   ];
 
-  const parser = commonMark.Parser.builder().extensions(extensions).build();
-  const renderer = commonMark.HtmlRenderer.builder().extensions(extensions).build();
+  const parser = commonMark.Parser
+    .builder()
+    .extensions(extensions)
+    .build();
+
+  const AttributeProvider = function() {
+    return new commonMark.AttributeProvider({
+      setAttributes: function(node, tagName, attributes) {
+        if (tagName === 'table') {
+          attributes.put('class', 'uk-table uk-table-striped uk-table-hover uk-table-condensed');
+        }
+      }
+    });
+  };
+
+  const renderer = commonMark.HtmlRenderer
+    .builder()
+    .attributeProviderFactory(AttributeProvider)
+    .extensions(extensions)
+    .build();
 
   return function(str) {
     const document = parser.parse(str);

@@ -490,8 +490,12 @@ hr {
    color: @muted-color !important;
 }
 
-.uk-table-striped tbody tr:hover, .uk-table-striped tbody tr:nth-of-type(odd) {
-   background: inherit;
+.uk-table-striped tbody tr:nth-of-type(odd) {
+   background: darken(@background, 2%);
+}
+
+.uk-table-striped tbody tr:hover {
+  background: fadeout(@link-color, 88%);
 }
 
 .uk-button-group.av-link-group a {
