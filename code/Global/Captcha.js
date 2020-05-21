@@ -16,30 +16,38 @@
 // limitations under the License.
 
 /**
- * @fileoverview Defines the Antville reCAPTCHA prototype.
- * @see http://www.google.com/recaptcha
+ * @fileoverview Defines the Antville Captcha prototype.
+ * @see https://hcaptcha.com
  */
 
-Recaptcha = {};
+Captcha = {};
 
-Recaptcha.verify = function (data) {
-  var secret = getProperty('recaptcha.secret');
+Captcha.verify = function (data) {
+  const secret = getProperty('captcha.secret');
 
   if (session.user || !secret) return;
 
-  var response = req.postParams['g-recaptcha-response'];
-  var ip = req.data.remotehost;
-  var mime = getURL('https://www.google.com/recaptcha/api/siteverify?secret=' + secret + '&response=' + response + '&remoteip=' + ip);
-  var json = JSON.parse(new java.lang.String(mime.content));
+  const response = req.postParams['h-captcha-response'];
+  const http = new helma.Http();
 
-  if (!json.success) {
+  http.setMethod('POST');
+
+  http.setContent({
+    response: response,
+    secret: secret
+  });
+
+  const request = http.getUrl('https://hcaptcha.com/siteverify');
+  const validation = JSON.parse(request.content);
+
+  if (!validation.success) {
     throw Error(gettext('Do Androids dream of electric sheep?'));
   }
 };
 
-Recaptcha.render = function(context, skin) {
-  var secret = getProperty('recaptcha.secret');
-  if (session.user || !context || !secret) return;
-  if (!skin) skin = '$Members#recaptcha';
+Captcha.render = function(context, skin) {
+  const secret = getProperty('captcha.secret');
+  if (session.user || !context || !secret) { return; }
+  if (!skin) { skin = '$Members#captcha'; }
   return context.renderSkinAsString(skin);
 };

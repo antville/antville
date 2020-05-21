@@ -70,7 +70,7 @@
          <textarea class='uk-width-1-1' rows="15" class="formText" wrap="virtual" name="text"><% request.text encoding="form" %></textarea>
       </div>
    </div>
-   <% param.recaptcha prefix="<div class='uk-form-row'>" suffix='</div>' %>
+   <% param.captcha prefix="<div class='uk-form-row'>" suffix='</div>' %>
    <div class='uk-form-row'>
       <button class='uk-button uk-button-primary' type="submit" id="submit" name="send" value="1" tabindex=4>
          <% gettext Send %>

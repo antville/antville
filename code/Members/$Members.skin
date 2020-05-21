@@ -117,7 +117,7 @@
    </div>
    <% if <% root.termsStory %> is null then '' else <% members.skin $Members#terms %> %>
    <% if <% root.privacyStory %> is null then '' then <% members.skin $Members#privacy %> %>
-   <% param.recaptcha prefix="<div class='uk-form-row'>" suffix="</div>" %>
+   <% param.captcha prefix="<div class='uk-form-row'>" suffix="</div>" %>
    <div class='uk-form-row uk-margin-top'>
       <button class='uk-button uk-button-primary' type="submit" id="submit" name="register" value="1" tabindex=6>
          <% gettext Register %>
@@ -242,6 +242,6 @@
    </td>
 </tr>
 
-<% #recaptcha %>
-<div class='uk-margin-top g-recaptcha' data-sitekey='<% property recaptcha.sitekey %>'></div>
-<script src='https://www.google.com/recaptcha/api.js?hl=<% site.locale %>'></script>
+<% #captcha %>
+<div class='uk-margin-top h-captcha' data-sitekey='<% property captcha.sitekey %>'></div>
+<script src='https://hcaptcha.com/1/api.js?hl=<% site.locale %>' async defer></script>

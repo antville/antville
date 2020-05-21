@@ -192,23 +192,30 @@ Membership.prototype.contact_action = function() {
       if (!req.postParams.text) {
         throw Error(gettext('Please enter the message text.'));
       }
-      Recaptcha.verify(req.postParams);
+
+      Captcha.verify(req.postParams);
+
       this.notify(req.action, this.creator.email, session.user ?
           gettext('[{0}] Message from {1}', root.title, session.user.name) :
           gettext('[{0}] Message from anonymous', root.title));
+
       res.message = gettext('Your message was sent successfully.');
+
       res.redirect(this._parent.getPermission() ?
-          this._parent.href() : this.site.href());
+          this._parent.href() :
+          this.site.href());
     } catch(ex) {
       res.message = ex;
       app.log(ex);
     }
   }
 
+  const param = { captcha: Captcha.render(res.handlers.members) };
+
   res.data.action = this.href(req.action);
   res.data.title = gettext('Contact {0}', this.name);
-  var param = { recaptcha: Recaptcha.render(res.handlers.members) };
   res.data.body = this.renderSkinAsString('$Membership#contact', param);
+
   this.site.renderSkin('Site#page');
   return;
 }

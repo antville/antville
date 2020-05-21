@@ -88,28 +88,37 @@ Members.prototype.main_action = function() {
 Members.prototype.register_action = function() {
   if (req.postParams.register) {
     try {
-      Recaptcha.verify(req.postParams);
+      Captcha.verify(req.postParams);
+
       if (root.termsStory && !req.postParams.terms) throw Error('Please accept the terms and conditions.');
       if (root.privacyStory && !req.postParams.privacy) throw Error('Please accept the data privacy statement.');
-      var title = res.handlers.site.title;
-      var user = User.register(req.postParams);
+
+      const title = res.handlers.site.title;
+      const user = User.register(req.postParams);
+      const membership = Membership.add(user, Membership.SUBSCRIBER, this._parent);
+
       user.accepted = Date.now();
-      var membership = Membership.add(user, Membership.SUBSCRIBER, this._parent);
+
       membership.notify(req.action, user.email,
           gettext('[{0}] Welcome to {1}!', root.title, title));
+
       res.message = gettext('Welcome to “{0}”, {1}. Have fun!',
           title, user.name);
+
       res.redirect(User.getLocation() || this._parent.href());
     } catch (ex) {
       res.message = ex;
     }
   }
 
+  const param = { captcha: Captcha.render(this) };
+
   session.data.token = User.getSalt();
+
   res.data.action = this.href(req.action);
   res.data.title = gettext('Register');
-  var param = { recaptcha: Recaptcha.render(this) };
   res.data.body = this.renderSkinAsString('$Members#register', param);
+
   this._parent.renderSkin('Site#page');
   return;
 }
