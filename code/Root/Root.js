@@ -114,13 +114,16 @@ Root.prototype.getPermission = function(action) {
 
 Root.prototype.main_action = function() {
   if (this.users.size() < 1) {
-    this.update(this); // Be sure all site properties are up-to-date
-    this.title = 'Antville';
+    // Be sure all site properties are up-to-date
+    this.update(this);
     this.created = this.modified = new Date;
-    this.replyTo = 'root@localhost';
+    this.creationScope = Admin.PRIVILEGED;
     this.locale = java.util.Locale.getDefault().getLanguage();
-    this.timeZone = java.util.TimeZone.getDefault().getID();
     this.loginScope = Admin.PRIVILEGED;
+    this.phaseOutMode = Admin.DISABLED;
+    this.replyTo = 'root@localhost';
+    this.timeZone = java.util.TimeZone.getDefault().getID();
+    this.title = 'Antville';
     this.layout.reset();
     res.redirect(this.members.href('register'));
   } else if (session.user && this.members.owners.size() < 1) {
