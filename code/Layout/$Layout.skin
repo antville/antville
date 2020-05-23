@@ -106,7 +106,7 @@
 
 <% #import %>
 <h1><% response.title %></h1>
-<form class='uk-form' method="post" enctype="multipart/form-data">
+<form class='uk-form' method="post" enctype="multipart/form-data" x-data='{ name: "<% file.name %>" }'>
    <% layout.upload upload %>
    <div class='uk-margin-top'>
       <button class='uk-button uk-button-primary' type="submit" id="submit" name="submit" value="1">
