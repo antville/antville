@@ -33,7 +33,7 @@
       data: { user: $refs.username.value },
 
       callback: function(salt, error) {
-        if (error) return;
+        if (error) return console.error(error);
         $refs.digest.value = Antville.hash(Antville.hash($refs.password.value + salt) + "<% session.token %>");
         $refs.password.value = "";
       }
@@ -85,7 +85,7 @@
 
 <% #register %>
 <h1><% response.title %></h1>
-<form class='uk-form uk-form-stacked' method="post" action="<% response.action %>" x-data='{ hash: "" }' @submit='$refs.hash.value = Antville.hash($refs.password.value, "<% session.token %>"); $refs.password.value = "";'>
+<form class='uk-form uk-form-stacked' method="post" action="<% response.action %>" x-data='{ hash: "" }' @submit='$refs.hash.value = Antville.hash($refs.password.value + "<% session.token %>"); $refs.password.value = "";'>
    <input type="hidden" name="hash" id="hash" x-ref='hash' />
    <div class='uk-form-row'>
       <label class='uk-form-label' for='name'>
