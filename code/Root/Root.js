@@ -114,6 +114,7 @@ Root.prototype.getPermission = function(action) {
 
 Root.prototype.main_action = function() {
   if (this.users.size() < 1) {
+    this.update(this); // Be sure all site properties are up-to-date
     this.title = 'Antville';
     this.created = this.modified = new Date;
     this.replyTo = 'root@localhost';
