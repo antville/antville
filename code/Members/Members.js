@@ -356,11 +356,18 @@ Members.prototype.add_action = function() {
 }
 
 Members.prototype.accept_action = function() {
-  if (!session.data.login) res.redirect(this._parent.href());
+  if (!session.data.login) { res.redirect(this._parent.href()); }
+
   if (req.postParams.accept) {
     try {
-      if (root.termsStory && !req.postParams.terms) throw Error('Please accept the terms and conditions.');
-      if (root.privacyStory && !req.postParams.privacy) throw Error('Please accept the data privacy statement.');
+      if (root.termsStory && !req.postParams.terms) {
+        throw Error(gettext('Please accept the terms and conditions.'));
+      }
+
+      if (root.privacyStory && !req.postParams.privacy) {
+        throw Error(gettext('Please accept the data privacy statement.'));
+      }
+
       User.login(session.data.login);
       session.data.login = null;
       session.user.accepted = Date.now();
