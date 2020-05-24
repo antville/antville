@@ -399,7 +399,7 @@ Image.prototype.thumbnail_macro = function(param) {
     return this.render_macro(param);
   }
   param.src = encodeURI(this.getUrl(this.getThumbnailFile().getName()));
-  param.title || (param.title = encode(this.description));
+  if (!param.title) { param.title = encode(this.description || ''); }
   param.alt = encode(param.alt || param.title);
   var width = param.width || this.thumbnailWidth;
   var height = param.height || this.thumbnailHeight;
@@ -421,7 +421,7 @@ Image.prototype.thumbnail_macro = function(param) {
  */
 Image.prototype.render_macro = function(param) {
   param.src = encodeURI(this.getUrl());
-  param.title || (param.title = encode(this.description));
+  if (!param.title) { param.title = encode(this.description || ''); }
   param.alt = encode(param.alt || param.title);
   var style = [];
   param.width && style.push('width:', param.width + 'px;');
