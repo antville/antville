@@ -302,7 +302,7 @@ Image.prototype.update = function(data) {
     File.prototype.setOrigin.call(this, origin);
 
     if (!this.name) {
-       var name = File.getName(data.name) || mimeName.split('.')[0];
+       var name = File.getName(data.name || mimeName.split('.')[0]);
        this.name = this.parent.images.getAccessName(name);
     }
 

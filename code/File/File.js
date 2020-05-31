@@ -65,11 +65,8 @@ File.remove = function() {
  * @param {String} name
  */
 File.getName = function(name) {
-  if (name) {
-    //return name.replace(/[^\w\d\s._-]/g, String.EMPTY);
-    return String(name).trim().replace(/[\/\\:;?+\[\]{}|#"`<>^]/g, String.EMPTY);
-  }
-  return null;
+  // TODO: Maybe return a hash if name is undefined?
+  return name ? String(name).replace(/[^\w\d\s,._-]/g, String.EMPTY) : null;
 }
 
 File.getGenericType = function (contentType) {
