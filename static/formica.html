@@ -23,7 +23,7 @@
 
       parts.forEach((item, index) => {
         parts = item.split('=');
-        settings[parts[0]] = decodeURIComponent(parts[1]);
+        settings[parts[0]] = decodeURIComponent(parts[1] || '').trim();
       });
     }
 
@@ -156,8 +156,8 @@
     const main = () => {
       if (!settings.s || !settings.l) return;
 
-      _siteUri = decodeURIComponent(settings.s);
-      _sourceUri = decodeURIComponent(settings.l);
+      _siteUri = settings.s;
+      _sourceUri = settings.l;
 
       if (!_siteUri || !_sourceUri) return;
 
@@ -169,7 +169,7 @@
         return addImage(_sourceUri);
       }
 
-      const customCookie = decodeURIComponent(settings.k || '');
+      const customCookie = settings.k;
 
       const data = {
         url: _sourceUri,
@@ -182,11 +182,11 @@
         const content = result.content;
         let text = '';
 
-        if (settings.c) text = decodeURIComponent(settings.c).trim();
+        if (settings.c) text = settings.c.trim();
 
         if (error) {
           text = `[${text}](${_sourceUri})`;
-          if (settings.r) text += ` _(via ${decodeURIComponent(settings.r)})_.`;
+          if (settings.r) text += ` _(via ${settings.r})_.`;
           global.text.value = text;
           return feedback(null, 'Could not fetch URL; are you logged in?');
         }
@@ -214,7 +214,7 @@
 
         text = `[${text}](${_sourceUri})`;
 
-        if (settings.r) text += ` _(via ${decodeURIComponent(settings.r)})_.`;
+        if (settings.r) text += ` _(via ${settings.r})_.`;
 
         global.title.value = openGraphTitle || sourceDocument.title;
         global.text.value = text;
