@@ -1,6 +1,6 @@
 {
   "name": "antville",
-  "version": "1.618",
+  "version": "1.618.0",
   "description": "Antville is an open source project aimed at the development of a high performance, feature rich weblog hosting software. It can easily host up to several thousands of sites (the number of weblogs is rather limited by the installation owner’s choice and server power than by software limitations).",
   "main": "main.js",
   "directories": {

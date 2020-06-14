@@ -27,7 +27,7 @@ allprojects {
   project.ext.distVersion = { ->
     def json = new groovy.json.JsonSlurper()
     def packageData = json.parse(file("${rootProject.projectDir}/package.json"))
-    return packageData.version
+    return packageData.version.substring(0, packageData.version.size() - 2)
   }
 
   project.ext.antvilleBuildDir = "${rootProject.buildDir}/tmp/antville"
