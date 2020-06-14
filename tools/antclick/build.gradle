@@ -161,6 +161,27 @@ task assembleDist {
   dependsOn 'distTar'
 }
 
+task runH2Console(type: JavaExec) {
+  description 'Runs the H2 SQL database console.'
+  group 'Help'
+  dependsOn 'installJars'
+
+  def h2Jar = configurations.library.files.find { jar ->
+    jar.name.startsWith('h2')
+  }
+
+  classpath = files(h2Jar)
+
+  args = [
+    '-url', "jdbc:h2:$helmaInstallDir/db/antville",
+    '-user', 'antville',
+    '-password', 'antville'
+  ]
+
+  // standardOutput = new ByteArrayOutputStream()
+  // ignoreExitValue true
+}
+
 task distZip(type: Zip) {
   description 'Creates the AntClick download package as Zip file.'
   group 'distribution'
