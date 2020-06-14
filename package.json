@@ -29,9 +29,6 @@
   },
   "author": "The Antville People",
   "license": "Apache-2.0",
-  "browserify-css": {
-    "minify": true
-  },
   "dependencies": {
     "alpinejs": "=2.3.3",
     "codemirror": "^5.53.2",
