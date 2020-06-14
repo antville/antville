@@ -10,7 +10,18 @@
   "scripts": {
     "add-claustra": "tools/claustra/add-claustra.js",
     "add-patch": "tools/updater/add-patch.js",
-    "patch": "tools/updater/run-patch.js"
+    "patch": "tools/updater/run-patch.js",
+    "build:main.js": "browserify tools/client/main.js -o static/scripts/main.min.js",
+    "build:editor.js": "browserify tools/client/editor.js -o static/scripts/editor.min.js",
+    "build:gallery.js": "browserify tools/client/gallery.js -o static/scripts/gallery.min.js",
+    "build:main.css": "lessc --clean-css tools/client/main.less static/styles/main.min.css",
+    "build:editor.css": "lessc --clean-css tools/client/editor.less static/styles/editor.min.css",
+    "dev": "run-p -cl dev:*.js dev:*.css",
+    "dev:main.js": "onchange tools/client/main.js -- yarn build:main.js",
+    "dev:main.css": "onchange tools/client/main.less -- yarn build:main.css",
+    "dev:editor.js": "onchange tools/client/editor.js -- yarn build:editor.js",
+    "dev:editor.css": "onchange tools/client/editor.less -- yarn build:editor.css",
+    "dev:gallery.js": "onchange tools/client/gallery.js -- yarn build:gallery.js"
   },
   "repository": {
     "type": "git",
@@ -34,6 +45,8 @@
     "jsdoc": "^3.6.4",
     "less": "^3.11.1",
     "less-plugin-clean-css": "^1.5.1",
+    "npm-run-all": "^4.1.5",
+    "onchange": "^7.0.2",
     "uglifyify": "^5.0.2"
   }
 }
