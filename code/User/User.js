@@ -594,7 +594,7 @@ User.prototype.timeline_action = function() {
   res.data.pager = renderPager(count, this.href(req.action), pageSize, page);
   res.data.title = gettext('Timeline');
   res.data.body = this.renderSkinAsString('$User#timeline');
-  root.renderSkin('Site#page');
+  res.handlers.site.renderSkin('Site#page');
 };
 
 User.prototype.delete_action = function() {
