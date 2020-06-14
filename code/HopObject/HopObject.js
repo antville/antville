@@ -179,6 +179,8 @@ markgettext('Story');
 markgettext('User');
 
 HopObject.prototype.delete_action = function() {
+  let redirectUrl = req.data.http_referer;
+
   if (req.postParams.proceed) {
     try {
       var parent = this._parent;
@@ -187,22 +189,23 @@ HopObject.prototype.delete_action = function() {
       res.message = gettext('{0} was successfully deleted.', gettext(type));
       res.redirect(User.getLocation() || url);
     } catch(ex) {
+      redirectUrl = session.data.referer;
       res.message = ex;
       app.log(ex);
     }
   }
 
-  if (!res.data.action) res.data.action = this.href(req.action);
+  if (req.data.http_get_remainder === 'safemode') { res.skinpath = [app.dir]; }
+  if (!res.data.action) { res.data.action = this.href(req.action); }
 
   res.data.title = gettext('Confirm Deletion');
+  session.data.location = redirectUrl;
+
   res.data.body = this.renderSkinAsString('$HopObject#confirm', {
     text: this.getConfirmText(req.action),
     extra: this.getConfirmExtra(req.action) || String.EMPTY
   });
 
-  if (req.data.http_get_remainder === 'safemode') {
-    res.skinpath = [app.dir];
-  }
   res.handlers.site.renderSkin('Site#page');
   return;
 };

@@ -250,6 +250,7 @@ Layout.prototype.reset_action = function() {
     }
   }
 
+  session.data.location = this.href();
   res.data.action = this.href(req.action);
   res.data.title = gettext('Confirm Reset');
   res.data.body = this.renderSkinAsString('$HopObject#confirm', {

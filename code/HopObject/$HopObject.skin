@@ -19,7 +19,7 @@
   <% param.extra %>
   <p>
     <button class='uk-button uk-button-danger' name="proceed" value="1"><% gettext Proceed %></button>
-    <a href='.' class="uk-button uk-button-link"><% gettext Cancel %></a>
+    <a href='<% session.location %>' class="uk-button uk-button-link"><% gettext Cancel %></a>
   </p>
 </form>
 
