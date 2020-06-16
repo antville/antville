@@ -1,28 +1,28 @@
 # About Antville
 
-Antville is an open source project providing a high performance, feature rich blog hosting software. Antville can host tens of thousands of blogs. Server power is the only limit. Installation and use is easy.
+Antville is an open source project providing a high performance, feature-rich blog hosting software. Antville can host tens of thousands of blogs. Server power is the only limit. Installation and use is easy.
 
-Antville is written in JavaScript and developed with Helma Object Publisher. Helma Object Publisher is a powerful, fast and scriptable open source web application server written in Java. Antville works with a relational database in the backend.
+Antville is written in server-side JavaScript and developed with Helma Object Publisher. Antville works with a relational database in the back-end.
 
 [Look at the project site for more information.](https://project.antville.org)
 
 ## Status
 
-Antville’s codebase is of stable quality and ready for production deployment. It is being used by several thousands of users at [Antville.org](https://antville.org).
+Antville’s codebase is of stable quality and ready for production deployment. Try out [Antville.org](https://antville.org) for a demonstration.
 
 There still could be bugs hidden in Antville’s source code. If you find one please let us know. The creators of Antville do not take any responsibility for what the software might do.
 
 ## System Requirements
 
-To run Antville you need [Helma Object Publisher](https://github.com/antville/helma) and a relational database in the backend. We tested Antville with [PostgreSQL](https://postgresql.org) and [MySQL](https://mysql.com) – [MariaDB](https://mariadb.com) should work, too.
+To run Antville you need [Helma Object Publisher](https://github.com/antville/helma) and a relational database software. We tested Antville with [PostgreSQL](https://postgresql.org) and [MySQL](https://mysql.com) – [MariaDB](https://mariadb.com) should work, too.
 
-For details please refer to the installation instructions of Helma Object Publisher and the database of your choice.
+To enable Antville sending notification e-mails you need access to an SMTP server.
 
-To enable Antville sending confirmation mails to users (e.g. after registration) you will also need access to an SMTP server.
+Helma comes with an embedded webserver (Jetty) so you do not need to install one. Yet, you can also use the webserver of your choice.
 
-Helma comes with an embedded webserver (Jetty) so you do not need to install one. But you can use other popular webservers, too.
+For details please refer to the installation instructions of Helma Object Publisher and the corresponding software packages.
 
-Please refer to the `INSTALL.md` file for detailed information on how to install Antville.
+The `INSTALL.md` file contains detailed instructions to install Antville.
 
 ## Documentation and Further Information
 
@@ -37,18 +37,18 @@ You should follow Antville on [Facebook](https://facebook.com/Antville) and [Twi
 
 ## Bug Reporting and Feature Requests
 
-If you think you found a bug [please report it](https://project.antville.org).
+If you think you found a bug [please let us know](https://project.antville.org).
 
 A great place for your feature requests or proposals is the [project development site](https://project.antville.org).
 
-Since Antville is open-source, we want to encourage you to change its code according to your likeness. We would be happy to hear your ideas, suggestions and changes. Feel free to drop us a message to <mail@antville.org> or through any channels mentioned before.
+Antville is open-source, and we want to encourage you to change its code according to your likeness. We are curious about your ideas and suggestions. Feel free to drop us a message to <mail@antville.org> or through any channels mentioned before.
 
 ## About Helma Object Publisher
 
-[Helma Object Publisher](https://github.com/antville/helma) is a web application server driven by Java and programmed with JavaScript.
+[Helma Object Publisher](https://github.com/antville/helma) is an open source project providing a powerful, fast and scriptable web application server written in Java. 
 
-Use Helma Object Publisher to define HopObjects and map them to a relational database table. Create, change and delete HopObjects at your whim using a comfortable object-container model. Manual fiddling around with database code is not necessary.
+Define HopObjects and map them to a relational database table. Create, change and delete HopObjects at your whim using a comfortable object-container model. Manual fiddling around with database code is not necessary.
 
-HopObjects extend the JavaScript object and you control them using server-side JavaScript. They got all the common features you know from JavaScript. Besides, Helma provides special templating features to ease the rendering of objects for the Web.
+HopObjects extend the native JavaScript object. They got all the common features you know – and more. One highlight are the special templating features to ease the rendering of objects for the Web.
 
 Combine HopObjects to create a hierarchical structure. A URL in Helma mirrors this structure. Each part of the URL path corresponds to a relational database mapping. It is similar to the document tree of static websites. Helma’s URL space is an analogy of the Document Object Model implemented in client-side JavaScript.
