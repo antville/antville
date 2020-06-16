@@ -1,35 +1,34 @@
 # About Antville
 
-Antville is an open source project aimed at the development of a high performance, feature rich weblog hosting software. It can easily host up to several thousands of sites (the number of weblogs is rather limited by the installation owner’s choice and server power than by software limitations).
+Antville is an open source project providing a high performance, feature rich blog hosting software. Antville can host tens of thousands of blogs. Server power is the only limit. Installation and use is easy.
 
-Antville is entirely written in JavaScript (ECMAScript, to be precise) and based on Helma Object Publisher, a powerful and fast scriptable open source web application server (which itself is written in Java). Antville works with a relational database in the backend.
+Antville is written in JavaScript and developed with Helma Object Publisher. Helma Object Publisher is a powerful, fast and scriptable open source web application server written in Java. Antville works with a relational database in the backend.
 
-[Check out the project site for more information.](https://project.antville.org)
+[Look at the project site for more information.](https://project.antville.org)
 
 ## Status
 
-Antville can be considered stable quality code. It is being used by several thousands of users at [Antville.org](https://antville.org) for a long time.
+Antville’s codebase is of stable quality. It is being used by several thousands of users at [Antville.org](https://antville.org).
 
-Nevertheless, there still could be bugs hidden somewhere in this application.
+But, there still could be bugs hidden somewhere in this application.
 
-Antville can be used for production purposes, but please bear in mind that the creators of Antville do not take any warranty, whichever kind.
+Antville is ready for production deployment. But consider that the creators of Antville do not take any warranty, whichever kind. As usual, your mileage my vary.
 
 ## System Requirements
 
-To run Antville you need [Helma Object Publisher](https://github.com/antville/helma) and a relational database in the backend. Antville was thoroughly tested with [PostgreSQL](https://postgresql.org) and [MySQL](https://mysql.com) – [MariaDB](https://mariadb.com) should work, too.
+To run Antville you need [Helma Object Publisher](https://github.com/antville/helma) and a relational database in the backend. We tested Antville with [PostgreSQL](https://postgresql.org) and [MySQL](https://mysql.com) – [MariaDB](https://mariadb.com) should work, too.
 
-For setting up Helma Object Publisher and the database of your choice please refer to the corresponding installation instructions.
+For details please refer to the installation instructions of Helma Object Publisher and the database of your choice.
 
 To enable Antville sending confirmation mails to users (e.g. after registration) you will also need access to an SMTP server.
 
-Helma comes with its own embedded webserver (Jetty) so you do not need to install one, although you can easily use most popular webservers, too.
+Helma comes with an embedded webserver (Jetty) so you do not need to install one. But you can use other popular webservers, too.
 
 Please refer to the `INSTALL.md` file for detailed information on how to install Antville.
 
 ## Documentation and Further Information
 
-For documentation and further information regarding Antville you can refer to:
-
+For documentation and further information about Antville you can refer to:
 - [project.antville.org](https://project.antville.org)
 - [about.antville.org](https://about.antville.org)
 - [help.antville.org](https://help.antville.org)
@@ -42,16 +41,16 @@ You should follow Antville on [Facebook](https://facebook.com/Antville) and [Twi
 
 If you think you found a bug [please report it](https://project.antville.org).
 
-A good place for your feature requests or proposals is the [project development site](https://project.antville.org).
+A great place for your feature requests or proposals is the [project development site](https://project.antville.org).
 
-Since Antville is open-source, you are definitely encouraged to modify the application, we would be happy to hear from your ideas, suggestions and changes – drop us a message via <mail@antville.org> or use any of the aforementioned channels.
+Since Antville is open-source, we want to encourage you to change its code according to your likeness. We would be happy to hear your ideas, suggestions and changes. Feel free to drop us a message to <mail@antville.org> or through any channels mentioned before.
 
 ## About Helma Object Publisher
 
 [Helma Object Publisher](https://github.com/antville/helma) is a web application server driven by Java and programmed with JavaScript.
 
-With Helma Object Publisher (sometimes simply referred to as Helma or Hop) you can define Objects and map them to a relational database table. These so-called HopObjects can be created, modified and deleted using a comfortable object/container model. Hence, no manual fiddling around with database code is necessary.
+Use Helma Object Publisher to define HopObjects and map them to a relational database table. Create, change and delete HopObjects at your whim using a comfortable object-container model. Manual fiddling around with database code is not necessary.
 
-HopObjects are extended JavaScript objects which can be scripted using server-side JavaScript. Beyond the common JavaScript features, Helma provides special “skin” and template functionalities which facilitate the rendering of objects via a web interface.
+HopObjects extend the JavaScript object and you control them using server-side JavaScript. They got all the common features you know from JavaScript. Besides, Helma provides special templating features to ease the rendering of objects for the Web.
 
-Thanks to Helma’s relational database mapping technology, HopObjects create a hierarchical structure, the URL space of a Helma site. The parts between slashes in a Helma URL represent HopObjects (similar to the document tree in static sites). The Helma URL space can be thought of as an analogy to the Document Object Model (DOM) in client-side JavaScript.
+Combine HopObjects to create a hierarchical structure. A URL in Helma mirrors this structure. Each part of the URL path corresponds to a relational database mapping. It is similar to the document tree of static websites. Helma’s URL space is an analogy of the Document Object Model implemented in client-side JavaScript.
