@@ -51,4 +51,4 @@ Define HopObjects and map them to a relational database table. Create, change an
 
 HopObjects extend the native JavaScript object. They got all the common features you know – and more. One highlight are the special templating features to ease the rendering of objects for the Web.
 
-Combine HopObjects to create a hierarchical structure. A URL in Helma mirrors this structure. Each part of the URL path corresponds to a relational database mapping. It is similar to the document tree of static websites. Helma’s URL space is an analogy of the Document Object Model implemented in client-side JavaScript.
+Combine HopObjects to create a hierarchical structure. A URL in Helma mirrors this structure. Each part of the URL path corresponds to a relational database mapping, similar to the document tree of static websites. Helma’s URL space is an analogy to the Document Object Model implemented in client-side JavaScript.
