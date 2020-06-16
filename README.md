@@ -8,11 +8,9 @@ Antville is written in JavaScript and developed with Helma Object Publisher. Hel
 
 ## Status
 
-Antville’s codebase is of stable quality. It is being used by several thousands of users at [Antville.org](https://antville.org).
+Antville’s codebase is of stable quality and ready for production deployment. It is being used by several thousands of users at [Antville.org](https://antville.org).
 
-But, there still could be bugs hidden somewhere in this application.
-
-Antville is ready for production deployment. But consider that the creators of Antville do not take any warranty, whichever kind. As usual, your mileage my vary.
+There still could be bugs hidden in Antville’s source code. If you find one please let us know. The creators of Antville do not take any responsibility for what the software might do.
 
 ## System Requirements
 
