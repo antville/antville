@@ -186,8 +186,9 @@ HopObject.prototype.delete_action = function() {
       var parent = this._parent;
       var type = this._prototype;
       var url = this.constructor.remove.call(this, req.postParams) || parent.href();
+
       res.message = gettext('{0} was successfully deleted.', gettext(type));
-      res.redirect(User.getLocation() || url);
+      res.redirect(url);
     } catch(ex) {
       redirectUrl = session.data.referer;
       res.message = ex;
@@ -195,8 +196,13 @@ HopObject.prototype.delete_action = function() {
     }
   }
 
-  if (req.data.http_get_remainder === 'safemode') { res.skinpath = [app.dir]; }
-  if (!res.data.action) { res.data.action = this.href(req.action); }
+  if (req.data.http_get_remainder === 'safemode') {
+    res.skinpath = [app.dir];
+  }
+
+  if (!res.data.action) {
+    res.data.action = this.href(req.action);
+  }
 
   res.data.title = gettext('Confirm Deletion');
   session.data.location = redirectUrl;
