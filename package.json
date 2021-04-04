@@ -35,7 +35,7 @@
     "jquery": "^3.5.0",
     "jquery-collagePlus": "github:antville/jquery-collagePlus#0.3.4",
     "js-md5": "^0.7.3",
-    "uikit": "^2.27.4"
+    "uikit": "^3.6.18"
   },
   "devDependencies": {
     "browserify": "^16.5.1",

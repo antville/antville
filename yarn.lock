@@ -1347,11 +1347,6 @@ nice-try@^1.0.4:
   resolved "https://registry.yarnpkg.com/nice-try/-/nice-try-1.0.5.tgz#a3378a7696ce7d223e88fc9b764bd7ef1089e366"
   integrity sha512-1nh45deeb5olNY7eX82BkPO7SSxR5SSYJiPTrTdFUVYwAl8CKMA5N9PjTYkHiRjisVcxcQ1HXdLhx2qxxJzLNQ==
 
-node-promise@^0.5.10:
-  version "0.5.14"
-  resolved "https://registry.yarnpkg.com/node-promise/-/node-promise-0.5.14.tgz#6dccbae26d2c5383d1f49ead782c7cecbbbd07dc"
-  integrity sha512-kbd+ABY2XRdByRVHPcBDemymfNL8+msGyKNxG/ziZnh9RjneuuGQl3/CE5UkNWxCInkJS+ztc5B31/t2kIO4Yw==
-
 normalize-package-data@^2.3.2:
   version "2.5.0"
   resolved "https://registry.yarnpkg.com/normalize-package-data/-/normalize-package-data-2.5.0.tgz#e66db1838b200c1dfc233225d12cb36520e234a8"
@@ -2067,12 +2062,10 @@ uglifyify@^5.0.2:
     through "~2.3.4"
     xtend "^4.0.1"
 
-uikit@^2.27.4:
-  version "2.27.4"
-  resolved "https://registry.yarnpkg.com/uikit/-/uikit-2.27.4.tgz#dc0a2dde23f4fbf47fb393c7056fd794f771f255"
-  integrity sha1-3Aot3iP0+/R/s5PHBW/XlPdx8lU=
-  dependencies:
-    node-promise "^0.5.10"
+uikit@^3.6.18:
+  version "3.6.18"
+  resolved "https://registry.yarnpkg.com/uikit/-/uikit-3.6.18.tgz#5ee147b5de13ccd1ef32809a9f4e0551fd895da9"
+  integrity sha512-q5Dlpu1KQ5Jo3cW9TCMypvG0KL6rVLcCat9JPHJ1HBzmSKnMh+oChhWWSq4OEGuopsIftKyiXuhdS8a50uIJbw==
 
 umd@^3.0.0:
   version "3.0.3"
