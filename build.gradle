@@ -50,7 +50,7 @@ allprojects {
 version = distVersion()
 
 dependencies {
-  implementation 'com.atlassian.commonmark:commonmark:0.14.0'
+  implementation 'com.atlassian.commonmark:commonmark:0.17.0'
   implementation 'com.atlassian.commonmark:commonmark-ext-autolink:0.14.0'
   implementation 'com.atlassian.commonmark:commonmark-ext-gfm-strikethrough:0.14.0'
   implementation 'com.atlassian.commonmark:commonmark-ext-gfm-tables:0.14.0'
