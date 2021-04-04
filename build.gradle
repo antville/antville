@@ -52,7 +52,7 @@ version = distVersion()
 dependencies {
   implementation 'com.atlassian.commonmark:commonmark:0.14.0'
   implementation 'com.atlassian.commonmark:commonmark-ext-autolink:0.14.0'
-  implementation 'com.atlassian.commonmark:commonmark-ext-gfm-strikethrough:0.14.0'
+  implementation 'com.atlassian.commonmark:commonmark-ext-gfm-strikethrough:0.17.0'
   implementation 'com.atlassian.commonmark:commonmark-ext-gfm-tables:0.14.0'
   implementation 'org.jsoup:jsoup:1.13.1'
   implementation 'rome:rome:1.0'
