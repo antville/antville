@@ -1,5 +1,5 @@
 plugins {
-  id 'com.github.jk1.dependency-license-report' version '1.13'
+  id 'com.github.jk1.dependency-license-report' version '1.16'
 }
 
 def helmaInstallDir = "${rootProject.buildDir}/install/antclick"
