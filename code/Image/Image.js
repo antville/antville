@@ -301,8 +301,8 @@ Image.prototype.update = function(data) {
     this.contentType = mime.contentType;
     File.prototype.setOrigin.call(this, origin);
 
-    if (!this.name) {
-       var name = File.getName(data.name || mimeName.split('.')[0]);
+    if (this.isTransient()) {
+       var name = data.name || mimeName.replace(/\.[^.]+$/, '');
        this.name = this.parent.images.getAccessName(name);
     }
 
@@ -313,21 +313,24 @@ Image.prototype.update = function(data) {
     this.width = image.width;
     this.height = image.height;
 
-    // Create a thumbnail version if the image size exceeds
+    // Create a thumbnail version if the image size exceeds constraints
     if (this.width > Image.THUMBNAILWIDTH) {
       thumbnail = this.getHelmaImage(mime, [Image.THUMBNAILWIDTH]);
       this.thumbnailWidth = thumbnail.width;
       this.thumbnailHeight = thumbnail.height;
     } else if (this.isPersistent()) {
       this.getThumbnailFile().remove();
+
       // NOTE: delete operator won't work here due to getter/setter methods
       this.deleteMetadata('thumbnailName', 'thumbnailWidth', 'thumbnailHeight');
     }
 
-    // Make the image persistent before proceeding with writing files and
-    // setting tags (also see Helma bug #607)
-    if (this.isTransient()) this.persist();
-    var fileName = this.name + extension;
+    // Make the image persistent before proceeding with writing files and setting tags (also see Helma bug #607)
+    if (this.isTransient()) {
+      this.persist();
+    }
+
+    var fileName = File.getName(this.name) + extension;
 
     // Remove existing image files if the file name has changed
     if (fileName !== this.fileName) {
@@ -335,7 +338,10 @@ Image.prototype.update = function(data) {
     }
 
     this.fileName = fileName;
-    if (thumbnail) this.thumbnailName = this.name + '_small' + extension;
+
+    if (thumbnail) {
+      this.thumbnailName = fileName.replace(/(\.[^.]+$)/, '-small$1');
+    }
 
     this.writeFiles(image.data || mime, thumbnail && thumbnail.data);
     this.contentLength = this.getFile().getLength();

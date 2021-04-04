@@ -65,8 +65,7 @@ File.remove = function() {
  * @param {String} name
  */
 File.getName = function(name) {
-  // TODO: Maybe return a hash if name is undefined?
-  return name ? String(name).replace(/[^\w\d\s,._-]/g, String.EMPTY) : null;
+  return String(name).md5() + '-' + String.random(16) + '-' + Date.now();
 }
 
 File.getGenericType = function (contentType) {
@@ -271,27 +270,31 @@ File.prototype.update = function(data) {
 
   if (mime.contentLength > 0) {
     var mimeName = mime.normalizeFilename(mime.name);
+
     this.contentLength = mime.contentLength;
     this.contentType = mime.contentType;
     this.setOrigin(origin);
 
-    if (!this.name) {
-       var name = File.getName(data.name) || mimeName.split('.')[0];
+    if (this.isTransient()) {
+       var name = data.name || mimeName.replace(/\.[^.]+$/, '');
        this.name = this.site.files.getAccessName(name);
+
+       // Make the file persistent before proceeding with writing it to disk (also see Helma bug #607)
+       this.persist();
     }
 
-    // Make the file persistent before proceeding with writing
-    // it to disk (also see Helma bug #607)
-    this.isTransient() && this.persist();
-
     var extension = mimeName.substr(mimeName.lastIndexOf('.')) || String.EMPTY;
-    var fileName = this.name + extension;
+    var fileName = File.getName(this.name) + extension;
+
     if (fileName !== this.fileName) {
       // Remove existing file if the file name has changed
       this.getFile().remove();
     }
+
     this.fileName = fileName;
+
     var file = this.getFile();
+
     mime.writeToFile(file.getParent(), file.getName());
   }
 
