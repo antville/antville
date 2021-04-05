@@ -51,7 +51,7 @@ version = distVersion()
 
 dependencies {
   implementation 'org.commonmark:0.17.0'
-  implementation 'org.commonmark:commonmark-ext-autolink:0.14.0'
+  implementation 'org.commonmark:commonmark-ext-autolink:0.17.1'
   implementation 'org.commonmark:commonmark-ext-gfm-strikethrough:0.14.0'
   implementation 'org.commonmark:commonmark-ext-gfm-tables:0.14.0'
   implementation 'org.jsoup:jsoup:1.13.1'
