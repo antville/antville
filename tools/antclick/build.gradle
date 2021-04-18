@@ -73,7 +73,7 @@ task installHelma(type: Copy) {
 task installAntville(type: Copy) {
   description 'Install Antville as Helma application'
   group 'installation'
-  dependsOn 'installHelma'
+  dependsOn ':assemble', ':installAntville', 'installHelma', 'buildLicenses'
 
   def appsProperties = "$antvilleBuildDir/tools/antclick/apps.properties"
   def outputDir = "$helmaInstallDir/apps/antville"
@@ -112,6 +112,7 @@ task installJars(type: Copy) {
 task buildDatabase(type: JavaExec) {
   description 'Builds the H2 SQL database file.'
   group 'build'
+  dependsOn ':assemble'
 
   def inputFile = "$antvilleInstallDir/db/postgre.sql"
   def outputDir = "$helmaInstallDir/db"

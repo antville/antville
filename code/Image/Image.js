@@ -94,8 +94,6 @@ Image.getFileExtension = function(type) {
     type = type.substr(0, index);
   }
   switch (type.toLowerCase()) {
-    //case 'image/x-icon':
-    //return '.ico';
     case 'image/gif':
     return '.gif';
     case 'image/jpg':
