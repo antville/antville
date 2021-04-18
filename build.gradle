@@ -88,6 +88,7 @@ task installAntville {
   outputs.dirs tempDir, antvilleBuildDir
 
   doFirst {
+    delete tempDir
     Grgit.clone(dir: tempDir, uri: project.ext['antville.repo.url'])
   }
 
