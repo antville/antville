@@ -21,7 +21,6 @@ allprojects {
 
   repositories {
     mavenCentral()
-    jcenter()
   }
 
   project.ext.distVersion = { ->
