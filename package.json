@@ -17,11 +17,11 @@
     "build:main.css": "lessc --clean-css tools/client/main.less static/styles/main.min.css",
     "build:editor.css": "lessc --clean-css tools/client/editor.less static/styles/editor.min.css",
     "dev": "run-p -cl dev:*.js dev:*.css",
-    "dev:main.js": "onchange tools/client/main.js -- yarn build:main.js",
-    "dev:main.css": "onchange tools/client/main.less -- yarn build:main.css",
-    "dev:editor.js": "onchange tools/client/editor.js -- yarn build:editor.js",
-    "dev:editor.css": "onchange tools/client/editor.less -- yarn build:editor.css",
-    "dev:gallery.js": "onchange tools/client/gallery.js -- yarn build:gallery.js"
+    "dev:main.js": "onchange -i tools/client/main.js -- yarn build:main.js",
+    "dev:main.css": "onchange -i tools/client/main.less -- yarn build:main.css",
+    "dev:editor.js": "onchange -i tools/client/editor.js -- yarn build:editor.js",
+    "dev:editor.css": "onchange -i tools/client/editor.less -- yarn build:editor.css",
+    "dev:gallery.js": "onchange -i tools/client/gallery.js -- yarn build:gallery.js"
   },
   "repository": {
     "type": "git",
@@ -40,7 +40,7 @@
   "devDependencies": {
     "browserify": "^17.0.0",
     "jsdoc": "^3.6.6",
-    "less": "^3.11.1",
+    "less": "^4.1.1",
     "less-plugin-clean-css": "^1.5.1",
     "npm-run-all": "^4.1.5",
     "onchange": "^7.1.0",
