@@ -9,7 +9,11 @@ updates:
     directory: "/" # Location of package manifests
     schedule:
       interval: "daily"
+    assignees:
+      - "p3k"
   - package-ecosystem: "gradle"
     directory: "/"
     schedule:
       interval: "daily"
+    assignees:
+      - "p3k"
