@@ -11,7 +11,7 @@ import org.ajoberstar.grgit.Grgit
 tasks.build.dependsOn 'assemble'
 
 node {
-  version = '12.16.3'
+  version = '14.16.1'
   yarnVersion = '1.22.4'
   download = true
 }
