@@ -30,9 +30,9 @@
   "author": "The Antville People",
   "license": "Apache-2.0",
   "dependencies": {
-    "alpinejs": "=2.3.3",
+    "alpinejs": "=2.8.2",
     "codemirror": "^5.60.0",
-    "jquery": "^3.5.0",
+    "jquery": "^3.6.0",
     "jquery-collagePlus": "github:antville/jquery-collagePlus#0.3.4",
     "js-md5": "^0.7.3",
     "uikit": "^2.27.4"
