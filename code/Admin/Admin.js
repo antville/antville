@@ -385,7 +385,7 @@ Admin.updateDomains = function() {
     }
   }
   var map = res.pop();
-  var file = new java.io.File(app.dir, 'domains.map');
+  var file = new java.io.File(app.appsProperties.static, 'domains.map');
   var out = new java.io.BufferedWriter(new java.io.OutputStreamWriter(
       new java.io.FileOutputStream(file), 'UTF-8'));
   out.write(map);
