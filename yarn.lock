@@ -44,17 +44,10 @@ acorn@^7.0.0:
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-7.2.0.tgz#17ea7e40d7c8640ff54a694c889c26f31704effe"
   integrity sha512-apwXVmYVpQ34m/i71vrApRrRKCWQnZZF1+npOD0WV5xZFfwWOmKGQ2RWlfdy9vWITsenisM8M0Qeq8agcFHNiQ==
 
-<<<<<<< HEAD
-alpinejs@=2.3.3:
-  version "2.3.3"
-  resolved "https://registry.yarnpkg.com/alpinejs/-/alpinejs-2.3.3.tgz#720e7a46f52fba5d5dc2bedad059bec14ae58d76"
-  integrity sha512-bdypevdAMNpt2X4s4bebiQ3M5Otxy1OvIhpJDxu6bezbO0k7sVQq7ZWhD251lIQILGZ0s1Y4skyci1DZ+heN9w==
-=======
 alpinejs@=2.8.2:
   version "2.8.2"
   resolved "https://registry.yarnpkg.com/alpinejs/-/alpinejs-2.8.2.tgz#b14ec21ae3cd78dcee4aed0a78ed0f01b676dac4"
   integrity sha512-5yOUtckn4CBp0qsHpo2qgjZyZit84uXvHbB7NJ27sn4FA6UlFl2i9PGUAdTXkcbFvvxDJBM+zpOD8RuNYFvQAw==
->>>>>>> d1e605cadbf24f1b7cf42ba4e55984b229579b19
 
 amdefine@>=0.0.4:
   version "1.0.1"
@@ -383,10 +376,10 @@ clean-css@^3.0.1:
     commander "2.8.x"
     source-map "0.4.x"
 
-codemirror@^5.60.0:
-  version "5.60.0"
-  resolved "https://registry.yarnpkg.com/codemirror/-/codemirror-5.60.0.tgz#00a8cfd287d5d8737ceb73987f04aee2fe5860da"
-  integrity sha512-AEL7LhFOlxPlCL8IdTcJDblJm8yrAGib7I+DErJPdZd4l6imx8IMgKK3RblVgBQqz3TZJR4oknQ03bz+uNjBYA==
+codemirror@^5.61.0:
+  version "5.61.0"
+  resolved "https://registry.yarnpkg.com/codemirror/-/codemirror-5.61.0.tgz#318e5b034a707207948b92ffc2862195e8fdb08e"
+  integrity sha512-D3wYH90tYY1BsKlUe0oNj2JAhQ9TepkD51auk3N7q+4uz7A/cgJ5JsWHreT0PqieW1QhOuqxQ2reCXV1YXzecg==
 
 color-convert@^1.9.0:
   version "1.9.3"
