@@ -42,7 +42,7 @@ Root.VERSION = (function(versionString, buildDate) {
     return result;
   }
   return versionString;
-})(getProperty('version', '0.0.0'), getProperty('buildDate', '18 Oct 1971'));
+})(getProperty('version', '0.0.0'), getProperty('buildDate', '18 Jun 2001'));
 
 this.handleMetadata('creationDelay');
 this.handleMetadata('creationScope');
