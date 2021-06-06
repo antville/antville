@@ -162,7 +162,7 @@ Story.prototype.getRenderedContentPart = function(name, mode) {
       // Enable caching; some macros (eg. poll, storylist) will set this
       // to false to prevent caching of a contentpart containing them.
       res.meta.cachePart = true;
-      part = this.format_filter(part, {});
+      part = this.format_filter(part, {}, "markdown");
     }
     this.cache[key] = part;
     if (res.meta.cachePart) {
