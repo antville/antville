@@ -308,25 +308,29 @@ User.autoLogin = function() {
   if (session.user) {
     return;
   }
+
   var name = req.cookies[User.COOKIE];
   var hash = req.cookies[User.HASHCOOKIE];
+
   if (!name || !hash) {
     return;
   }
+
   var user = User.getByName(name);
-  if (!user) {
+
+  if (!user || User.getAutoLoginHash(user.hash) !== hash) {
     return;
   }
-  var ip = req.data.http_remotehost.clip(getProperty('cookieLevel', '4'),
-      String.EMPTY, '\\.');
-  if ((user.hash + ip).md5() !== hash) {
-    return;
-  }
+
   session.login(user);
   user.touch();
-  res.message = gettext('Welcome to {0}, {1}. Have fun!',
-      res.handlers.site.title, user.name);
+  res.message = gettext('Welcome to {0}, {1}. Have fun!', res.handlers.site.title, user.name);
   return;
+}
+
+User.getAutoLoginHash = function(salt) {
+  const ip = req.getHeader("X-Forwarded-For") || req.data.http_remotehost;
+  return (salt + ip.replace(/[0-9a-fA-F]+$/, "")).md5();
 }
 
 /**
@@ -336,25 +340,29 @@ User.autoLogin = function() {
  */
 User.login = function(data) {
   var user = User.getByName(data.name);
+  var digest = data.digest;
+
   if (!user) {
     throw Error(gettext('Unfortunately, your login failed. Maybe a typo?'));
   }
-  var digest = data.digest;
+
   // Calculate digest for JavaScript-disabled browsers
   if (!digest) {
     app.logger.warn('Received clear text password from ' + req.data.http_referer);
     digest = ((data.password + user.salt).md5() + session.data.token).md5();
   }
+
   // Check if login is correct
   if (digest !== user.getDigest(session.data.token)) {
     throw Error(gettext('Unfortunately, your login failed. Maybe a typo?'))
   }
+
   if (data.remember) {
     // Set long running cookies for automatic login
     res.setCookie(User.COOKIE, user.name, 365);
-    var ip = req.data.http_remotehost.clip(getProperty('cookieLevel', '4'), String.EMPTY, '\\.');
-    res.setCookie(User.HASHCOOKIE, (user.hash + ip).md5(), 365);
+    res.setCookie(User.HASHCOOKIE, User.getAutoLoginHash(user.hash), 365);
   }
+
   user.touch();
   session.login(user);
   return user;
