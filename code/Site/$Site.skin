@@ -1013,6 +1013,9 @@ h4 + .uk-comment-meta li:first-child {
    }
 }
 
+// AlpineJS https://alpinejs.dev/directives/cloak
+[x-cloak] { display: none !important; }
+
 // Overwriting some CSS classes for Google’s custom search
 
 .gs-webResult.gs-result a.gs-title:link,
