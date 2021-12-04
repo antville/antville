@@ -373,8 +373,8 @@
       <div><% if <% site.modified %> then <% gettext 'Last modified {0}' <% site.modified text %> %> suffix=. %></div>
    </div>
    <div class='uk-text-right'>
-      <% image /smallchaos.gif | link https://antville.org %> &
-      <% image /helma.png | link http://helma.org %>
+      <% image /smallchaos.gif | link https://project.antville.org %> &
+      <% image /helma.png | link https://github.com/antville/helma %>
    </div>
 </footer>
 
