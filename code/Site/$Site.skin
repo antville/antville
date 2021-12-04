@@ -440,7 +440,7 @@ html, html.uk-notouch, body {
 
 body.av-16, body.av-page {
    max-width: 900px;
-   margin: auto 5%;
+   margin: 1em 5%;
 }
 
 h1, h2, h3, h4, h5, h6 {
