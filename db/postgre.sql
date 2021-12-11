@@ -169,9 +169,9 @@ create index membership_creator_idx on membership (creator_id);
 create table metadata (
   id int4 primary key,
   parent_id int4,
-  parent_type varchar,
+  parent_type varchar(20),
   name varchar(255),
-  value text,
+  "value" text,
   type varchar(255)
 );
 
@@ -179,7 +179,7 @@ create index metadata_parent_idx on metadata (parent_type, parent_id);
 create index metadata_name_idx on metadata (name);
 
 -- This returns an error in H2 database
-create index metadata_value_idx on metadata using hash (value);
+create index metadata_value_idx on metadata using hash ("value");
 
 --!helma <% #end_of_metadata %>
 
