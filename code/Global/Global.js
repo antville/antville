@@ -22,7 +22,7 @@
 String.ELLIPSIS = '…';
 
 app.addRepository(app.dir + '/../lib/jdom-1.0.jar');
-app.addRepository(app.dir + '/../lib/jsoup-1.13.1.jar');
+app.addRepository(app.dir + '/../lib/jsoup-1.14.3.jar');
 app.addRepository(app.dir + '/../lib/lesscss-1.7.0.1.1.jar');
 app.addRepository(app.dir + '/../lib/rome-1.0.jar');
 
@@ -1077,7 +1077,7 @@ function validateUrl(str) {
 function quote(str, pattern) {
   str = String(str);
   if (!pattern || RegExp(pattern).test(str) || /['"]/.test(str)) {
-    str = "'" + str.replace(/("|')/g, '\\$1') + "'";
+    str = "'" + str.replace(/('|"|\\)/g, '\\$1') + "'";
   }
   return str;
 }

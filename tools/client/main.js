@@ -126,7 +126,7 @@ Antville.decode = function(str) {
 Antville.Referrer = function(url, text, count) {
   this.url = url;
 
-  const re = new RegExp('https?://(?:www\.)?');
+  const re = new RegExp('https?://(?:www\\.)?');
 
   this.text = String(text).replace(re, '');
 

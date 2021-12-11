@@ -574,7 +574,7 @@ convert.skins = function() {
     }
     if (parent !== null && parent !== undefined) {
       execute("update skin set source = '" +
-          clean(parent).replace(/'/g, "\\'") + "' where " +
+          clean(parent).replace(/('|\\)/g, "\\$1") + "' where " +
           'id = ' + this.id);
     }
   });
