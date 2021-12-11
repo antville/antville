@@ -1077,7 +1077,7 @@ function validateUrl(str) {
 function quote(str, pattern) {
   str = String(str);
   if (!pattern || RegExp(pattern).test(str) || /['"]/.test(str)) {
-    str = "'" + str.replace(/("|')/g, '\\$1') + "'";
+    str = "'" + str.replace(/('|"|\\)/g, '\\$1') + "'";
   }
   return str;
 }
