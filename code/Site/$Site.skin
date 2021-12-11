@@ -373,8 +373,8 @@
       <div><% if <% site.modified %> then <% gettext 'Last modified {0}' <% site.modified text %> %> suffix=. %></div>
    </div>
    <div class='uk-text-right'>
-      <% image /smallchaos.gif | link https://antville.org %> &
-      <% image /helma.png | link http://helma.org %>
+      <% image /smallchaos.gif | link https://project.antville.org %> &
+      <% image /helma.png | link https://github.com/antville/helma %>
    </div>
 </footer>
 
@@ -440,7 +440,7 @@ html, html.uk-notouch, body {
 
 body.av-16, body.av-page {
    max-width: 900px;
-   margin: auto 5%;
+   margin: 1em 5%;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -828,9 +828,9 @@ h4 + .uk-comment-meta li:first-child {
    .av-header-bg-chaos {
       width: 274px;
       height: 53px;
-      margin-left: -54px;
+      margin-left: -53px;
       background: url('<% image /spritesheet.png url %>');
-      background-position: -9px -139px;
+      background-position: -10px -139px;
       background-repeat: no-repeat;
    }
 
@@ -845,11 +845,12 @@ h4 + .uk-comment-meta li:first-child {
 
    .av-title {
       position: absolute;
-      top: 13px;
+      top: 8px;
       width: 100%;
       height: 100%;
       overflow-x: hidden;
       white-space: nowrap;
+      line-height: 31px;
       font-family: Verdana, Helvetica, Arial, sans-serif;
       font-size: 25px;
       font-weight: bold;
@@ -876,7 +877,7 @@ h4 + .uk-comment-meta li:first-child {
 
 @media (max-width: 767px) {
    .av-menu {
-      @top: 14px;
+      @top: 23px;
       @right: 5%;
       @size: 30px;
 
@@ -1011,6 +1012,9 @@ h4 + .uk-comment-meta li:first-child {
       vertical-align: baseline;
    }
 }
+
+// AlpineJS https://alpinejs.dev/directives/cloak
+[x-cloak] { display: none !important; }
 
 // Overwriting some CSS classes for Google’s custom search
 
