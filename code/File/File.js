@@ -333,7 +333,7 @@ File.prototype.description_macro = function(param) {
   } else if (param['default']) {
     res.write(param['default']);
   } else if (this.origin) {
-    var text = this.origin.replace(new RegExp('^.+:///?(?:www\.)?([^/]+).*$'), '$1');
+    var text = this.origin.replace(new RegExp('^.+:///?(?:www\\.)?([^/]+).*$'), '$1');
     var link = html.linkAsString({href: this.origin}, text);
     res.write(gettext('Source: {0}', link));
   }
