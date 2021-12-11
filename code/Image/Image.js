@@ -405,6 +405,7 @@ Image.prototype.thumbnail_macro = function(param) {
   param.src = encodeURI(this.getUrl(this.getThumbnailFile().getName()));
   if (!param.title) { param.title = encode(this.description || ''); }
   param.alt = encode(param.alt || param.title);
+  param.loading = "lazy";
   var width = param.width || this.thumbnailWidth;
   var height = param.height || this.thumbnailHeight;
   var style = [];
@@ -427,6 +428,7 @@ Image.prototype.render_macro = function(param) {
   param.src = encodeURI(this.getUrl());
   if (!param.title) { param.title = encode(this.description || ''); }
   param.alt = encode(param.alt || param.title);
+  param.loading = "lazy";
   var style = [];
   param.width && style.push('width:', param.width + 'px;');
   param.height && style.push('height:', param.height + 'px;');
