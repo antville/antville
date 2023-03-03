@@ -92,6 +92,13 @@ var Sql = function(options) {
     return sql;
   }
 
+  this.prepare = function(query, callback) {
+    const connection = db.getMetaData().getConnection();
+    const statement = connection.prepareStatement(query);
+    callback(statement);
+    return statement.toString();
+  };
+
   /**
    * Executes an SQL command.
    * @param {String} sql The SQL command.
