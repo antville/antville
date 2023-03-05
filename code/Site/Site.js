@@ -953,12 +953,8 @@ Site.prototype.search = function (type, term, limit) {
     search.message = gettext('Please enter a query in the search form.');
   } else if (term) {
     var counter = 0;
-    var sql = new Sql({quote: false});
-    query = sql.prepare(query, statement => {
-      statement.setInt(1, this._id);
-      statement.setString(2, '%' + term + '%');
-    });
-    sql.retrieve(query, limit + 1);
+    var sql = new Sql({prepared: true});
+    sql.retrieve(query, parseInt(this._id, 10), '%' + term + '%', limit + 1);
     sql.traverse(function () {
       if (counter < limit) {
         search.result.push(Story.getById(this.id));
