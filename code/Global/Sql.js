@@ -92,6 +92,32 @@ var Sql = function(options) {
     return sql;
   }
 
+  const prepare = function(args) {
+    const sql = args[0];
+
+    if (args.length > 1) {
+      const values = Array.prototype.splice.call(args, 1);
+      const connection = db.getMetaData().getConnection();
+      const statement = connection.prepareStatement(sql);
+
+      for (let index = 1, limit = values.length; index <= limit; index += 1) {
+        let value = values[index - 1];
+
+        switch (typeof value) {
+          case 'number':
+            statement.setInt(index, value);
+            break;
+          case 'string':
+            statement.setString(index, value);
+          default:
+            statement.setString(index, String(value));
+        }
+      }
+    }
+
+    return statement;
+  };
+
   /**
    * Executes an SQL command.
    * @param {String} sql The SQL command.
@@ -118,6 +144,9 @@ var Sql = function(options) {
    * @returns {String}
    */
   this.retrieve = function() {
+    if (options.prepared === true) {
+      return query = prepare(arguments);
+    }
     return log.info(query = resolve(arguments));
   }
 
@@ -126,7 +155,14 @@ var Sql = function(options) {
    * @param {Function} callback The callback function executed for each record.
    */
   this.traverse = function(callback) {
-    var rows = db.executeRetrieval(query);
+    let rows;
+
+    if (query instanceof java.sql.PreparedStatement) {
+      rows = db.executePreparedRetrieval(query);
+    } else {
+      rows = db.executeRetrieval(query);
+    }
+
     if (rows && rows.next()) {
       do {
         var sql = new SqlData(rows);
@@ -176,9 +212,9 @@ Sql.PURGEREFERRERS = "delete from log where action = 'main' and " +
  * SQL query for searching stories.
  * @constant
  */
-Sql.STORY_SEARCH = "select content.id from content, site, metadata, account as creator, account as modifier where site.id = $0 and content.prototype = 'Story' and site.id = content.site_id and content.status in ('public', 'shared', 'open') and content.creator_id = creator.id and content.modifier_id = modifier.id and creator.status <> 'deleted' and modifier.status <> 'deleted' and content.prototype = metadata.parent_type and content.id = metadata.parent_id and metadata.name in ('title', 'text') and lower(metadata.value) like lower('%$1%') group by content.id, content.created order by content.created desc limit $2";
+Sql.STORY_SEARCH = "select content.id from content, site, metadata, account as creator, account as modifier where site.id = ? and content.prototype = 'Story' and site.id = content.site_id and content.status in ('public', 'shared', 'open') and content.creator_id = creator.id and content.modifier_id = modifier.id and creator.status <> 'deleted' and modifier.status <> 'deleted' and content.prototype = metadata.parent_type and content.id = metadata.parent_id and metadata.name in ('title', 'text') and lower(metadata.value) like lower(?) group by content.id, content.created order by content.created desc limit ?";
 
-Sql.COMMENT_SEARCH = "select comment.id from content as comment, content as story, site, metadata, account as creator, account as modifier where site.id = $0 and comment.prototype = 'Comment' and site.id = comment.site_id and comment.story_id = story.id and story.status in ('public', 'shared', 'open') and story.comment_mode in ('open') and comment.creator_id = creator.id and comment.modifier_id = modifier.id and creator.status <> 'deleted' and modifier.status <> 'deleted' and comment.prototype = metadata.parent_type and comment.id = metadata.parent_id and metadata.name in ('title', 'text') and lower(metadata.value) like lower('%$1%') group by comment.id, comment.created order by comment.created desc limit $2";
+Sql.COMMENT_SEARCH = "select comment.id from content as comment, content as story, site, metadata, account as creator, account as modifier where site.id = ? and comment.prototype = 'Comment' and site.id = comment.site_id and comment.story_id = story.id and story.status in ('public', 'shared', 'open') and story.comment_mode in ('open') and comment.creator_id = creator.id and comment.modifier_id = modifier.id and creator.status <> 'deleted' and modifier.status <> 'deleted' and comment.prototype = metadata.parent_type and comment.id = metadata.parent_id and metadata.name in ('title', 'text') and lower(metadata.value) like lower(?) group by comment.id, comment.created order by comment.created desc limit ?";
 
 /**
  * SQL query for searching accounts which are not already members of the desired site.
