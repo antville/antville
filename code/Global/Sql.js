@@ -92,11 +92,30 @@ var Sql = function(options) {
     return sql;
   }
 
-  this.prepare = function(query, callback) {
-    const connection = db.getMetaData().getConnection();
-    const statement = connection.prepareStatement(query);
-    callback(statement);
-    return statement.toString();
+  const prepare = function(args) {
+    const sql = args[0];
+
+    if (args.length > 1) {
+      const values = Array.prototype.splice.call(args, 1);
+      const connection = db.getMetaData().getConnection();
+      const statement = connection.prepareStatement(sql);
+
+      for (let index = 1, limit = values.length; index <= limit; index += 1) {
+        let value = values[index - 1];
+
+        switch (typeof value) {
+          case 'number':
+            statement.setInt(index, value);
+            break;
+          case 'string':
+            statement.setString(index, value);
+          default:
+            statement.setString(index, String(value));
+        }
+      }
+    }
+
+    return statement;
   };
 
   /**
