@@ -144,6 +144,9 @@ var Sql = function(options) {
    * @returns {String}
    */
   this.retrieve = function() {
+    if (options.prepared === true) {
+      return query = prepare(arguments);
+    }
     return log.info(query = resolve(arguments));
   }
 
@@ -152,7 +155,14 @@ var Sql = function(options) {
    * @param {Function} callback The callback function executed for each record.
    */
   this.traverse = function(callback) {
-    var rows = db.executeRetrieval(query);
+    let rows;
+
+    if (query instanceof java.sql.PreparedStatement) {
+      rows = db.executePreparedRetrieval(query);
+    } else {
+      rows = db.executeRetrieval(query);
+    }
+
     if (rows && rows.next()) {
       do {
         var sql = new SqlData(rows);
