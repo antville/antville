@@ -19,7 +19,7 @@
  * @fileOverview Defines the Exporter namespace.
  */
 
-app.addRepository('lib/gson-2.8.6.jar');
+app.addRepository('lib/gson-2.8.9.jar');
 
 global.Exporter = (function() {
   const gson = new JavaImporter(
