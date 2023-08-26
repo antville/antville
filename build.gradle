@@ -48,10 +48,10 @@ allprojects {
 version = distVersion()
 
 dependencies {
-  implementation 'org.commonmark:commonmark:0.18.1'
-  implementation 'org.commonmark:commonmark-ext-autolink:0.18.1'
-  implementation 'org.commonmark:commonmark-ext-gfm-strikethrough:0.18.1'
-  implementation 'org.commonmark:commonmark-ext-gfm-tables:0.18.1'
+  implementation 'org.commonmark:commonmark:0.21.0'
+  implementation 'org.commonmark:commonmark-ext-autolink:0.21.0'
+  implementation 'org.commonmark:commonmark-ext-gfm-strikethrough:0.21.0'
+  implementation 'org.commonmark:commonmark-ext-gfm-tables:0.21.0'
   implementation 'org.jsoup:jsoup:1.14.3'
   implementation 'rome:rome:1.0'
 
