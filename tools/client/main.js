@@ -1,11 +1,12 @@
 window.$ = window.jQuery = require('jquery');
+window.Alpine = require('alpinejs').default;
 
 require('uikit/dist/js/uikit');
 require('uikit/dist/js/components/form-password');
 require('uikit/dist/js/components/tooltip');
 require('uikit/dist/js/components/upload');
 
-require('alpinejs');
+Alpine.start();
 
 const Antville = window.Antville = {};
 
