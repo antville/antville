@@ -11,7 +11,6 @@
     "claustra:add": "tools/claustra/add-claustra.js",
     "build": "run-p --continue-on-error --print-label build:*",
     "build:main.js": "browserify tools/client/main.js --outfile static/scripts/main.min.js",
-    "build:docs": "jsdoc --destination docs --recurse code",
     "build:editor.js": "browserify tools/client/editor.js --outfile static/scripts/editor.min.js",
     "build:gallery.js": "browserify tools/client/gallery.js --outfile static/scripts/gallery.min.js",
     "build:main.css": "lessc --clean-css tools/client/main.less static/styles/main.min.css",
