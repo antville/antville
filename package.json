@@ -11,6 +11,7 @@
     "add-claustra": "tools/claustra/add-claustra.js",
     "add-patch": "tools/updater/add-patch.js",
     "patch": "tools/updater/run-patch.js",
+    "build": "run-p --continue-on-error --print-label build:*",
     "build:main.js": "browserify tools/client/main.js -o static/scripts/main.min.js",
     "build:docs": "jsdoc --destination docs --recurse code",
     "build:editor.js": "browserify tools/client/editor.js -o static/scripts/editor.min.js",
