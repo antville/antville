@@ -32,7 +32,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "alpinejs": "3.13.0",
-    "codemirror": "5.64.0",
+    "codemirror": "5.65.14",
     "jquery": "3.7.0",
     "jquery-collagePlus": "github:antville/jquery-collagePlus#0.3.4",
     "js-md5": "0.7.3",
