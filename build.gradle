@@ -261,7 +261,7 @@ task jsdoc(type: NpmTask) {
     'exec', '--',
     'jsdoc',
     '--recurse',
-    '--directory',
+    '--destination',
     outputDir,
     inputDir
   ]

@@ -125,7 +125,7 @@ task buildDatabase(type: JavaExec) {
   }
 
   classpath = files(h2Jar)
-  main = 'org.h2.tools.RunScript'
+  mainClass = 'org.h2.tools.RunScript'
 
   args = [
     '-continueOnError',

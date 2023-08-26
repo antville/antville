@@ -33,8 +33,6 @@ For documentation and further information about Antville you can refer to:
 
 Feel free to ask any question about Antville at our [support site](https://help.antville.org).
 
-You should follow Antville on [Facebook](https://facebook.com/Antville) and [Twitter](https://twitter.com/antville_org)!
-
 ## Bug Reporting and Feature Requests
 
 If you think you found a bug [please let us know](https://project.antville.org).
