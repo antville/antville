@@ -128,7 +128,7 @@ Skins.prototype.all_action = function() {
     res.redirect(res.handlers.layout.skins.href(req.action));
   }
   res.push()
-  for each (let set in this.getListOfSkins()) {
+  for (let set of this.getListOfSkins()) {
     res.write(renderList(set[1], '$Skin#listItem'));
   }
   res.data.list = res.pop();
@@ -163,12 +163,12 @@ Skins.prototype.getSkin = function(group, name) {
 Skins.prototype.getListOfSkins = function() {
   var result = [];
   var options = Skin.getPrototypeOptions();
-  for each (var option in options) {
+  for (let option of options) {
     var skins = [];
     var prototype = option.value;
     var skinfiles = app.getSkinfilesInPath(res.skinpath);
     var skin = createSkin(skinfiles[prototype][prototype]);
-    for each (var name in skin.getSubskinNames()) {
+    for (let name of skin.getSubskinNames()) {
       var subskin = this.getSkin(prototype, name);
       skins.push(subskin);
     }

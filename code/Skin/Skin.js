@@ -222,7 +222,7 @@ Skin.prototype.compare_action = function() {
   } else {
     res.push();
     var param = {}, leftLineNumber = rightLineNumber = 0;
-    for each (let line in diff) {
+    for (let line of diff) {
       if (line.deleted) {
         param.right = encode(line.value);
         param.leftStatus = 'added';

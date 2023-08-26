@@ -187,7 +187,7 @@ Poll.prototype.status_action = function () {
  */
 Poll.prototype.update = function(data) {
   var choices = [];
-  for each (var title in data.title_array) {
+  for (let title of data.title_array) {
     if (title = title.trim()) {
       choices.push(title);
     }

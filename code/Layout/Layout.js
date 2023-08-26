@@ -417,7 +417,7 @@ Layout.prototype.getArchive = function(skinPath) {
       /* Most likely the thumbnail file is identical to the image */
     }
     var image = new HopObject;
-    for each (var key in Image.KEYS) {
+    for (let key of Image.KEYS) {
       image[key] = this[key];
       data.images.add(image);
     }
@@ -507,7 +507,7 @@ Layout.prototype.values_macro = function() {
   this.renderSkin('$Layout#value', {'class': 'uk-hidden'});
 
   values.sort(new String.Sorter('key'));
-  for each (var pair in values) {
+  for (let pair of values) {
     var type = getType(pair.key);
     this.renderSkin('$Layout#value', {
       title: pair.key.capitalize(),

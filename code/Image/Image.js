@@ -56,7 +56,7 @@ Image.add = function(data, parent, user) {
   user || (user = session.user);
   var image = new Image;
   if (data) {
-    for each (var key in Image.KEYS) {
+    for (let key of Image.KEYS) {
       image[key] = data[key];
     }
   }

@@ -47,7 +47,7 @@ app.addRepository('modules/jala/code/Utilities.js');
 // Adding i18n message files as repositories
 (function() {
    var dir = new helma.File(app.dir, '../i18n');
-   for each (let fname in dir.list()) {
+   for (let fname of dir.list()) {
      fname.endsWith('.js') && app.addRepository(app.dir + '/../i18n/' + fname);
    }
 })();
@@ -768,7 +768,7 @@ function list_macro(param, id, limit) {
       break;
     }
   }
-  for each (var item in collection) {
+  for (let item of collection) {
     item && item.renderSkin(param.skin || skin);
   }
   return;
@@ -1307,7 +1307,7 @@ function getTimeZones(language) {
       locale = getLocale(language),
       ids = java.util.TimeZone.getAvailableIDs();
 
-  for each (let id in ids) {
+  for (let id of ids) {
     // Exclude confusing time zones
     if (id.length < 4 || !id.contains('/') ||
         id.startsWith('Etc') || id.startsWith('System')) {

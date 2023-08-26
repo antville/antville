@@ -70,7 +70,7 @@ app.addRepository('modules/helma/Aspects.js');
   }
 
   var prototypes = app.__app__.getPrototypes().toArray();
-  for each (var prototype in prototypes) {
+  for (let prototype of prototypes) {
     if (prototype.name in global) {
       global[prototype.name].prototype.onCodeUpdate = function() {
         this.__renderSkin__ = this.renderSkin;

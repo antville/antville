@@ -175,7 +175,7 @@ Archive.prototype.stories_macro = function() {
     var site = res.handlers.site;
     var offset = (page - 1) * pageSize;
     var stories = site.stories.featured.list(offset, pageSize);
-    for each (var story in stories) {
+    for (let story of stories) {
       renderStory(story);
     };
     return;

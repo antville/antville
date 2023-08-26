@@ -41,7 +41,7 @@ var Sql = function(options) {
     }
 
     this.next = function() {
-      for each (var key in columns) {
+      for (let key of columns) {
         this.values[key] = result.getColumnItem(key);
       }
       return;
