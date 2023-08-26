@@ -8,20 +8,21 @@
     "test": "tests"
   },
   "scripts": {
-    "add-claustra": "tools/claustra/add-claustra.js",
-    "add-patch": "tools/updater/add-patch.js",
-    "patch": "tools/updater/run-patch.js",
-    "build:main.js": "browserify tools/client/main.js -o static/scripts/main.min.js",
-    "build:editor.js": "browserify tools/client/editor.js -o static/scripts/editor.min.js",
-    "build:gallery.js": "browserify tools/client/gallery.js -o static/scripts/gallery.min.js",
+    "claustra:add": "tools/claustra/add-claustra.js",
+    "build": "run-p --continue-on-error --print-label build:*",
+    "build:main.js": "browserify tools/client/main.js --outfile static/scripts/main.min.js",
+    "build:editor.js": "browserify tools/client/editor.js --outfile static/scripts/editor.min.js",
+    "build:gallery.js": "browserify tools/client/gallery.js --outfile static/scripts/gallery.min.js",
     "build:main.css": "lessc --clean-css tools/client/main.less static/styles/main.min.css",
     "build:editor.css": "lessc --clean-css tools/client/editor.less static/styles/editor.min.css",
-    "dev": "run-p -cl dev:*.js dev:*.css",
-    "dev:main.js": "onchange -i tools/client/main.js -- yarn build:main.js",
-    "dev:main.css": "onchange -i tools/client/main.less -- yarn build:main.css",
-    "dev:editor.js": "onchange -i tools/client/editor.js -- yarn build:editor.js",
-    "dev:editor.css": "onchange -i tools/client/editor.less -- yarn build:editor.css",
-    "dev:gallery.js": "onchange -i tools/client/gallery.js -- yarn build:gallery.js"
+    "patch:add": "tools/updater/add-patch.js",
+    "patch:apply": "tools/updater/run-patch.js",
+    "watch": "run-p --continue-on-error --print-label watch:*",
+    "watch:main.js": "onchange tools/client/main.js -- npm run build:main.js",
+    "watch:main.css": "onchange tools/client/main.less -- npm run build:main.css",
+    "watch:editor.js": "onchange tools/client/editor.js -- npm run build:editor.js",
+    "watch:editor.css": "onchange tools/client/editor.less -- npm run build:editor.css",
+    "watch:gallery.js": "onchange tools/client/gallery.js -- npm run build:gallery.js"
   },
   "repository": {
     "type": "git",
@@ -30,20 +31,21 @@
   "author": "The Antville People",
   "license": "Apache-2.0",
   "dependencies": {
-    "alpinejs": "=2.8.2",
-    "codemirror": "^5.64.0",
-    "jquery": "^3.6.0",
+    "alpinejs": "3.13.0",
+    "codemirror": "5.65.14",
+    "jquery": "3.7.0",
     "jquery-collagePlus": "github:antville/jquery-collagePlus#0.3.4",
-    "js-md5": "^0.7.3",
-    "uikit": "^2.27.4"
+    "js-md5": "0.7.3",
+    "uikit": "2.27.4"
   },
   "devDependencies": {
-    "browserify": "^17.0.0",
-    "jsdoc": "^3.6.6",
-    "less": "^4.1.2",
-    "less-plugin-clean-css": "^1.5.1",
-    "npm-run-all": "^4.1.5",
-    "onchange": "^7.1.0",
-    "uglifyify": "^5.0.2"
+    "browserify": "17.0.0",
+    "generate-license-file": "2.0.0",
+    "jsdoc": "4.0.2",
+    "less": "4.2.0",
+    "less-plugin-clean-css": "1.5.1",
+    "npm-run-all": "4.1.5",
+    "onchange": "7.1.0",
+    "uglifyify": "5.0.2"
   }
 }

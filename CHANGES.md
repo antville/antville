@@ -1,11 +1,20 @@
 # Change Log
 
-## May 23, 2020
+## 2023 August 26
+
+* Migrate from Yarn back to NPM
+* Some major upgrades of third-party dependencies
+
+## 2023 March 5
+
+* Fix SQL injection vulnerability
+
+## 2020 May 23
 
 * Render tables with stripes and hover colors extrapolated from layout settings
 * Replaced Google’s ReCaptcha with [hCaptcha](https://hcaptcha.com)
 
-## May 17, 2020
+## 2020 May 17
 
 * Reverted Yarn scripts into Gradle tasks
 * Implemented complete build system in Gradle
@@ -13,13 +22,13 @@
 * Replaced Node module for rendering Markdown (marked) with Java implementation ([CommonMark](https://github.com/atlassian/commonmark-java))
 * Replaced Node module for sanitizing HTML (string-strip-html) with Java implementation ([jsoup](https://jsoup.org))
 
-## May 1, 2020
+## 2020 May 1
 
 * Upgraded jQuery to version 3
 * Refactored remaining cient-side jQuery code using [Alpine](https://github.com/alpinejs/alpine) (jQuery is still a dependency of UIkit, though)
 * Moved code for jQuery [CollagePlus](https://github.com/antville/jquery-collagePlus) plugin into extra file
 
-## April 13, 2020
+## 2020 April 13
 
 * Rewrote most client-side code without using jQuery
 * Refactored Formica bookmarklet
