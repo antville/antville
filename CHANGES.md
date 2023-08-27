@@ -4,6 +4,7 @@
 
 * Migrate from Yarn back to NPM
 * Some major upgrades of third-party dependencies
+* Rewrite `for…each` loops with `for…of` (needs enabled ES6 features in Rhino)
 
 ## 2023 March 5
 
