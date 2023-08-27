@@ -2,7 +2,7 @@ plugins {
   id 'base'
   id 'java'
 
-  id 'com.github.node-gradle.node' version '3.5.1'
+  id 'com.github.node-gradle.node' version '7.0.0'
   id 'org.ajoberstar.grgit' version '5.0.0' apply false
 }
 
