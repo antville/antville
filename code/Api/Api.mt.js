@@ -45,7 +45,7 @@ Api.mt.getRecentPostTitles = function(id, name, password, limit) {
   var result = [];
   var stories = res.handlers.membership.stories;
   var max = Math.min(stories.size(), Number(limit) || Infinity, 20);
-  for each (var story in stories.list(0, max)) {
+  for (let story of stories.list(0, max)) {
     result.push({
       postid: story._id,
       username: story.creator.name,
@@ -76,7 +76,7 @@ Api.mt.getCategoryList = function(id, name, password) {
 
   var result = [];
   var tags = site.getTags('tags', Tags.ALL).list();
-  for each (var tag in tags) {
+  for (let tag of tags) {
     result.push({
       categoryId: tag.name, // FIXME: tag._id,
       categoryName: tag.name
@@ -104,7 +104,7 @@ Api.mt.getPostCategories = function(id, name, password) {
   }
 
   var result = [];
-  for each (var tag in story.getTags()) {
+  for (let tag of story.getTags()) {
     result.push({
       categoryId: tag,
       categoryName: tag,

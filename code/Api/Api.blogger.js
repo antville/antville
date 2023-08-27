@@ -115,7 +115,7 @@ Api.blogger.getRecentPosts = function(appKey, id, name, password, limit) {
   var result = [];
   var stories = res.handlers.membership.stories;
   var max = Math.min(stories.size(), Number(limit) || Infinity, 20);
-  for each (var story in stories.list(0, max)) {
+  for (let story of stories.list(0, max)) {
     result.push({
       postid: story._id,
       userid: story.creator.name,

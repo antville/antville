@@ -157,7 +157,7 @@ convert.layoutImages = function() {
 
     var fpath = antville().properties.staticPath;
     var files = [metadata.fileName, metadata.thumbnailName];
-    for each (var fname in files) {
+    for (let fname of files) {
       var source = new helma.File(fpath + "/layouts/" +
           this.parentLayout, fname);
       var layoutDir = new helma.File(fpath + this.SITE_ALIAS +
@@ -216,7 +216,7 @@ convert.sites = function() {
       metadata.locale += "_" + metadata.country;
     }
     var mode = metadata.usercontrib ? 'open' : this.mode;
-    for each (var key in ["enableping", "usercontrib", "archive",
+    for (let key of ["enableping", "usercontrib", "archive",
         "discussions", "days", "shortdateformat", "longdateformat",
         "linkcolor", "alinkcolor", "vlinkcolor", "smallcolor",
         "titlecolor", "titlefont", "textfont", "textcolor", "smallsize",
@@ -459,7 +459,7 @@ convert.skins = function() {
       }
       destination.makeDirectory();
       var files = source.list();
-      for each (var fname in files) {
+      for (let fname of files) {
         (new helma.File(source, fname)).hardCopy(new helma.File(destination, fname));
       }
     }
@@ -509,7 +509,7 @@ convert.skins = function() {
     appSkins[prototype] || (appSkins[prototype] = {});
     var skin = createSkin(skinfiles[prototype][prototype]);
     var subskins = skin.getSubskinNames();
-    for each (var name in subskins) {
+    for (let name of subskins) {
       appSkins[prototype][name] = skin.getSubskin(name).getSource();
     }
   }
@@ -608,7 +608,7 @@ convert.root = function() {
     }
     var dir = new helma.File(staticDir, this.name);
     var files = dir.list();
-    for each (fname in files) {
+    for (let fname of files) {
       var source = new helma.File(dir, fname);
       var dest = new helma.File(staticDir, "www/" + fname);
       log("Rename " + source + " to " + dest);

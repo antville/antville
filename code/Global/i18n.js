@@ -41,7 +41,7 @@ Root.prototype.extractMessages = function(script, scanDirs, potFile) {
     return res.pop();
   }
   var args = ['-o', potFile, '-e', 'utf-8'];
-  for each (var dir in scanDirs.split(' ')) {
+  for (let dir of scanDirs.split(' ')) {
     args.push(app.dir + '/../' + dir);
   }
   var file = new helma.File(script);

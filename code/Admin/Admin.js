@@ -272,7 +272,8 @@ Admin.purgeReferrers = function() {
 Admin.commitRequests = function() {
   var requests = app.data.requests;
   app.data.requests = {};
-  for each (var item in requests) {
+  for (let key in requests) {
+    let item = requests[key];
     switch (item.type) {
       case Story:
       var story = Story.getById(item.id);
@@ -292,7 +293,7 @@ Admin.commitEntries = function() {
   app.data.entries = [];
   var history = [];
 
-  for each (var item in entries) {
+  for (let item of entries) {
     var referrer = helma.Http.evalUrl(item.referrer);
     if (!referrer) {
       continue;

@@ -143,7 +143,7 @@ Tags.prototype.list_macro = function(param, skin) {
   //var list = new jala.ListRenderer(collection);
   //list.render(skin || mgrlistitem);
   var index = start + 1;
-  for each (var item in collection) {
+  for (let item of collection) {
     // FIXME: Is there a more elegant solution?
     if (item.constructor !== Tag) {
       item = item.get(0);

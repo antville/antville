@@ -212,7 +212,7 @@ Root.prototype.updates_xml_action = function() {
   var entries = new java.util.ArrayList();
   var entry, description;
   var sites = root.updates.list(0, 25);
-  for each (var site in sites) {
+  for (let site of sites) {
     var story = site.stories.union.get(0);
     if (!story) {
       continue;
@@ -269,7 +269,7 @@ Root.prototype.health_action = function() {
     helma: Packages.helma.main.Server.getServer().version
   };
 
-  for each (key in ['activeThreads', 'freeThreads', 'requestCount',
+  for (let key of ['activeThreads', 'freeThreads', 'requestCount',
       'errorCount', 'xmlrpcCount', 'cacheusage']) {
     param[key] = formatNumber(app[key]);
   }

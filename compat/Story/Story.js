@@ -104,7 +104,7 @@ Story.prototype.content_macro = function(param) {
   // Clone param and remove non-HTML attributes from param:
   var options = Object.clone.call(param, {});
   var noAttr = 'as clipping delimiter fallback limit part';
-  for each (let key in noAttr.split(String.SPACE)) {
+  for (let key of noAttr.split(String.SPACE)) {
     delete param[key];
   }
 

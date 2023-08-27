@@ -187,7 +187,7 @@ Layout.convert = function(fpath) {
 
   var convert2subskins = function(proto, dir) {
     res.push();
-    for each (var fname in dir.list()) {
+    for (let fname of dir.list()) {
       var file = new helma.File(dir, fname);
       var name = fname.split(".")[0], skin;
       if (skin = rename(proto, name)) {
@@ -238,7 +238,7 @@ Layout.convert = function(fpath) {
   }
 
   var dir = new helma.File(fpath, "images");
-  for each (var fname in dir.list()) {
+  for (let fname of dir.list()) {
     var file = new helma.File(dir, fname);
     file.move(new helma.File(fpath, fname));
   }
@@ -246,7 +246,7 @@ Layout.convert = function(fpath) {
   var inventory = new function() {
     var dir = new helma.File(fpath);
     var result = {};
-    for each (var fname in dir.list()) {
+    for (let fname of dir.list()) {
       var file = new helma.File(dir, fname);
       if (!file.isDirectory()) {
         // Where does the "image\" prefix come from in files from layouts.antville.org?
@@ -277,7 +277,7 @@ Layout.convert = function(fpath) {
   dir = new helma.File(fpath, "skins");
 
   var skin;
-  for each (var fname in dir.list()) {
+  for (let fname of dir.list()) {
     file = new helma.File(dir, fname);
     skin = convert2subskins(fname, file);
   }
@@ -286,7 +286,7 @@ Layout.convert = function(fpath) {
   data.images = new HopObject;
 
   var dir = new helma.File(fpath, "imagedata");
-  for each (fname in dir.list()) {
+  for (let fname of dir.list()) {
     if (fname.endsWith(".xml")) {
       file = new helma.File(dir, fname);
       data.images.add(convertImage(Xml.read(file)));

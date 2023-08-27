@@ -19,7 +19,7 @@
 
 var sql = new Sql();
 var sql2 = new Sql();
-for each (let table in ["file", "image", "tag"]) {
+for (let table of ["file", "image", "tag"]) {
   sql.retrieve("select * from $0 where name like '%?%';", table);
   sql.traverse(function() {
     var name = "-".repeat(this.name.count("?"));

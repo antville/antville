@@ -70,7 +70,7 @@ Api.metaWeblog.getRecentPosts = function(id, name, password, limit) {
   var result = [];
   var stories = res.handlers.membership.stories;
   var max = Math.min(stories.size(), Number(limit) || Infinity, 20);
-  for each (var story in stories.list(0, max)) {
+  for (let story of stories.list(0, max)) {
     result.push(Api.metaWeblog._getStruct(story));
   }
   return result;
@@ -182,7 +182,7 @@ Api.metaWeblog.getCategories = function(id, name, password) {
 
   var result = [];
   var tags = site.getTags('tags', Tags.ALL).list();
-  for each (var tag in tags) {
+  for (let tag of tags) {
     result.push({
       description: tag.name,
       htmlUrl: tag.href(),

@@ -49,7 +49,7 @@ var ResultWrapper = function(result) {
   }
 
   this.update = function() {
-    for each (var key in columns) {
+    for (let key of columns) {
       this.values[key] = result.getColumnItem(key);
     }
     return;
@@ -303,18 +303,18 @@ var execute = function(sql /*, value1, ..., valueN */) {
 
 var archive = function() {
   var staticDir = new helma.File(app.dir + "/../static");
-  for each (var siteName in staticDir.list()) {
+  for (let siteName of staticDir.list()) {
     var site = siteName !== "www" ? root.get(siteName) : root;
     if (!site) {
       continue;
     }
     var dir = new helma.File(staticDir, siteName + "/layouts");
-    for each (var layoutName in dir.list()) {
+    for (let layoutName of dir.list()) {
       if (layoutName.startsWith(".")) {
         continue;
       }
       var layout = new Layout(site);
-      for each (var image in dir.listRecursive(/\.(jpg|gif|png)$/)) {
+      for (let image of dir.listRecursive(/\.(jpg|gif|png)$/)) {
         var name = image.split("/").pop().split(".")[0];
         retrieve(query("archive", name, layoutName, siteName));
         traverse(function() {
