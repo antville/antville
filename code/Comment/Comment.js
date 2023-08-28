@@ -23,7 +23,7 @@ markgettext('Comment');
 markgettext('comment');
 markgettext('a comment // accusative');
 
-Comment.HTML_WHITELIST = Packages.org.jsoup.safety.Whitelist.relaxed();
+Comment.HTML_WHITELIST = Packages.org.jsoup.safety.Safelist.relaxed();
 
 /**
  * @see defineConstants
