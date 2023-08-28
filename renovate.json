@@ -8,5 +8,24 @@
     ":semanticCommitsDisabled"
   ],
   "labels": ["Dependencies"],
-  "lockFileMaintenance": { "enabled": true }
+  "lockFileMaintenance": { "enabled": true },
+  "packageRules": [
+    {
+      "matchManagers": ["gradle"],
+      "labels": ["java"]
+    },
+    {
+      "matchManagers": ["npm"],
+      "labels": ["javascript"]
+    },
+    {
+      "matchPackagePrefixes": [
+        "org.commonmark:", 
+        "org.jsoup:", 
+        "org.lesscss:",
+        "rome:"
+      ],
+      "labels": ["javascript"]
+    }
+  ]
 }
