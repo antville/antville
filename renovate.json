@@ -4,7 +4,7 @@
     "config:base",
     "npm:unpublishSafe",
     ":disableRateLimiting",
-    ":pinVeresions",
+    ":pinVersions",
     ":semanticCommitsDisabled"
   ],
   "labels": ["Dependencies"],
