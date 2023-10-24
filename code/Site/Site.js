@@ -429,6 +429,14 @@ Site.prototype.update = function(data) {
   data.maxImageWidth = Math.abs(data.maxImageWidth) || Infinity;
   data.maxImageHeight = Math.abs(data.maxImageHeight) || Infinity;
 
+  let trollFilter = data.trollFilter || [];
+
+  if (typeof trollFilter === 'string') {
+    trollFilter = trollFilter.split(/\r\n|\r|\n/).filter(function (item) {
+      return item.length > 0;
+    });
+  }
+
   this.map({
     archiveMode: data.archiveMode || Site.CLOSED,
     callbackMode: data.callbackMode || Site.DISABLED,
@@ -444,9 +452,7 @@ Site.prototype.update = function(data) {
     tagline: data.tagline || String.EMPTY,
     title: stripTags(data.title) || this.name,
     timeZone: data.timeZone || root.getTimeZone().getID(),
-    trollFilter: data.trollFilter ? data.trollFilter.split(/\r\n|\r|\n/).filter(function (item) {
-      return item.length > 0;
-    }) : []
+    trollFilter: trollFilter
   });
 
   if (User.require(User.PRIVILEGED)) {
