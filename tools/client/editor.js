@@ -1,5 +1,5 @@
 window.CodeMirror = require('codemirror/lib/codemirror');
-window.marked = require('marked/lib/marked.cjs');
+window.marked = require('marked/lib/marked.cjs').marked;
 
 require('codemirror/mode/css/css');
 require('codemirror/mode/gfm/gfm');

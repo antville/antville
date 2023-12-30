@@ -1,5 +1,9 @@
 # Change Log
 
+## 2023 December 30
+
+* Fix initialization of MarkDown in UIKit editor
+
 ## 2023 August 26
 
 * Migrate from Yarn back to NPM
