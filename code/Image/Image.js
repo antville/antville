@@ -103,6 +103,8 @@ Image.getFileExtension = function(type) {
     case 'image/png':
     case 'image/x-png':
     return '.png';
+    case 'image/webp':
+    return '.webp';
   }
   return null;
 }

@@ -3,6 +3,7 @@
 ## 2023 December 30
 
 * Fix initialization of MarkDown in UIKit editor
+* Add support for images in webp format
 
 ## 2023 August 26
 
