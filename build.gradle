@@ -99,7 +99,7 @@ task installAntville {
       from "$tempDir/code/app.properties"
       into "$antvilleBuildDir/code"
       filter { line -> line.replaceAll('(version =) 0.0.0', "\$1 $version.$hash")
-        .replaceAll('(buildDate =) 18 Oct 1971', "\$1 $date")
+        .replaceAll('(buildDate =) 18 Jun 2001', "\$1 $date")
       }
     }
 
