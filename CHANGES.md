@@ -1,5 +1,9 @@
 # Change Log
 
+## 2024 January 7
+
+* Upgrade third-party dependencies
+
 ## 2023 December 30
 
 * Fix initialization of MarkDown in UIKit editor
