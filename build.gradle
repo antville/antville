@@ -3,7 +3,7 @@ plugins {
   id 'java'
 
   id 'com.github.node-gradle.node' version '7.0.0'
-  id 'org.ajoberstar.grgit' version '5.2.0' apply false
+  id 'org.ajoberstar.grgit' version '5.2.1' apply false
 }
 
 import org.ajoberstar.grgit.Grgit
