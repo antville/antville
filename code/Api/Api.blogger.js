@@ -55,10 +55,7 @@ Api.blogger._getContentParts = function(content) {
  * @returns {Object} Properties: userid, nickname and url
  */
 Api.blogger.getUserInfo = function(appKey, name, password) {
-  var user = User.getByName(name);
-  if (!user) {
-    throw Error('User ' + name + ' does not exist on this server');
-  }
+  var user = Api.getUser(name, password);
   return {
     userid: name,
     nickname: name,
