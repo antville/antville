@@ -1228,12 +1228,12 @@ a.gs-title:hover {
         if (index2 <= index) return;
 
         if (element2.innerHTML === html) {
-          count += parseInt(document.querySelector('.av-referrer-count')[index2].innerText, 10);
+          count += parseInt(document.querySelectorAll('.av-referrer-count')[index2].innerText, 10);
           element2.closest('.av-referrer-row').classList.add('av-delete');
         }
       });
 
-      if (count) countElement.innerHTML = parseInt(countElement.html(), 10) + count;
+      if (count) countElement.innerHTML = parseInt(countElement.innerHTML, 10) + count;
     });
 
     document.querySelectorAll('.av-referrer-row.av-delete').forEach(function(element) {
