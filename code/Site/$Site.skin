@@ -214,7 +214,7 @@
 </form>
 
 <script>
-  (function() {
+  document.addEventListener("alpine:init", () => {
     // Group related <option> elements by inserting additional <optgroup> elements.
     const dom = window;
     const groups = [];
@@ -246,7 +246,7 @@
       // Correct the selected index
       timeZone.selectedIndex = Array.from(timeZone.options).indexOf(timeZone.querySelector('option[selected]'));
     });
-  })();
+  });
 </script>
 
 <% #meta %>
@@ -1135,7 +1135,7 @@ a.gs-title:hover {
 </table>
 
 <script>
-  (function() {
+  document.addEventListener("alpine:init", () => {
     const query = new Antville.Query();
     const spamFilter = new Antville.Filter(JSON.parse('<% site.spamfilter %>'));
     const searchFilter = new Antville.Filter(query.filter);
@@ -1249,7 +1249,7 @@ a.gs-title:hover {
     });
 
     sortedRows.forEach(function(row) { table.appendChild(row); });
-  })();
+  });
 </script>
 
 <% #referrer %>

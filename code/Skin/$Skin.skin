@@ -37,7 +37,7 @@
 </form>
 
 <script>
-  (function() {
+  document.addEventListener("alpine:init", () => {
     // Setup skin editor
     let mode = 'application/x-helma-skin';
 
@@ -59,7 +59,7 @@
       tabSize: 3,
       viewportMargin: Infinity
     });
-  })();
+  });
 </script>
 
 <% #compare %>

@@ -62,7 +62,7 @@ else
 <% #editor %>
 <script>
   // Load additonal scripts and styles for UIkit’s HTML editor plugin
-  (function() {
+  document.addEventListener("alpine:init", () => {
     const _form = document.querySelector('#av-story-form');
 
     if (!_form) return;
@@ -296,5 +296,5 @@ else
 
       scheduler();
     }
-  })();
+  });
 </script>
