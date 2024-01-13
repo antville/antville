@@ -5,6 +5,7 @@
 * Fix cross-site scripting vulnerability in search output
 * Fix new choices being added to an existing poll at the wrong position
 * Fix errors in the client-side code filtering the referrers
+* Correctly load and initialize Alpine.js
 
 ## 2024 January 7
 

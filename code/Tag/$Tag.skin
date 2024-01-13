@@ -23,35 +23,37 @@
 
 <script>
   // Load additional script for Collage jQuery plugin
-  if ('<% tag.type parent %>' === 'Image') {
-    const script = document.createElement('script');
+  document.addEventListener("alpine:init", () => {
+    if ('<% tag.type parent %>' === 'Image') {
+      const script = document.createElement('script');
 
-    script.onload = function() {
-      $(function() {
-        let resizeTimer = null;
+      script.onload = function() {
+        $(function() {
+          let resizeTimer = null;
 
-        const collage = () => {
-          $('.av-collage').removeWhitespace().collagePlus({
-            allowPartialLastRow: true,
-            fadeSpeed: 'slow'
+          const collage = () => {
+            $('.av-collage').removeWhitespace().collagePlus({
+              allowPartialLastRow: true,
+              fadeSpeed: 'slow'
+            });
+          };
+
+          $('.av-collage').collageCaption();
+
+          $(window).bind('resize', function() {
+              $('.av-tagged-image').css('opacity', 0);
+              if (resizeTimer) clearTimeout(resizeTimer);
+              resizeTimer = setTimeout(collage, 200);
           });
-        };
 
-        $('.av-collage').collageCaption();
-
-        $(window).bind('resize', function() {
-            $('.av-tagged-image').css('opacity', 0);
-            if (resizeTimer) clearTimeout(resizeTimer);
-            resizeTimer = setTimeout(collage, 200);
+          collage();
         });
+      };
 
-        collage();
-      });
-    };
-
-    script.src = '<% root.static ../../scripts/gallery.min.js %>';
-    document.head.appendChild(script);
-  }
+      script.src = '<% root.static ../../scripts/gallery.min.js %>';
+      document.head.appendChild(script);
+    }
+  });
 </script>
 
 <% #simple %>

@@ -36,7 +36,7 @@
 
 <script>
   // Setup drag&drop for image uploads
-  (function() {
+  document.addEventListener("alpine:init", () => {
     const dropElement = document.querySelector('.av-upload-drop');
     const parent = location.href.lastIndexOf('/layout/images/') > -1 ? 'layout' : 'site';
     const uploadUrl = '<% site.images.href upload %>?parent=' + parent;
@@ -84,5 +84,5 @@
       error: restoreDrop,
       abort: restoreDrop
     });
-  })();
+  });
 </script>
