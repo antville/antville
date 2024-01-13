@@ -1,5 +1,11 @@
 # Change Log
 
+## 2024 January 13
+
+* Fix cross-site scripting vulnerability in search output
+* Fix new choices being added to an existing poll at the wrong position
+* Fix errors in the client-side code filtering the referrers
+
 ## 2024 January 7
 
 * Upgrade third-party dependencies
