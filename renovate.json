@@ -1,23 +1,33 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+
   "extends": [
     "config:base",
     "npm:unpublishSafe",
-    ":disableRateLimiting",
     ":pinVersions",
     ":semanticCommitsDisabled"
   ],
-  "labels": ["dependencies"],
+
+  "osvVulnerabilityAlerts": true,
+  "vulnerabilityAlerts": {
+    "labels": ["urgent"],
+    "automerge": true
+  },
+
   "lockFileMaintenance": { "enabled": true },
+  "labels": ["dependency"],
+
   "packageRules": [
     {
       "matchManagers": ["gradle"],
       "addLabels": ["java", "build"]
     },
+
     {
       "matchManagers": ["npm"],
       "addLabels": ["javascript"]
     },
+
     {
       "matchPackagePrefixes": [
         "org.commonmark:",
