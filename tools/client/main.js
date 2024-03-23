@@ -6,8 +6,6 @@ require('uikit/dist/js/components/form-password');
 require('uikit/dist/js/components/tooltip');
 require('uikit/dist/js/components/upload');
 
-Alpine.start();
-
 const Antville = window.Antville = {};
 
 Antville.hash = require('js-md5/src/md5');
@@ -263,3 +261,5 @@ Antville.http = (method, url, options) => {
   httpClient.send(_data);
   return this;
 };
+
+Alpine.start();

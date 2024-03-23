@@ -24,19 +24,19 @@ Root.VERSION = (function(versionString, buildDate) {
   // A valid version string is e.g. '1.2.3alpha.c0ffee'.
   // Repositories could add something like '-compatible' to it,
   // FIXME: This should be refactored for modular extension.
-  var re = /^(\d+)\.(\d+)(?:\.(\d+))?(.+)?\.([a-f0-9]+)(?:-(.*))?$/;
+  var re = /^(\d+)\.(\d+)(?:\.(\d+))?\.([a-f0-9]+)(?:-(.*))?$/;
   var parts = re.exec(versionString);
   if (parts) {
     var result = {
+      date: new Date(buildDate).toLocaleDateString(),
+      hash: parts[4],
+      major: parts[1],
       parts: parts,
-      toString: function() {return parts[0]},
-      major: parseInt(parts[1]),
-      hash: parts[5],
-      date: new Date(buildDate).toLocaleDateString()
+      toString: function() { return parts[1] }
     };
-    result.minor = result.major + parseInt(parts[2] || 0) / 10;
+    result.minor = result.major + '.' + (parts[2] || 0);
     result.bugfix = result.minor + '.' + (parts[3] || 0);
-    result.development = parts[4] || '';
+    result.development = parts[5] || '';
     result['default'] = result[parts[3] ? 'bugfix' : 'minor'] + result.development +
         (parts[6] ? '-' + parts[6] : String.EMPTY);
     return result;

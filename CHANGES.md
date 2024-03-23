@@ -1,5 +1,21 @@
 # Change Log
 
+## 2024 January 13
+
+* Fix cross-site scripting vulnerability in search output
+* Fix new choices being added to an existing poll at the wrong position
+* Fix errors in the client-side code filtering the referrers
+* Correctly load and initialize Alpine.js
+
+## 2024 January 7
+
+* Upgrade third-party dependencies
+
+## 2023 December 30
+
+* Fix initialization of MarkDown in UIKit editor
+* Add support for images in webp format
+
 ## 2023 August 26
 
 * Migrate from Yarn back to NPM

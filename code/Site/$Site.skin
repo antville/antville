@@ -214,7 +214,7 @@
 </form>
 
 <script>
-  (function() {
+  document.addEventListener("alpine:init", () => {
     // Group related <option> elements by inserting additional <optgroup> elements.
     const dom = window;
     const groups = [];
@@ -246,7 +246,7 @@
       // Correct the selected index
       timeZone.selectedIndex = Array.from(timeZone.options).indexOf(timeZone.querySelector('option[selected]'));
     });
-  })();
+  });
 </script>
 
 <% #meta %>
@@ -336,7 +336,7 @@
 <% if <% property search.provider %> is null then '' else <% site.skin $Site#moreResults %> %>
 
 <% #moreResults %>
-<a href='<% property search.provider %>?q=<% request.q %>+site:<% site.href %>' class='uk-button uk-align-right'>
+<a href='<% property search.provider %>?q=<% request.q encoding="url" %>+site:<% site.href %>' class='uk-button uk-align-right'>
   <% gettext 'Search with {0}' <% property search.provider | replace 'https?://([^/]+).*' '$1' %> %>
   <i class='uk-icon uk-icon-arrow-circle-right'></i>
 </a>
@@ -1135,7 +1135,7 @@ a.gs-title:hover {
 </table>
 
 <script>
-  (function() {
+  document.addEventListener("alpine:init", () => {
     const query = new Antville.Query();
     const spamFilter = new Antville.Filter(JSON.parse('<% site.spamfilter %>'));
     const searchFilter = new Antville.Filter(query.filter);
@@ -1228,12 +1228,12 @@ a.gs-title:hover {
         if (index2 <= index) return;
 
         if (element2.innerHTML === html) {
-          count += parseInt(document.querySelector('.av-referrer-count')[index2].innerText, 10);
+          count += parseInt(document.querySelectorAll('.av-referrer-count')[index2].innerText, 10);
           element2.closest('.av-referrer-row').classList.add('av-delete');
         }
       });
 
-      if (count) countElement.innerHTML = parseInt(countElement.html(), 10) + count;
+      if (count) countElement.innerHTML = parseInt(countElement.innerHTML, 10) + count;
     });
 
     document.querySelectorAll('.av-referrer-row.av-delete').forEach(function(element) {
@@ -1249,7 +1249,7 @@ a.gs-title:hover {
     });
 
     sortedRows.forEach(function(row) { table.appendChild(row); });
-  })();
+  });
 </script>
 
 <% #referrer %>

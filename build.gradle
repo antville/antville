@@ -2,8 +2,8 @@ plugins {
   id 'base'
   id 'java'
 
-  id 'com.github.node-gradle.node' version '7.0.0'
-  id 'org.ajoberstar.grgit' version '5.2.0' apply false
+  id 'com.github.node-gradle.node' version '7.0.1'
+  id 'org.ajoberstar.grgit' version '5.2.1' apply false
 }
 
 import org.ajoberstar.grgit.Grgit
@@ -25,7 +25,7 @@ allprojects {
   project.ext.distVersion = { ->
     def json = new groovy.json.JsonSlurper()
     def packageData = json.parse(file("${rootProject.projectDir}/package.json"))
-    return packageData.version.substring(0, packageData.version.size() - 2)
+    return packageData.version;
   }
 
   project.ext.antvilleBuildDir = "${rootProject.buildDir}/tmp/antville"
@@ -52,7 +52,7 @@ dependencies {
   implementation 'org.commonmark:commonmark-ext-autolink:0.21.0'
   implementation 'org.commonmark:commonmark-ext-gfm-strikethrough:0.21.0'
   implementation 'org.commonmark:commonmark-ext-gfm-tables:0.21.0'
-  implementation 'org.jsoup:jsoup:1.16.1'
+  implementation 'org.jsoup:jsoup:1.17.2'
   implementation 'rome:rome:1.0'
 
   implementation('org.lesscss:lesscss:1.7.0.1.1') {
@@ -99,7 +99,7 @@ task installAntville {
       from "$tempDir/code/app.properties"
       into "$antvilleBuildDir/code"
       filter { line -> line.replaceAll('(version =) 0.0.0', "\$1 $version.$hash")
-        .replaceAll('(buildDate =) 18 Oct 1971', "\$1 $date")
+        .replaceAll('(buildDate =) 18 Jun 2001', "\$1 $date")
       }
     }
 

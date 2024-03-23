@@ -144,7 +144,7 @@ task buildLicenses(type: Copy) {
   group 'build'
   dependsOn 'installJars'
 
-  def licensesDir = "$antvilleInstallDir/licenses"
+  def licensesDir = "$helmaInstallDir/licenses"
 
   inputs.files generateLicenseReport
   outputs.dir licensesDir

@@ -84,7 +84,7 @@
    <% poll.link . ' ' class='uk-icon-button uk-icon-link uk-text-middle' %>
 </h1>
 <div class='uk-article-meta'><% poll.skin $HopObject#meta %></div>
-<form class='uk-margin-top uk-form uk-form-stacked' method="post" action="<% response.action %>" x-data='{ counter: 2 }'>
+<form class='uk-margin-top uk-form uk-form-stacked' method="post" action="<% response.action %>" x-data='{ counter: 1 }'>
    <div class='uk-form-row'>
       <div class='uk-form-label'><% gettext Question %></div>
       <div class='uk-form-controls'>
@@ -93,9 +93,11 @@
    </div>
    <fieldset class='uk-margin-top'>
       <legend><% gettext Choices %></legend>
-      <% poll.input choices %>
+      <div class="uk-margin-bottom">
+        <% poll.input choices %>
+      </div>
       <div class='uk-text-small uk-form-row' id='av-add-choice' hidden :hidden='false'>
-         <a href='javascript:' @click='const choice = document.querySelectorAll(".av-choice")[counter - 1]; const clone = choice.cloneNode(true); counter += 1; clone.querySelector(".uk-form-label").innerText = "#" + counter; const input = clone.querySelector("input"); input.value = ""; choice.insertAdjacentElement("afterEnd", clone); input.focus();'>
+         <a href='javascript:' @click='const choice = document.querySelector(".av-choice:last-child"); const clone = choice.cloneNode(true); clone.querySelector(".uk-form-label").innerText = `#${counter}`; const input = clone.querySelector("input"); input.value = ""; choice.insertAdjacentElement("afterEnd", clone); input.focus();'>
             <i class='uk-icon-plus'></i>
             <% gettext "Add Choice" %>
          </a>

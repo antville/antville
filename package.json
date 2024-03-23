@@ -1,6 +1,6 @@
 {
   "name": "antville",
-  "version": "1.618.0",
+  "version": "1.618",
   "description": "Antville is an open source project aimed at the development of a high performance, feature rich weblog hosting software. It can easily host up to several thousands of sites (the number of weblogs is rather limited by the installation owner’s choice and server power than by software limitations).",
   "main": "main.js",
   "directories": {
@@ -31,16 +31,16 @@
   "author": "The Antville People",
   "license": "Apache-2.0",
   "dependencies": {
-    "alpinejs": "3.13.0",
-    "codemirror": "5.65.14",
+    "alpinejs": "3.13.3",
+    "codemirror": "5.65.16",
     "jquery": "3.7.1",
     "jquery-collagePlus": "github:antville/jquery-collagePlus#0.3.4",
-    "js-md5": "0.7.3",
+    "js-md5": "0.8.3",
     "uikit": "2.27.4"
   },
   "devDependencies": {
     "browserify": "17.0.0",
-    "generate-license-file": "2.0.0",
+    "generate-license-file": "3.0.1",
     "jsdoc": "4.0.2",
     "less": "4.2.0",
     "less-plugin-clean-css": "1.5.1",

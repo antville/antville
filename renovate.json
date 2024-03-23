@@ -7,25 +7,25 @@
     ":pinVersions",
     ":semanticCommitsDisabled"
   ],
-  "labels": ["Dependencies"],
+  "labels": ["dependencies"],
   "lockFileMaintenance": { "enabled": true },
   "packageRules": [
     {
       "matchManagers": ["gradle"],
-      "labels": ["java"]
+      "addLabels": ["java", "build"]
     },
     {
       "matchManagers": ["npm"],
-      "labels": ["javascript"]
+      "addLabels": ["javascript"]
     },
     {
       "matchPackagePrefixes": [
-        "org.commonmark:", 
-        "org.jsoup:", 
+        "org.commonmark:",
+        "org.jsoup:",
         "org.lesscss:",
         "rome:"
       ],
-      "labels": ["javascript"]
+      "addLabels": ["java", "runtime"]
     }
   ]
 }
