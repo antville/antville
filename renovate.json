@@ -1,5 +1,6 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+
   "extends": [
     "config:recommended",
     "mergeConfidence:all-badges",
@@ -8,8 +9,18 @@
     ":pinVersions",
     ":semanticCommitsDisabled"
   ],
-  "labels": ["dependency"],
+  
   "lockFileMaintenance": { "enabled": true },
+
+  "osvVulnerabilityAlerts": true,
+
+  "vulnerabilityAlerts": {
+    "labels": ["security", "urgent"],
+    "automerge": true
+  },
+
+  "labels": ["dependency"],
+
   "packageRules": [
     {
       "description": "Label major version bumps",
