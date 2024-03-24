@@ -1,31 +1,35 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:base",
+    "config:recommended",
+    "mergeConfidence:all-badges",
     "npm:unpublishSafe",
     ":disableRateLimiting",
     ":pinVersions",
     ":semanticCommitsDisabled"
   ],
-  "labels": ["dependencies"],
+  "labels": ["dependency"],
   "lockFileMaintenance": { "enabled": true },
   "packageRules": [
     {
-      "matchManagers": ["gradle"],
-      "addLabels": ["java", "build"]
+      "description": "Label major version bumps",
+      "matchUpdateTypes": ["major"],
+      "addLabels": ["major"]
     },
     {
-      "matchManagers": ["npm"],
+      "description": "Label packages required at runtime",
+      "matchDepTypes": ["dependencies"],
+      "addLabels": ["runtime"]
+    },
+    {
+      "description": "Label Java packages",
+      "matchManagers": ["gradle", "gradle-wrapper"],
+      "addLabels": ["java"]
+    },
+    {
+      "description": "Label JavaScript packages",
+      "matchDatasources": ["node-version", "npm"],
       "addLabels": ["javascript"]
-    },
-    {
-      "matchPackagePrefixes": [
-        "org.commonmark:",
-        "org.jsoup:",
-        "org.lesscss:",
-        "rome:"
-      ],
-      "addLabels": ["java", "runtime"]
     }
   ]
 }
