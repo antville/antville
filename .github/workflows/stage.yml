@@ -48,13 +48,7 @@ jobs:
             --filter '+ /lib' \
             --filter '- /*'
           rsync build/install/antville/static/ antville.dev:/apps/antville/static/helma/ \
-            --dry-run --verbose --archive --delete --compress \
-            --filter '+ /fonts' \
-            --filter '+ /formica.html' \
-            --filter '+ /img' \
-            --filter '+ /scripts' \
-            --filter '+ /styles' \
-            --filter '- /*'
+            --dry-run --verbose --archive --compress
 
       - name: Restart Helma
         run: ssh antville.dev restart
