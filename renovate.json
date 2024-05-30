@@ -9,7 +9,7 @@
     ":pinVersions",
     ":semanticCommitsDisabled"
   ],
-  
+
   "lockFileMaintenance": { "enabled": true },
 
   "osvVulnerabilityAlerts": true,
@@ -41,6 +41,11 @@
       "description": "Label JavaScript packages",
       "matchDatasources": ["node-version", "npm"],
       "addLabels": ["javascript"]
+    },
+    {
+      "description": "Group CommonMark packages",
+      "matchPackagePrefixes": ["org.commonmark"],
+      "groupName": "CommonMark packages"
     }
   ]
 }
