@@ -40,7 +40,7 @@ jobs:
       - name: Publish to staging server
         run: |
           rsync build/install/antville/ antville.dev:/apps/antville/ \
-            --dry-run --verbose --archive --delete --compress \
+            --verbose --archive --delete --compress \
             --filter '+ /claustra' \
             --filter '+ /code' \
             --filter '+ /compat' \
@@ -48,7 +48,7 @@ jobs:
             --filter '+ /lib' \
             --filter '- /*'
           rsync build/install/antville/static/ antville.dev:/apps/antville/static/helma/ \
-            --dry-run --verbose --archive --compress
+            --verbose --archive --compress
 
       - name: Restart Helma
         run: ssh antville.dev restart
