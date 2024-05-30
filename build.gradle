@@ -81,22 +81,15 @@ task installAntville {
   description 'Clone the Antville repository and remove all unnecessary files.'
   group 'installation'
 
-  def tempDir = "$project.buildDir/tmp/repo"
-
-  outputs.dirs tempDir, antvilleBuildDir
-
-  doFirst {
-    delete tempDir
-    Grgit.clone(dir: tempDir, uri: project.ext['antville.repo.url'])
-  }
+  outputs.dirs antvilleBuildDir
 
   doLast {
-    def git = Grgit.open(dir: tempDir)
+    def git = Grgit.open(dir: project.projectDir)
     def hash = git.head().abbreviatedId
     def date = new Date().format('d MMM yyyy')
 
     copy {
-      from "$tempDir/code/app.properties"
+      from "${project.projectDir}/code/app.properties"
       into "$antvilleBuildDir/code"
       filter { line -> line.replaceAll('(version =) 0.0.0', "\$1 $version.$hash")
         .replaceAll('(buildDate =) 18 Jun 2001', "\$1 $date")
@@ -104,11 +97,19 @@ task installAntville {
     }
 
     copy {
-      from fileTree(tempDir).matching {
+      from fileTree(project.projectDir).matching {
+        include 'claustra/**'
+        include 'code/**'
         exclude 'code/app.properties'
-        exclude '*gradle*'
-        exclude '.*'
+        include 'compat/**'
+        include 'db/**'
+        include 'i18n/**'
         exclude 'i18n/*.po*'
+        include 'static/**'
+        include 'tools/**'
+        include 'CHANGES.md'
+        include 'INSTALL.md'
+        include 'README.md'
       } into antvilleBuildDir
     }
   }
@@ -132,8 +133,8 @@ task installNodeModules(type: NpmTask) {
   group 'build'
   dependsOn 'installAntville'
 
-  inputs.files "$antvilleBuildDir/package-lock.json"
-  outputs.dir "$antvilleBuildDir/node_modules"
+  inputs.files "${project.projectDir}/package-lock.json"
+  outputs.dir "${project.projectDir}/node_modules"
 
   args = ['--silent', 'install']
 
@@ -155,7 +156,7 @@ task buildStaticFiles(type: Copy) {
   dependsOn 'buildGalleryScript'
   dependsOn 'buildLicenses'
 
-  def inputDir = "$antvilleBuildDir/node_modules/uikit/dist/fonts"
+  def inputDir = "${project.projectDir}/node_modules/uikit/dist/fonts"
   def outputDir = "$antvilleBuildDir/static/fonts"
 
   inputs.dir inputDir
@@ -171,24 +172,19 @@ task buildStaticFiles(type: Copy) {
     group 'build'
     dependsOn 'installNodeModules'
 
-    def inputFile = "tools/client/${name}.js"
-    def outputFile = "static/scripts/${name}.min.js"
+    def inputFile = "${project.projectDir}/tools/client/${name}.js"
+    def outputFile = "$antvilleBuildDir/static/scripts/${name}.min.js"
 
-    inputs.files "$antvilleBuildDir/$inputFile"
-    outputs.files "$antvilleBuildDir/$outputFile"
+    inputs.files inputFile
+    outputs.files outputFile
 
     args = [
       '--silent',
       'exec', '--',
-      'browserify',
-      inputFile,
+      'browserify', inputFile,
       '--outfile', outputFile,
       '-g', 'uglifyify'
     ]
-
-    execOverrides {
-      it.workingDir = antvilleBuildDir
-    }
   }
 }
 
@@ -198,11 +194,11 @@ task buildStaticFiles(type: Copy) {
     group 'build'
     dependsOn 'installNodeModules'
 
-    def inputFile = "tools/client/${name}.less"
-    def outputFile = "static/styles/${name}.min.css"
+    def inputFile = "${project.projectDir}/tools/client/${name}.less"
+    def outputFile = "$antvilleBuildDir/static/styles/${name}.min.css"
 
-    inputs.files "$antvilleBuildDir/$inputFile"
-    outputs.files "$antvilleBuildDir/$outputFile"
+    inputs.files inputFile
+    outputs.files outputFile
 
     args = [
       '--silent',
@@ -212,10 +208,6 @@ task buildStaticFiles(type: Copy) {
       inputFile,
       outputFile
     ]
-
-    execOverrides {
-      it.workingDir = antvilleBuildDir
-    }
   }
 }
 
@@ -226,14 +218,14 @@ task buildLicenses(type: NpmTask) {
 
   def outputFile = "$antvilleBuildDir/static/licenses.txt"
 
-  inputs.file "$antvilleBuildDir/package-lock.json"
+  inputs.file "${project.projectDir}/package-lock.json"
   outputs.file outputFile
 
   args = [
     '--silent',
     'exec', '--',
     'generate-license-file',
-    '--input', "$antvilleBuildDir/package.json",
+    '--input', "${project.projectDir}/package.json",
     '--output', outputFile,
     '--overwrite',
     '--eol', 'lf'
