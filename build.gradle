@@ -220,7 +220,7 @@ task buildStaticFiles(type: Copy) {
 }
 
 task buildLicenses(type: NpmTask) {
-  description 'Build licenses file from client-side dependecies.'
+  description 'Build licenses file from client-side dependencies.'
   group 'build'
   dependsOn 'installNodeModules'
 
