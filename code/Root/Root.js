@@ -259,14 +259,16 @@ Root.prototype.health_action = function() {
   var freeMemory = jvm.freeMemory()  / 1024 / 1024;
 
   var param = {
-    uptime: formatNumber((new Date - app.upSince.getTime()) /
-        Date.ONEDAY, '0.##'),
+    uptime: formatNumber((new Date - app.upSince.getTime()) / Date.ONEDAY, '0.##'),
     freeMemory: formatNumber(freeMemory),
     totalMemory: formatNumber(totalMemory),
     usedMemory: formatNumber(totalMemory - freeMemory),
     sessions: formatNumber(app.countSessions()),
     cacheSize: formatNumber(getProperty('cacheSize')),
-    helma: Packages.helma.main.Server.getServer().version
+    helma: Packages.helma.main.Server.server.version,
+    jetty: Packages.org.eclipse.jetty.util.Jetty.VERSION,
+    rhino: Packages.org.mozilla.javascript.ImplementationVersion.get(),
+    servlet: Packages.java.lang.Class.forName("javax.servlet.Servlet").package.specificationVersion
   };
 
   for (let key of ['activeThreads', 'freeThreads', 'requestCount',
