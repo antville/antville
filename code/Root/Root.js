@@ -275,11 +275,11 @@ Root.prototype.health_action = function() {
   }
 
   param.errorRatio = formatNumber(100 * app.errorCount / app.requestCount || 0);
-  param.errorRatioPerUnit = formatNumber(Admin.health.errorsPerUnit / Admin.health.requestsPerUnit || 0);
 
   if (Admin.health) {
     param.requestsPerUnit = formatNumber(Admin.health.requestsPerUnit);
     param.errorsPerUnit = formatNumber(Admin.health.errorsPerUnit);
+    param.errorRatioPerUnit = formatNumber(Admin.health.errorsPerUnit / Admin.health.requestsPerUnit || 0);
   }
 
   param.callbacks = app.data.callbacks.length;
