@@ -114,13 +114,24 @@
       </dd>
       <dd></dd>
       <dd><% gettext '{0} log entries' <% param.entries %> %></dd>
-      <dt><% gettext Version %></dt>
+   </dl>
+</div>
+<div class='uk-panel uk-panel-header'>
+   <h3 class='uk-panel-title'><% gettext Versions %></h3>
+   <dl class='uk-description-list-horizontal'>
+      <dt><% gettext Antville %></dt>
       <dd>φ (<% version %>)</dd>
-      <dt><% gettext Build %></dt>
+      <dt><% gettext Commit %></dt>
       <dd>
          <% link <% version hash prefix='https://github.com/antville/antville/commit/' %> <% version hash %> %> (<% version date %>)
       </dd>
-      <dt><% gettext 'Helma Version' %></dt>
-      <dd><% param.helma %></dd>
-   </dl>
+      <dt><% gettext "Application Server" %></dt>
+      <dd>Helma <% param.helma %></dd>
+      <dt><% gettext "Scripting Engine" %></dt>
+      <dd><% param.rhino %></dd>
+      <dt><% gettext "Webserver" %></dt>
+      <dd>Jetty <% param.jetty %></dd>
+      <dt><% gettext "Servlet Interface" %></dt>
+      <dd>Javax <% param.servlet %></dd>
+    </dl>
 </div>
