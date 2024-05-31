@@ -1,4 +1,4 @@
-name: Stage
+name: Deploy (Staging)
 
 on:
   workflow_dispatch
@@ -7,7 +7,7 @@ env:
   SSH_AUTH_SOCK: /tmp/ssh-agent.sock
 
 jobs:
-  install:
+  stage:
     runs-on: ubuntu-latest
 
     environment:
