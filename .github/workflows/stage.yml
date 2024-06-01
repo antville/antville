@@ -32,17 +32,24 @@ jobs:
           echo '${{ vars.KNOWN_HOSTS }}' > ~/.ssh/known_hosts
 
       - name: Publish to staging server
+        # The rsync command applies the same filters as the one in tools/extras/deploy.sh
         run: |
-          rsync build/install/antville/ antville.dev:/apps/antville/ \
-            --verbose --archive --delete --compress \
+          rsync ./build/install/antville/ antville.dev:./apps/antville/ \
+            --archive --compress --delete --verbose \
             --filter '+ /claustra' \
             --filter '+ /code' \
             --filter '+ /compat' \
             --filter '+ /i18n' \
             --filter '+ /lib' \
             --filter '- /*'
-          rsync build/install/antville/static/ antville.dev:/apps/antville/static/helma/ \
-            --verbose --archive --compress
+          rsync ./build/install/antville/static/ antville.dev:./apps/antville/static/helma/ \
+            --archive --compress --delete --verbose \
+            --filter '+ /fonts' \
+            --filter '+ /formica.html' \
+            --filter '+ /img' \
+            --filter '+ /scripts' \
+            --filter '+ /styles' \
+            --filter '- /*'
 
       - name: Restart Helma
         run: ssh antville.dev restart
