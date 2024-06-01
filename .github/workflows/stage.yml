@@ -1,10 +1,6 @@
 name: Deploy (Staging)
 
-on:
-  workflow_dispatch
-
-env:
-  SSH_AUTH_SOCK: /tmp/ssh-agent.sock
+on: workflow_dispatch
 
 jobs:
   stage:
@@ -17,19 +13,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Set up SSH agent
+        uses: antville/helma/.github/actions/ssh@helma-🐜
+        with:
+          config: ${{ vars.SSH_CONFIG }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          known-hosts: ${{ vars.SSH_KNOWN_HOSTS }}
+
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v3
 
       - name: Build with Gradle
         run: ./gradlew :build
-
-      - name: Set up SSH agent
-        run: |
-          ssh-agent -a $SSH_AUTH_SOCK > /dev/null
-          ssh-add - <<< "${{ secrets.SSH_PRIVATE_KEY }}"
-          mkdir -p ~/.ssh
-          echo '${{ vars.SSH_CONFIG }}' > ~/.ssh/config
-          echo '${{ vars.KNOWN_HOSTS }}' > ~/.ssh/known_hosts
 
       - name: Publish to staging server
         # The rsync command applies the same filters as the one in tools/extras/deploy.sh
@@ -43,7 +38,7 @@ jobs:
             --filter '+ /lib' \
             --filter '- /*'
           rsync ./build/install/antville/static/ antville.dev:./apps/antville/static/helma/ \
-            --archive --compress --delete --verbose \
+            --archive --compress --verbose \
             --filter '+ /fonts' \
             --filter '+ /formica.html' \
             --filter '+ /img' \
