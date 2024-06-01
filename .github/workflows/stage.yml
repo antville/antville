@@ -29,15 +29,16 @@ jobs:
       - name: Publish to staging server
         # The rsync command applies the same filters as the one in tools/extras/deploy.sh
         run: |
-          rsync ./build/install/antville/ antville.dev:./apps/antville/ \
+          rsync ./build/install/antville/ staging-server:./apps/antville/ \
             --archive --compress --delete --verbose \
             --filter '+ /claustra' \
             --filter '+ /code' \
             --filter '+ /compat' \
+            --filter '+ /db' \
             --filter '+ /i18n' \
             --filter '+ /lib' \
             --filter '- /*'
-          rsync ./build/install/antville/static/ antville.dev:./apps/antville/static/helma/ \
+          rsync ./build/install/antville/static/ staging-server:./apps/antville/static/ \
             --archive --compress --verbose \
             --filter '+ /fonts' \
             --filter '+ /formica.html' \
@@ -47,5 +48,5 @@ jobs:
             --filter '- /*'
 
       - name: Restart Helma
-        run: ssh antville.dev restart
+        run: ssh staging-server restart
 

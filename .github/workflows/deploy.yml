@@ -1,0 +1,23 @@
+name: Deploy (Production)
+
+on: workflow_dispatch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    environment:
+      name: p3k.org
+      url: https://blog.p3k.org
+
+    steps:
+      - name: Set up SSH agent
+        uses: antville/helma/.github/actions/ssh@helma-🐜
+        with:
+          config: ${{ vars.SSH_CONFIG }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          known-hosts: ${{ vars.SSH_KNOWN_HOSTS }}
+
+      - name: Copy files to production server
+        run: ssh staging-server deploy-antville
+
