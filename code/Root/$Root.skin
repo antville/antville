@@ -126,12 +126,12 @@
          <% link <% version hash prefix='https://github.com/antville/antville/commit/' %> <% version hash %> %> (<% version date %>)
       </dd>
       <dt><% gettext "Application Server" %></dt>
-      <dd>Helma <% param.helma %></dd>
+      <dd><a href="https://github.com/antville/helma">Helma</a> <% param.helma %></dd>
       <dt><% gettext "Scripting Engine" %></dt>
-      <dd><% param.rhino %></dd>
+      <dd><a href="https://github.com/mozilla/rhino"><% param.rhino %></a></dd>
       <dt><% gettext "Webserver" %></dt>
-      <dd>Jetty <% param.jetty %></dd>
+      <dd><a href="https://github.com/jetty/jetty.project">Jetty <% param.jetty %></a></dd>
       <dt><% gettext "Servlet Interface" %></dt>
-      <dd>Javax <% param.servlet %></dd>
+      <dd><a href="https://docs.oracle.com/javaee/7/api/index.html?javax/servlet/package-summary.html">Javax <% param.servlet %></a></dd>
     </dl>
 </div>

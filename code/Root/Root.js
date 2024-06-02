@@ -271,8 +271,16 @@ Root.prototype.health_action = function() {
     servlet: Packages.java.lang.Class.forName("javax.servlet.Servlet").package.specificationVersion
   };
 
-  for (let key of ['activeThreads', 'freeThreads', 'requestCount',
-      'errorCount', 'xmlrpcCount', 'cacheusage']) {
+  for (
+    let key of [
+      'activeThreads',
+      'freeThreads',
+      'requestCount',
+      'errorCount',
+      'xmlrpcCount',
+      'cacheusage'
+    ]
+  ) {
     param[key] = formatNumber(app[key]);
   }
 
