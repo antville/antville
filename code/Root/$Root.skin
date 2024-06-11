@@ -133,5 +133,7 @@
       <dd><a href="https://github.com/jetty/jetty.project">Jetty <% param.jetty %></a></dd>
       <dt><% gettext "Servlet Interface" %></dt>
       <dd><a href="https://docs.oracle.com/javaee/7/api/index.html?javax/servlet/package-summary.html">Javax <% param.servlet %></a></dd>
+      <dt><% gettext "Virtual Machine" %></dt>
+      <dd><a href="https://openjdk.org">Java <% param.java %></a></dd>
     </dl>
 </div>

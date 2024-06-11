@@ -22,8 +22,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Antville-1\n"
 "Report-Msgid-Bugs-To: mail@antville.org\n"
-"POT-Creation-Date: 2024-05-31 12:11+0200\n"
-"PO-Revision-Date: 2024-05-31 12:11+0200\n"
+"POT-Creation-Date: 2024-06-11 21:10+0200\n"
+"PO-Revision-Date: 2024-06-11 21:10+0200\n"
 "Language-Team: The Antville People <mail@antville.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -727,7 +727,7 @@ msgstr ""
 msgid "Have fun!"
 msgstr ""
 
-#: Root/Root.js:297
+#: Root/Root.js:306
 #: Root/Site.skin:31
 msgid "Health"
 msgstr ""
@@ -2150,6 +2150,10 @@ msgstr ""
 msgid "Via"
 msgstr ""
 
+#: Root/$Root.skin:136
+msgid "Virtual Machine"
+msgstr ""
+
 #: Poll/$Poll.skin:58
 #: Vote/Vote.js:22
 msgid "Vote"
@@ -2334,8 +2338,8 @@ msgstr ""
 msgid "You did not vote, yet. You can vote until the poll is closed."
 msgstr ""
 
-#: Root/Root.js:409
 #: Root/Root.js:418
+#: Root/Root.js:427
 #, java-format
 msgid "You need to wait {0} before you are allowed to create a new site."
 msgstr ""
@@ -2878,8 +2882,8 @@ msgstr[1] ""
 #: Site/$Site.skin:1305
 #: Site/$Site.skin:1315
 #: Root/$Root.skin:79
-#: Root/Root.js:410
 #: Root/Root.js:419
+#: Root/Root.js:428
 #, java-format
 msgid "{0} day"
 msgid_plural "{0} days"

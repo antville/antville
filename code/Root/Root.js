@@ -268,7 +268,8 @@ Root.prototype.health_action = function() {
     helma: Packages.helma.main.Server.server.version,
     jetty: Packages.org.eclipse.jetty.util.Jetty.VERSION,
     rhino: Packages.org.mozilla.javascript.ImplementationVersion.get(),
-    servlet: Packages.java.lang.Class.forName("javax.servlet.Servlet").package.specificationVersion
+    servlet: Packages.java.lang.Class.forName('javax.servlet.Servlet').package.specificationVersion,
+    java: java.lang.System.getProperty('java.version')
   };
 
   for (

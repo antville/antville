@@ -18,8 +18,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Antville-1.5\n"
 "Report-Msgid-Bugs-To: mail@antville.org\n"
-"POT-Creation-Date: 2024-05-31 12:11+0200\n"
-"PO-Revision-Date: 2024-05-31 12:12+0200\n"
+"POT-Creation-Date: 2024-06-11 21:10+0200\n"
+"PO-Revision-Date: 2024-06-11 21:15+0200\n"
 "Last-Translator: Tobi Schäfer <interface@p3k.org>\n"
 "Language-Team: The Antville People <mail@antville.org>\n"
 "Language: de\n"
@@ -27,7 +27,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.4.3\n"
+"X-Generator: Poedit 3.0.1\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
 #: Global/Global.js:987
@@ -676,7 +676,7 @@ msgstr "Viel Vergnügen!"
 msgid "Have fun!"
 msgstr "Viele Späße!"
 
-#: Root/Root.js:297 Root/Site.skin:31
+#: Root/Root.js:306 Root/Site.skin:31
 msgid "Health"
 msgstr "Statusmonitor"
 
@@ -2114,6 +2114,10 @@ msgstr "Versionen"
 msgid "Via"
 msgstr "Via"
 
+#: Root/$Root.skin:136
+msgid "Virtual Machine"
+msgstr "Virtuelle Maschine"
+
 #: Poll/$Poll.skin:58 Vote/Vote.js:22
 msgid "Vote"
 msgstr "Abstimmen"
@@ -2332,7 +2336,7 @@ msgstr ""
 "Sie haben noch nicht abgestimmt. Sie können abstimmen, bis die Umfrage "
 "beendet ist."
 
-#: Root/Root.js:409 Root/Root.js:418
+#: Root/Root.js:418 Root/Root.js:427
 #, java-format
 msgid "You need to wait {0} before you are allowed to create a new site."
 msgstr "Sie müssen {0} warten, bevor Sie eine neue Website erstellen können."
@@ -2831,7 +2835,7 @@ msgstr[0] "{0} Kommentar"
 msgstr[1] "{0} Kommentare"
 
 #: Site/$Site.skin:1305 Site/$Site.skin:1315 Root/$Root.skin:79
-#: Root/Root.js:410 Root/Root.js:419
+#: Root/Root.js:419 Root/Root.js:428
 #, java-format
 msgid "{0} day"
 msgid_plural "{0} days"

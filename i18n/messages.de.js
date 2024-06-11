@@ -443,6 +443,7 @@ global.messages['de'] = {
   "Username and e-mail address do not match.": "Für die angegebene Kombination aus Name und E-Mail-Adresse ist kein Konto registriert.",
   "Versions": "Versionen",
   "Via": "Via",
+  "Virtual Machine": "Virtuelle Maschine",
   "Vote": "Abstimmen",
   "Warning!": "Warnung!",
   "We are sorry to inform you that the user {0} has cancelled your membership of the site {1} at {2}.": "Wir bedauern Ihnen mitzuteilen, dass Ihre Mitgliedschaft bei der Website {1} unter {2} von {0} beendet wurde.",
