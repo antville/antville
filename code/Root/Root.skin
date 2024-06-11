@@ -1,5 +1,7 @@
 <% #status %>
-<% gettext 'System is up and running.' %>
+<p>
+  <% gettext 'System is up and running.' %>
+</p>
 
 <% #urlPreview %>
 <% // This snippet contains additional markup to be rendered client-side by Alpine %>

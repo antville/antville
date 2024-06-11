@@ -68,7 +68,7 @@
 <h1><% response.title %></h1>
 <div class='uk-panel uk-panel-header'>
    <h3 class='uk-panel-title'><% gettext Status %></h3>
-   <p><% site.skin Root#status %></p>
+   <% site.skin Root#status %>
 </div>
 <div class='uk-panel uk-panel-header'>
    <h3 class='uk-panel-title'><% gettext Details %></h3>
