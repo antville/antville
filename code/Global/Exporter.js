@@ -19,7 +19,7 @@
  * @fileOverview Defines the Exporter namespace.
  */
 
-app.addRepository('lib/gson-2.11.0.jar');
+// This code requires the Gson Java library bundled with Helma
 
 global.Exporter = (function() {
   const gson = new JavaImporter(
