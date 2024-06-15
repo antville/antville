@@ -28,7 +28,7 @@ Root.VERSION = (function(versionString, buildDate) {
   var parts = re.exec(versionString);
   if (parts) {
     var result = {
-      date: new Date(buildDate).toLocaleDateString(),
+      date: buildDate,
       hash: parts[4],
       major: parts[1],
       parts: parts,
@@ -265,7 +265,9 @@ Root.prototype.health_action = function() {
     usedMemory: formatNumber(totalMemory - freeMemory),
     sessions: formatNumber(app.countSessions()),
     cacheSize: formatNumber(getProperty('cacheSize')),
-    helma: Packages.helma.main.Server.server.version,
+    helmaVersion: Packages.helma.main.Server.server.version,
+    helmaBuildDate: Packages.helma.main.Server.server.buildDate,
+    helmaCommitHash: Packages.helma.main.Server.server.commitHash,
     jetty: Packages.org.eclipse.jetty.util.Jetty.VERSION,
     rhino: Packages.org.mozilla.javascript.ImplementationVersion.get(),
     servlet: Packages.java.lang.Class.forName('javax.servlet.Servlet').package.specificationVersion,

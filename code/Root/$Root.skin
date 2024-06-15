@@ -120,19 +120,31 @@
    <h3 class='uk-panel-title'><% gettext Versions %></h3>
    <dl class='uk-description-list-horizontal'>
       <dt><% gettext Antville %></dt>
-      <dd>φ (<% version %>)</dd>
+      <dd title='The phinal version'>φ (<% version %>)</dd>
       <dt><% gettext Commit %></dt>
       <dd>
-         <% link <% version hash prefix='https://github.com/antville/antville/commit/' %> <% version hash %> %> (<% version date %>)
+        <a href='https://github.com/antville/antville/commit/<% version hash %>'>
+          <% version hash %>
+        </a>
+        (<% version date %>)
       </dd>
       <dt><% gettext "Application Server" %></dt>
-      <dd><a href="https://github.com/antville/helma">Helma</a> <% param.helma %></dd>
+      <dd>
+        <a href='https://github.com/antville/helma/commit/<% param.helmaCommitHash %>'>
+          Helma <% param.helmaVersion %> <% param.helmaCommitHash %>
+        </a>
+        (<% param.helmaBuildDate %>)
+      </dd>
       <dt><% gettext "Scripting Engine" %></dt>
       <dd><a href="https://github.com/mozilla/rhino"><% param.rhino %></a></dd>
       <dt><% gettext "Webserver" %></dt>
       <dd><a href="https://github.com/jetty/jetty.project">Jetty <% param.jetty %></a></dd>
       <dt><% gettext "Servlet Interface" %></dt>
-      <dd><a href="https://docs.oracle.com/javaee/7/api/index.html?javax/servlet/package-summary.html">Javax <% param.servlet %></a></dd>
+      <dd>
+        <a href="https://docs.oracle.com/javaee/7/api/index.html?javax/servlet/package-summary.html">
+          Javax <% param.servlet %>
+        </a>
+      </dd>
       <dt><% gettext "Virtual Machine" %></dt>
       <dd><a href="https://openjdk.org">Java <% param.java %></a></dd>
     </dl>
