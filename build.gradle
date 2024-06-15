@@ -1,12 +1,8 @@
 plugins {
   id 'base'
   id 'java'
-
   id 'com.github.node-gradle.node' version '7.0.1'
-  id 'org.ajoberstar.grgit' version '5.2.1' apply false
 }
-
-import org.ajoberstar.grgit.Grgit
 
 tasks.build.dependsOn 'assemble'
 
@@ -32,8 +28,7 @@ allprojects {
   project.ext.antvilleInstallDir = "${rootProject.buildDir}/install/antville"
 
   project.ext.antvilleDistFiles = copySpec {
-    from fileTree(antvilleBuildDir).matching {
-    }
+    from fileTree(antvilleBuildDir).matching {}
   }
 
   // Hide some purely Java-related tasks
@@ -84,14 +79,22 @@ task installAntville {
   outputs.dirs antvilleBuildDir
 
   doLast {
-    def git = Grgit.open(dir: project.projectDir)
-    def hash = git.head().abbreviatedId
     def date = new Date().format('d MMM yyyy')
+    def gitOutput = new ByteArrayOutputStream()
+
+    exec {
+      commandLine 'git', 'rev-parse', '--short', 'HEAD'
+      standardOutput = gitOutput
+      errorOutput = new ByteArrayOutputStream()
+      ignoreExitValue = true
+    }
+
+    def tag = gitOutput.toString().trim()
 
     copy {
       from "${project.projectDir}/code/app.properties"
       into "$antvilleBuildDir/code"
-      filter { line -> line.replaceAll('(version =) 0.0.0', "\$1 $version.$hash")
+      filter { line -> line.replaceAll('(version =) 0.0.0', "\$1 $version.$tag")
         .replaceAll('(buildDate =) 18 Jun 2001', "\$1 $date")
       }
     }
