@@ -7,7 +7,7 @@ plugins {
 tasks.build.dependsOn 'assemble'
 
 node {
-  version = '18.17.1'
+  version = '20.9.0'
   download = true
 }
 
