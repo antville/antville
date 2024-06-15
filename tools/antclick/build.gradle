@@ -44,7 +44,7 @@ task downloadHelma {
 }
 
 // See https://docs.gradle.org/current/userguide/working_with_files.html#sec:unpacking_archives_example
-task installHelma(type: Copy) {
+tasks.register('installHelma', Copy) {
   description 'Download and extract the Helma package.'
   group 'installation'
   dependsOn 'downloadHelma'
@@ -70,7 +70,7 @@ task installHelma(type: Copy) {
   } into outputDir
 }
 
-task installAntville(type: Copy) {
+tasks.register('installAntville', Copy) {
   description 'Install Antville as Helma application'
   group 'installation'
   dependsOn ':assemble', ':installAntville', 'installHelma', 'buildLicenses'
@@ -95,7 +95,7 @@ task installAntville(type: Copy) {
   }
 }
 
-task installJars(type: Copy) {
+tasks.register('installJars', Copy) {
   description 'Download additional JAR libraries.'
   group 'Installation'
   dependsOn 'installHelma'
@@ -109,7 +109,7 @@ task installJars(type: Copy) {
   into outputDir
 }
 
-task buildDatabase(type: JavaExec) {
+tasks.register('buildDatabase', JavaExec) {
   description 'Builds the H2 SQL database file.'
   group 'build'
   dependsOn ':assemble'
@@ -139,7 +139,7 @@ task buildDatabase(type: JavaExec) {
   ignoreExitValue true
 }
 
-task buildLicenses(type: Copy) {
+tasks.register('buildLicenses', Copy) {
   description 'Build license files from server-side dependecies.'
   group 'build'
   dependsOn 'installJars'
@@ -162,7 +162,7 @@ task assembleDist {
   dependsOn 'distTar'
 }
 
-task runH2Console(type: JavaExec) {
+tasks.register('runH2Console', JavaExec) {
   description 'Runs the H2 SQL database console.'
   group 'Help'
   dependsOn 'installJars'
@@ -183,7 +183,7 @@ task runH2Console(type: JavaExec) {
   // ignoreExitValue true
 }
 
-task distZip(type: Zip) {
+tasks.register('distZip', Zip) {
   description 'Creates the AntClick download package as Zip file.'
   group 'distribution'
   dependsOn 'assemble'
@@ -200,7 +200,7 @@ task distZip(type: Zip) {
   archiveFileName = outputFile
 }
 
-task distTar(type: Tar) {
+tasks.register('distTar', Tar) {
   description 'Creates the AntClick download package as Bzip2 file.'
   group 'distribution'
   dependsOn 'assemble'

@@ -57,22 +57,24 @@ dependencies {
   }
 }
 
-task assemble(type: Copy, overwrite: true) {
+assemble {
   dependsOn 'installAntville'
   dependsOn 'installJars'
   dependsOn 'buildStaticFiles'
 
-  from fileTree(antvilleBuildDir).matching {
-    exclude 'node_modules'
-    exclude 'package.json'
-    exclude 'tests'
-    exclude 'tools/client'
-    exclude 'tools/antclick'
-    exclude 'package-lock.json'
-  } into antvilleInstallDir
+  copy {
+    from fileTree(antvilleBuildDir).matching {
+      exclude 'node_modules'
+      exclude 'package.json'
+      exclude 'tests'
+      exclude 'tools/client'
+      exclude 'tools/antclick'
+      exclude 'package-lock.json'
+    } into antvilleInstallDir
+  }
 }
 
-task installAntville {
+tasks.register('installAntville') {
   description 'Clone the Antville repository and remove all unnecessary files.'
   group 'installation'
 
@@ -118,7 +120,7 @@ task installAntville {
   }
 }
 
-task installJars(type: Copy) {
+tasks.register('installJars', Copy) {
   description 'Download required JAR libraries.'
   group 'installation'
   dependsOn 'installAntville'
@@ -131,7 +133,7 @@ task installJars(type: Copy) {
   into outputDir
 }
 
-task installNodeModules(type: NpmTask) {
+tasks.register('installNodeModules', NpmTask) {
   description 'Download required Node modules.'
   group 'build'
   dependsOn 'installAntville'
@@ -146,7 +148,7 @@ task installNodeModules(type: NpmTask) {
   }
 }
 
-task buildStaticFiles(type: Copy) {
+tasks.register('buildStaticFiles', Copy) {
   description 'Build fonts, client-side scripts and stylesheets.'
   group 'build'
 
@@ -170,7 +172,7 @@ task buildStaticFiles(type: Copy) {
 }
 
 ['main', 'editor', 'gallery'].each { name ->
-  task "build${name.capitalize()}Script" (type: NpmTask) {
+  tasks.register("build${name.capitalize()}Script", NpmTask) {
     description "Build the ${name} client-side scripts."
     group 'build'
     dependsOn 'installNodeModules'
@@ -192,7 +194,7 @@ task buildStaticFiles(type: Copy) {
 }
 
 ['main', 'editor'].each { name ->
-  task "build${name.capitalize()}Styles" (type: NpmTask) {
+  tasks.register("build${name.capitalize()}Styles", NpmTask) {
     description "Build the ${name} stylesheet."
     group 'build'
     dependsOn 'installNodeModules'
@@ -214,7 +216,7 @@ task buildStaticFiles(type: Copy) {
   }
 }
 
-task buildLicenses(type: NpmTask) {
+tasks.register('buildLicenses', NpmTask) {
   description 'Build licenses file from client-side dependencies.'
   group 'build'
   dependsOn 'installNodeModules'
@@ -240,7 +242,7 @@ task buildLicenses(type: NpmTask) {
   }
 }
 
-task jsdoc(type: NpmTask) {
+tasks.register('jsdoc', NpmTask) {
   description 'Generates JavaScript API documentation for the main source code.'
   group 'documentation'
   dependsOn 'installNodeModules'
@@ -266,7 +268,7 @@ task jsdoc(type: NpmTask) {
   }
 }
 
-task assembleDist {
+tasks.register('assembleDist') {
   description 'Creates the Antville download packages.'
   group 'distribution'
 
@@ -275,7 +277,7 @@ task assembleDist {
   dependsOn 'distTar'
 }
 
-task distZip(type: Zip) {
+tasks.register('distZip', Zip) {
   description 'Creates the Antville download package as Zip file.'
   group 'distribution'
   dependsOn 'assemble'
@@ -292,7 +294,7 @@ task distZip(type: Zip) {
   archiveFileName = outputFile
 }
 
-task distTar(type: Tar) {
+tasks.register('distTar', Tar) {
   description 'Creates the Antville download package as Bzip2 file.'
   group 'distribution'
   dependsOn 'assemble'
