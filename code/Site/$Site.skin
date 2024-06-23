@@ -435,7 +435,7 @@ void (function(url) {
 html, html.uk-notouch, body {
    background-color: @background;
    color: @text-color;
-   font-family: @text-font;
+   font: @text-font;
 }
 
 body.av-16, body.av-page {
