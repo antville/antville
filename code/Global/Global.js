@@ -682,7 +682,8 @@ function list_macro(param, id, limit) {
     return;
   }
 
-  var skin, collection;
+  var skin;
+  var collection = [];
   var max = Math.min(limit || 25, 100);
 
   if (id === 'sites') {
