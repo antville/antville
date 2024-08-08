@@ -560,7 +560,7 @@ hr {
    }
 
    &.uk-button-link {
-      border: initial;
+      border-color: transparent;
 
       &:link, &:visited {
          color: @link-color;
