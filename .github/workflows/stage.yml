@@ -8,7 +8,7 @@ jobs:
 
     environment:
       name: stage
-      url: https://antville-test.click
+      url: https://antville-test.online
 
     steps:
       - uses: actions/checkout@v4
