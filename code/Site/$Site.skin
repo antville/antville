@@ -402,7 +402,7 @@ void (function(url) {
 
 // FIXME: compatibility
 
-@base-font: <% value 'base font' default='Helvetica Neue, Helvetica, Arial, sans-serif' %>;
+@base-font: <% value 'base font' default='Helvetica Neue, Liberation Sans, Helvetica, Arial, sans-serif' %>;
 @base-font-size: <% value 'base font size' default="14px e('/') 20px" %>;
 @base-font-color: <% value 'base font color' default=#444 %>;
 
