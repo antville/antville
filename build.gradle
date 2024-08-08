@@ -62,15 +62,17 @@ assemble {
   dependsOn 'installJars'
   dependsOn 'buildStaticFiles'
 
-  copy {
-    from fileTree(antvilleBuildDir).matching {
-      exclude 'node_modules'
-      exclude 'package.json'
-      exclude 'tests'
-      exclude 'tools/client'
-      exclude 'tools/antclick'
-      exclude 'package-lock.json'
-    } into antvilleInstallDir
+  doFirst {
+    copy {
+      from fileTree(antvilleBuildDir).matching {
+        exclude 'node_modules'
+        exclude 'package.json'
+        exclude 'tests'
+        exclude 'tools/client'
+        exclude 'tools/antclick'
+        exclude 'package-lock.json'
+      } into antvilleInstallDir
+    }
   }
 }
 
