@@ -7,97 +7,81 @@
    </td>
    <td class='uk-text-muted uk-text-right'><% if <% skin.custom %> is true then "<i class='uk-icon-user'></i>" %></td>
    <td class='uk-text-right uk-text-nowrap;'>
-      <a href='javascript:' class='av-clipboard-copy' data-text='<% gettext 'Press CTRL & C to copy to clipboard.' %>' data-value="<% skin.macro %>"><i class='uk-icon-clipboard'></i></a>
-      <% skin.link compare "<i class='uk-icon-files-o'></i>"%>
       <% skin.link reset "<i class='uk-icon-undo'></i>" %>
+      <a href='javascript:' class='av-clipboard-copy' data-text='<% gettext 'Press CTRL & C to copy to clipboard.' %>' data-value="<% skin.macro %>"><i class='uk-icon-clipboard'></i></a>
       <% skin.link edit "<i class='uk-icon-pencil'></i>" %>
    </td>
 </tr>
 
 <% #edit %>
-<form class='uk-form av-skin-editor' method="post" action="<% response.action %>">
-   <div class='uk-margin-top uk-margin-left uk-margin-right uk-clearfix'>
+<script type='module'>
+   import {
+      basicSetup,
+      Compartment,
+      EditorView,
+      EditorState,
+      MergeView,
+      html
+   } from '<% root.static ../../js/code-mirror-U32JWJ6D.js %>';
+
+   const language = new Compartment();
+
+   window.view = new MergeView({
+      parent: document.querySelector('.editor'),
+      a: {
+         doc: decodeURIComponent(`<% response.versionA %>`),
+         extensions: [
+            basicSetup,
+            language.of(html())
+         ]
+      },
+      b: {
+         doc: decodeURIComponent(`<% response.versionB %>`),
+         extensions: [
+            basicSetup,
+            language.of(html()),
+            EditorView.editable.of(false),
+            EditorState.readOnly.of(true)
+         ]
+      }
+   });
+</script>
+<script>
+   const setup = () => {
+      return {
+         submit(event) {
+            const source = document.createElement('textarea');
+            source.setAttribute('hidden', true);
+            source.setAttribute('name', 'source');
+            source.innerHTML = view.a.state.doc.toString();
+            event.target.appendChild(source);
+         }
+      };
+   };
+</script>
+<form class='uk-form' method='post' action='<% response.action %>' x-data='setup()' @submit='submit'>
+   <div class='uk-clearfix header'>
       <h1 class='uk-margin-large-right uk-float-left'><% response.title %></h1>
       <span style='line-height: 39px;'>
-         <span class='uk-article-meta' style='vertical-align: bottom; display: inline-block;'>
+         <span class='uk-article-meta metadata'>
             <% skin.skin $HopObject#meta %>
          </span>
          <% if <% skin.name %> is '' then
             <% skin.select prototype suffix=<% skin.input name class='uk-width-1-4' %> %>
          %>
-         <button type="submit" name="save" value="1" class='uk-button uk-button-primary uk-margin-large-left'>
-            <% gettext "Save" %>
+         <button type='submit' name='save' value='1' class='uk-button uk-button-primary uk-margin-large-left'>
+            <% gettext Save %>
          </button>
-         <% skin.link compare <% gettext Compare %> class='uk-button' %>
+         <button type='submit' name='compare' class='uk-button uk-margin-left'>
+            <% gettext Compare %>
+         </button>
+         <select name='reference'>
+            <option value='current' <% if <% request.reference %> is current then selected %>><% gettext Current %></option>
+            <option value='original' <% if <% request.reference %> is original then selected %>><% gettext Original %></option>
+         </select>
          <a href='<% layout.skins.href all %>' class='uk-button uk-button-link'><% gettext Cancel %></a>
       </span>
-      <% response.message prefix="<div class='uk-alert' data-uk-alert>" suffix=</div> %>
+      <% response.message prefix='<div class="uk-alert" data-uk-alert>' suffix=</div> %>
    </div>
-   <% skin.textarea source %>
+   <div class='editor'></div>
 </form>
-
-<script>
-  document.addEventListener("alpine:init", () => {
-    // Setup skin editor
-    let mode = 'application/x-helma-skin';
-
-    if (location.href.indexOf('stylesheet') > -1) {
-      mode = 'text/css';
-    } else if (location.href.indexOf('javascript') > -1) {
-      mode = 'text/javascript';
-    }
-
-    CodeMirror.fromTextArea(document.querySelector('#source'), {
-      autofocus: true,
-      enterMode: 'keep',
-      indentUnit: 3,
-      indentWithTabs: false,
-      lineNumbers: true,
-      matchBrackets: true,
-      mode: mode,
-      tabMode: 'shift',
-      tabSize: 3,
-      viewportMargin: Infinity
-    });
-  });
-</script>
-
-<% #compare %>
-<form>
-   <div class='uk-margin-top uk-margin-left uk-clearfix'>
-      <h1 class='uk-margin-large-right uk-float-left'><% response.title %></h1>
-      <span style='line-height: 42px;'>
-         <% skin.link edit <% gettext Edit %> class='uk-button uk-button-primary' %>
-         <% skin.link reset <% gettext Reset %> class='uk-button' %>
-         <a href='<% request.http_referer %>' class='uk-button uk-button-link'><% gettext Cancel %></a>
-      </span>
-   </div>
-   <div>
-      <% response.message prefix="<div class='uk-alert' data-uk-alert>" suffix=</div> %>
-      <table class='uk-table uk-table-condensed uk-table-striped'>
-         <thead>
-            <tr>
-               <th></th>
-               <th><% gettext 'Modified skin' %></th>
-               <th></th>
-               <th><% gettext 'Original skin' %></th>
-            </tr>
-         </thead>
-         <tbody>
-            <% response.diff %>
-         </tbody>
-      </table>
-   </div>
-</form>
-
-<% #difference %>
-<tr>
-   <td class='uk-text-muted uk-text-right'><% param.leftLineNumber %></td>
-   <td class='uk-width-1-2 av-overflow <% param.leftStatus prefix='av-line-' %>'>
-      <div class='av-line'><% param.left %></div>
-   </td>
-   <td class='uk-text-muted uk-text-right'><% param.rightLineNumber %></td>
-   <td class='uk-width-1-2 av-overflow <% param.rightStatus prefix='av-line-' %>'>
-      <div class='av-line'><% param.right %></div>
-   </td>
-</tr>

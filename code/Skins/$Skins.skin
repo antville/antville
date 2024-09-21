@@ -12,29 +12,34 @@
             padding: 0;
             background: none;
          }
+         .logo {
+            position: sticky;
+            top: 15px;
+            z-index: 2;
+         }
+         .header {
+            position: sticky;
+            top: 0;
+            z-index: 1;
+            padding: 15px 15px 0;
+            border-block-end: 1px solid #ccc;
+            background-color: white;
+         }
+         .metadata {
+            display: inline-block;
+            vertical-align: bottom;
+         }
+         .editor {
+            border-block-end: 1px solid #ccc;
+         }
          .cm-helma-macro {
             color: #000;
          }
-         .CodeMirror {
-            height: auto;
-            border-top: 1px solid #eee;
-         }
-         .av-line {
-            font-family: monospace;
-            white-space: pre-wrap;
-         }
-         .av-line-removed {
-            background-color: #fff1f0;
-         }
-         .av-line-added {
-            background-color: #f2fae3;
-         }
       </style>
-      <script src='<% root.static ../../scripts/editor.min.js %>'></script>
       <script defer src='<% site.href main.js %>'></script>
    </head>
    <body>
-      <span class='uk-margin-right uk-float-right'>
+      <span class='uk-margin-right uk-float-right logo'>
          <% image /smallchaos.gif | link <% site.href %> %>
       </span>
       <% response.body %>

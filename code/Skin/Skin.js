@@ -24,6 +24,19 @@ markgettext('skin');
 markgettext('a skin // accusative');
 
 /**
+ * Get the source of a skin in the code directory
+ * @param {String} prototype
+ * @param {String} name
+ * @returns String
+ */
+Skin.getSourceFromCode = function(prototype, name) {
+  const file = java.io.File(app.dir, prototype + '/' + prototype + '.skin');
+  const content = Packages.org.apache.commons.io.FileUtils.readFileToString(file, 'utf-8');
+  const skin = createSkin(content);
+  return skin.getSubskin(name).getSource() || '';
+}
+
+/**
  *
  * @param {String} group
  * @param {String} name
@@ -150,23 +163,24 @@ Skin.prototype.main_action = function() {
 }
 
 Skin.prototype.edit_action = function() {
-  if (req.postParams.save) {
+  if (!!req.postParams.save) {
     try {
       var url = this.href(req.action);
       this.update(req.postParams);
       res.message = gettext('The changes were saved successfully.');
-      if (req.postParams.save == 1) {
-        res.redirect(url);
-      } else {
-        res.redirect(res.handlers.layout.skins.href('modified'));
-      }
+      res.redirect(url);
     } catch (ex) {
       res.message = ex;
       app.log(ex);
     }
   }
-  res.data.action = this.href(req.action);
-  res.data.title = gettext('Edit {0}.{1}', this.prototype, this.name);
+
+  const referenceSource = req.postParams.reference === 'original' ? this.source : this.getSource();
+  const currentSource = req.data.source || referenceSource;
+
+  res.data.versionA = encodeURIComponent(currentSource);
+  res.data.versionB = encodeURIComponent(referenceSource);
+  res.data.title = gettext('Edit {0}', this.getTitle());
   res.data.body = this.renderSkinAsString('$Skin#edit');
   res.handlers.skins.renderSkin('$Skins#page');
   return;
@@ -214,61 +228,6 @@ Skin.prototype.reset_action = function() {
   return;
 }
 
-Skin.prototype.compare_action = function() {
-  var originalSkin = this.source || String.EMPTY;
-  var diff = this.getSource().diff(originalSkin);
-  if (!diff) {
-    res.message = gettext('No differences were found.');
-  } else {
-    res.push();
-    var param = {}, leftLineNumber = rightLineNumber = 0;
-    for (let line of diff) {
-      if (line.deleted) {
-        param.right = encode(line.value);
-        param.leftStatus = 'added';
-        param.rightStatus = '';
-        for (let i=0; i<line.deleted.length; i++) {
-          leftLineNumber += 1;
-          param.leftLineNumber = leftLineNumber;
-          param.rightLineNumber = '';
-          param.left = encode(line.deleted[i]);
-          param.right = '';
-          this.renderSkin('$Skin#difference', param);
-        }
-      }
-      if (line.inserted) {
-        param.left = encode(line.value);
-        param.leftStatus = '';
-        param.rightStatus = 'removed';
-        for (let i=0; i<line.inserted.length; i++) {
-          rightLineNumber += 1;
-          param.leftLineNumber = '';
-          param.rightLineNumber = rightLineNumber;
-          param.left = '';
-          param.right = encode(line.inserted[i]);
-          this.renderSkin('$Skin#difference', param);
-        }
-      }
-      if (line.value !== null) {
-        leftLineNumber += 1;
-        rightLineNumber += 1;
-        param.leftLineNumber = leftLineNumber;
-        param.rightLineNumber = rightLineNumber;
-        param.leftStatus = param.rightStatus = '';
-        param.left = encode(line.value);
-        param.right = param.left;
-        this.renderSkin('$Skin#difference', param);
-      }
-    }
-    res.data.diff = res.pop();
-  }
-
-  res.data.title = gettext('Compare {0}', this.getTitle());
-  res.data.body = this.renderSkinAsString('$Skin#compare');
-  res.handlers.skins.renderSkin('$Skins#page');
-  return;
-}
-
 /**
  *
  * @return {String}
@@ -313,7 +272,7 @@ Skin.prototype.getSource = function() {
   if (skin) {
     return skin.getSource();
   }
-  return null;
+  return '';
 }
 
 /**
