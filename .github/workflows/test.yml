@@ -4,7 +4,7 @@ on: workflow_dispatch
 
 jobs:
   test:
-    runs-on: host-runner
+    runs-on: debian
 
     environment:
       name: p3k.org
@@ -15,4 +15,36 @@ jobs:
         run: |
           whoami
           pwd
-          find -maxdepth 1 /
+          ls -ahl ~
+          echo $SHELL
+
+      - name: Ping staging server
+        run: ssh staging-server ping
+
+      - uses: actions/checkout@v4
+      
+      - name: Run Renovate
+        run: npx renovate
+        env:
+          # TODO: 
+          #GITHUB_COM_TOKEN=
+          # See <https://docs.renovatebot.com/troubleshooting/#log-debug-levels>
+          LOG_LEVEL: debug # debug | info | warn | error | fatal
+          #RENOVATE_CONFIG_FILE: ./.gitlab/renovate.json
+          RENOVATE_ENDPOINT: ${{ github.api_url }}
+          RENOVATE_GIT_AUTHOR: Renovate Bot <mail+renovate@antville.org>
+          RENOVATE_LOG_FILE: renovate-log.ndjson
+          RENOVATE_LOG_FILE_LEVEL: debug
+          RENOVATE_PLATFORM: gitea
+          #RENOVATE_REPOSITORIES: $CI_PROJECT_PATH
+          RENOVATE_AUTODISCOVER: 'true'
+          RENOVATE_REPOSITORY_CACHE: 'enabled'
+          RENOVATE_TOKEN: ${{ vars.renovate_token }} #${{ github.token }}
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: Renovate log
+          path: renovate-log.ndjson
+
+      #- name: Build with Gradle
+      #  run: ./gradlew :build
