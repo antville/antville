@@ -1,0 +1,18 @@
+name: Test
+
+on: workflow_dispatch
+
+jobs:
+  test:
+    runs-on: host-runner
+
+    environment:
+      name: p3k.org
+      url: https://blog.p3k.org
+
+    steps:
+      - name: Do something
+        run: |
+          whoami
+          pwd
+          find -maxdepth 1 /
