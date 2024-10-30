@@ -4,24 +4,14 @@ on: workflow_dispatch
 
 jobs:
   stage:
-    runs-on: ubuntu-latest
+    runs-on: antville
 
     environment:
       name: stage
-      url: https://antville-test.online
+      url: ${{ vars.stage_url }}
 
     steps:
       - uses: actions/checkout@v4
-
-      - name: Set up SSH agent
-        uses: antville/helma/.github/actions/ssh@helma-🐜
-        with:
-          config: ${{ vars.SSH_CONFIG }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          known-hosts: ${{ vars.SSH_KNOWN_HOSTS }}
-
-      - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v3
 
       - name: Build with Gradle
         run: ./gradlew :build
