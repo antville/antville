@@ -10,8 +10,8 @@ end_of_line = lf
 insert_final_newline = true
 trim_trailing_whitespace = true
 
+[*.{java,skin}]
+indent_size = 3
+
 [*.md]
 trim_trailing_whitespace = false
-
-[*.{java}]
-indent_size = 3
