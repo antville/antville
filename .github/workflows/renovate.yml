@@ -1,0 +1,41 @@
+name: Run Renovate
+
+on:
+  schedule:
+    - cron: "42 * * * *"
+  workflow_dispatch:
+
+jobs:
+  renovate:
+    runs-on: antville
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run Renovate
+        # See <https://docs.renovatebot.com/troubleshooting/#log-debug-levels>
+        # debug | info | warn | error | fatal
+        run: LOG_LEVEL=info npx renovate
+        env:
+          # Renovate is using this token to retrieve release notes
+          GITHUB_COM_TOKEN: ${{ secrets.renovate_github_com_token }}
+          RENOVATE_CONFIG_FILE: renovate.json
+          RENOVATE_ENDPOINT: ${{ github.api_url }}
+          RENOVATE_GIT_AUTHOR: Renovate Bot <mail+renovate@antville.org>
+          RENOVATE_IGNORE_PR_AUTHOR: 'true'
+          RENOVATE_LOG_FILE: renovate-log.ndjson
+          RENOVATE_LOG_FILE_LEVEL: debug
+          RENOVATE_PLATFORM: gitea
+          RENOVATE_REPOSITORIES: ${{ github.repository }}
+          RENOVATE_REPOSITORY_CACHE: 'enabled'
+          # github.token is not working here, it lacks some permissions required by Renovate
+          RENOVATE_TOKEN: ${{ secrets.renovate_token }}
+
+      - name: Save log file
+        # FIXME: v4 of this action causes an error on Forgejo (“You must configure a GitHub token”)
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: renovate-log.ndjson
+          path: renovate-log.ndjson
+
