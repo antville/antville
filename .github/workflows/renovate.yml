@@ -1,10 +1,9 @@
 name: Run Renovate
 
-#on: workflow_dispatch
-
 on:
   schedule:
     - cron: "42 * * * *"
+  workflow_dispatch:
 
 jobs:
   renovate:
