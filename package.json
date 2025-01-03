@@ -39,7 +39,7 @@
     "uikit": "2.27.4"
   },
   "devDependencies": {
-    "browserify": "17.0.0",
+    "browserify": "17.0.1",
     "generate-license-file": "3.0.1",
     "jsdoc": "4.0.2",
     "less": "4.2.0",
