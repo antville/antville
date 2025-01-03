@@ -31,8 +31,8 @@
   "author": "The Antville People",
   "license": "Apache-2.0",
   "dependencies": {
-    "alpinejs": "3.13.3",
-    "codemirror": "5.65.16",
+    "alpinejs": "3.14.8",
+    "codemirror": "5.65.18",
     "jquery": "3.7.1",
     "jquery-collagePlus": "github:antville/jquery-collagePlus#0.3.4",
     "js-md5": "0.8.3",
@@ -40,9 +40,9 @@
   },
   "devDependencies": {
     "browserify": "17.0.1",
-    "generate-license-file": "3.0.1",
-    "jsdoc": "4.0.2",
-    "less": "4.2.0",
+    "generate-license-file": "3.6.0",
+    "jsdoc": "4.0.4",
+    "less": "4.2.1",
     "less-plugin-clean-css": "1.6.0",
     "npm-run-all": "4.1.5",
     "onchange": "7.1.0",
