@@ -13,4 +13,3 @@ jobs:
     steps:
       - name: Copy files to production server
         run: ssh staging-server deploy-antville
-
