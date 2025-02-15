@@ -32,3 +32,16 @@ jobs:
           release-dir: build/distributions
           release-notes-assistant: true
           verbose: true
+
+      - name: Create release at GitHub
+        run: |
+          gh release create "$GITHUB_REF_NAME" \
+            --repo "$GITHUB_REPOSITORY" \
+            --title "Antville ${{ github.ref_name }}" \
+            --generate-notes
+
+      - name: Upload release assets to GitHub
+        run: |
+          gh release upload "$GITHUB_REF_NAME" build/distributions/helma-*.* \
+            --repo "$GITHUB_REPOSITORY" \
+            --clobber
