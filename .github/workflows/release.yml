@@ -13,7 +13,7 @@ jobs:
     runs-on: antville
 
     env:
-      GH_TOKEN: ${{ github.token }}
+      GH_TOKEN: ${{ secrets.GH_TOKEN }}
       LC_TIME: en_US.UTF-8
 
     steps:
@@ -42,6 +42,6 @@ jobs:
 
       - name: Upload release assets to GitHub
         run: |
-          gh release upload "$GITHUB_REF_NAME" build/distributions/helma-*.* \
+          gh release upload "$GITHUB_REF_NAME" build/distributions/ant*.* \
             --repo "$GITHUB_REPOSITORY" \
             --clobber
