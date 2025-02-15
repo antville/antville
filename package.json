@@ -42,7 +42,7 @@
     "browserify": "17.0.1",
     "generate-license-file": "3.6.0",
     "jsdoc": "4.0.4",
-    "less": "4.2.1",
+    "less": "4.2.2",
     "less-plugin-clean-css": "1.6.0",
     "npm-run-all2": "7.0.2",
     "onchange": "7.1.0",
