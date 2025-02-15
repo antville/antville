@@ -1,0 +1,36 @@
+name: Release
+
+on:
+  workflow_dispatch:
+  push:
+    tags: '2*'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: antville
+
+    env:
+      GH_TOKEN: ${{ github.token }}
+      LC_TIME: en_US.UTF-8
+      TODAY: $(date +'%d %b %Y')
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build with Gradle
+        run: ./gradlew assembleDist
+
+      - name: Create release
+        uses: actions/forgejo-release@v2
+        with:
+          direction: upload
+          url: https://code.host.antville.org
+          token: ${{ github.token }}
+          title: ${{ env.TODAY }}
+          #tag: $(date +'%Y.%m.%d')
+          release-dir: build/distributions
+          release-notes-assistant: true
+          verbose: true
