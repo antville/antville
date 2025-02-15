@@ -254,9 +254,18 @@ Root.prototype.sitemap_xml_action = function() {
 }
 
 Root.prototype.health_action = function() {
-  var jvm = java.lang.Runtime.getRuntime();
-  var totalMemory = jvm.totalMemory() / 1024 / 1024;
-  var freeMemory = jvm.freeMemory()  / 1024 / 1024;
+  const jvm = java.lang.Runtime.getRuntime();
+  const totalMemory = jvm.totalMemory() / 1024 / 1024;
+  const freeMemory = jvm.freeMemory()  / 1024 / 1024;
+  let servletApi;
+
+  try {
+    const getJavaClass = Packages.java.lang.Class.forName;
+    servletApi = getJavaClass('jakarta.servlet.Servlet');
+  } catch {
+    // Fall back to older Servlet API
+    servletApi = getJavaClass('javax.servlet.Servlet');
+  }
 
   var param = {
     uptime: formatNumber((new Date - app.upSince.getTime()) / Date.ONEDAY, '0.##'),
@@ -270,7 +279,7 @@ Root.prototype.health_action = function() {
     helmaCommitHash: Packages.helma.main.Server.server.commitHash,
     jetty: Packages.org.eclipse.jetty.util.Jetty.VERSION,
     rhino: Packages.org.mozilla.javascript.ImplementationVersion.get(),
-    servlet: Packages.java.lang.Class.forName('javax.servlet.Servlet').package.specificationVersion,
+    servlet: servletApi.package.specificationVersion,
     java: java.lang.System.getProperty('java.version')
   };
 
