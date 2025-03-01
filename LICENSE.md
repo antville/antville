@@ -1,6 +1,7 @@
 # License
 
-Copyright 2001-2020 by the Workers of Antville.
+Copyright 2001-2025 by Antville – Verein für Entwicklung, Betrieb und
+Unterstützung freier Publishing-Software, Austria.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
