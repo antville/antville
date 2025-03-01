@@ -17,7 +17,7 @@ body = """
     * [<tt>{{ commit.id | split(pat="") | slice(end=11) | join() }}</tt>]\
       (https://code.host.antville.org/antville/antville/commit/{{ commit.id }}) \
       {% if commit.breaking %}**Breaking:** {% endif %}\
-      {{ commit.message | split(pat="\\n") | first | upper_first }}\
+      {{ commit.message | split(pat="\\n") | first | upper_first | escape }}\
   {% endfor %}
 {% endfor %}
 
