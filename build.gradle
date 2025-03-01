@@ -291,7 +291,10 @@ tasks.register('distZip', Zip) {
   inputs.dir antvilleInstallDir
   outputs.file "$outputDir/$outputFile"
 
-  from antvilleInstallDir
+  from (antvilleInstallDir) {
+    into "antville-${version}"
+  }
+
   destinationDirectory = file(outputDir)
   archiveFileName = outputFile
 }
@@ -308,7 +311,10 @@ tasks.register('distTar', Tar) {
   inputs.dir antvilleInstallDir
   outputs.file "$outputDir/$outputFile"
 
-  from antvilleInstallDir
+  from (antvilleInstallDir) {
+    into "antville-${version}"
+  }
+
   compression = Compression.BZIP2
   destinationDirectory = file(outputDir)
   archiveFileName = outputFile
