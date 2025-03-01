@@ -43,6 +43,7 @@ jobs:
           title: Antville ${{ github.ref_name }}
           release-dir: build/distributions
           release-notes: ${{ steps.create_release_notes.outputs.release_notes }}
+          hide-archive-link: true
           verbose: true
 
       # - name: Create release at GitHub
