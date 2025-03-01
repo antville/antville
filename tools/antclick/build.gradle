@@ -195,7 +195,10 @@ tasks.register('distZip', Zip) {
   inputs.dir helmaInstallDir
   outputs.file "$outputDir/$outputFile"
 
-  from helmaInstallDir
+  from (helmaInstallDir) {
+    into "antclick-${version}"
+  }
+
   destinationDirectory = file(outputDir)
   archiveFileName = outputFile
 }
@@ -212,7 +215,10 @@ tasks.register('distTar', Tar) {
   inputs.dir helmaInstallDir
   outputs.file "$outputDir/$outputFile"
 
-  from helmaInstallDir
+  from (helmaInstallDir) {
+    into "antclick-${version}"
+  }
+
   compression = Compression.BZIP2
   destinationDirectory = file(outputDir)
   archiveFileName = outputFile
