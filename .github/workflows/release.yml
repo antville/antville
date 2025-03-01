@@ -46,15 +46,15 @@ jobs:
           hide-archive-link: true
           verbose: true
 
-      # - name: Create release at GitHub
-      #   run: |
-      #     gh release create "$GITHUB_REF_NAME" \
-      #       --repo "$GITHUB_REPOSITORY" \
-      #       --title "Antville ${{ github.ref_name }}" \
-      #       --notes "${{ steps.create_release_notes.outputs.release_notes }}"
+      - name: Create release at GitHub
+        run: |
+          gh release create "$GITHUB_REF_NAME" \
+            --repo "$GITHUB_REPOSITORY" \
+            --title "Antville ${{ github.ref_name }}" \
+            --notes "${{ steps.create_release_notes.outputs.release_notes }}"
 
-      # - name: Upload release assets to GitHub
-      #   run: |
-      #     gh release upload "$GITHUB_REF_NAME" build/distributions/ant*.* \
-      #       --repo "$GITHUB_REPOSITORY" \
-      #       --clobber
+      - name: Upload release assets to GitHub
+        run: |
+          gh release upload "$GITHUB_REF_NAME" build/distributions/ant*.* \
+            --repo "$GITHUB_REPOSITORY" \
+            --clobber
