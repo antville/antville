@@ -9,7 +9,7 @@ permissions:
   contents: write
 
 jobs:
-  build:
+  release:
     runs-on: antville
 
     env:
@@ -18,9 +18,21 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Build with Gradle
         run: ./gradlew assembleDist
+
+      - name: Create release notes
+        id: create_release_notes
+        run: |
+          release_notes=$(npx git-cliff@latest --latest)
+          # Write the release notes as a heredoc to the workflow output
+          # ⚠️ No white space around `<<` is crucial!
+          echo "release_notes<<.eot0x03" >> $GITHUB_OUTPUT
+          echo "$release_notes" >> $GITHUB_OUTPUT
+          echo ".eot0x03" >> $GITHUB_OUTPUT
 
       - name: Create release
         uses: actions/forgejo-release@v2
@@ -30,18 +42,18 @@ jobs:
           token: ${{ github.token }}
           title: Antville ${{ github.ref_name }}
           release-dir: build/distributions
-          release-notes-assistant: true
+          release-notes: ${{ steps.create_release_notes.outputs.release_notes }}
           verbose: true
 
-      - name: Create release at GitHub
-        run: |
-          gh release create "$GITHUB_REF_NAME" \
-            --repo "$GITHUB_REPOSITORY" \
-            --title "Antville ${{ github.ref_name }}" \
-            --generate-notes
+      # - name: Create release at GitHub
+      #   run: |
+      #     gh release create "$GITHUB_REF_NAME" \
+      #       --repo "$GITHUB_REPOSITORY" \
+      #       --title "Antville ${{ github.ref_name }}" \
+      #       --notes "${{ steps.create_release_notes.outputs.release_notes }}"
 
-      - name: Upload release assets to GitHub
-        run: |
-          gh release upload "$GITHUB_REF_NAME" build/distributions/ant*.* \
-            --repo "$GITHUB_REPOSITORY" \
-            --clobber
+      # - name: Upload release assets to GitHub
+      #   run: |
+      #     gh release upload "$GITHUB_REF_NAME" build/distributions/ant*.* \
+      #       --repo "$GITHUB_REPOSITORY" \
+      #       --clobber
