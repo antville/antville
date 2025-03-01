@@ -14,7 +14,7 @@ There still could be bugs hidden in Antville’s source code. If you find one pl
 
 ## System Requirements
 
-To run Antville you need [Helma Object Publisher](https://github.com/antville/helma) and a relational database software. We tested Antville with [PostgreSQL](https://postgresql.org) and [MySQL](https://mysql.com) – [MariaDB](https://mariadb.com) should work, too.
+To run Antville you need [Helma Object Publisher](https://code.host.antville.org/antville/helma) and a relational database software. We tested Antville with [PostgreSQL](https://postgresql.org) and [MySQL](https://mysql.com) – [MariaDB](https://mariadb.com) should work, too.
 
 To enable Antville sending notification e-mails you need access to an SMTP server.
 
@@ -43,7 +43,7 @@ Antville is open-source, and we want to encourage you to change its code accordi
 
 ## About Helma Object Publisher
 
-[Helma Object Publisher](https://github.com/antville/helma) is an open source project providing a powerful, fast and scriptable web application server written in Java. 
+[Helma Object Publisher](https://code.host.antville.org/antville/helma) is an open source project providing a powerful, fast and scriptable web application server written in Java.
 
 Define HopObjects and map them to a relational database table. Create, change and delete HopObjects at your whim using a comfortable object-container model. Manual fiddling around with database code is not necessary.
 

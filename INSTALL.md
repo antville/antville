@@ -2,7 +2,7 @@
 
 ## Helma Object Publisher
 
-Antville needs Helma Object Publisher to be installed on the desired machine. If not already done so please [download Helma](https://github.com/antville/helma/releases) and follow the [installation instructions](https://github.com/antville/helma/#how-to-helma).
+Antville needs Helma Object Publisher to be installed on the desired machine. If not already done so please [download Helma](https://code.host.antville.org/antville/helma/releases) and follow the [installation instructions](https://code.host.antville.org/antville/helma/#how-to-helma).
 
 ## SQL Database
 
