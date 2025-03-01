@@ -204,13 +204,13 @@ tasks.register('distZip', Zip) {
 }
 
 tasks.register('distTar', Tar) {
-  description 'Creates the AntClick download package as Bzip2 file.'
+  description 'Creates the AntClick download package as compressed archive file.'
   group 'distribution'
   dependsOn 'assemble'
 
   def version = project.distVersion()
   def outputDir = "${rootProject.buildDir}/distributions"
-  def outputFile = "antclick-${version}.tbz"
+  def outputFile = "antclick-${version}.tgz"
 
   inputs.dir helmaInstallDir
   outputs.file "$outputDir/$outputFile"
@@ -219,7 +219,7 @@ tasks.register('distTar', Tar) {
     into "antclick-${version}"
   }
 
-  compression = Compression.BZIP2
+  compression = Compression.GZIP
   destinationDirectory = file(outputDir)
   archiveFileName = outputFile
 }

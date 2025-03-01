@@ -300,13 +300,13 @@ tasks.register('distZip', Zip) {
 }
 
 tasks.register('distTar', Tar) {
-  description 'Creates the Antville download package as Bzip2 file.'
+  description 'Creates the Antville download package as compressed archive file.'
   group 'distribution'
   dependsOn 'assemble'
 
   def version = project.distVersion()
   def outputDir = "${project.buildDir}/distributions"
-  def outputFile = "antville-${version}.tbz"
+  def outputFile = "antville-${version}.tgz"
 
   inputs.dir antvilleInstallDir
   outputs.file "$outputDir/$outputFile"
@@ -315,7 +315,7 @@ tasks.register('distTar', Tar) {
     into "antville-${version}"
   }
 
-  compression = Compression.BZIP2
+  compression = Compression.GZIP
   destinationDirectory = file(outputDir)
   archiveFileName = outputFile
 }
