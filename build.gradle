@@ -47,7 +47,7 @@ dependencies {
   implementation 'org.commonmark:commonmark-ext-autolink:0.24.0'
   implementation 'org.commonmark:commonmark-ext-gfm-strikethrough:0.24.0'
   implementation 'org.commonmark:commonmark-ext-gfm-tables:0.24.0'
-  implementation 'org.jsoup:jsoup:1.18.3'
+  implementation 'org.jsoup:jsoup:1.19.1'
   implementation 'rome:rome:1.0'
 
   implementation('org.lesscss:lesscss:1.7.0.1.1') {
