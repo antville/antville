@@ -42,15 +42,19 @@ allprojects {
 
 version = distVersion()
 
+configurations {
+  lessCss
+}
+
 dependencies {
   implementation 'org.commonmark:commonmark:0.24.0'
   implementation 'org.commonmark:commonmark-ext-autolink:0.24.0'
   implementation 'org.commonmark:commonmark-ext-gfm-strikethrough:0.24.0'
   implementation 'org.commonmark:commonmark-ext-gfm-tables:0.24.0'
-  implementation 'org.jsoup:jsoup:1.18.3'
+  implementation 'org.jsoup:jsoup:1.19.1'
   implementation 'rome:rome:1.0'
 
-  implementation('org.lesscss:lesscss:1.7.0.1.1') {
+  lessCss('org.lesscss:lesscss:1.7.0.1.1') {
     exclude group: 'org.mozilla', module: 'rhino'
     exclude group: 'org.slf4j', module: 'slf4j-api'
     exclude group: 'org.slf4j', module: 'slf4j-simple'
@@ -318,4 +322,53 @@ tasks.register('distTar', Tar) {
   compression = Compression.GZIP
   destinationDirectory = file(outputDir)
   archiveFileName = outputFile
+}
+
+// Task to patch the lesscss JAR file
+// This task modifies the lessc-rhino-1.7.0.js file in the JAR to comment out an annoying console.log statement (“done”)
+def patchLessCssJar = tasks.register('patchLessCssJar') {
+  def name = 'lesscss-1.7.0.1.1'
+  def targetFile = 'META-INF/lessc-rhino-1.7.0.js' // File to patch
+  def tempDir = file("${buildDir}/${name}") // Temporary directory for extraction
+  def patchedJar = file("${buildDir}/${name}-patched.jar") // Output patched JAR
+
+  outputs.file patchedJar
+
+  doLast {
+    if (tempDir.exists()) {
+      tempDir.deleteDir()
+    }
+    tempDir.mkdirs()
+
+    def jarFile = configurations.lessCss.find {
+      it.name.contains(name)
+    }
+
+    println "Patching $jarFile…"
+    ant.unzip(src: jarFile, dest: tempDir)
+
+    def targetFilePath = new File(tempDir, targetFile)
+    def content = targetFilePath.text
+    content = content.replace('console.log("done")', '// console.log("done")')
+    targetFilePath.text = content
+
+    ant.zip(destfile: patchedJar) {
+      fileset(dir: tempDir)
+    }
+  }
+}
+
+// Ensure the patchLessCssJar task runs before the classes task
+tasks.named('build').configure {
+  dependsOn patchLessCssJar
+}
+
+// Exclude the original lesscss JAR from the runtime classpath
+// and include the patched JAR instead
+configurations.runtimeClasspath {
+  exclude group: 'org.lesscss', module: 'lesscss'
+
+  dependencies {
+    runtimeOnly(patchLessCssJar.map { it.outputs.files })
+  }
 }
