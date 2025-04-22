@@ -22,7 +22,7 @@
 String.ELLIPSIS = '…';
 
 app.addRepository(app.dir + '/../lib/jdom-1.0.jar');
-app.addRepository(app.dir + '/../lib/jsoup-1.18.3.jar');
+app.addRepository(app.dir + '/../lib/jsoup-1.19.1.jar');
 // See the patchLessCssJar task in build.gradle
 app.addRepository(app.dir + '/../lib/lesscss-1.7.0.1.1-patched.jar');
 app.addRepository(app.dir + '/../lib/rome-1.0.jar');
