@@ -94,6 +94,7 @@ Root.prototype.getPermission = function(action) {
   switch (action) {
     case '.':
     case 'main':
+    case 'cookie':
     case 'debug':
     case 'default.hook':
     case 'favicon.ico':
@@ -366,6 +367,23 @@ Root.prototype.mrtg_action = function() {
   res.writeln('mrtg.' + target + ' of Antville version ' + Root.VERSION);
   return;
 }
+
+// Login to the root site if Members#login_action() redirects here
+// This way custom domains are getting the default domain cookie, too
+Root.prototype.cookie_action = function() {
+  if (req.data.digest && req.data.name) {
+    const user = User.getByName(req.data.name);
+    if (user) {
+      const token = user.getMetadata("rootCookieToken");
+      const digest = user.getDigest(token);
+      if (digest === req.data.digest) {
+        session.login(user);
+        user.deleteMetadata("rootCookieToken");
+      }
+    }
+  }
+  res.redirect(req.data.location || req.data.http_referer || root.href());
+};
 
 /**
  * Catch some undefined macro handlers, then delegate to the super prototype.
