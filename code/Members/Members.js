@@ -202,7 +202,23 @@ Members.prototype.login_action = function() {
       }
 
       res.message = gettext('Welcome to {0}, {1}. Have fun!', res.handlers.site.getTitle(), user.name);
-      res.redirect(User.getLocation() || this._parent.href());
+
+      const location = User.getLocation() || this._parent.href();
+
+      // If the requested host is outside of the cookie domain, redirect and login to the root site, too
+      if (this._parent !== root && !req.getHeader("Host").includes(app.appsProperties.cookieDomain)) {
+        const token = java.util.UUID.randomUUID();
+        const digest = session.user.getDigest(token);
+        session.user.setMetadata('rootCookieToken', token);
+        res.redirect(
+          root.href('cookie')
+          + '?digest=' + encodeURIComponent(digest)
+          + '&name=' + encodeURIComponent(req.postParams.name)
+          + '&location=' + encodeURIComponent(location)
+        );
+      }
+
+      res.redirect(location);
     } catch (ex) {
       res.message = ex;
     }
