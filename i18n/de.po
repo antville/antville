@@ -18,8 +18,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Antville-1.5\n"
 "Report-Msgid-Bugs-To: mail@antville.org\n"
-"POT-Creation-Date: 2025-05-11 00:27+0200\n"
-"PO-Revision-Date: 2025-05-11 00:29+0200\n"
+"POT-Creation-Date: 2025-05-11 01:00+0200\n"
+"PO-Revision-Date: 2025-05-11 01:03+0200\n"
 "Last-Translator: Tobi Schäfer <interface@p3k.org>\n"
 "Language-Team: The Antville People <mail@antville.org>\n"
 "Language: de\n"
@@ -1663,6 +1663,13 @@ msgstr ""
 "Danke, Ihre Stimme wurde gezählt. Bis die Umfrage beendet ist, können Sie "
 "Ihre Meinung jederzeit ändern."
 
+#: HopObject/HopObject.js:150
+#, java-format
+msgid "The <a href=\"{0}\">robots.txt</a> file disallows access to this page."
+msgstr ""
+"Die <a href=\"{0}\">robots.txt</a>-Datei verbietet den Zugriff auf diese "
+"Seite."
+
 #: User/$User.skin:207 Membership/$Membership.skin:107
 #: Membership/$Membership.skin:135 Membership/$Membership.skin:124
 #: Membership/$Membership.skin:156 Membership/$Membership.skin:146
@@ -3048,6 +3055,9 @@ msgid "{0}Download the archive{1} or click “Export” to create a new one."
 msgstr ""
 "{0}Laden Sie das Archiv herunter{1} oder klicken Sie »Exportieren«, um ein "
 "neues zu erstellen."
+
+#~ msgid "Robots.txt forbids access to this page."
+#~ msgstr "Robots.txt verbietet den Zugang zu dieser Seite."
 
 #~ msgid ""
 #~ "Edit the rules in the <a href=\"%s/Site/robots/edit\">robots.txt</a> skin."

@@ -147,7 +147,7 @@ HopObject.prototype.onRequest = function() {
 
   if (res.handlers.site.enforceRobotsTxt()) {
     res.status = 403
-    res.data.error = "Robots.txt forbids access to this page.";
+    res.data.error = gettext('The <a href="{0}">robots.txt</a> file disallows access to this page.', res.handlers.site.href('robots.txt'));
     root.error_action();
     res.stop();
   }

@@ -361,6 +361,7 @@ global.messages['de'] = {
   "Terms and Conditions": "Nutzungsbedingungen",
   "Text": "Text",
   "Thanks, your vote was registered. You can change your mind until the poll is closed.": "Danke, Ihre Stimme wurde gezählt. Bis die Umfrage beendet ist, können Sie Ihre Meinung jederzeit ändern.",
+  "The <a href=\"{0}\">robots.txt</a> file disallows access to this page.": "Die <a href=\"{0}\">robots.txt</a>-Datei verbietet den Zugriff auf diese Seite.",
   "The Management": "Die Direktion",
   "The URL endpoint for each of these APIs is located at": "Die Internet-Adresse für jede dieser Schnittstellen lautet",
   "The account data will be available for download from here within the next days.": "Die Kontodaten stehen demnächst hier zum Download bereit.",

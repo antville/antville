@@ -22,8 +22,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Antville-0\n"
 "Report-Msgid-Bugs-To: mail@antville.org\n"
-"POT-Creation-Date: 2025-05-11 00:27+0200\n"
-"PO-Revision-Date: 2025-05-11 00:27+0200\n"
+"POT-Creation-Date: 2025-05-11 01:00+0200\n"
+"PO-Revision-Date: 2025-05-11 01:00+0200\n"
 "Language-Team: The Antville People <mail@antville.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -1771,6 +1771,11 @@ msgstr ""
 
 #: Poll/Poll.js:125
 msgid "Thanks, your vote was registered. You can change your mind until the poll is closed."
+msgstr ""
+
+#: HopObject/HopObject.js:150
+#, java-format
+msgid "The <a href=\"{0}\">robots.txt</a> file disallows access to this page."
 msgstr ""
 
 #: User/$User.skin:207
