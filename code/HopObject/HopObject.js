@@ -140,9 +140,17 @@ HopObject.prototype.onRequest = function() {
     }
   }
 
+  // Set up layout handler and skin path
   HopObject.confirmConstructor(Layout);
   res.handlers.layout = res.handlers.site.layout || new Layout;
   res.skinpath = res.handlers.layout.getSkinPath();
+
+  if (res.handlers.site.enforceRobotsTxt()) {
+    res.status = 403
+    res.data.error = "Robots.txt forbids access to this page.";
+    root.error_action();
+    res.stop();
+  }
 
   if (!this.getPermission(req.action)) {
     if (!session.user) {
