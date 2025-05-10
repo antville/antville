@@ -1132,3 +1132,22 @@ Site.prototype.callback = function(ref) {
   }
   return;
 }
+
+Site.prototype.enforceRobotsTxt = function() {
+  if (this.robotsTxtMode !== Site.ENFORCED) {
+    return false;
+  }
+
+  // Override some patterns to prevent a site from becoming inaccessible even for the owner
+  const overrides = [
+    'User-agent: mozilla',
+    'Allow: */edit$',
+    'Allow: */layout',
+    'Allow: */main.*$',
+    'Allow: */members'
+  ];
+
+  const robotsTxt = root.renderSkinAsString('Site#robots');
+  const robots = new Robots(this.href('robots.txt'), robotsTxt + overrides.join('\n'));
+  return !robots.isAllowed(path.href() + req.action, req.getHeader('user-agent'));
+}
