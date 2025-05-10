@@ -2,7 +2,7 @@
 # The Antville Project
 # http://code.google.com/p/antville
 #
-# Copyright 2001-2024 by the Workers of Antville.
+# Copyright 2001-2025 by the Workers of Antville.
 #
 # Licensed under the Apache License, Version 2.0 (the ``License''
 # you may not use this file except in compliance with the License.
@@ -20,17 +20,17 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Antville-1\n"
+"Project-Id-Version: Antville-0\n"
 "Report-Msgid-Bugs-To: mail@antville.org\n"
-"POT-Creation-Date: 2024-06-11 21:10+0200\n"
-"PO-Revision-Date: 2024-06-11 21:10+0200\n"
+"POT-Creation-Date: 2025-05-11 00:27+0200\n"
+"PO-Revision-Date: 2025-05-11 00:27+0200\n"
 "Language-Team: The Antville People <mail@antville.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: Global/Global.js:987
+#: Global/Global.js:989
 #, java-format
 msgid "({0} character)"
 msgid_plural "({0} characters)"
@@ -141,7 +141,7 @@ msgid "Admin"
 msgstr ""
 
 #: User/$User.skin:110
-#: Site/$Site.skin:279
+#: Site/$Site.skin:295
 msgid "Administration"
 msgstr ""
 
@@ -168,7 +168,7 @@ msgid "All Skins"
 msgstr ""
 
 #: User/$User.skin:178
-#: Site/$Site.skin:315
+#: Site/$Site.skin:331
 msgid "All of this will be deleted irreversibly."
 msgstr ""
 
@@ -193,7 +193,7 @@ msgstr ""
 msgid "Antville supports the following application programming interfaces:"
 msgstr ""
 
-#: Root/$Root.skin:128
+#: Root/$Root.skin:131
 msgid "Application Server"
 msgstr ""
 
@@ -201,12 +201,12 @@ msgstr ""
 msgid "Archive"
 msgstr ""
 
-#: Site/$Site.skin:1184
+#: Site/$Site.skin:1200
 msgid "Are you sure you want to add this URL to the referrer filter? Edit it below to filter a pattern only."
 msgstr ""
 
 #: User/$User.skin:179
-#: Site/$Site.skin:316
+#: Site/$Site.skin:332
 msgid "Are you sure you want to proceed?"
 msgstr ""
 
@@ -227,8 +227,8 @@ msgstr ""
 #: Membership/$Membership.skin:134
 #: Membership/$Membership.skin:155
 #: Membership/$Membership.skin:145
-#: Site/$Site.skin:1307
-#: Site/$Site.skin:1317
+#: Site/$Site.skin:1323
+#: Site/$Site.skin:1333
 #: HopObject/$HopObject.skin:37
 #: HopObject/$HopObject.skin:46
 msgid "Best regards."
@@ -237,11 +237,11 @@ msgstr ""
 #: User/User.js:197
 #: Admin/$Admin.skin:417
 #: Admin/$Admin.skin:396
-#: Site/Site.js:53
+#: Site/Site.js:54
 msgid "Blocked"
 msgstr ""
 
-#: Site/$Site.skin:185
+#: Site/$Site.skin:201
 msgid "Bookmarklet"
 msgstr ""
 
@@ -255,7 +255,7 @@ msgstr ""
 
 #: Api/Api.js:123
 #: Api/$Api.skin:13
-#: Site/$Site.skin:171
+#: Site/$Site.skin:187
 msgid "Callback URL"
 msgstr ""
 
@@ -274,10 +274,10 @@ msgstr ""
 #: Membership/$Membership.skin:78
 #: Admin/$Admin.skin:139
 #: Story/Story.skin:83
-#: Site/$Site.skin:1296
-#: Site/$Site.skin:327
-#: Site/$Site.skin:1273
-#: Site/$Site.skin:212
+#: Site/$Site.skin:1312
+#: Site/$Site.skin:343
+#: Site/$Site.skin:1289
+#: Site/$Site.skin:228
 #: Comment/Comment.skin:70
 #: File/$File.skin:64
 #: Image/$Image.skin:90
@@ -315,7 +315,7 @@ msgstr ""
 msgid "Close"
 msgstr ""
 
-#: Site/Site.js:60
+#: Site/Site.js:61
 #: Stories/$Stories.skin:8
 msgid "Closed"
 msgstr ""
@@ -326,7 +326,7 @@ msgstr ""
 
 #: Comment/Comment.js:22
 #: Comment/Comment.skin:62
-#: HopObject/HopObject.js:173
+#: HopObject/HopObject.js:181
 msgid "Comment"
 msgstr ""
 
@@ -359,7 +359,7 @@ msgstr ""
 msgid "Compare {0}"
 msgstr ""
 
-#: HopObject/HopObject.js:207
+#: HopObject/HopObject.js:215
 msgid "Confirm Deletion"
 msgstr ""
 
@@ -368,7 +368,7 @@ msgstr ""
 msgid "Confirm Reset"
 msgstr ""
 
-#: Site/Site.js:736
+#: Site/Site.js:748
 msgid "Confirm Unsubscribe"
 msgstr ""
 
@@ -393,7 +393,7 @@ msgid "Content of Member {0}"
 msgstr ""
 
 #: Membership/Membership.js:54
-#: Site/Site.js:88
+#: Site/Site.js:89
 msgid "Contributor"
 msgstr ""
 
@@ -439,11 +439,11 @@ msgstr ""
 msgid "Create a site. It only takes a few clicks."
 msgstr ""
 
-#: Global/Global.js:552
+#: Global/Global.js:553
 msgid "Create missing file"
 msgstr ""
 
-#: Global/Global.js:599
+#: Global/Global.js:600
 msgid "Create missing image"
 msgstr ""
 
@@ -469,7 +469,7 @@ msgstr ""
 msgid "Created on {0}"
 msgstr ""
 
-#: Site/$Site.skin:372
+#: Site/$Site.skin:388
 #, java-format
 msgid "Created {0}"
 msgstr ""
@@ -490,7 +490,7 @@ msgstr ""
 #: User/$User.skin:103
 #: Poll/$Poll.skin:121
 #: Story/Story.skin:82
-#: Site/$Site.skin:211
+#: Site/$Site.skin:227
 #: File/$File.skin:63
 #: Image/$Image.skin:89
 msgid "Delete"
@@ -499,7 +499,7 @@ msgstr ""
 #: User/User.js:197
 #: Admin/$Admin.skin:402
 #: Admin/$Admin.skin:414
-#: Site/Site.js:53
+#: Site/Site.js:54
 msgid "Deleted"
 msgstr ""
 
@@ -527,7 +527,7 @@ msgstr ""
 msgid "Dimensions"
 msgstr ""
 
-#: Site/$Site.skin:1114
+#: Site/$Site.skin:1130
 msgid "Disable filter"
 msgstr ""
 
@@ -539,7 +539,7 @@ msgstr ""
 msgid "Disk Quota"
 msgstr ""
 
-#: Site/$Site.skin:195
+#: Site/$Site.skin:211
 msgid "Disk Space"
 msgstr ""
 
@@ -553,7 +553,7 @@ msgstr ""
 msgid "Do Androids dream of electric sheep?"
 msgstr ""
 
-#: Site/$Site.skin:189
+#: Site/$Site.skin:205
 msgid "Drag to Bookmarks Bar"
 msgstr ""
 
@@ -603,8 +603,13 @@ msgstr ""
 msgid "Edit Story"
 msgstr ""
 
-#: Site/$Site.skin:1115
+#: Site/$Site.skin:1131
 msgid "Edit the filter in the site settings."
+msgstr ""
+
+#: Site/$Site.skin:157
+#, java-format
+msgid "Edit the rules in the <a href=\"{0}Site/robots/edit\">robots.txt</a> skin."
 msgstr ""
 
 #: Skin/Skin.js:169
@@ -616,7 +621,7 @@ msgstr ""
 msgid "Enabled"
 msgstr ""
 
-#: Site/$Site.skin:164
+#: Site/$Site.skin:180
 #, java-format
 msgid "Enter one filter {0}pattern{1} per line to be applied on every URL in the referrer and backlink lists."
 msgstr ""
@@ -641,7 +646,7 @@ msgstr ""
 #: User/$User.skin:52
 #: User/$User.skin:146
 #: Layout/$Layout.skin:10
-#: Site/$Site.skin:1273
+#: Site/$Site.skin:1289
 #: Site/$Site.skin:26
 msgid "Export"
 msgstr ""
@@ -650,16 +655,16 @@ msgstr ""
 msgid "Export Account Data"
 msgstr ""
 
-#: Site/$Site.skin:1267
+#: Site/$Site.skin:1283
 msgid "Export Site Data"
 msgstr ""
 
 #: Story/$Story.skin:96
-#: Site/$Site.skin:1286
+#: Site/$Site.skin:1302
 #: File/$File.skin:30
 #: File/File.js:22
 #: Image/$Image.skin:47
-#: HopObject/HopObject.js:174
+#: HopObject/HopObject.js:182
 msgid "File"
 msgstr ""
 
@@ -686,14 +691,14 @@ msgid "Filter"
 msgstr ""
 
 #: Members/$Members.skin:210
-#: Site/$Site.skin:325
+#: Site/$Site.skin:341
 #: ../compat/Site/$Site.skin:8
 msgid "Find"
 msgstr ""
 
 #: Members/Members.js:327
-#: Site/Site.js:692
-#: Site/Site.js:972
+#: Site/Site.js:704
+#: Site/Site.js:984
 #, java-format
 msgid "Found more than {0} results. Please try a more specific query."
 msgstr ""
@@ -727,7 +732,7 @@ msgstr ""
 msgid "Have fun!"
 msgstr ""
 
-#: Root/Root.js:306
+#: Root/Root.js:317
 #: Root/Site.skin:31
 msgid "Health"
 msgstr ""
@@ -736,8 +741,8 @@ msgstr ""
 #: Membership/$Membership.skin:127
 #: Membership/$Membership.skin:149
 #: Membership/$Membership.skin:138
-#: Site/$Site.skin:1301
-#: Site/$Site.skin:1311
+#: Site/$Site.skin:1317
+#: Site/$Site.skin:1327
 #: HopObject/$HopObject.skin:32
 #: HopObject/$HopObject.skin:41
 #, java-format
@@ -789,7 +794,7 @@ msgid "If you want to resize the image please specify your desired maximum width
 msgstr ""
 
 #: Image/Image.js:24
-#: HopObject/HopObject.js:175
+#: HopObject/HopObject.js:183
 msgid "Image"
 msgstr ""
 
@@ -823,14 +828,14 @@ msgstr ""
 msgid "Import Layout"
 msgstr ""
 
-#: Site/$Site.skin:1279
+#: Site/$Site.skin:1295
 msgid "Import Site Data"
 msgstr ""
 
 #: User/$User.skin:121
 #: Poll/$Poll.skin:107
 #: Story/Story.skin:71
-#: Site/$Site.skin:290
+#: Site/$Site.skin:306
 #: File/$File.skin:54
 #: Image/$Image.skin:80
 msgid "Information"
@@ -874,7 +879,7 @@ msgstr ""
 msgid "Last modified on {0}"
 msgstr ""
 
-#: Site/$Site.skin:373
+#: Site/$Site.skin:389
 #, java-format
 msgid "Last modified {0}"
 msgstr ""
@@ -916,7 +921,7 @@ msgid "Logout // verb"
 msgstr ""
 
 #: Membership/Membership.js:54
-#: Site/Site.js:88
+#: Site/Site.js:89
 msgid "Manager"
 msgstr ""
 
@@ -941,7 +946,7 @@ msgid "Members"
 msgstr ""
 
 #: Membership/Membership.js:22
-#: HopObject/HopObject.js:176
+#: HopObject/HopObject.js:184
 msgid "Membership"
 msgstr ""
 
@@ -1018,7 +1023,7 @@ msgstr ""
 msgid "No differences were found."
 msgstr ""
 
-#: Site/Site.js:87
+#: Site/Site.js:88
 msgid "Nobody"
 msgstr ""
 
@@ -1036,7 +1041,7 @@ msgid "Note"
 msgstr ""
 
 #: User/$User.skin:131
-#: Site/$Site.skin:299
+#: Site/$Site.skin:315
 msgid "Notes"
 msgstr ""
 
@@ -1066,7 +1071,7 @@ msgstr ""
 msgid "Of course, you can now also start to add <a href=\"{0}\">stories</a>, upload some <a href=\"{1}\">images</a> or <a href=\"{2}\">files</a>, create your first <a href=\"{3}\">poll</a> or get a glimpse of Antville’s wonderful customization possibilities; just take a look at the <a href=\"{4}\">layout section</a> where you can modify the appearance of your site according to your needs."
 msgstr ""
 
-#: Site/Site.js:61
+#: Site/Site.js:62
 msgid "Open"
 msgstr ""
 
@@ -1079,7 +1084,7 @@ msgid "Original skin"
 msgstr ""
 
 #: Membership/Membership.js:54
-#: Site/Site.js:88
+#: Site/Site.js:89
 msgid "Owner"
 msgstr ""
 
@@ -1130,7 +1135,7 @@ msgstr ""
 
 #: User/User.js:224
 #: Skins/Skins.js:93
-#: Site/Site.js:122
+#: Site/Site.js:130
 msgid "Please avoid special characters or HTML code in the name field."
 msgstr ""
 
@@ -1151,11 +1156,11 @@ msgstr ""
 msgid "Please contact an administrator for further information."
 msgstr ""
 
-#: Site/$Site.skin:1323
+#: Site/$Site.skin:1339
 msgid "Please enable JavaScript in your browser for improved functionality."
 msgstr ""
 
-#: Site/Site.js:111
+#: Site/Site.js:119
 msgid "Please enter a name for your new site."
 msgstr ""
 
@@ -1168,7 +1173,7 @@ msgid "Please enter a new password."
 msgstr ""
 
 #: Members/Members.js:321
-#: Site/Site.js:959
+#: Site/Site.js:971
 msgid "Please enter a query in the search form."
 msgstr ""
 
@@ -1214,7 +1219,7 @@ msgid "Please fill out the whole form to create a valid poll."
 msgstr ""
 
 #: Story/Story.js:312
-#: HopObject/HopObject.js:150
+#: HopObject/HopObject.js:158
 msgid "Please login first."
 msgstr ""
 
@@ -1228,7 +1233,7 @@ msgstr ""
 
 #: Poll/Poll.js:22
 #: Story/$Story.skin:101
-#: HopObject/HopObject.js:177
+#: HopObject/HopObject.js:185
 msgid "Poll"
 msgstr ""
 
@@ -1252,7 +1257,7 @@ msgstr ""
 msgid "Polls by {0}"
 msgstr ""
 
-#: Site/$Site.skin:189
+#: Site/$Site.skin:205
 #, java-format
 msgid "Post to {0}"
 msgstr ""
@@ -1302,7 +1307,7 @@ msgstr ""
 msgid "Proceed"
 msgstr ""
 
-#: Site/Site.js:61
+#: Site/Site.js:62
 msgid "Public"
 msgstr ""
 
@@ -1334,15 +1339,15 @@ msgstr ""
 msgid "Reference"
 msgstr ""
 
-#: Site/$Site.skin:1128
+#: Site/$Site.skin:1144
 msgid "Referrer"
 msgstr ""
 
-#: Site/$Site.skin:158
+#: Site/$Site.skin:174
 msgid "Referrer Filter"
 msgstr ""
 
-#: Site/Site.js:678
+#: Site/Site.js:690
 #: Site/Site.skin:34
 #: Root/Site.skin:37
 msgid "Referrers"
@@ -1370,7 +1375,7 @@ msgstr ""
 #: Admin/Admin.js:94
 #: Admin/Admin.js:108
 #: Admin/Admin.js:115
-#: Site/Site.js:54
+#: Site/Site.js:55
 msgid "Regular"
 msgstr ""
 
@@ -1395,7 +1400,7 @@ msgstr ""
 #: Admin/$Admin.skin:211
 #: Admin/$Admin.skin:257
 #: Admin/$Admin.skin:164
-#: Site/$Site.skin:1109
+#: Site/$Site.skin:1125
 #: Skin/$Skin.skin:71
 msgid "Reset"
 msgstr ""
@@ -1409,12 +1414,16 @@ msgid "Resource type (e.g. Story or Comment)"
 msgstr ""
 
 #: Admin/Admin.js:101
-#: Site/Site.js:60
+#: Site/Site.js:61
 msgid "Restricted"
 msgstr ""
 
 #: Poll/$Poll.skin:60
 msgid "Results"
+msgstr ""
+
+#: Site/$Site.skin:148
+msgid "Robot rules"
 msgstr ""
 
 #: User/$User.skin:34
@@ -1439,7 +1448,7 @@ msgstr ""
 #: Membership/$Membership.skin:16
 #: Admin/$Admin.skin:137
 #: Story/Story.skin:80
-#: Site/$Site.skin:208
+#: Site/$Site.skin:224
 #: Comment/Comment.skin:69
 #: File/$File.skin:61
 #: Image/$Image.skin:87
@@ -1451,19 +1460,19 @@ msgstr ""
 msgid "Save and Run"
 msgstr ""
 
-#: Root/$Root.skin:130
+#: Root/$Root.skin:138
 msgid "Scripting Engine"
 msgstr ""
 
-#: Site/Site.js:704
+#: Site/Site.js:716
 #: Site/Site.skin:41
-#: Site/$Site.skin:1107
-#: Site/$Site.skin:1207
+#: Site/$Site.skin:1123
+#: Site/$Site.skin:1223
 #: ../compat/Global/aspects.js:246
 msgid "Search"
 msgstr ""
 
-#: Site/$Site.skin:340
+#: Site/$Site.skin:356
 #, java-format
 msgid "Search with {0}"
 msgstr ""
@@ -1485,7 +1494,7 @@ msgstr ""
 msgid "Separated by commas"
 msgstr ""
 
-#: Root/$Root.skin:134
+#: Root/$Root.skin:142
 msgid "Servlet Interface"
 msgstr ""
 
@@ -1494,9 +1503,9 @@ msgid "Sessions"
 msgstr ""
 
 #: Layout/$Layout.skin:73
-#: Site/Site.js:338
+#: Site/Site.js:347
 #: Site/Site.skin:31
-#: Site/$Site.skin:1275
+#: Site/$Site.skin:1291
 #: Root/Site.skin:35
 msgid "Settings"
 msgstr ""
@@ -1526,7 +1535,7 @@ msgstr ""
 #: Admin/$Admin.skin:216
 #: Admin/$Admin.skin:262
 #: Admin/$Admin.skin:169
-#: Site/$Site.skin:331
+#: Site/$Site.skin:347
 #, java-format
 msgid "Showing {0} result"
 msgid_plural "Showing {0} results"
@@ -1557,7 +1566,7 @@ msgstr ""
 msgid "Site Phase-Out"
 msgstr ""
 
-#: Site/Site.js:803
+#: Site/Site.js:815
 msgid "Site is scheduled for import."
 msgstr ""
 
@@ -1581,7 +1590,7 @@ msgstr ""
 msgid "Skins"
 msgstr ""
 
-#: Site/Site.js:835
+#: Site/Site.js:847
 msgid "Something went wrong."
 msgstr ""
 
@@ -1625,7 +1634,7 @@ msgid "Source: {0}"
 msgstr ""
 
 #: Site/Site.skin:18
-#: Site/$Site.skin:1294
+#: Site/$Site.skin:1310
 #: Root/Site.skin:24
 msgid "Start"
 msgstr ""
@@ -1637,13 +1646,13 @@ msgstr ""
 #: User/$User.skin:113
 #: Admin/$Admin.skin:224
 #: Admin/$Admin.skin:270
-#: Site/$Site.skin:282
+#: Site/$Site.skin:298
 #: Root/$Root.skin:70
 msgid "Status"
 msgstr ""
 
 #: Poll/$Poll.skin:117
-#: Site/$Site.skin:1294
+#: Site/$Site.skin:1310
 msgid "Stop"
 msgstr ""
 
@@ -1659,7 +1668,7 @@ msgid "Stories by {0}"
 msgstr ""
 
 #: Story/Story.js:22
-#: HopObject/HopObject.js:178
+#: HopObject/HopObject.js:186
 msgid "Story"
 msgstr ""
 
@@ -1689,7 +1698,7 @@ msgid "Subscribed"
 msgstr ""
 
 #: Membership/Membership.js:53
-#: Site/Site.js:89
+#: Site/Site.js:90
 msgid "Subscriber"
 msgstr ""
 
@@ -1713,12 +1722,12 @@ msgstr ""
 msgid "Successfully created your site."
 msgstr ""
 
-#: Site/Site.js:713
+#: Site/Site.js:725
 #, java-format
 msgid "Successfully subscribed to site {0}."
 msgstr ""
 
-#: Site/Site.js:727
+#: Site/Site.js:739
 #, java-format
 msgid "Successfully unsubscribed from site {0}."
 msgstr ""
@@ -1731,7 +1740,7 @@ msgstr ""
 msgid "Successfully updated the setup."
 msgstr ""
 
-#: Root/Root.skin:2
+#: Root/Root.skin:3
 msgid "System is up and running."
 msgstr ""
 
@@ -1770,8 +1779,8 @@ msgstr ""
 #: Membership/$Membership.skin:124
 #: Membership/$Membership.skin:156
 #: Membership/$Membership.skin:146
-#: Site/$Site.skin:1308
-#: Site/$Site.skin:1318
+#: Site/$Site.skin:1324
+#: Site/$Site.skin:1334
 #: HopObject/$HopObject.skin:38
 #: HopObject/$HopObject.skin:47
 msgid "The Management"
@@ -1801,14 +1810,14 @@ msgstr ""
 #: User/User.js:523
 #: Skins/Skins.js:99
 #: Membership/Membership.js:159
-#: Site/Site.js:329
+#: Site/Site.js:338
 #: File/File.js:204
 #: Image/Image.js:203
 #: Skin/Skin.js:157
 msgid "The changes were saved successfully."
 msgstr ""
 
-#: Site/Site.js:115
+#: Site/Site.js:123
 msgid "The chosen name is too long. Please enter a shorter one."
 msgstr ""
 
@@ -1861,15 +1870,15 @@ msgstr ""
 msgid "The poll was updated successfully."
 msgstr ""
 
-#: Site/Site.js:768
+#: Site/Site.js:780
 msgid "The site data will be available for download from here, soon."
 msgstr ""
 
-#: Site/Site.js:756
+#: Site/Site.js:768
 msgid "The site is queued for export."
 msgstr ""
 
-#: Site/$Site.skin:1281
+#: Site/$Site.skin:1297
 #, java-format
 msgid "The site is scheduled for importing the file {0}. The imported site data will be available within 24 hours."
 msgstr ""
@@ -1878,17 +1887,17 @@ msgstr ""
 msgid "The site you requested has been blocked."
 msgstr ""
 
-#: Site/$Site.skin:1303
+#: Site/$Site.skin:1319
 #, java-format
 msgid "The site {0} at {1} will be blocked in {2} because it is being restricted for too long."
 msgstr ""
 
-#: Site/$Site.skin:1313
+#: Site/$Site.skin:1329
 #, java-format
 msgid "The site {0} at {1} will be deleted in {2} because it has been considered as abandoned."
 msgstr ""
 
-#: Site/Site.js:352
+#: Site/Site.js:361
 #, java-format
 msgid "The site {0} is being deleted."
 msgstr ""
@@ -1925,7 +1934,7 @@ msgstr ""
 msgid "The {0} macro is missing. It is essential for accessing the site and must be present in this skin."
 msgstr ""
 
-#: Site/Site.js:124
+#: Site/Site.js:132
 msgid "There already is a site with this name."
 msgstr ""
 
@@ -1934,8 +1943,8 @@ msgstr ""
 msgid "There is already another job queued for this account: {0}"
 msgstr ""
 
-#: Site/Site.js:753
-#: Site/Site.js:790
+#: Site/Site.js:765
+#: Site/Site.js:802
 #, java-format
 msgid "There is already another job queued for this site: {0}"
 msgstr ""
@@ -2080,7 +2089,7 @@ msgstr ""
 msgid "Total sites hosted here"
 msgstr ""
 
-#: Site/$Site.skin:148
+#: Site/$Site.skin:164
 msgid "Troll Filter"
 msgstr ""
 
@@ -2090,7 +2099,7 @@ msgstr ""
 #: Admin/Admin.js:94
 #: Admin/Admin.js:108
 #: Admin/Admin.js:115
-#: Site/Site.js:54
+#: Site/Site.js:55
 msgid "Trusted"
 msgstr ""
 
@@ -2134,7 +2143,7 @@ msgstr ""
 msgid "Uptime"
 msgstr ""
 
-#: HopObject/HopObject.js:179
+#: HopObject/HopObject.js:187
 msgid "User"
 msgstr ""
 
@@ -2150,7 +2159,7 @@ msgstr ""
 msgid "Via"
 msgstr ""
 
-#: Root/$Root.skin:136
+#: Root/$Root.skin:148
 msgid "Virtual Machine"
 msgstr ""
 
@@ -2172,7 +2181,7 @@ msgstr ""
 msgid "We have updated our terms and conditions. Please reaffirm you understand and accept the following:"
 msgstr ""
 
-#: Root/$Root.skin:132
+#: Root/$Root.skin:140
 msgid "Webserver"
 msgstr ""
 
@@ -2258,7 +2267,7 @@ msgstr ""
 msgid "You are about to delete the membership of {0}."
 msgstr ""
 
-#: Site/Site.js:410
+#: Site/Site.js:421
 #, java-format
 msgid "You are about to delete the site {0}."
 msgstr ""
@@ -2268,7 +2277,7 @@ msgstr ""
 msgid "You are about to delete the whole account which currently contains {0}, {1}, {2}, {3}, {4} and {5}."
 msgstr ""
 
-#: Site/$Site.skin:309
+#: Site/$Site.skin:325
 #, java-format
 msgid "You are about to delete the whole site which currently contains {0}, {1}, {2}, {3} and {4}."
 msgstr ""
@@ -2283,7 +2292,7 @@ msgstr ""
 msgid "You are about to reset the skin {0}.{1}."
 msgstr ""
 
-#: Site/Site.js:738
+#: Site/Site.js:750
 #, java-format
 msgid "You are about to unsubscribe from the site {0}."
 msgstr ""
@@ -2292,7 +2301,7 @@ msgstr ""
 msgid "You are going to discard unsaved content."
 msgstr ""
 
-#: HopObject/HopObject.js:155
+#: HopObject/HopObject.js:163
 msgid "You are not allowed to access this part of the site."
 msgstr ""
 
@@ -2338,8 +2347,8 @@ msgstr ""
 msgid "You did not vote, yet. You can vote until the poll is closed."
 msgstr ""
 
-#: Root/Root.js:418
-#: Root/Root.js:427
+#: Root/Root.js:429
+#: Root/Root.js:438
 #, java-format
 msgid "You need to wait {0} before you are allowed to create a new site."
 msgstr ""
@@ -2381,7 +2390,7 @@ msgstr ""
 msgid "[{0}] Notification of membership change"
 msgstr ""
 
-#: HopObject/HopObject.js:273
+#: HopObject/HopObject.js:281
 #, java-format
 msgid "[{0}] Notification of site changes"
 msgstr ""
@@ -2493,7 +2502,7 @@ msgstr ""
 #: Admin/$Admin.skin:198
 #: Story/Story.js:78
 #: Story/Story.js:92
-#: Site/Site.js:80
+#: Site/Site.js:81
 msgid "closed"
 msgstr ""
 
@@ -2518,7 +2527,7 @@ msgstr ""
 #: Admin/$Admin.skin:104
 #: Admin/$Admin.skin:123
 #: Admin/$Admin.skin:131
-#: Site/Site.js:67
+#: Site/Site.js:68
 msgid "days"
 msgstr ""
 
@@ -2534,8 +2543,8 @@ msgstr ""
 msgid "descending"
 msgstr ""
 
-#: Site/Site.js:73
-#: Site/Site.js:95
+#: Site/Site.js:74
+#: Site/Site.js:96
 msgid "disabled"
 msgstr ""
 
@@ -2550,12 +2559,20 @@ msgid "e.g. {0}"
 msgstr ""
 
 #: Layout/$Layout.skin:23
-#: Site/Site.js:74
-#: Site/Site.js:96
+#: Site/Site.js:75
+#: Site/Site.js:97
 #: Site/$Site.skin:81
 #: Site/$Site.skin:94
-#: Site/$Site.skin:178
+#: Site/$Site.skin:194
 msgid "enabled"
+msgstr ""
+
+#: Site/Site.js:104
+msgid "enforce"
+msgstr ""
+
+#: Site/$Site.skin:154
+msgid "enforced"
 msgstr ""
 
 #: Admin/Admin.js:22
@@ -2575,7 +2592,7 @@ msgstr ""
 msgid "files"
 msgstr ""
 
-#: Site/Site.js:940
+#: Site/Site.js:952
 msgid "free"
 msgstr ""
 
@@ -2600,42 +2617,42 @@ msgstr ""
 msgid "in"
 msgstr ""
 
-#: Global/Global.js:1120
+#: Global/Global.js:1122
 #, java-format
 msgid "in {0} day"
 msgid_plural "in {0} days"
 msgstr[0] ""
 msgstr[1] ""
 
-#: Global/Global.js:1116
+#: Global/Global.js:1118
 #, java-format
 msgid "in {0} hour"
 msgid_plural "in {0} hours"
 msgstr[0] ""
 msgstr[1] ""
 
-#: Global/Global.js:1114
+#: Global/Global.js:1116
 #, java-format
 msgid "in {0} minute"
 msgid_plural "in {0} minutes"
 msgstr[0] ""
 msgstr[1] ""
 
-#: Global/Global.js:1124
+#: Global/Global.js:1126
 #, java-format
 msgid "in {0} month"
 msgid_plural "in {0} months"
 msgstr[0] ""
 msgstr[1] ""
 
-#: Global/Global.js:1122
+#: Global/Global.js:1124
 #, java-format
 msgid "in {0} week"
 msgid_plural "in {0} weeks"
 msgstr[0] ""
 msgstr[1] ""
 
-#: Global/Global.js:1126
+#: Global/Global.js:1128
 #, java-format
 msgid "in {0} year"
 msgid_plural "in {0} years"
@@ -2708,7 +2725,7 @@ msgstr ""
 
 #: Admin/$Admin.skin:198
 #: Story/Story.js:79
-#: Site/Site.js:81
+#: Site/Site.js:82
 #: Comment/Comment.js:32
 msgid "public"
 msgstr ""
@@ -2725,7 +2742,7 @@ msgstr ""
 msgid "restricted"
 msgstr ""
 
-#: Global/Global.js:1165
+#: Global/Global.js:1167
 msgid "right now"
 msgstr ""
 
@@ -2746,7 +2763,7 @@ msgstr ""
 msgid "skins"
 msgstr ""
 
-#: Global/Global.js:1112
+#: Global/Global.js:1114
 msgid "soon"
 msgstr ""
 
@@ -2759,6 +2776,10 @@ msgstr ""
 msgid "story"
 msgstr ""
 
+#: Site/Site.js:103
+msgid "suggest"
+msgstr ""
+
 #: Tag/Tag.js:23
 msgid "tag"
 msgstr ""
@@ -2767,7 +2788,7 @@ msgstr ""
 msgid "tags"
 msgstr ""
 
-#: Global/Global.js:1118
+#: Global/Global.js:1120
 msgid "tomorrow"
 msgstr ""
 
@@ -2780,7 +2801,7 @@ msgstr ""
 msgid "updated // has updated"
 msgstr ""
 
-#: Site/Site.js:940
+#: Site/Site.js:952
 msgid "used"
 msgstr ""
 
@@ -2788,12 +2809,12 @@ msgstr ""
 msgid "vote"
 msgstr ""
 
-#: Global/Global.js:1171
+#: Global/Global.js:1173
 msgid "yesterday"
 msgstr ""
 
 #: User/$User.skin:125
-#: Site/$Site.skin:293
+#: Site/$Site.skin:309
 #, java-format
 msgid "{0} Comment"
 msgid_plural "{0} Comments"
@@ -2801,7 +2822,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: User/$User.skin:127
-#: Site/$Site.skin:295
+#: Site/$Site.skin:311
 #, java-format
 msgid "{0} File"
 msgid_plural "{0} Files"
@@ -2809,7 +2830,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: User/$User.skin:126
-#: Site/$Site.skin:294
+#: Site/$Site.skin:310
 #, java-format
 msgid "{0} Image"
 msgid_plural "{0} Images"
@@ -2834,7 +2855,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: User/$User.skin:124
-#: Site/$Site.skin:292
+#: Site/$Site.skin:308
 #, java-format
 msgid "{0} Story"
 msgid_plural "{0} Stories"
@@ -2872,25 +2893,25 @@ msgstr[1] ""
 
 #: User/$User.skin:174
 #: Story/Story.js:574
-#: Site/$Site.skin:311
+#: Site/$Site.skin:327
 #, java-format
 msgid "{0} comment"
 msgid_plural "{0} comments"
 msgstr[0] ""
 msgstr[1] ""
 
-#: Site/$Site.skin:1305
-#: Site/$Site.skin:1315
+#: Site/$Site.skin:1321
+#: Site/$Site.skin:1331
 #: Root/$Root.skin:79
-#: Root/Root.js:419
-#: Root/Root.js:428
+#: Root/Root.js:430
+#: Root/Root.js:439
 #, java-format
 msgid "{0} day"
 msgid_plural "{0} days"
 msgstr[0] ""
 msgstr[1] ""
 
-#: Global/Global.js:1173
+#: Global/Global.js:1175
 #, java-format
 msgid "{0} day ago"
 msgid_plural "{0} days ago"
@@ -2898,7 +2919,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: User/$User.skin:176
-#: Site/$Site.skin:313
+#: Site/$Site.skin:329
 #, java-format
 msgid "{0} file"
 msgid_plural "{0} files"
@@ -2920,7 +2941,7 @@ msgstr ""
 msgid "{0} has modified {1} at the site {2}:"
 msgstr ""
 
-#: Global/Global.js:1169
+#: Global/Global.js:1171
 #, java-format
 msgid "{0} hour ago"
 msgid_plural "{0} hours ago"
@@ -2928,7 +2949,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: User/$User.skin:175
-#: Site/$Site.skin:312
+#: Site/$Site.skin:328
 #, java-format
 msgid "{0} image"
 msgid_plural "{0} images"
@@ -2953,14 +2974,14 @@ msgid_plural "{0} mails"
 msgstr[0] ""
 msgstr[1] ""
 
-#: Global/Global.js:1167
+#: Global/Global.js:1169
 #, java-format
 msgid "{0} minute ago"
 msgid_plural "{0} minutes ago"
 msgstr[0] ""
 msgstr[1] ""
 
-#: Global/Global.js:1177
+#: Global/Global.js:1179
 #, java-format
 msgid "{0} month ago"
 msgid_plural "{0} months ago"
@@ -2978,7 +2999,7 @@ msgid "{0} per page"
 msgstr ""
 
 #: User/$User.skin:177
-#: Site/$Site.skin:314
+#: Site/$Site.skin:330
 #, java-format
 msgid "{0} poll"
 msgid_plural "{0} polls"
@@ -3008,7 +3029,7 @@ msgid "{0} sites sorted by {1} in {2} order."
 msgstr ""
 
 #: User/$User.skin:173
-#: Site/$Site.skin:310
+#: Site/$Site.skin:326
 #, java-format
 msgid "{0} story"
 msgid_plural "{0} stories"
@@ -3029,7 +3050,7 @@ msgid_plural "{0} votes"
 msgstr[0] ""
 msgstr[1] ""
 
-#: HopObject/HopObject.js:190
+#: HopObject/HopObject.js:198
 #, java-format
 msgid "{0} was successfully deleted."
 msgstr ""
@@ -3040,14 +3061,14 @@ msgstr ""
 msgid "{0} was successfully reset."
 msgstr ""
 
-#: Global/Global.js:1175
+#: Global/Global.js:1177
 #, java-format
 msgid "{0} week ago"
 msgid_plural "{0} weeks ago"
 msgstr[0] ""
 msgstr[1] ""
 
-#: Global/Global.js:1179
+#: Global/Global.js:1181
 #, java-format
 msgid "{0} year ago"
 msgid_plural "{0} years ago"
@@ -3076,7 +3097,7 @@ msgid "{0}% total"
 msgstr ""
 
 #: User/$User.skin:142
-#: Site/$Site.skin:1269
+#: Site/$Site.skin:1285
 #, java-format
 msgid "{0}Download the archive{1} or click “Export” to create a new one."
 msgstr ""
