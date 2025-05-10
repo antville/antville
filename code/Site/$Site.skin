@@ -154,7 +154,7 @@
                <% gettext enforced %>
             </label>
             <p class="uk-form-help-block">
-               <% gettext 'Edit the rules in the <a href="%s/Site/robots/edit">robots.txt</a> skin.' | replace '%s/' <% site.layout.skins.href %> %>
+               <% gettext 'Edit the rules in the <a href="{0}Site/robots/edit">robots.txt</a> skin.' <% site.layout.skins.href %> %>
             </p>
          </div>
       </div>

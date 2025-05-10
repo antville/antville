@@ -95,9 +95,13 @@ Site.getNotificationModes = defineConstants(Site, markgettext('Nobody'),
  */
 Site.getCallbackModes = defineConstants(Site, markgettext('disabled'),
     markgettext('enabled'));
-
-Site.getRobotsTxtModes = defineConstants(Site, markgettext('relaxed'),
-    markgettext('enforced'));
+/**
+ * @function
+ * @returns {String[]}
+ * @see defineConstants
+ */
+Site.getRobotsTxtModes = defineConstants(Site, markgettext('suggest'),
+    markgettext('enforce'));
 
 /**
  * @param {String} name A unique identifier also used in the URL of a site
@@ -136,7 +140,7 @@ Site.add = function(data, user) {
     configured: now,
     created: now,
     creator: user,
-    robotsTxtMode: Site.RELAXED,
+    robotsTxtMode: Site.SUGGEST,
     modified: now,
     modifier: user,
     status: user.status === User.PRIVILEGED ? Site.TRUSTED : user.status,
@@ -1134,20 +1138,25 @@ Site.prototype.callback = function(ref) {
 }
 
 Site.prototype.enforceRobotsTxt = function() {
-  if (this.robotsTxtMode !== Site.ENFORCED) {
+  if (this.robotsTxtMode !== Site.ENFORCE) {
     return false;
   }
 
-  // Override some patterns to prevent a site from becoming inaccessible even for the owner
+  // Override some URLs to prevent a site from becoming inaccessible even for the owner
   const overrides = [
-    'User-agent: mozilla',
-    'Allow: */edit$',
-    'Allow: */layout',
-    'Allow: */main.*$',
-    'Allow: */members'
+    this.href('edit'),
+    this.layout.href(),
+    this.href('main.css'),
+    this.href('main.js'),
+    this.members.href()
   ];
 
   const robotsTxt = root.renderSkinAsString('Site#robots');
-  const robots = new Robots(this.href('robots.txt'), robotsTxt + overrides.join('\n'));
-  return !robots.isAllowed(path.href() + req.action, req.getHeader('user-agent'));
+  const robots = new Robots(this.href('robots.txt'), robotsTxt);
+
+  const href = path.href(req.action);
+  const fullUrl = (href.includes('://') ? '' : this.href()) + href.slice(1);
+
+  return !overrides.some(href => fullUrl.includes(href))
+    && !robots.isAllowed(fullUrl, req.getHeader('user-agent'));
 }
