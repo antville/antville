@@ -39,6 +39,7 @@ this.handleMetadata('notificationMode');
 this.handleMetadata('notified');
 this.handleMetadata('pageSize');
 this.handleMetadata('pageMode');
+this.handleMetadata('robotsTxtMode');
 this.handleMetadata('spamfilter');
 this.handleMetadata('tagline');
 this.handleMetadata('timeZone');
@@ -46,7 +47,7 @@ this.handleMetadata('title');
 this.handleMetadata('trollFilter');
 
 /**
- * Ffunction
+ * @function
  * @returns {String[]}
  * @see defineConstants
  */
@@ -95,6 +96,9 @@ Site.getNotificationModes = defineConstants(Site, markgettext('Nobody'),
 Site.getCallbackModes = defineConstants(Site, markgettext('disabled'),
     markgettext('enabled'));
 
+Site.getRobotsTxtModes = defineConstants(Site, markgettext('relaxed'),
+    markgettext('enforced'));
+
 /**
  * @param {String} name A unique identifier also used in the URL of a site
  * @param {String} title An arbitrary string branding a site
@@ -132,6 +136,7 @@ Site.add = function(data, user) {
     configured: now,
     created: now,
     creator: user,
+    robotsTxtMode: Site.RELAXED,
     modified: now,
     modifier: user,
     status: user.status === User.PRIVILEGED ? Site.TRUSTED : user.status,
@@ -367,6 +372,8 @@ Site.prototype.getFormOptions = function(name) {
   switch (name) {
     case 'archiveMode':
     return Site.getArchiveModes();
+    case 'callbackMode':
+    return Site.getCallbackModes();
     case 'commentMode':
     return Site.getCommentModes();
     case 'locale':
@@ -379,12 +386,12 @@ Site.prototype.getFormOptions = function(name) {
     return Site.getNotificationModes();
     case 'pageMode':
     return Site.getPageModes();
+    case 'robotsTxtMode':
+    return Site.getRobotsTxtModes();
     case 'status':
     return Site.getStatus();
     case 'timeZone':
     return getTimeZones(this.getLocale());
-    case 'callbackMode':
-    return Site.getCallbackModes();
     default:
     return HopObject.prototype.getFormOptions.apply(this, arguments);
   }
@@ -441,8 +448,9 @@ Site.prototype.update = function(data) {
     archiveMode: data.archiveMode || Site.CLOSED,
     callbackMode: data.callbackMode || Site.DISABLED,
     callbackUrl: data.callbackUrl || this.callbackUrl || String.EMPTY,
-    imageDimensionLimits: [data.maxImageWidth, data.maxImageHeight],
     commentMode: data.commentMode || Site.DISABLED,
+    robotsTxtMode: data.robotsTxtMode || Site.RELAXED,
+    imageDimensionLimits: [data.maxImageWidth, data.maxImageHeight],
     locale: data.locale || root.getLocale().toString(),
     mode: data.mode || Site.CLOSED,
     notificationMode: data.notificationMode || Site.NOBODY,

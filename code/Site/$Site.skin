@@ -145,6 +145,22 @@
 
       <div class='uk-form-row'>
          <label class='uk-form-label' for='trollFilter'>
+            <% gettext 'Robot rules' %>
+         </label>
+
+         <div class='uk-form-controls'>
+            <label>
+               <% site.checkbox robotsTxtMode %>
+               <% gettext enforced %>
+            </label>
+            <p class="uk-form-help-block">
+               <% gettext 'Edit the rules in the <a href="%s/Site/robots/edit">robots.txt</a> skin.' | replace '%s/' <% site.layout.skins.href %> %>
+            </p>
+         </div>
+      </div>
+
+      <div class='uk-form-row'>
+         <label class='uk-form-label' for='trollFilter'>
             <% gettext 'Troll Filter' %>
          </label>
 
