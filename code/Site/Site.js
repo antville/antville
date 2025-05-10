@@ -1145,9 +1145,10 @@ Site.prototype.enforceRobotsTxt = function() {
   // Override some URLs to prevent a site from becoming inaccessible even for the owner
   const overrides = [
     this.href('edit'),
-    this.layout.href(),
     this.href('main.css'),
     this.href('main.js'),
+    this.href('robots.txt'),
+    this.layout.href(),
     this.members.href()
   ];
 
