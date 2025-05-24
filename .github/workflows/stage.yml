@@ -1,6 +1,13 @@
 name: Deploy (Staging)
 
-on: workflow_dispatch
+on: 
+  workflow_dispatch:
+    inputs:
+      hostname:
+        description: Hostname
+        type: string
+        required: true
+        default: antville.org
 
 jobs:
   stage:
@@ -8,7 +15,7 @@ jobs:
 
     environment:
       name: stage
-      url: ${{ vars.stage_url }}
+      url: ${{ inputs.hostname }}
 
     steps:
       - uses: actions/checkout@v4
@@ -16,10 +23,10 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew :build
 
-      - name: Publish to staging server
+      - name: Copy files to server
         # The rsync command applies the same filters as the one in tools/extras/deploy.sh
         run: |
-          rsync ./build/install/antville/ staging-server:./apps/antville/ \
+          rsync ./build/install/antville/ ${{ inputs.hostname }}:./apps/antville/ \
             --archive --compress --delete --verbose \
             --filter '+ /claustra' \
             --filter '+ /code' \
@@ -28,7 +35,7 @@ jobs:
             --filter '+ /i18n' \
             --filter '+ /lib' \
             --filter '- /*'
-          rsync ./build/install/antville/static/ staging-server:./apps/antville/static/ \
+          rsync ./build/install/antville/static/ ${{ inputs.hostname }}:./apps/antville/static/ \
             --archive --compress --verbose \
             --filter '+ /fonts' \
             --filter '+ /formica.html' \
@@ -38,5 +45,5 @@ jobs:
             --filter '- /*'
 
       - name: Restart Helma
-        run: ssh staging-server restart
+        run: ssh ${{ inputs.hostname }} restart
 
