@@ -1,15 +1,48 @@
-name: Deploy (Production)
+name: Deploy
 
-on: workflow_dispatch
+on:
+  workflow_dispatch:
+    inputs:
+      hostname:
+        description: Hostname
+        type: string
+        required: true
+        default: antville.org
 
 jobs:
-  deploy:
+  stage:
     runs-on: antville
 
     environment:
-      name: antville.org
-      url: https://antville.org
+      name: production
+      url: ${{ inputs.hostname }}
 
     steps:
-      - name: Copy files to production server
-        run: ssh staging-server deploy-antville
+      - uses: actions/checkout@v4
+
+      - name: Build with Gradle
+        run: ./gradlew :build
+
+      - name: Copy files to server
+        run: |
+          rsync ./build/install/antville/ ${{ inputs.hostname }}:./apps/antville/ \
+            --archive --compress --delete --verbose \
+            --filter '+ /claustra' \
+            --filter '+ /code' \
+            --filter '+ /compat' \
+            --filter '+ /db' \
+            --filter '+ /i18n' \
+            --filter '+ /lib' \
+            --filter '- /*'
+          rsync ./build/install/antville/static/ ${{ inputs.hostname }}:./apps/antville/static/ \
+            --archive --compress --verbose \
+            --filter '+ /fonts' \
+            --filter '+ /formica.html' \
+            --filter '+ /img' \
+            --filter '+ /scripts' \
+            --filter '+ /styles' \
+            --filter '- /*'
+
+      - name: Restart Helma
+        run: ssh ${{ inputs.hostname }} restart
+
