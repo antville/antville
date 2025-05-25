@@ -24,7 +24,6 @@ jobs:
         run: ./gradlew :build
 
       - name: Copy files to server
-        # The rsync command applies the same filters as the one in tools/extras/deploy.sh
         run: |
           rsync ./build/install/antville/ ${{ inputs.hostname }}:./apps/antville/ \
             --archive --compress --delete --verbose \
