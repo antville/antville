@@ -7,3 +7,8 @@
 summary {
   display: revert;
 }
+
+// TODO: Actually a compatibility fix. See https://tobi.antville.org/stories/2317931/
+td[nowrap][width]:not([width$="%"]) {
+  white-space: normal
+}
