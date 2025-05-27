@@ -140,9 +140,17 @@ HopObject.prototype.onRequest = function() {
     }
   }
 
+  // Set up layout handler and skin path
   HopObject.confirmConstructor(Layout);
   res.handlers.layout = res.handlers.site.layout || new Layout;
   res.skinpath = res.handlers.layout.getSkinPath();
+
+  if (res.handlers.site.enforceRobotsTxt()) {
+    res.status = 403
+    res.data.error = gettext('The <a href="{0}">robots.txt</a> file disallows access to this page.', res.handlers.site.href('robots.txt'));
+    root.error_action();
+    res.stop();
+  }
 
   if (!this.getPermission(req.action)) {
     if (!session.user) {

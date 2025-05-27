@@ -39,6 +39,7 @@ this.handleMetadata('notificationMode');
 this.handleMetadata('notified');
 this.handleMetadata('pageSize');
 this.handleMetadata('pageMode');
+this.handleMetadata('robotsTxtMode');
 this.handleMetadata('spamfilter');
 this.handleMetadata('tagline');
 this.handleMetadata('timeZone');
@@ -46,7 +47,7 @@ this.handleMetadata('title');
 this.handleMetadata('trollFilter');
 
 /**
- * Ffunction
+ * @function
  * @returns {String[]}
  * @see defineConstants
  */
@@ -94,6 +95,13 @@ Site.getNotificationModes = defineConstants(Site, markgettext('Nobody'),
  */
 Site.getCallbackModes = defineConstants(Site, markgettext('disabled'),
     markgettext('enabled'));
+/**
+ * @function
+ * @returns {String[]}
+ * @see defineConstants
+ */
+Site.getRobotsTxtModes = defineConstants(Site, markgettext('suggest'),
+    markgettext('enforce'));
 
 /**
  * @param {String} name A unique identifier also used in the URL of a site
@@ -132,6 +140,7 @@ Site.add = function(data, user) {
     configured: now,
     created: now,
     creator: user,
+    robotsTxtMode: Site.SUGGEST,
     modified: now,
     modifier: user,
     status: user.status === User.PRIVILEGED ? Site.TRUSTED : user.status,
@@ -367,6 +376,8 @@ Site.prototype.getFormOptions = function(name) {
   switch (name) {
     case 'archiveMode':
     return Site.getArchiveModes();
+    case 'callbackMode':
+    return Site.getCallbackModes();
     case 'commentMode':
     return Site.getCommentModes();
     case 'locale':
@@ -379,12 +390,12 @@ Site.prototype.getFormOptions = function(name) {
     return Site.getNotificationModes();
     case 'pageMode':
     return Site.getPageModes();
+    case 'robotsTxtMode':
+    return Site.getRobotsTxtModes();
     case 'status':
     return Site.getStatus();
     case 'timeZone':
     return getTimeZones(this.getLocale());
-    case 'callbackMode':
-    return Site.getCallbackModes();
     default:
     return HopObject.prototype.getFormOptions.apply(this, arguments);
   }
@@ -441,8 +452,9 @@ Site.prototype.update = function(data) {
     archiveMode: data.archiveMode || Site.CLOSED,
     callbackMode: data.callbackMode || Site.DISABLED,
     callbackUrl: data.callbackUrl || this.callbackUrl || String.EMPTY,
-    imageDimensionLimits: [data.maxImageWidth, data.maxImageHeight],
     commentMode: data.commentMode || Site.DISABLED,
+    robotsTxtMode: data.robotsTxtMode || Site.RELAXED,
+    imageDimensionLimits: [data.maxImageWidth, data.maxImageHeight],
     locale: data.locale || root.getLocale().toString(),
     mode: data.mode || Site.CLOSED,
     notificationMode: data.notificationMode || Site.NOBODY,
@@ -477,7 +489,8 @@ Site.prototype.main_css_action = function() {
   res.push();
   this.renderSkin('$Site#stylesheet');
   this.renderSkin('Site#stylesheet');
-  var css = res.pop();
+  var css = res.pop()
+    .replace(/<(\/?style|!).*/g, ''); // TODO: Actually, a compatibility fix (earlier CSS skins contained the <style> element)
 
   try {
     lessParser.parse(css, function(error, less) {
@@ -1123,4 +1136,29 @@ Site.prototype.callback = function(ref) {
     });
   }
   return;
+}
+
+Site.prototype.enforceRobotsTxt = function() {
+  if (this.robotsTxtMode !== Site.ENFORCE) {
+    return false;
+  }
+
+  // Override some URLs to prevent a site from becoming inaccessible even for the owner
+  const overrides = [
+    this.href('edit'),
+    this.href('main.css'),
+    this.href('main.js'),
+    this.href('robots.txt'),
+    this.layout.href(),
+    this.members.href()
+  ];
+
+  const robotsTxt = root.renderSkinAsString('Site#robots');
+  const robots = new Robots(this.href('robots.txt'), robotsTxt);
+
+  const href = path.href(req.action);
+  const fullUrl = (href.includes('://') ? '' : this.href()) + href.slice(1);
+
+  return !overrides.some(href => fullUrl.includes(href))
+    && !robots.isAllowed(fullUrl, req.getHeader('user-agent'));
 }
