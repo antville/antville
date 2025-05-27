@@ -489,7 +489,8 @@ Site.prototype.main_css_action = function() {
   res.push();
   this.renderSkin('$Site#stylesheet');
   this.renderSkin('Site#stylesheet');
-  var css = res.pop();
+  var css = res.pop()
+    .replace(/<(\/?style|!).*/g, ''); // TODO: Actually, a compatibility fix (earlier CSS skins contained the <style> element)
 
   try {
     lessParser.parse(css, function(error, less) {
