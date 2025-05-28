@@ -44,7 +44,7 @@
     "jsdoc": "4.0.4",
     "less": "4.3.0",
     "less-plugin-clean-css": "1.6.0",
-    "npm-run-all2": "7.0.2",
+    "npm-run-all2": "8.0.4",
     "onchange": "7.1.0",
     "uglifyify": "5.0.2"
   }
