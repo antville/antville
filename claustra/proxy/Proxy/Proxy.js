@@ -46,7 +46,7 @@ Proxy.prototype.main_action = function () {
 
     let content = new java.lang.String(data.content, 'utf-8');
 
-    if (!data.type.startsWith('text/')) {
+    if (data.type && !data.type.startsWith('text/')) {
       content = new java.lang.String(content.enbase64());
     }
 
@@ -55,10 +55,10 @@ Proxy.prototype.main_action = function () {
   } else {
     res.contentType = data.type;
 
-    if (data.type.startsWith('text/')) {
-      res.write(java.lang.String(data.content, 'utf-8'));
-    } else {
+    if (data.type && !data.type.startsWith('text/')) {
       res.writeBinary(data.content);
+    } else {
+      res.write(java.lang.String(data.content, 'utf-8'));
     }
   }
 };
