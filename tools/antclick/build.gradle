@@ -130,7 +130,7 @@ tasks.register('buildDatabase', JavaExec) {
   args = [
     '-continueOnError',
     '-script', inputFile,
-    '-url', "jdbc:h2:$outputDir/antville",
+    '-url', "jdbc:h2:$outputDir/antville;mode=postgresql;non_keywords=value",
     '-user', 'antville',
     '-password', 'antville'
   ]
