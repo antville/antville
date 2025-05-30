@@ -177,9 +177,6 @@ tasks.register('runH2Console', JavaExec) {
     '-user', 'antville',
     '-password', 'antville'
   ]
-
-  // standardOutput = new ByteArrayOutputStream()
-  // ignoreExitValue true
 }
 
 tasks.register('distZip', Zip) {
