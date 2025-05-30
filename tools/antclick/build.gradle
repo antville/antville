@@ -112,9 +112,8 @@ tasks.register('installJars', Copy) {
 tasks.register('buildDatabase', JavaExec) {
   description 'Builds the H2 SQL database file.'
   group 'build'
-  dependsOn ':assemble'
 
-  def inputFile = "$antvilleInstallDir/db/postgre.sql"
+  def inputFile = "${project.rootDir}/db/postgre.sql"
   def outputDir = "$helmaInstallDir/db"
 
   inputs.file inputFile
@@ -165,7 +164,7 @@ task assembleDist {
 tasks.register('runH2Console', JavaExec) {
   description 'Runs the H2 SQL database console.'
   group 'Help'
-  dependsOn 'installJars'
+  dependsOn 'buildDatabase'
 
   def h2Jar = configurations.library.files.find { jar ->
     jar.name.startsWith('h2')
