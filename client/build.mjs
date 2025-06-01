@@ -3,9 +3,11 @@
 import esbuild from 'esbuild';
 import babel from 'esbuild-plugin-babel';
 
+const outdir = process.argv[2] || './static/scripts';
+
 esbuild.build({
+  outdir,
   define: { 'process.env.NODE_ENV': '"production"' },
-  outdir: 'static/scripts',
   entryPoints: [
     './client/code-mirror.mjs'
   ],
@@ -20,7 +22,7 @@ esbuild.build({
   plugins: [
     babel({
       filter: /\.m?js$/,
-      configFile: './babel.config.json'
+      configFile: './client/babel.config.json'
     })
   ]
 }).catch(() => process.exit(1));

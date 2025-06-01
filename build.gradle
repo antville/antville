@@ -160,6 +160,7 @@ tasks.register('buildStaticFiles', Copy) {
 
   dependsOn 'installAntville'
   dependsOn 'installNodeModules'
+  dependsOn 'buildClient'
   dependsOn 'buildMainScript'
   dependsOn 'buildMainStyles'
   dependsOn 'buildEditorScript'
@@ -175,6 +176,27 @@ tasks.register('buildStaticFiles', Copy) {
 
   from inputDir
   into outputDir
+}
+
+tasks.register('buildClient', Exec) {
+  description "Build the client-side files."
+  group 'build'
+  dependsOn 'installNodeModules'
+
+  def inputDir = "${project.projectDir}/client"
+  def outputDir = "$antvilleBuildDir/static/scripts"
+
+  inputs.dir inputDir
+  outputs.dir outputDir
+
+  commandLine 'node', 'client/build.mjs', outputDir
+
+  doLast {
+    copy {
+      from "${project.projectDir}/static/scripts"
+      into outputDir
+    }
+  }
 }
 
 ['main', 'editor', 'gallery'].each { name ->
