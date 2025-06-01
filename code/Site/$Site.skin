@@ -472,7 +472,7 @@ a {
    }
 
    &[href='javascript:'] {
-      display: none;
+      visibility: hidden;
    }
 }
 

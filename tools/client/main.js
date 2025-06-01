@@ -16,9 +16,9 @@ const init = function() {
 
   if (navItem) navItem.parentElement.classList.add('uk-active');
 
-  // Display hidden links triggering JavaScript
+  // Display hidden links triggering JavaScript, so they are visible only if JavaScript is enabled
   document.querySelectorAll('a[href="javascript:"]').forEach(element => {
-    element.style.display = 'inline-block';
+    element.style.visibility = 'unset';
   });
 
   // Prevent redundant submits of a form
