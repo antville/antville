@@ -18,17 +18,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Antville-1.5\n"
 "Report-Msgid-Bugs-To: mail@antville.org\n"
-"POT-Creation-Date: 2025-06-01 19:06+0200\n"
-"PO-Revision-Date: 2025-06-01 19:07+0200\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
 "Last-Translator: Tobi Schäfer <interface@p3k.org>\n"
-"Language-Team: The Antville People <mail@antville.org>\n"
+"Language-Team: \n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 3.4.2\n"
-"X-Poedit-SourceCharset: UTF-8\n"
 
 #: Global/Global.js:989
 #, java-format
@@ -315,6 +314,11 @@ msgstr "Commit"
 msgid "Compare…"
 msgstr "Vergleichen…"
 
+#: Skin/Skin.js:266
+#, java-format
+msgid "Compare {0}"
+msgstr "Vergleichen {0}"
+
 #: HopObject/HopObject.js:215
 msgid "Confirm Deletion"
 msgstr "Löschen bestätigen"
@@ -323,7 +327,7 @@ msgstr "Löschen bestätigen"
 msgid "Confirm Reset"
 msgstr "Zurücksetzen bestätigen"
 
-#: Site/Site.js:749
+#: Site/Site.js:749 Site/Site.js:748
 msgid "Confirm Unsubscribe"
 msgstr "Stornierung bestätigen"
 
@@ -558,7 +562,7 @@ msgstr "Beitrag bearbeiten"
 msgid "Edit the filter in the site settings."
 msgstr "Der Filter kann in den Einstellungen bearbeitet werden."
 
-#: Site/$Site.skin:157
+#: Site/$Site.skin:157 Skin/Skin.js:169
 #, java-format
 msgid ""
 "Edit the rules in the <a href=\"{0}Site/robots/edit\">robots.txt</a> skin."
@@ -647,6 +651,7 @@ msgid "Find"
 msgstr "Finden"
 
 #: Members/Members.js:343 Site/Site.js:705 Site/Site.js:985
+#: Members/Members.js:327 Site/Site.js:704 Site/Site.js:984
 #, java-format
 msgid "Found more than {0} results. Please try a more specific query."
 msgstr ""
@@ -682,7 +687,7 @@ msgstr "Viel Vergnügen!"
 msgid "Have fun!"
 msgstr "Viele Späße!"
 
-#: Root/Root.js:318 Root/Site.skin:31
+#: Root/Root.js:318 Root/Root.js:317 Root/Site.skin:31
 msgid "Health"
 msgstr "Statusmonitor"
 
@@ -948,6 +953,10 @@ msgstr "Navigation"
 msgid "Next page"
 msgstr "Nächste Seite"
 
+#: Skin/Skin.js:221
+msgid "No differences were found."
+msgstr "Es wurden keine Unterschiede gefunden."
+
 #: Site/Site.js:88
 msgid "Nobody"
 msgstr "Niemand"
@@ -1108,7 +1117,8 @@ msgstr "Bitte geben Sie einen neuen Namen für dieses Stichwort an"
 msgid "Please enter a new password."
 msgstr "Bitte geben Sie ein neues Kennwort ein."
 
-#: Members/Members.js:337 Site/Site.js:972
+#: Members/Members.js:337 Site/Site.js:972 Members/Members.js:321
+#: Site/Site.js:971
 msgid "Please enter a query in the search form."
 msgstr "Bitte geben Sie eine Suchanfrage in das Suchformular ein."
 
@@ -1270,7 +1280,7 @@ msgstr "Rückverweis"
 msgid "Referrer Filter"
 msgstr "Rückverweis-Filter"
 
-#: Site/Site.js:691 Site/Site.skin:34 Root/Site.skin:37
+#: Site/Site.js:691 Site/Site.js:690 Site/Site.skin:34 Root/Site.skin:37
 msgid "Referrers"
 msgstr "Rückverweise"
 
@@ -1312,7 +1322,7 @@ msgid "Required Account Status"
 msgstr "Benötigter Konto-Status"
 
 #: Layout/$Layout.skin:88 Admin/$Admin.skin:211 Admin/$Admin.skin:257
-#: Admin/$Admin.skin:164 Site/$Site.skin:1125
+#: Admin/$Admin.skin:164 Site/$Site.skin:1125 Skin/$Skin.skin:71
 msgid "Reset"
 msgstr "Zurücksetzen"
 
@@ -1364,8 +1374,8 @@ msgstr "Speichern und starten"
 msgid "Scripting Engine"
 msgstr "Scripting-Umgebung"
 
-#: Site/Site.js:717 Site/Site.skin:41 Site/$Site.skin:1123 Site/$Site.skin:1223
-#: ../compat/Global/aspects.js:246
+#: Site/Site.js:717 Site/Site.js:716 Site/Site.skin:41 Site/$Site.skin:1123
+#: Site/$Site.skin:1223 ../compat/Global/aspects.js:246
 msgid "Search"
 msgstr "Suche"
 
@@ -1454,7 +1464,7 @@ msgstr "Basis-Seite"
 msgid "Site Phase-Out"
 msgstr "Automatisches Löschen von Websites"
 
-#: Site/Site.js:816
+#: Site/Site.js:816 Site/Site.js:815
 msgid "Site is scheduled for import."
 msgstr "Die Website ist für den Import eingeplant."
 
@@ -1474,7 +1484,7 @@ msgstr "Skin"
 msgid "Skins"
 msgstr "Skins"
 
-#: Site/Site.js:848
+#: Site/Site.js:848 Site/Site.js:847
 msgid "Something went wrong."
 msgstr "Irgendwas ist schiefgelaufen."
 
@@ -1602,12 +1612,12 @@ msgstr "{0} wurde erfolgreich zur Liste der Mitglieder hinzugefügt."
 msgid "Successfully created your site."
 msgstr "Ihr Website wurde erfolgreich erstellt."
 
-#: Site/Site.js:726
+#: Site/Site.js:726 Site/Site.js:725
 #, java-format
 msgid "Successfully subscribed to site {0}."
 msgstr "Die Website {0} wurde erfolgreich abonniert."
 
-#: Site/Site.js:740
+#: Site/Site.js:740 Site/Site.js:739
 #, java-format
 msgid "Successfully unsubscribed from site {0}."
 msgstr "Das Abonnement der Website {0} wurde erfolgreich storniert."
@@ -1771,11 +1781,11 @@ msgstr "Die Umfrage wurde erfolgreich erstellt."
 msgid "The poll was updated successfully."
 msgstr "Die Umfrage wurde erfolgreich aktualisiert."
 
-#: Site/Site.js:781
+#: Site/Site.js:781 Site/Site.js:769 Site/Site.js:780
 msgid "The site data will be available for download from here, soon."
 msgstr "Der Site-Export steht demnächst hier zum Download bereit."
 
-#: Site/Site.js:769
+#: Site/Site.js:768
 msgid "The site is queued for export."
 msgstr "Der Export der Site-Daten wird vorbereitet."
 
@@ -1869,7 +1879,7 @@ msgstr "Es gibt bereits eine Website mit diesem Namen."
 msgid "There is already another job queued for this account: {0}"
 msgstr "Für dieses Konto wird bereits ein anderer Auftrag berarbeitet: {0}"
 
-#: Site/Site.js:766 Site/Site.js:803
+#: Site/Site.js:766 Site/Site.js:803 Site/Site.js:765 Site/Site.js:802
 #, java-format
 msgid "There is already another job queued for this site: {0}"
 msgstr "Ein anderer Prozess ist für diese Website bereits gereiht: {0}"
@@ -2274,7 +2284,7 @@ msgstr "Sie sind im Begriff, das Layout der Website {0} zurückzusetzen."
 msgid "You are about to reset the skin {0}.{1}."
 msgstr "Sie sind im Begriff, den Skin {0}.{1} zurückzusetzen."
 
-#: Site/Site.js:751
+#: Site/Site.js:751 Site/Site.js:750
 #, java-format
 msgid "You are about to unsubscribe from the site {0}."
 msgstr "Sie sind im Begriff, das Abonnement der Website {0} zu löschen."
@@ -2345,7 +2355,7 @@ msgstr ""
 "Sie haben noch nicht abgestimmt. Sie können abstimmen, bis die Umfrage "
 "beendet ist."
 
-#: Root/Root.js:447 Root/Root.js:456
+#: Root/Root.js:447 Root/Root.js:456 Root/Root.js:429 Root/Root.js:438
 #, java-format
 msgid "You need to wait {0} before you are allowed to create a new site."
 msgstr "Sie müssen {0} warten, bevor Sie eine neue Website erstellen können."
@@ -2563,7 +2573,7 @@ msgstr "Datei"
 msgid "files"
 msgstr "Dateien"
 
-#: Site/Site.js:953
+#: Site/Site.js:953 Site/Site.js:952
 msgid "free"
 msgstr "frei"
 
@@ -2762,7 +2772,7 @@ msgstr "vertrauenswürdig"
 msgid "updated // has updated"
 msgstr "aktualisierte"
 
-#: Site/Site.js:953
+#: Site/Site.js:953 Site/Site.js:952
 msgid "used"
 msgstr "benutzt"
 
@@ -2856,7 +2866,7 @@ msgstr[0] "{0} Kommentar"
 msgstr[1] "{0} Kommentare"
 
 #: Site/$Site.skin:1321 Site/$Site.skin:1331 Root/$Root.skin:79
-#: Root/Root.js:448 Root/Root.js:457
+#: Root/Root.js:448 Root/Root.js:457 Root/Root.js:430 Root/Root.js:439
 #, java-format
 msgid "{0} day"
 msgid_plural "{0} days"
@@ -3053,18 +3063,11 @@ msgstr ""
 #~ msgstr "Vergleichen"
 
 #, java-format
-#~ msgid "Compare {0}"
-#~ msgstr "Vergleichen {0}"
-
-#, java-format
 #~ msgid "Edit {0}.{1}"
 #~ msgstr "{0}.{1} bearbeiten"
 
 #~ msgid "Modified skin"
 #~ msgstr "Geänderter Skin"
-
-#~ msgid "No differences were found."
-#~ msgstr "Es wurden keine Unterschiede gefunden."
 
 #~ msgid "Original skin"
 #~ msgstr "Ursprünglicher Skin"

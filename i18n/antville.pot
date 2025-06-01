@@ -22,8 +22,13 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Antville-0\n"
 "Report-Msgid-Bugs-To: mail@antville.org\n"
+<<<<<<< HEAD
 "POT-Creation-Date: 2025-06-01 19:06+0200\n"
 "PO-Revision-Date: 2025-06-01 19:06+0200\n"
+=======
+"POT-Creation-Date: 2025-05-11 01:00+0200\n"
+"PO-Revision-Date: 2025-05-11 01:00+0200\n"
+>>>>>>> origin/main
 "Language-Team: The Antville People <mail@antville.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -353,6 +358,14 @@ msgstr ""
 msgid "Compare…"
 msgstr ""
 
+<<<<<<< HEAD
+=======
+#: Skin/Skin.js:266
+#, java-format
+msgid "Compare {0}"
+msgstr ""
+
+>>>>>>> origin/main
 #: HopObject/HopObject.js:215
 msgid "Confirm Deletion"
 msgstr ""
@@ -362,7 +375,11 @@ msgstr ""
 msgid "Confirm Reset"
 msgstr ""
 
+<<<<<<< HEAD
 #: Site/Site.js:749
+=======
+#: Site/Site.js:748
+>>>>>>> origin/main
 msgid "Confirm Unsubscribe"
 msgstr ""
 
@@ -605,6 +622,14 @@ msgid "Edit the filter in the site settings."
 msgstr ""
 
 #: Site/$Site.skin:157
+<<<<<<< HEAD
+=======
+#, java-format
+msgid "Edit the rules in the <a href=\"{0}Site/robots/edit\">robots.txt</a> skin."
+msgstr ""
+
+#: Skin/Skin.js:169
+>>>>>>> origin/main
 #, java-format
 msgid "Edit the rules in the <a href=\"{0}Site/robots/edit\">robots.txt</a> skin."
 msgstr ""
@@ -693,9 +718,15 @@ msgstr ""
 msgid "Find"
 msgstr ""
 
+<<<<<<< HEAD
 #: Members/Members.js:343
 #: Site/Site.js:705
 #: Site/Site.js:985
+=======
+#: Members/Members.js:327
+#: Site/Site.js:704
+#: Site/Site.js:984
+>>>>>>> origin/main
 #, java-format
 msgid "Found more than {0} results. Please try a more specific query."
 msgstr ""
@@ -729,7 +760,11 @@ msgstr ""
 msgid "Have fun!"
 msgstr ""
 
+<<<<<<< HEAD
 #: Root/Root.js:318
+=======
+#: Root/Root.js:317
+>>>>>>> origin/main
 #: Root/Site.skin:31
 msgid "Health"
 msgstr ""
@@ -1012,6 +1047,13 @@ msgstr ""
 msgid "Next page"
 msgstr ""
 
+<<<<<<< HEAD
+=======
+#: Skin/Skin.js:221
+msgid "No differences were found."
+msgstr ""
+
+>>>>>>> origin/main
 #: Site/Site.js:88
 msgid "Nobody"
 msgstr ""
@@ -1161,8 +1203,13 @@ msgstr ""
 msgid "Please enter a new password."
 msgstr ""
 
+<<<<<<< HEAD
 #: Members/Members.js:337
 #: Site/Site.js:972
+=======
+#: Members/Members.js:321
+#: Site/Site.js:971
+>>>>>>> origin/main
 msgid "Please enter a query in the search form."
 msgstr ""
 
@@ -1336,7 +1383,11 @@ msgstr ""
 msgid "Referrer Filter"
 msgstr ""
 
+<<<<<<< HEAD
 #: Site/Site.js:691
+=======
+#: Site/Site.js:690
+>>>>>>> origin/main
 #: Site/Site.skin:34
 #: Root/Site.skin:37
 msgid "Referrers"
@@ -1390,6 +1441,10 @@ msgstr ""
 #: Admin/$Admin.skin:257
 #: Admin/$Admin.skin:164
 #: Site/$Site.skin:1125
+<<<<<<< HEAD
+=======
+#: Skin/$Skin.skin:71
+>>>>>>> origin/main
 msgid "Reset"
 msgstr ""
 
@@ -1452,7 +1507,11 @@ msgstr ""
 msgid "Scripting Engine"
 msgstr ""
 
+<<<<<<< HEAD
 #: Site/Site.js:717
+=======
+#: Site/Site.js:716
+>>>>>>> origin/main
 #: Site/Site.skin:41
 #: Site/$Site.skin:1123
 #: Site/$Site.skin:1223
@@ -1554,7 +1613,11 @@ msgstr ""
 msgid "Site Phase-Out"
 msgstr ""
 
+<<<<<<< HEAD
 #: Site/Site.js:816
+=======
+#: Site/Site.js:815
+>>>>>>> origin/main
 msgid "Site is scheduled for import."
 msgstr ""
 
@@ -1578,7 +1641,11 @@ msgstr ""
 msgid "Skins"
 msgstr ""
 
+<<<<<<< HEAD
 #: Site/Site.js:848
+=======
+#: Site/Site.js:847
+>>>>>>> origin/main
 msgid "Something went wrong."
 msgstr ""
 
@@ -1710,12 +1777,20 @@ msgstr ""
 msgid "Successfully created your site."
 msgstr ""
 
+<<<<<<< HEAD
 #: Site/Site.js:726
+=======
+#: Site/Site.js:725
+>>>>>>> origin/main
 #, java-format
 msgid "Successfully subscribed to site {0}."
 msgstr ""
 
+<<<<<<< HEAD
 #: Site/Site.js:740
+=======
+#: Site/Site.js:739
+>>>>>>> origin/main
 #, java-format
 msgid "Successfully unsubscribed from site {0}."
 msgstr ""
@@ -1863,11 +1938,19 @@ msgstr ""
 msgid "The poll was updated successfully."
 msgstr ""
 
+<<<<<<< HEAD
 #: Site/Site.js:781
 msgid "The site data will be available for download from here, soon."
 msgstr ""
 
 #: Site/Site.js:769
+=======
+#: Site/Site.js:780
+msgid "The site data will be available for download from here, soon."
+msgstr ""
+
+#: Site/Site.js:768
+>>>>>>> origin/main
 msgid "The site is queued for export."
 msgstr ""
 
@@ -1936,8 +2019,13 @@ msgstr ""
 msgid "There is already another job queued for this account: {0}"
 msgstr ""
 
+<<<<<<< HEAD
 #: Site/Site.js:766
 #: Site/Site.js:803
+=======
+#: Site/Site.js:765
+#: Site/Site.js:802
+>>>>>>> origin/main
 #, java-format
 msgid "There is already another job queued for this site: {0}"
 msgstr ""
@@ -2285,7 +2373,11 @@ msgstr ""
 msgid "You are about to reset the skin {0}.{1}."
 msgstr ""
 
+<<<<<<< HEAD
 #: Site/Site.js:751
+=======
+#: Site/Site.js:750
+>>>>>>> origin/main
 #, java-format
 msgid "You are about to unsubscribe from the site {0}."
 msgstr ""
@@ -2340,8 +2432,13 @@ msgstr ""
 msgid "You did not vote, yet. You can vote until the poll is closed."
 msgstr ""
 
+<<<<<<< HEAD
 #: Root/Root.js:447
 #: Root/Root.js:456
+=======
+#: Root/Root.js:429
+#: Root/Root.js:438
+>>>>>>> origin/main
 #, java-format
 msgid "You need to wait {0} before you are allowed to create a new site."
 msgstr ""
@@ -2585,7 +2682,11 @@ msgstr ""
 msgid "files"
 msgstr ""
 
+<<<<<<< HEAD
 #: Site/Site.js:953
+=======
+#: Site/Site.js:952
+>>>>>>> origin/main
 msgid "free"
 msgstr ""
 
@@ -2794,7 +2895,11 @@ msgstr ""
 msgid "updated // has updated"
 msgstr ""
 
+<<<<<<< HEAD
 #: Site/Site.js:953
+=======
+#: Site/Site.js:952
+>>>>>>> origin/main
 msgid "used"
 msgstr ""
 
@@ -2896,8 +3001,13 @@ msgstr[1] ""
 #: Site/$Site.skin:1321
 #: Site/$Site.skin:1331
 #: Root/$Root.skin:79
+<<<<<<< HEAD
 #: Root/Root.js:448
 #: Root/Root.js:457
+=======
+#: Root/Root.js:430
+#: Root/Root.js:439
+>>>>>>> origin/main
 #, java-format
 msgid "{0} day"
 msgid_plural "{0} days"
