@@ -21,7 +21,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Build with Gradle
-        run: ./gradlew :build
+        run: ./gradlew :build --info
 
       - name: Copy files to server
         run: |
