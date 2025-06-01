@@ -5,7 +5,7 @@ import babel from 'esbuild-plugin-babel';
 
 esbuild.build({
   define: { 'process.env.NODE_ENV': '"production"' },
-  outdir: 'static/js',
+  outdir: 'static/scripts',
   entryPoints: [
     './client/code-mirror.mjs'
   ],

@@ -22,7 +22,7 @@
       EditorState,
       MergeView,
       html
-   } from '<% root.static ../../js/code-mirror-DIBXQ677.js %>';
+   } from '<% root.static ../../scripts/code-mirror-DIBXQ677.js %>';
 
    const language = new Compartment();
 
