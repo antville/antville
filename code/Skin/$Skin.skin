@@ -22,7 +22,7 @@
       EditorState,
       MergeView,
       html
-   } from '<% root.static ../../js/code-mirror-U32JWJ6D.js %>';
+   } from '<% root.static ../../js/code-mirror-DIBXQ677.js %>';
 
    const language = new Compartment();
 
@@ -97,7 +97,7 @@
             </button>
             <a href='<% layout.skins.href all %>' class='uk-button uk-button-link'><% gettext Cancel %></a>
          </div>
-         <% image /smallchaos.gif | link <% site.href %> %>
+         <% image /smallchaos.gif | link <% site.href %> class="logo" %>
       </div>
       <% response.message prefix='<div class="message uk-alert" data-uk-alert>' suffix=</div> %>
       <hr/>
