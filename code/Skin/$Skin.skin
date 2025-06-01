@@ -14,7 +14,7 @@
 </tr>
 
 <% #edit %>
-<script type='module'>
+<script type='module' crossorigin='use-credentials'>
    import {
       basicSetup,
       Compartment,
