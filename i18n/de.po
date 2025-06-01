@@ -18,8 +18,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Antville-1.5\n"
 "Report-Msgid-Bugs-To: mail@antville.org\n"
-"POT-Creation-Date: 2025-05-11 01:00+0200\n"
-"PO-Revision-Date: 2025-05-11 01:03+0200\n"
+"POT-Creation-Date: 2025-06-01 19:06+0200\n"
+"PO-Revision-Date: 2025-06-01 19:07+0200\n"
 "Last-Translator: Tobi Schäfer <interface@p3k.org>\n"
 "Language-Team: The Antville People <mail@antville.org>\n"
 "Language: de\n"
@@ -59,7 +59,7 @@ msgstr "Akzeptieren"
 
 #: User/$User.skin:148 User/User.js:22 Members/$Members.skin:165
 #: Members/$Members.skin:48 Members/$Members.skin:225 Members/$Members.skin:92
-#: Comments/$Comments.skin:15 Polls/$Polls.skin:15 Skins/$Skins.skin:76
+#: Comments/$Comments.skin:15 Polls/$Polls.skin:15 Skins/$Skins.skin:118
 #: Membership/Membership.skin:8 Admin/$Admin.skin:291 Admin/$Admin.skin:175
 #: Stories/$Stories.skin:16 Images/$Images.skin:20 Files/$Files.skin:16
 #: Root/$Root.skin:46
@@ -98,7 +98,7 @@ msgstr "Datei hinzufügen"
 msgid "Add Image"
 msgstr "Bild hinzufügen"
 
-#: Members/Members.js:352
+#: Members/Members.js:368
 msgid "Add Member"
 msgstr "Mitglied hinzufügen"
 
@@ -106,7 +106,7 @@ msgstr "Mitglied hinzufügen"
 msgid "Add Poll"
 msgstr "Umfrage hinzufügen"
 
-#: Root/Root.js:181
+#: Root/Root.js:182
 msgid "Add Site"
 msgstr "Site hinzufügen"
 
@@ -135,7 +135,7 @@ msgid "Advanced"
 msgstr "Erweitert"
 
 #: Members/$Members.skin:6 Comments/$Comments.skin:7 Polls/$Polls.skin:6
-#: Skins/$Skins.skin:52 Stories/$Stories.skin:6 Images/$Images.skin:7
+#: Skins/$Skins.skin:94 Stories/$Stories.skin:6 Images/$Images.skin:7
 #: Files/$Files.skin:6
 msgid "All"
 msgstr "Alle"
@@ -206,7 +206,7 @@ msgstr "Sind Sie sicher, dass Sie fortfahren wollen?"
 msgid "Are you sure you want to remove this tag?"
 msgstr "Sind Sie sicher, dass Sie das Stichwort {0} entfernen wollen?"
 
-#: Skins/$Skins.skin:50
+#: Skins/$Skins.skin:92
 msgid "Basic"
 msgstr "Grundlegende"
 
@@ -249,7 +249,7 @@ msgstr "Rückruf-Adresse"
 #: Site/$Site.skin:1312 Site/$Site.skin:343 Site/$Site.skin:1289
 #: Site/$Site.skin:228 Comment/Comment.skin:70 File/$File.skin:64
 #: Image/$Image.skin:90 HopObject/$HopObject.skin:22 Root/$Root.skin:33
-#: Skin/$Skin.skin:72 Skin/$Skin.skin:32 ../compat/Layout/$Layout.skin:13
+#: Skin/$Skin.skin:98 ../compat/Layout/$Layout.skin:13
 #: ../compat/Site/$Site.skin:10
 msgid "Cancel"
 msgstr "Abbrechen"
@@ -311,24 +311,19 @@ msgstr "Kommentare zum Beitrag sind {0}"
 msgid "Commit"
 msgstr "Commit"
 
-#: Skin/$Skin.skin:31
-msgid "Compare"
-msgstr "Vergleichen"
-
-#: Skin/Skin.js:266
-#, java-format
-msgid "Compare {0}"
-msgstr "Vergleichen {0}"
+#: Skin/$Skin.skin:77
+msgid "Compare…"
+msgstr "Vergleichen…"
 
 #: HopObject/HopObject.js:215
 msgid "Confirm Deletion"
 msgstr "Löschen bestätigen"
 
-#: Layout/Layout.js:255 Skin/Skin.js:209
+#: Layout/Layout.js:255 Skin/Skin.js:228
 msgid "Confirm Reset"
 msgstr "Zurücksetzen bestätigen"
 
-#: Site/Site.js:748
+#: Site/Site.js:749
 msgid "Confirm Unsubscribe"
 msgstr "Stornierung bestätigen"
 
@@ -354,7 +349,7 @@ msgstr "Beiträge von Mitglied {0}"
 msgid "Contributor"
 msgstr "Autorin"
 
-#: Members/$Members.skin:8 Members/Members.js:275
+#: Members/$Members.skin:8 Members/Members.js:291
 msgid "Contributors"
 msgstr "Autorinnen"
 
@@ -427,6 +422,10 @@ msgstr "Erstellt am {0}"
 #, java-format
 msgid "Created {0}"
 msgstr "Erstellt {0}"
+
+#: Skin/$Skin.skin:86
+msgid "Current"
+msgstr "Aktuell"
 
 #: Members/$Members.skin:84 Root/Site.skin:27
 msgid "Data Privacy Statement"
@@ -532,7 +531,6 @@ msgstr ""
 "einer Programmiersprache ihrer Wahl."
 
 #: Poll/$Poll.skin:29 Story/Story.skin:24 Image/Image.skin:15
-#: Skin/$Skin.skin:70
 msgid "Edit"
 msgstr "Bearbeiten"
 
@@ -568,10 +566,10 @@ msgstr ""
 "Bearbeiten Sie die Regeln im <a href=\"{0}Site/robots/edit\">robots.txt</a>-"
 "Skin."
 
-#: Skin/Skin.js:169
+#: Skin/Skin.js:187
 #, java-format
-msgid "Edit {0}.{1}"
-msgstr "{0}.{1} bearbeiten"
+msgid "Edit {0}"
+msgstr "Bearbeiten {0}"
 
 #: Claustra/$Claustra.skin:11
 msgid "Enabled"
@@ -648,7 +646,7 @@ msgstr "Filtern"
 msgid "Find"
 msgstr "Finden"
 
-#: Members/Members.js:327 Site/Site.js:704 Site/Site.js:984
+#: Members/Members.js:343 Site/Site.js:705 Site/Site.js:985
 #, java-format
 msgid "Found more than {0} results. Please try a more specific query."
 msgstr ""
@@ -663,7 +661,7 @@ msgstr "Galerien"
 msgid "General"
 msgstr "Allgemein"
 
-#: Members/Members.js:221
+#: Members/Members.js:237
 #, java-format
 msgid "Good bye, {0}! Looking forward to seeing you again!"
 msgstr "Auf Wiedersehen, {0}! Schauen Sie bald wieder vorbei!"
@@ -684,7 +682,7 @@ msgstr "Viel Vergnügen!"
 msgid "Have fun!"
 msgstr "Viele Späße!"
 
-#: Root/Root.js:317 Root/Site.skin:31
+#: Root/Root.js:318 Root/Site.skin:31
 msgid "Health"
 msgstr "Statusmonitor"
 
@@ -809,7 +807,7 @@ msgstr "Information"
 msgid "Interval"
 msgstr "Pause"
 
-#: Skins/$Skins.skin:66
+#: Skins/$Skins.skin:108
 msgid "JavaScript"
 msgstr "JavaScript"
 
@@ -863,7 +861,7 @@ msgstr "Protokolleintrag"
 msgid "Logged in as {0}"
 msgstr "Angemeldet als {0}"
 
-#: Members/Members.js:213
+#: Members/Members.js:229
 msgid "Login"
 msgstr "Anmeldung"
 
@@ -879,7 +877,7 @@ msgstr "Abmelden"
 msgid "Manager"
 msgstr "Redakteurin"
 
-#: Members/$Members.skin:9 Members/Members.js:266
+#: Members/$Members.skin:9 Members/Members.js:282
 msgid "Managers"
 msgstr "Redakteurinnen"
 
@@ -916,8 +914,8 @@ msgstr "Methode"
 msgid "Mode"
 msgstr "Modus"
 
-#: Comments/$Comments.skin:16 Polls/$Polls.skin:16 Skins/$Skins.skin:51
-#: Skins/$Skins.skin:77 Admin/$Admin.skin:223 Stories/$Stories.skin:17
+#: Comments/$Comments.skin:16 Polls/$Polls.skin:16 Skins/$Skins.skin:93
+#: Skins/$Skins.skin:119 Admin/$Admin.skin:223 Stories/$Stories.skin:17
 #: Images/$Images.skin:21 Files/$Files.skin:17
 msgid "Modified"
 msgstr "Geändert"
@@ -930,12 +928,8 @@ msgstr "Geänderte Skins"
 msgid "Modified Skins (Safe Mode)"
 msgstr "Geänderte Skins (sicherer Modus)"
 
-#: Skin/$Skin.skin:81
-msgid "Modified skin"
-msgstr "Geänderter Skin"
-
 #: Tags/$Tags.skin:17 Members/$Members.skin:204 Members/$Members.skin:15
-#: Skins/$Skins.skin:75 Admin/$Admin.skin:290 Admin/$Admin.skin:221
+#: Skins/$Skins.skin:117 Admin/$Admin.skin:290 Admin/$Admin.skin:221
 #: Admin/$Admin.skin:245 Admin/$Admin.skin:267 File/$File.skin:38
 #: Image/$Image.skin:55 Claustra/$Claustra.skin:9 Files/$Files.skin:14
 #: Root/$Root.skin:6
@@ -946,17 +940,13 @@ msgstr "Name"
 msgid "Name of the account that triggered the event"
 msgstr "Name des Kontos, von welchem das Ereignis ausgelöst wurde"
 
-#: Skins/$Skins.skin:62
+#: Skins/$Skins.skin:104
 msgid "Navigation"
 msgstr "Navigation"
 
 #: ../compat/Global/aspects.js:72
 msgid "Next page"
 msgstr "Nächste Seite"
-
-#: Skin/Skin.js:221
-msgid "No differences were found."
-msgstr "Es wurden keine Unterschiede gefunden."
 
 #: Site/Site.js:88
 msgid "Nobody"
@@ -1023,15 +1013,15 @@ msgstr "Offen"
 msgid "Options"
 msgstr "Optionen"
 
-#: Skin/$Skin.skin:83
-msgid "Original skin"
-msgstr "Ursprünglicher Skin"
+#: Skin/$Skin.skin:89
+msgid "Original"
+msgstr "Original"
 
 #: Membership/Membership.js:54 Site/Site.js:89
 msgid "Owner"
 msgstr "Besitzerin"
 
-#: Members/$Members.skin:10 Members/Members.js:257
+#: Members/$Members.skin:10 Members/Members.js:273
 msgid "Owners"
 msgstr "Besitzerinnen"
 
@@ -1066,11 +1056,11 @@ msgstr "Internet-Adresse"
 msgid "Pixels"
 msgstr "Pixel"
 
-#: Members/Members.js:368
+#: Members/Members.js:384
 msgid "Please accept the data privacy statement."
 msgstr "Bitte akzeptieren Sie die Datenschutzerklärung."
 
-#: Members/Members.js:364
+#: Members/Members.js:380
 msgid "Please accept the terms and conditions."
 msgstr "Bitte akzeptieren Sie die Nutzungsbedingungen."
 
@@ -1118,7 +1108,7 @@ msgstr "Bitte geben Sie einen neuen Namen für dieses Stichwort an"
 msgid "Please enter a new password."
 msgstr "Bitte geben Sie ein neues Kennwort ein."
 
-#: Members/Members.js:321 Site/Site.js:971
+#: Members/Members.js:337 Site/Site.js:972
 msgid "Please enter a query in the search form."
 msgstr "Bitte geben Sie eine Suchanfrage in das Suchformular ein."
 
@@ -1220,7 +1210,7 @@ msgstr "Erstellt von {0} am {1}"
 
 #: Layout/$Layout.skin:99 Poll/$Poll.skin:15 Global/i18n.js:139
 #: Story/$Story.skin:25 File/$File.skin:14 Image/$Image.skin:19
-#: Skin/$Skin.skin:10
+#: Skin/$Skin.skin:11
 msgid "Press CTRL & C to copy to clipboard."
 msgstr "Drücken Sie CTRL & C, um in die Zwischenablage zu kopieren."
 
@@ -1248,7 +1238,7 @@ msgstr "Fortfahren"
 msgid "Public"
 msgstr "Öffentlich"
 
-#: Root/Root.js:196 Root/Site.skin:25
+#: Root/Root.js:197 Root/Site.skin:25
 msgid "Public Sites"
 msgstr "Öffentliche Websites"
 
@@ -1280,7 +1270,7 @@ msgstr "Rückverweis"
 msgid "Referrer Filter"
 msgstr "Rückverweis-Filter"
 
-#: Site/Site.js:690 Site/Site.skin:34 Root/Site.skin:37
+#: Site/Site.js:691 Site/Site.skin:34 Root/Site.skin:37
 msgid "Referrers"
 msgstr "Rückverweise"
 
@@ -1322,7 +1312,7 @@ msgid "Required Account Status"
 msgstr "Benötigter Konto-Status"
 
 #: Layout/$Layout.skin:88 Admin/$Admin.skin:211 Admin/$Admin.skin:257
-#: Admin/$Admin.skin:164 Site/$Site.skin:1125 Skin/$Skin.skin:71
+#: Admin/$Admin.skin:164 Site/$Site.skin:1125
 msgid "Reset"
 msgstr "Zurücksetzen"
 
@@ -1362,7 +1352,7 @@ msgstr "Laufende Umfragen"
 #: User/$User.skin:101 Layout/$Layout.skin:86 Members/$Members.skin:194
 #: Poll/$Poll.skin:114 Membership/$Membership.skin:16 Admin/$Admin.skin:137
 #: Story/Story.skin:80 Site/$Site.skin:224 Comment/Comment.skin:69
-#: File/$File.skin:61 Image/$Image.skin:87 Skin/$Skin.skin:29
+#: File/$File.skin:61 Image/$Image.skin:87 Skin/$Skin.skin:96
 msgid "Save"
 msgstr "Speichern"
 
@@ -1374,7 +1364,7 @@ msgstr "Speichern und starten"
 msgid "Scripting Engine"
 msgstr "Scripting-Umgebung"
 
-#: Site/Site.js:716 Site/Site.skin:41 Site/$Site.skin:1123 Site/$Site.skin:1223
+#: Site/Site.js:717 Site/Site.skin:41 Site/$Site.skin:1123 Site/$Site.skin:1223
 #: ../compat/Global/aspects.js:246
 msgid "Search"
 msgstr "Suche"
@@ -1456,7 +1446,7 @@ msgstr "Site"
 msgid "Site Creation"
 msgstr "Erstellen von Websites"
 
-#: Skins/$Skins.skin:58
+#: Skins/$Skins.skin:100
 msgid "Site Page"
 msgstr "Basis-Seite"
 
@@ -1464,7 +1454,7 @@ msgstr "Basis-Seite"
 msgid "Site Phase-Out"
 msgstr "Automatisches Löschen von Websites"
 
-#: Site/Site.js:815
+#: Site/Site.js:816
 msgid "Site is scheduled for import."
 msgstr "Die Website ist für den Import eingeplant."
 
@@ -1476,7 +1466,7 @@ msgstr "Sites"
 msgid "Size"
 msgstr "Größe"
 
-#: Skin/Skin.js:22 Skin/Skin.js:200
+#: Skin/Skin.js:22 Skin/Skin.js:219
 msgid "Skin"
 msgstr "Skin"
 
@@ -1484,7 +1474,7 @@ msgstr "Skin"
 msgid "Skins"
 msgstr "Skins"
 
-#: Site/Site.js:847
+#: Site/Site.js:848
 msgid "Something went wrong."
 msgstr "Irgendwas ist schiefgelaufen."
 
@@ -1527,7 +1517,7 @@ msgstr ""
 msgid "Sorry, this layout is not compatible with Antville."
 msgstr "Leider funktioniert das Layout nicht mit dieser Antville-Installation."
 
-#: Members/Members.js:426
+#: Members/Members.js:442
 msgid "Sorry, your input did not match any registered account."
 msgstr "Leider ist unter diesem Namen kein Konto registriert."
 
@@ -1540,7 +1530,7 @@ msgstr "Quelle: {0}"
 msgid "Start"
 msgstr "Start"
 
-#: Skins/$Skins.skin:60
+#: Skins/$Skins.skin:102
 msgid "Start Page"
 msgstr "Startseite"
 
@@ -1579,7 +1569,7 @@ msgstr "Beitrag über die Datenschutzerklärung"
 msgid "Story about Terms and Conditions"
 msgstr "Beitrag über die Nutzungsbedingungen"
 
-#: Skins/$Skins.skin:64
+#: Skins/$Skins.skin:106
 msgid "Stylesheet"
 msgstr "Stilvorlagen"
 
@@ -1595,29 +1585,29 @@ msgstr "Abonniert"
 msgid "Subscriber"
 msgstr "Abonnentin"
 
-#: Members/$Members.skin:7 Members/Members.js:284
+#: Members/$Members.skin:7 Members/Members.js:300
 msgid "Subscribers"
 msgstr "Abonnentinnen"
 
-#: User/$User.skin:27 Members/Members.js:305 Membership/Membership.skin:10
+#: User/$User.skin:27 Members/Members.js:321 Membership/Membership.skin:10
 msgid "Subscriptions"
 msgstr "Abonnements"
 
-#: Members/Members.js:343
+#: Members/Members.js:359
 #, java-format
 msgid "Successfully added {0} to the list of members."
 msgstr "{0} wurde erfolgreich zur Liste der Mitglieder hinzugefügt."
 
-#: Root/Root.js:168
+#: Root/Root.js:169
 msgid "Successfully created your site."
 msgstr "Ihr Website wurde erfolgreich erstellt."
 
-#: Site/Site.js:725
+#: Site/Site.js:726
 #, java-format
 msgid "Successfully subscribed to site {0}."
 msgstr "Die Website {0} wurde erfolgreich abonniert."
 
-#: Site/Site.js:739
+#: Site/Site.js:740
 #, java-format
 msgid "Successfully unsubscribed from site {0}."
 msgstr "Das Abonnement der Website {0} wurde erfolgreich storniert."
@@ -1706,7 +1696,7 @@ msgstr ""
 "Methode aufgerufen:"
 
 #: User/User.js:523 Skins/Skins.js:99 Membership/Membership.js:159
-#: Site/Site.js:338 File/File.js:204 Image/Image.js:203 Skin/Skin.js:157
+#: Site/Site.js:338 File/File.js:204 Image/Image.js:203 Skin/Skin.js:170
 msgid "The changes were saved successfully."
 msgstr "Die Änderungen wurden erfolgreich gespeichert."
 
@@ -1781,11 +1771,11 @@ msgstr "Die Umfrage wurde erfolgreich erstellt."
 msgid "The poll was updated successfully."
 msgstr "Die Umfrage wurde erfolgreich aktualisiert."
 
-#: Site/Site.js:780
+#: Site/Site.js:781
 msgid "The site data will be available for download from here, soon."
 msgstr "Der Site-Export steht demnächst hier zum Download bereit."
 
-#: Site/Site.js:768
+#: Site/Site.js:769
 msgid "The site is queued for export."
 msgstr "Der Export der Site-Daten wird vorbereitet."
 
@@ -1861,7 +1851,7 @@ msgid "The user {0} has modified your membership of the site {1} at {2}."
 msgstr ""
 "Ihre Mitgliedschaft bei der Website {1} unter {2} wurde von {0} geändert."
 
-#: Skin/Skin.js:188
+#: Skin/Skin.js:207
 #, java-format
 msgid ""
 "The {0} macro is missing. It is essential for accessing the site and must be "
@@ -1879,7 +1869,7 @@ msgstr "Es gibt bereits eine Website mit diesem Namen."
 msgid "There is already another job queued for this account: {0}"
 msgstr "Für dieses Konto wird bereits ein anderer Auftrag berarbeitet: {0}"
 
-#: Site/Site.js:765 Site/Site.js:802
+#: Site/Site.js:766 Site/Site.js:803
 #, java-format
 msgid "There is already another job queued for this site: {0}"
 msgstr "Ein anderer Prozess ist für diese Website bereits gereiht: {0}"
@@ -1964,7 +1954,7 @@ msgstr "Diese Umfrage wurde {0} von {1} beendet"
 msgid "This site is currently {0}."
 msgstr "Die Website ist derzeit {0}."
 
-#: Skins/$Skins.skin:67
+#: Skins/$Skins.skin:109
 msgid ""
 "This skin contains additional JavaScript code that will be included in every "
 "page."
@@ -1972,7 +1962,7 @@ msgstr ""
 "Dieser Skin enthält zusätzlichen JavaScript-Code, der in jeder Seite "
 "eingebettet wird."
 
-#: Skins/$Skins.skin:65
+#: Skins/$Skins.skin:107
 msgid ""
 "This skin contains the Cascading Stylesheet (CSS) definitions, e.g. fonts, "
 "font sizes, colors etc. Modifying this skin will affect the general "
@@ -1982,7 +1972,7 @@ msgstr ""
 "Farben. Änderungen an diesem Skin beeinflussen das allgemeine "
 "Erscheinungsbild Ihrer Website."
 
-#: Skins/$Skins.skin:59
+#: Skins/$Skins.skin:101
 msgid ""
 "This skin defines the basic structure of your site. Modifying it will affect "
 "the general appearance of your site."
@@ -1990,18 +1980,18 @@ msgstr ""
 "Dieser Skin bestimmt die grundlegende Struktur Ihrer Website. Änderungen an "
 "diesem Skin beeinflussen das allgemeine Erscheinungsbild Ihrer Website."
 
-#: Skins/$Skins.skin:63
+#: Skins/$Skins.skin:105
 msgid "This skin is used to display the navigation links on the page."
 msgstr ""
 "Dieser Skin wird verwendet, um die Navigations-Links auf jeder Seite "
 "anzuzeigen."
 
-#: Skins/$Skins.skin:61
+#: Skins/$Skins.skin:103
 msgid "This skin is used to render the start page of your site."
 msgstr ""
 "Dieser Skin wird zur Darstellung der Startseite Ihrer Website verwendet."
 
-#: Members/Members.js:428
+#: Members/Members.js:444
 msgid "This user is already a member of this site."
 msgstr "Dieses Konto ist bereits Mitglied der Website."
 
@@ -2095,11 +2085,11 @@ msgstr ""
 msgid "Update"
 msgstr "Aktualisieren"
 
-#: Members/Members.js:380
+#: Members/Members.js:396
 msgid "Updated Terms &amp; Conditions"
 msgstr "Geänderte Nutzungsbedingungen"
 
-#: User/$User.skin:26 Members/Members.js:293
+#: User/$User.skin:26 Members/Members.js:309
 msgid "Updates"
 msgstr "Letzte Änderungen"
 
@@ -2175,7 +2165,7 @@ msgstr "Willkommen"
 msgid "Welcome to {0}, {1}!"
 msgstr "Willkommen bei {0}, {1}!"
 
-#: User/User.js:327 Members/Members.js:204 Members/Members.js:374
+#: User/User.js:327 Members/Members.js:204 Members/Members.js:390
 #, java-format
 msgid "Welcome to {0}, {1}. Have fun!"
 msgstr "Willkommen bei {0}, {1}. Viel Spaß!"
@@ -2279,12 +2269,12 @@ msgstr ""
 msgid "You are about to reset the layout of site {0}."
 msgstr "Sie sind im Begriff, das Layout der Website {0} zurückzusetzen."
 
-#: Skin/Skin.js:427
+#: Skin/Skin.js:391
 #, java-format
 msgid "You are about to reset the skin {0}.{1}."
 msgstr "Sie sind im Begriff, den Skin {0}.{1} zurückzusetzen."
 
-#: Site/Site.js:750
+#: Site/Site.js:751
 #, java-format
 msgid "You are about to unsubscribe from the site {0}."
 msgstr "Sie sind im Begriff, das Abonnement der Website {0} zu löschen."
@@ -2355,7 +2345,7 @@ msgstr ""
 "Sie haben noch nicht abgestimmt. Sie können abstimmen, bis die Umfrage "
 "beendet ist."
 
-#: Root/Root.js:429 Root/Root.js:438
+#: Root/Root.js:447 Root/Root.js:456
 #, java-format
 msgid "You need to wait {0} before you are allowed to create a new site."
 msgstr "Sie müssen {0} warten, bevor Sie eine neue Website erstellen können."
@@ -2391,7 +2381,7 @@ msgstr "[{0}] Nachricht von {1}"
 msgid "[{0}] Notification of membership cancellation"
 msgstr "[{0}] Benachrichtigung über Beendigung der Mitgliedschaft"
 
-#: Members/Members.js:342 Membership/Membership.js:184
+#: Members/Members.js:358 Membership/Membership.js:184
 #, java-format
 msgid "[{0}] Notification of membership change"
 msgstr "[{0}] Benachrichtigung über Änderung der Mitgliedschaft"
@@ -2573,7 +2563,7 @@ msgstr "Datei"
 msgid "files"
 msgstr "Dateien"
 
-#: Site/Site.js:952
+#: Site/Site.js:953
 msgid "free"
 msgstr "frei"
 
@@ -2772,7 +2762,7 @@ msgstr "vertrauenswürdig"
 msgid "updated // has updated"
 msgstr "aktualisierte"
 
-#: Site/Site.js:952
+#: Site/Site.js:953
 msgid "used"
 msgstr "benutzt"
 
@@ -2866,7 +2856,7 @@ msgstr[0] "{0} Kommentar"
 msgstr[1] "{0} Kommentare"
 
 #: Site/$Site.skin:1321 Site/$Site.skin:1331 Root/$Root.skin:79
-#: Root/Root.js:430 Root/Root.js:439
+#: Root/Root.js:448 Root/Root.js:457
 #, java-format
 msgid "{0} day"
 msgid_plural "{0} days"
@@ -3008,7 +2998,7 @@ msgstr[1] "{0} Stimmen"
 msgid "{0} was successfully deleted."
 msgstr "{0} wurde erfolgreich gelöscht."
 
-#: Layout/Layout.js:245 Skin/Skin.js:200
+#: Layout/Layout.js:245 Skin/Skin.js:219
 #, java-format
 msgid "{0} was successfully reset."
 msgstr "{0} wurde erfolgreich zurückgesetzt."
@@ -3027,7 +3017,7 @@ msgid_plural "{0} years ago"
 msgstr[0] "vor {0} Jahr"
 msgstr[1] "vor {0} Jahren"
 
-#: Root/Root.js:141 Root/Root.js:149
+#: Root/Root.js:142 Root/Root.js:150
 #, java-format
 msgid "{0} {1} Error"
 msgstr "{0} {1} Fehler"
@@ -3055,6 +3045,29 @@ msgid "{0}Download the archive{1} or click “Export” to create a new one."
 msgstr ""
 "{0}Laden Sie das Archiv herunter{1} oder klicken Sie »Exportieren«, um ein "
 "neues zu erstellen."
+
+#~ msgid "Compare with…"
+#~ msgstr "Vergleich mit…"
+
+#~ msgid "Compare"
+#~ msgstr "Vergleichen"
+
+#, java-format
+#~ msgid "Compare {0}"
+#~ msgstr "Vergleichen {0}"
+
+#, java-format
+#~ msgid "Edit {0}.{1}"
+#~ msgstr "{0}.{1} bearbeiten"
+
+#~ msgid "Modified skin"
+#~ msgstr "Geänderter Skin"
+
+#~ msgid "No differences were found."
+#~ msgstr "Es wurden keine Unterschiede gefunden."
+
+#~ msgid "Original skin"
+#~ msgstr "Ursprünglicher Skin"
 
 #~ msgid "Robots.txt forbids access to this page."
 #~ msgstr "Robots.txt verbietet den Zugang zu dieser Seite."

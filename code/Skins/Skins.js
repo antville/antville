@@ -111,6 +111,7 @@ Skins.prototype.create_action = function() {
   res.data.action = this.href(req.action);
   HopObject.confirmConstructor(Skin);
   res.data.body = (new Skin).renderSkinAsString('$Skin#edit');
+  res.data.action = req.action;
   this.renderSkin('$Skins#page');
   return;
 }
@@ -142,6 +143,7 @@ Skins.prototype.safe_action = function() {
   res.data.title = gettext('Modified Skins (Safe Mode)');
   res.data.list = renderList(this.modified, '$Skin#listItem');
   res.data.body = this.renderSkinAsString('$Skins#list');
+  res.data.action = req.action;
   this.renderSkin('$Skins#page');
   return;
 }

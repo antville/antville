@@ -49,39 +49,58 @@
 <script>
    const setup = () => {
       return {
-         submit(event) {
-            const source = document.createElement('textarea');
-            source.setAttribute('hidden', true);
-            source.setAttribute('name', 'source');
-            source.innerHTML = view.a.state.doc.toString();
-            event.target.appendChild(source);
+         reference: '<% request.reference %>',
+
+         submit() {
+            this.$refs.source.innerHTML = view.a.state.doc.toString();
+            this.$refs.reference.value = this.reference;
+            this.$refs.form.submit();
          }
       };
    };
 </script>
-<form class='uk-form' method='post' action='<% response.action %>' x-data='setup()' @submit='submit'>
-   <div class='uk-clearfix header'>
-      <h1 class='uk-margin-large-right uk-float-left'><% response.title %></h1>
-      <span style='line-height: 39px;'>
-         <span class='uk-article-meta metadata'>
+<form class='uk-form' method='post' action='<% response.action %>' @submit='submit()' x-data='setup()' x-ref='form'>
+   <input x-ref='reference' type='hidden' name='reference' value='<% request.reference %>'>
+   <textarea x-ref='source' name='source' hidden></textarea>
+   <div class='sticky'>
+      <div class='header'>
+         <h1><% response.title %></h1>
+         <div class='uk-article-meta metadata'>
             <% skin.skin $HopObject#meta %>
-         </span>
-         <% if <% skin.name %> is '' then
-            <% skin.select prototype suffix=<% skin.input name class='uk-width-1-4' %> %>
-         %>
-         <button type='submit' name='save' value='1' class='uk-button uk-button-primary uk-margin-large-left'>
-            <% gettext Save %>
-         </button>
-         <button type='submit' name='compare' class='uk-button uk-margin-left'>
-            <% gettext Compare %>
-         </button>
-         <select name='reference'>
-            <option value='current' <% if <% request.reference %> is current then selected %>><% gettext Current %></option>
-            <option value='original' <% if <% request.reference %> is original then selected %>><% gettext Original %></option>
-         </select>
-         <a href='<% layout.skins.href all %>' class='uk-button uk-button-link'><% gettext Cancel %></a>
-      </span>
-      <% response.message prefix='<div class="uk-alert" data-uk-alert>' suffix=</div> %>
+         </div>
+         <div class='controls'>
+            <% if <% skin.name %> is '' then
+               <% skin.select prototype suffix=<% skin.input name class='uk-width-1-4' %> %>
+            %>
+            <div class='uk-button-group compare-buttons'>
+               <button @click.prevent='submit()' name='compare' class='uk-button'>
+                  <% gettext 'Compare…' %>
+               </button>
+               <div data-uk-dropdown='{ mode: "click" }'>
+                  <a href='javascript:' class='uk-button'>
+                     <i class="uk-icon-caret-down"></i>
+                  </a>
+                  <div class='uk-dropdown uk-dropdown-small' name='reference'>
+                     <ul class='uk-nav uk-nav-dropdown uk-nav-side'>
+                        <li class='<% if <% request.reference %> is current then uk-active %>'>
+                           <a href='javascript:' @click.prevent='reference = "current"; submit();'><% gettext Current %></a>
+                        </li>
+                        <li class='<% if <% request.reference %> is original then uk-active %>'>
+                           <a href='javascript:' @click.prevent='reference = "original"; submit();'><% gettext Original %></a>
+                        </li>
+                     </ul>
+                  </div>
+               </div>
+            </div>
+            <button type='submit' name='save' value='1' class='uk-button uk-button-primary'>
+               <% gettext Save %>
+            </button>
+            <a href='<% layout.skins.href all %>' class='uk-button uk-button-link'><% gettext Cancel %></a>
+         </div>
+         <% image /smallchaos.gif | link <% site.href %> %>
+      </div>
+      <% response.message prefix='<div class="message uk-alert" data-uk-alert>' suffix=</div> %>
+      <hr/>
    </div>
    <div class='editor'></div>
 </form>

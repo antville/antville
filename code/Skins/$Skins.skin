@@ -3,31 +3,79 @@
 <html <% site.locale prefix='lang=' %>>
    <head>
       <meta charset='utf-8'>
+      <meta name='viewport' content='width=device-width, initial-scale=1'>
       <title><% response.title %></title>
+      <link rel='canonical' href='<% href %>'>
+      <link rel='icon' type='image/x-icon' href='<% image /favicon.png url %>'>
+      <link rel='shortcut icon' type='image/x-icon' href='<% image /favicon.png url %>'>
+      <link rel='apple-touch-icon' href='<% image /favicon.png url %>'>
       <link rel="stylesheet" type="text/css" href="<% site.href main.css %>">
       <link rel='stylesheet' type='text/css' href='<% root.static ../../styles/editor.min.css %>'>
       <style type="text/css">
+         @media (max-width: 1023px) {
+            .metadata {
+               display: none;
+            }
+         }
+
+         @media (max-width: 767px) {
+            .compare-buttons,
+            .cm-mergeViewEditor:last-child {
+               display: none;
+            }
+            .cm-mergeViewEditor:first-child {
+               width: 100%;
+            }
+         }
+
          body {
             margin: 0;
             padding: 0;
             background: none;
          }
-         .logo {
-            position: sticky;
-            top: 15px;
-            z-index: 2;
+         body.safe-page {
+            margin: 1em;
          }
-         .header {
+         body.create-page .compare-buttons {
+            display: none;
+         }
+         .sticky {
             position: sticky;
             top: 0;
             z-index: 1;
-            padding: 15px 15px 0;
-            border-block-end: 1px solid #ccc;
             background-color: white;
          }
+         .header {
+            display: flex;
+            align-items: center;
+            margin-block-end: 1em;
+            padding: 1em 1em 0;
+         }
+         .header > h1 {
+            margin-block-end: 0;
+         }
+         .header > *:not(:last-child) {
+            margin-inline-end: auto;
+         }
+         .controls {
+            flex-shrink: 0;
+         }
+         h1, .metadata {
+            overflow-x: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+         }
          .metadata {
-            display: inline-block;
-            vertical-align: bottom;
+            max-width: 250px;
+         }
+         .message {
+            margin: 1em;
+         }
+         hr {
+            height: 1px;
+            margin: 0;
+            padding: 0;
+            border-block-start: 1px solid #ccc;
          }
          .editor {
             border-block-end: 1px solid #ccc;
@@ -38,10 +86,7 @@
       </style>
       <script defer src='<% site.href main.js %>'></script>
    </head>
-   <body>
-      <span class='uk-margin-right uk-float-right logo'>
-         <% image /smallchaos.gif | link <% site.href %> %>
-      </span>
+   <body class='<% response.action suffix=-page %>'>
       <% response.body %>
    </body>
 </html>
@@ -51,7 +96,7 @@
    <% response.title %>
    <% skins.link create ' ' class='uk-icon-button uk-icon-plus uk-text-middle' %>
 </h1>
-<div class='uk-margin-top'>
+<div>
    <% skins.link main <% gettext Basic %> %>
    <% skins.link modified <% gettext Modified %> prefix=" | " %>
    <% skins.link all <% gettext All %> prefix=" | " %>

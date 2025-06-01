@@ -175,12 +175,17 @@ Skin.prototype.edit_action = function() {
     }
   }
 
+  if (!req.postParams.reference) {
+    req.postParams.reference = 'current';
+  }
+
   const referenceSource = req.postParams.reference === 'original' ? this.source : this.getSource();
   const currentSource = req.data.source || referenceSource;
 
   res.data.versionA = encodeURIComponent(currentSource);
   res.data.versionB = encodeURIComponent(referenceSource);
-  res.data.title = gettext('Edit {0}', this.getTitle());
+  res.data.title = gettext('{0}', this.getTitle());
+  res.data.header = this.renderSkinAsString('$Skin#header');
   res.data.body = this.renderSkinAsString('$Skin#edit');
   res.handlers.skins.renderSkin('$Skins#page');
   return;
