@@ -252,7 +252,7 @@ Skin.prototype.compare_action = function() {
           this.renderSkin('$Skin#difference', param);
         }
       }
-      if (line.value !== null) {
+      if (line.value !== null && typeof line.value !== 'undefined') {
         leftLineNumber += 1;
         rightLineNumber += 1;
         param.leftLineNumber = leftLineNumber;
