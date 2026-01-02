@@ -41,7 +41,7 @@
   "devDependencies": {
     "browserify": "17.0.1",
     "generate-license-file": "4.0.0",
-    "jsdoc": "4.0.4",
+    "jsdoc": "4.0.5",
     "less": "4.3.0",
     "less-plugin-clean-css": "1.6.0",
     "npm-run-all2": "7.0.2",
