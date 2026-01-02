@@ -11,7 +11,7 @@ clean {
 }
 
 dependencies {
-  implementation 'com.h2database:h2:1.4.200'
+  implementation 'com.h2database:h2:2.2.220'
 }
 
 configurations {
@@ -112,9 +112,8 @@ tasks.register('installJars', Copy) {
 tasks.register('buildDatabase', JavaExec) {
   description 'Builds the H2 SQL database file.'
   group 'build'
-  dependsOn ':assemble'
 
-  def inputFile = "$antvilleInstallDir/db/postgre.sql"
+  def inputFile = "${project.rootDir}/db/postgre.sql"
   def outputDir = "$helmaInstallDir/db"
 
   inputs.file inputFile
@@ -130,7 +129,7 @@ tasks.register('buildDatabase', JavaExec) {
   args = [
     '-continueOnError',
     '-script', inputFile,
-    '-url', "jdbc:h2:$outputDir/antville",
+    '-url', "jdbc:h2:$outputDir/antville;mode=postgresql;non_keywords=value",
     '-user', 'antville',
     '-password', 'antville'
   ]
@@ -165,7 +164,7 @@ task assembleDist {
 tasks.register('runH2Console', JavaExec) {
   description 'Runs the H2 SQL database console.'
   group 'Help'
-  dependsOn 'installJars'
+  dependsOn 'buildDatabase'
 
   def h2Jar = configurations.library.files.find { jar ->
     jar.name.startsWith('h2')
@@ -178,9 +177,6 @@ tasks.register('runH2Console', JavaExec) {
     '-user', 'antville',
     '-password', 'antville'
   ]
-
-  // standardOutput = new ByteArrayOutputStream()
-  // ignoreExitValue true
 }
 
 tasks.register('distZip', Zip) {

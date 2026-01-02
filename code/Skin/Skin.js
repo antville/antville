@@ -223,6 +223,9 @@ Skin.prototype.compare_action = function() {
     res.push();
     var param = {}, leftLineNumber = rightLineNumber = 0;
     for (let line of diff) {
+      if (!line) {
+        continue;
+      }
       if (line.deleted) {
         param.right = encode(line.value);
         param.leftStatus = 'added';
@@ -249,7 +252,7 @@ Skin.prototype.compare_action = function() {
           this.renderSkin('$Skin#difference', param);
         }
       }
-      if (line.value !== null) {
+      if (line.value !== null && typeof line.value !== 'undefined') {
         leftLineNumber += 1;
         rightLineNumber += 1;
         param.leftLineNumber = leftLineNumber;
