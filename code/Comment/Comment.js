@@ -346,3 +346,32 @@ Comment.prototype.level_macro = function () {
   }
   res.write(level);
 };
+
+Comment.prototype.comment_action = function() {
+  if (!User.require(User.REGULAR)) {
+    User.setLocation(this.href(req.action) + '#form');
+    res.message = gettext('Please login first.');
+    res.redirect(this.site.members.href('login'));
+  }
+  if (req.postParams.save) {
+    try {
+      var comment = Comment.add(req.postParams, this);
+      comment.notify(req.action);
+      delete session.data.backup;
+      res.message = gettext('The comment was successfully created.');
+      res.redirect(comment.href());
+    } catch (ex) {
+      res.message = ex;
+      app.log(ex);
+    }
+  }
+  res.handlers.parent = this;
+  res.data.action = this.href(req.action);
+  res.data.title = gettext('Add Comment');
+  HopObject.confirmConstructor(Comment);
+  var comment = new Comment();
+  res.data.body = comment.renderSkinAsString('Comment#edit');
+  res.data.body += comment.renderSkinAsString('$Story#editor');
+  this.site.renderSkin('Site#page');
+  return;
+};
