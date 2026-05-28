@@ -1,8 +1,8 @@
 app.addRepository(app.dir + '/../lib/autolink-0.11.0.jar');
-app.addRepository(app.dir + '/../lib/commonmark-0.24.0.jar');
-app.addRepository(app.dir + '/../lib/commonmark-ext-autolink-0.24.0.jar');
-app.addRepository(app.dir + '/../lib/commonmark-ext-gfm-strikethrough-0.24.0.jar');
-app.addRepository(app.dir + '/../lib/commonmark-ext-gfm-tables-0.24.0.jar');
+app.addRepository(app.dir + '/../lib/commonmark-0.28.0.jar');
+app.addRepository(app.dir + '/../lib/commonmark-ext-autolink-0.28.0.jar');
+app.addRepository(app.dir + '/../lib/commonmark-ext-gfm-strikethrough-0.28.0.jar');
+app.addRepository(app.dir + '/../lib/commonmark-ext-gfm-tables-0.28.0.jar');
 
 var renderMarkdown = (function() {
   const commonMark = new JavaImporter(

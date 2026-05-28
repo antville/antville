@@ -47,10 +47,10 @@ configurations {
 }
 
 dependencies {
-  implementation 'org.commonmark:commonmark:0.24.0'
-  implementation 'org.commonmark:commonmark-ext-autolink:0.24.0'
-  implementation 'org.commonmark:commonmark-ext-gfm-strikethrough:0.24.0'
-  implementation 'org.commonmark:commonmark-ext-gfm-tables:0.24.0'
+  implementation 'org.commonmark:commonmark:0.28.0'
+  implementation 'org.commonmark:commonmark-ext-autolink:0.28.0'
+  implementation 'org.commonmark:commonmark-ext-gfm-strikethrough:0.28.0'
+  implementation 'org.commonmark:commonmark-ext-gfm-tables:0.28.0'
   implementation 'org.jsoup:jsoup:1.19.1'
   implementation 'rome:rome:1.0'
 
