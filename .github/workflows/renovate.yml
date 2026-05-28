@@ -10,7 +10,7 @@ jobs:
     runs-on: antville
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Run Renovate
         # See <https://docs.renovatebot.com/troubleshooting/#log-debug-levels>
