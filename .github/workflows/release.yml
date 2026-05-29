@@ -35,7 +35,7 @@ jobs:
           echo ".eot0x03" >> $GITHUB_OUTPUT
 
       - name: Create release
-        uses: actions/forgejo-release@v2
+        uses: code.forgejo.org/actions/forgejo-release@v2
         with:
           direction: upload
           url: https://code.host.antville.org
