@@ -177,7 +177,7 @@ Admin.purgeAccounts = function() {
   var now = Date.now();
 
   root.admin.deletedUsers.forEach(function() {
-    if (this.job || this.deleted) return; // already gone
+    if (this.job || this.deleted || !this._id) return; // already gone or invalid
     this.job = Admin.queue(this, 'remove', this);
   });
 };
