@@ -1,12 +1,14 @@
 app.addRepository(app.dir + '/../lib/autolink-0.11.0.jar');
 app.addRepository(app.dir + '/../lib/commonmark-0.28.0.jar');
 app.addRepository(app.dir + '/../lib/commonmark-ext-autolink-0.28.0.jar');
+app.addRepository(app.dir + '/../lib/commonmark-ext-footnotes-0.28.0.jar');
 app.addRepository(app.dir + '/../lib/commonmark-ext-gfm-strikethrough-0.28.0.jar');
 app.addRepository(app.dir + '/../lib/commonmark-ext-gfm-tables-0.28.0.jar');
 
 var renderMarkdown = (function() {
   const commonMark = new JavaImporter(
     Packages.org.commonmark.ext.autolink,
+    Packages.org.commonmark.ext.footnotes,
     Packages.org.commonmark.ext.gfm.strikethrough,
     Packages.org.commonmark.ext.gfm.tables,
     Packages.org.commonmark.parser.Parser,
@@ -16,6 +18,7 @@ var renderMarkdown = (function() {
 
   const extensions = [
     commonMark.AutolinkExtension.create(),
+    commonMark.FootnotesExtension.create(),
     commonMark.StrikethroughExtension.create(),
     commonMark.TablesExtension.create()
   ];
