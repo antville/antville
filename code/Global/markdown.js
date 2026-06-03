@@ -1,4 +1,4 @@
-app.addRepository(app.dir + '/../lib/autolink-0.11.0.jar');
+app.addRepository(app.dir + '/../lib/autolink-0.12.0.jar');
 app.addRepository(app.dir + '/../lib/commonmark-0.28.0.jar');
 app.addRepository(app.dir + '/../lib/commonmark-ext-autolink-0.28.0.jar');
 app.addRepository(app.dir + '/../lib/commonmark-ext-footnotes-0.28.0.jar');
