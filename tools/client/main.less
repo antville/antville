@@ -13,6 +13,24 @@ td[nowrap][width]:not([width$="%"]) {
   white-space: normal
 }
 
+.footnotes {
+  font-size: small;
+  margin-block-start: 2.5em;
+  padding-block-start: 0;
+
+  &::before {
+    content: '';
+    display: block;
+    width: 33.3333%;
+    border-block-start: 1px solid #99999940;
+    margin-block-end: 1em;
+  }
+
+  p {
+    margin-block-end: 0;
+  }
+}
+
 .markdown-alert {
     padding: 0.5rem 1rem;
     margin-bottom: 1rem;
