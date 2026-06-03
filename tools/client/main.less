@@ -12,3 +12,40 @@ summary {
 td[nowrap][width]:not([width$="%"]) {
   white-space: normal
 }
+
+.markdown-alert {
+    padding: 0.5rem 1rem;
+    margin-bottom: 1rem;
+    border-left: 4px solid;
+
+    p {
+      margin: 0;
+    }
+}
+
+.markdown-alert-title { font-weight: 600; margin-top: 0; margin-bottom: 0.25rem; }
+
+.markdown-alert-note {
+  .markdown-alert-title { color: #2d7091; }
+  border-color: #2d70914d; background-color: #ebf7fd;
+}
+
+.markdown-alert-tip {
+  .markdown-alert-title { color: #659f13; }
+  border-color: #659f134d; background-color: #f2fae3;
+}
+
+.markdown-alert-important {
+  .markdown-alert-title { color: #8250df; }
+  border-color: #8250df4d; background-color: #f6f0ff;
+}
+
+.markdown-alert-warning {
+  .markdown-alert-title { color: #faa732; }
+  border-color: #faa7324d; background-color: #fffceb;
+}
+
+.markdown-alert-caution {
+  .markdown-alert-title { color: #d85030; }
+  border-color: #d850304d; background-color: #fff1f0;
+}
