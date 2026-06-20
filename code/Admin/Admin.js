@@ -271,9 +271,10 @@ Admin.purgeReferrers = function() {
  */
 Admin.commitRequests = function() {
   var requests = app.data.requests;
-  app.data.requests = {};
-  for (let key in requests) {
-    let item = requests[key];
+  app.data.requests = new Packages.java.util.concurrent.ConcurrentHashMap();
+  var iterator = requests.values().iterator();
+  while (iterator.hasNext()) {
+    let item = iterator.next();
     switch (item.type) {
       case Story:
       var story = Story.getById(item.id);

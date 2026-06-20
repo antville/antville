@@ -428,16 +428,20 @@ Story.prototype.count = function() {
   if (session.user === this.creator) {
     return;
   }
-  var story;
   var key = 'Story#' + this._id;
-  if (story = app.data.requests[key]) {
+  // Use the thread-safe ConcurrentHashMap API (.get/.put) instead of plain
+  // property access. app.data.requests is shared across all request threads;
+  // mutating a plain JS object’s properties concurrently corrupts Rhino’s
+  // (non-thread-safe) EmbeddedSlotMap and spins threads at 100% CPU.
+  var story = app.data.requests.get(key);
+  if (story) {
     story.requests += 1;
   } else {
-    app.data.requests[key] = {
+    app.data.requests.put(key, {
       type: this.constructor,
       id: this._id,
       requests: this.requests + 1
-    };
+    });
   }
   return;
 }
