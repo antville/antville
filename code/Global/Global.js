@@ -70,32 +70,36 @@ app.addRepository('modules/jala/code/I18n.js');
  * @see scheduler
  * @name app.data.callbacks
  */
-app.data.callbacks || (app.data.callbacks = []);
+app.data.callbacks || (app.data.callbacks =
+    new Packages.java.util.concurrent.ConcurrentLinkedQueue());
 /**
  * Temporary in-memory store of LogEntry instances.
  * They will be made persistent asynchronously by an Admin method.
  * @see Admin.commitEntries
  * @see scheduler
  * @name app.data.entries
- * @type Array
+ * @type java.util.concurrent.ConcurrentLinkedQueue
  */
-app.data.entries || (app.data.entries = []);
+app.data.entries || (app.data.entries =
+    new Packages.java.util.concurrent.ConcurrentLinkedQueue());
 /**
  * In-memory registry of Claustra instances.
  * Claustra are defined in the “claustra” dir.
  * @name app.data.claustra
- * @type Array
+ * @type java.util.concurrent.ConcurrentLinkedQueue
  */
-app.data.claustra || (app.data.claustra = []);
+app.data.claustra || (app.data.claustra =
+    new Packages.java.util.concurrent.ConcurrentLinkedQueue());
 /**
  * In-memory e-mail message queue.
  * They will be sent asynchronously by an Admin method.
  * @see helma.mail.flushQueue
  * @see scheduler
  * @name app.data.mails
- * @type Array
+ * @type java.util.concurrent.ConcurrentLinkedQueue
  */
-app.data.mails || (app.data.mails = []);
+app.data.mails || (app.data.mails =
+    new Packages.java.util.concurrent.ConcurrentLinkedQueue());
 /**
  * In-memory store of remote requests for counting story hits.
  * They will be made persistent asynchronously by an Admin method.
@@ -145,7 +149,8 @@ helma.File.prototype.copyDirectory = function(target) {
  * @returns {Number} The number of mails waiting in the queue
  */
 helma.Mail.prototype.queue = function() {
-  return app.data.mails.push(this);
+  app.data.mails.add(this);
+  return app.data.mails.size();
 }
 
 /**
@@ -153,12 +158,11 @@ helma.Mail.prototype.queue = function() {
  * @see app.data.mails
  */
 helma.Mail.flushQueue = function() {
-  if (app.data.mails.length > 0) {
+  if (app.data.mails.size() > 0) {
     app.debug('Flushing mail queue, sending ' +
-        app.data.mails.length + ' messages');
+        app.data.mails.size() + ' messages');
     var mail;
-    while (app.data.mails.length > 0) {
-      mail = app.data.mails.pop();
+    while ((mail = app.data.mails.poll())) {
       mail.send();
       if (mail.status > 0) {
         app.debug('Error while sending e-mail (status ' + mail.status + ')');

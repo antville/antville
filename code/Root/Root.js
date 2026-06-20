@@ -305,9 +305,9 @@ Root.prototype.health_action = function() {
     param.errorRatioPerUnit = formatNumber(Admin.health.errorsPerUnit / Admin.health.requestsPerUnit || 0);
   }
 
-  param.callbacks = app.data.callbacks.length;
-  param.entries = app.data.entries.length;
-  param.mails = app.data.mails.length;
+  param.callbacks = app.data.callbacks.size();
+  param.entries = app.data.entries.size();
+  param.mails = app.data.mails.size();
 
   param.requests = 0;
 
