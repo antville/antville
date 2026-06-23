@@ -175,7 +175,7 @@ create table metadata (
   type varchar(255)
 );
 
-create index metadata_parent_idx on metadata (parent_type, parent_id);
+create index metadata_parent_name_idx on metadata (parent_type, parent_id, name);
 create index metadata_name_idx on metadata (name);
 
 -- This returns an error in H2 database
