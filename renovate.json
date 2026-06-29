@@ -46,7 +46,8 @@
     {
       "description": "Group CommonMark packages",
       "matchPackagePrefixes": ["org.commonmark"],
-      "groupName": "CommonMark packages"
+      "groupName": "CommonMark packages",
+      "versioning": "maven"
     }
   ]
 }
