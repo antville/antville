@@ -309,11 +309,7 @@ Root.prototype.health_action = function() {
   param.entries = app.data.entries.size();
   param.mails = app.data.mails.size();
 
-  param.requests = 0;
-
-  for (var i in app.data.requests) {
-    param.requests += 1;
-  }
+  param.requests = app.data.requests.size();
 
   res.data.title = gettext('Health');
   res.data.body = this.renderSkinAsString('$Root#health', param);
