@@ -104,7 +104,8 @@ app.data.mails || (app.data.mails = []);
  * @name app.data.requests
  * @type Array
  */
-app.data.requests || (app.data.requests = {});
+app.data.requests || (app.data.requests =
+    new Packages.java.util.concurrent.ConcurrentHashMap());
 
 /**
  * The helma.File prototype is defined as a module.
