@@ -33,7 +33,7 @@
   "dependencies": {
     "alpinejs": "3.14.9",
     "codemirror": "5.65.19",
-    "jquery": "3.7.1",
+    "jquery": "4.0.0",
     "jquery-collagePlus": "antville/jquery-collagePlus#0.3.4",
     "js-md5": "0.8.3",
     "uikit": "2.27.4"
