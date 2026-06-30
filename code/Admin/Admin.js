@@ -291,10 +291,12 @@ Admin.commitRequests = function() {
  */
 Admin.commitEntries = function() {
   var entries = app.data.entries;
-  app.data.entries = [];
+  app.data.entries = new Packages.java.util.concurrent.ConcurrentLinkedQueue();
   var history = [];
 
-  for (let item of entries) {
+  var iterator = entries.iterator();
+  while (iterator.hasNext()) {
+    let item = iterator.next();
     var referrer = helma.Http.evalUrl(item.referrer);
     if (!referrer) {
       continue;
@@ -335,7 +337,7 @@ Admin.invokeCallbacks = function() {
   http.setMethod('POST');
 
   var ref, site, item;
-  while (ref = app.data.callbacks.pop()) {
+  while ((ref = app.data.callbacks.poll())) {
     site = Site.getById(ref.site);
     item = ref.handler && ref.handler.getById(ref.id);
     if (!site || !item) {
