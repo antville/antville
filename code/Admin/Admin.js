@@ -271,9 +271,10 @@ Admin.purgeReferrers = function() {
  */
 Admin.commitRequests = function() {
   var requests = app.data.requests;
-  app.data.requests = {};
-  for (let key in requests) {
-    let item = requests[key];
+  app.data.requests = new Packages.java.util.concurrent.ConcurrentHashMap();
+  var iterator = requests.values().iterator();
+  while (iterator.hasNext()) {
+    let item = iterator.next();
     switch (item.type) {
       case Story:
       var story = Story.getById(item.id);
@@ -290,10 +291,12 @@ Admin.commitRequests = function() {
  */
 Admin.commitEntries = function() {
   var entries = app.data.entries;
-  app.data.entries = [];
+  app.data.entries = new Packages.java.util.concurrent.ConcurrentLinkedQueue();
   var history = [];
 
-  for (let item of entries) {
+  var iterator = entries.iterator();
+  while (iterator.hasNext()) {
+    let item = iterator.next();
     var referrer = helma.Http.evalUrl(item.referrer);
     if (!referrer) {
       continue;
@@ -334,7 +337,7 @@ Admin.invokeCallbacks = function() {
   http.setMethod('POST');
 
   var ref, site, item;
-  while (ref = app.data.callbacks.pop()) {
+  while ((ref = app.data.callbacks.poll())) {
     site = Site.getById(ref.site);
     item = ref.handler && ref.handler.getById(ref.id);
     if (!site || !item) {
@@ -398,6 +401,8 @@ Admin.resolveUrl = function(url) {
   var http = new helma.Http();
   http.setMethod('HEAD');
   http.setFollowRedirects(false);
+  http.setTimeout(5000);
+  http.setReadTimeout(5000);
 
   var response;
   var location = url;

@@ -30,7 +30,7 @@ Claustra.load = function () {
       var repository = new helma.File(app.dir, '../claustra/' + name);
       console.info('Adding claustra', repository);
       app.addRepository(repository.toString());
-      app.data.claustra.push(name);
+      app.data.claustra.add(name);
     } catch (ex) {
       console.error(ex);
     }
@@ -43,12 +43,14 @@ Claustra.getByName = function (name) {
 };
 
 Claustra.invoke = function () {
-  app.data.claustra.forEach(function (name) {
+  var iterator = app.data.claustra.iterator();
+  while (iterator.hasNext()) {
+    let name = iterator.next();
     let claustra = Claustra.getByName(name);
     if (claustra && claustra.main && claustra.main.constructor === Function) {
       claustra.main();
     }
-  });
+  }
   return;
 };
 
