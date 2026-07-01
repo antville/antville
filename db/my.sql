@@ -77,7 +77,7 @@ create table content (
 create table file (
   id int(10) unsigned not null default '0',
   prototype varchar(50),
-  name varchar(500),
+  name varchar(500) character set utf8mb4 collate utf8mb4_bin,
   site_id int(10) unsigned,
   parent_id int(10) unsigned,
   parent_type varchar(50),
@@ -94,7 +94,7 @@ create table file (
 
 create table image (
   id int(10) unsigned not null default '0',
-  name varchar(500),
+  name varchar(500) character set utf8mb4 collate utf8mb4_bin,
   prototype varchar(50),
   parent_id int(10) unsigned,
   parent_type varchar(50),
