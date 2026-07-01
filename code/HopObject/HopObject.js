@@ -242,7 +242,7 @@ HopObject.prototype.touch = function() {
  */
 HopObject.prototype.log = function() {
   var entry = new LogEntry(this, 'main');
-  app.data.entries.push(entry);
+  app.data.entries.add(entry);
   return;
 }
 
