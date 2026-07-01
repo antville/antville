@@ -401,6 +401,8 @@ Admin.resolveUrl = function(url) {
   var http = new helma.Http();
   http.setMethod('HEAD');
   http.setFollowRedirects(false);
+  http.setTimeout(5000);
+  http.setReadTimeout(5000);
 
   var response;
   var location = url;
