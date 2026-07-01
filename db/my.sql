@@ -71,7 +71,8 @@ create table content (
   key parent_id (parent_id),
   key creator_id (creator_id),
   key type (site_id, prototype, status, created, modified, id),
-  key modified (site_id, modified, status, prototype,id)
+  key modified (site_id, modified, status, prototype,id),
+  key prototype_site_id (prototype, site_id, id)
 );
 
 create table file (
