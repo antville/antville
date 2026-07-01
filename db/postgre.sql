@@ -81,6 +81,8 @@ create index content_created_idx on content (created);
 create index content_creator_idx on content (creator_id);
 create index content_type_idx on content (site_id, prototype, status, created, modified, id);
 create index content_modified_idx on content (site_id, modified, status, prototype, id);
+create index content_prototype_site_idx on content (prototype, site_id, id);
+create index content_prototype_created_site_idx on content (prototype, created, site_id, id);
 
 create table file (
   id int4 primary key,
