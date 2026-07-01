@@ -81,6 +81,8 @@ create index content_created_idx on content (created);
 create index content_creator_idx on content (creator_id);
 create index content_type_idx on content (site_id, prototype, status, created, modified, id);
 create index content_modified_idx on content (site_id, modified, status, prototype, id);
+create index content_prototype_site_idx on content (prototype, site_id, id);
+create index content_prototype_created_site_idx on content (prototype, created, site_id, id);
 
 create table file (
   id int4 primary key,
@@ -96,7 +98,7 @@ create table file (
   modifier_id int4
 );
 
-create index file_name_idx on file (name);
+create unique index file_parent_name_idx on file (parent_id, parent_type, name);
 create index file_site_idx on file (site_id);
 create index file_requests_idx on file (requests);
 create index file_created_idx on file (created);
@@ -114,9 +116,8 @@ create table image (
   modifier_id int4
 );
 
-create index image_name_idx on image (name);
+create unique index image_parent_name_idx on image (parent_id, parent_type, name);
 create index image_prototype_idx on image (prototype);
-create index image_parent_idx on image (parent_id, parent_type);
 create index image_created_idx on image (created);
 create index image_creator_idx on image (creator_id);
 
@@ -177,7 +178,7 @@ create table metadata (
   type varchar(255)
 );
 
-create index metadata_parent_idx on metadata (parent_type, parent_id);
+create index metadata_parent_idx on metadata (parent_type, parent_id, name);
 create index metadata_name_idx on metadata (name);
 
 -- This returns an error in H2 database

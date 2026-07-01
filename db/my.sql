@@ -77,13 +77,15 @@ create table content (
   key creator_id (creator_id),
   key site_id (site_id),
   key type (site_id, prototype, status, created, modified, id),
-  key modified (site_id, modified, status, prototype,id)
+  key modified (site_id, modified, status, prototype,id),
+  key prototype_site_id (prototype, site_id, id),
+  key prototype_created_site (prototype, created, site_id, id)
 );
 
 create table file (
   id int(10) unsigned not null default '0',
   prototype varchar(50),
-  name varchar(500),
+  name varchar(500) character set utf8mb4 collate utf8mb4_bin,
   site_id int(10) unsigned,
   parent_id int(10) unsigned,
   parent_type varchar(50),
@@ -94,15 +96,15 @@ create table file (
   modifier_id int(10) unsigned,
   primary key (id),
   key site_id (site_id),
-  key name (name(191)),
   key requests (requests),
   key created (created),
-  key creator_id (creator_id)
+  key creator_id (creator_id),
+  unique key parent_name (parent_id, parent_type, name(191))
 );
 
 create table image (
   id int(10) unsigned not null default '0',
-  name varchar(500),
+  name varchar(500) character set utf8mb4 collate utf8mb4_bin,
   prototype varchar(50),
   parent_id int(10) unsigned,
   parent_type varchar(50),
@@ -114,7 +116,7 @@ create table image (
   key prototype (prototype),
   key created (created),
   key creator_id (creator_id),
-  key type (name(191), prototype)
+  unique key parent_name (parent_id, parent_type, name(191))
 );
 
 create table layout (
@@ -168,9 +170,10 @@ create table metadata (
   value mediumtext,
   type varchar(500),
   primary key (id),
-  key parent (parent_type, parent_id),
+  key parent (parent_type, parent_id, name(191)),
   key name (name(191)),
-  key value (value(191))
+  key value (value(191)),
+  fulltext key fulltext_value (value)
 );
 
 #!helma <% #end_of_metadata %>
