@@ -71,7 +71,8 @@ create table content (
   key parent_id (parent_id),
   key creator_id (creator_id),
   key type (site_id, prototype, status, created, modified, id),
-  key modified (site_id, modified, status, prototype,id)
+  key modified (site_id, modified, status, prototype,id),
+  key prototype_created_site (prototype, created, site_id, id)
 );
 
 create table file (
@@ -157,7 +158,8 @@ create table metadata (
   primary key (id),
   key parent (parent_type, parent_id),
   key name (name(191)),
-  key value (value(191))
+  key value (value(191)),
+  fulltext key ft_value (value)
 );
 
 #!helma <% #end_of_metadata %>

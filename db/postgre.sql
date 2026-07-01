@@ -79,6 +79,7 @@ create index content_mode_idx on content (mode);
 create index content_requests_idx on content (requests);
 create index content_created_idx on content (created);
 create index content_creator_idx on content (creator_id);
+create index content_prototype_created_site_idx on content (prototype, created, site_id, id);
 
 create table file (
   id int4 primary key,
