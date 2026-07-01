@@ -120,7 +120,13 @@ Images.prototype.user_action = function() {
 
 Images.prototype.upload_action = function () {
   var parent = req.queryParams.parent === 'layout' ? res.handlers.layout : res.handlers.site;
-  Image.add({file: req.postParams.files}, parent);
+  try {
+    Image.add({file: req.postParams.files}, parent);
+  } catch (ex) {
+    res.status = 400;
+    res.message = ex.toString();
+    app.log(ex);
+  }
   res.write(parent.images.href());
 };
 

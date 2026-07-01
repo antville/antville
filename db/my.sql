@@ -67,8 +67,13 @@ create table content (
   modified datetime,
   modifier_id int(10) unsigned,
   primary key (id),
+  key prototype (prototype),
   key story_id (story_id),
   key parent_id (parent_id),
+  key status (status),
+  key mode (mode),
+  key requests (requests),
+  key created (created),
   key creator_id (creator_id),
   key type (site_id, prototype, status, created, modified, id),
   key modified (site_id, modified, status, prototype,id),
@@ -79,7 +84,7 @@ create table content (
 create table file (
   id int(10) unsigned not null default '0',
   prototype varchar(50),
-  name varchar(500),
+  name varchar(500) character set utf8mb4 collate utf8mb4_bin,
   site_id int(10) unsigned,
   parent_id int(10) unsigned,
   parent_type varchar(50),
@@ -90,13 +95,15 @@ create table file (
   modifier_id int(10) unsigned,
   primary key (id),
   key site_id (site_id),
-  key name (name(191)),
-  key creator_id (creator_id)
+  key requests (requests),
+  key created (created),
+  key creator_id (creator_id),
+  unique key parent_name (parent_id, parent_type, name(191))
 );
 
 create table image (
   id int(10) unsigned not null default '0',
-  name varchar(500),
+  name varchar(500) character set utf8mb4 collate utf8mb4_bin,
   prototype varchar(50),
   parent_id int(10) unsigned,
   parent_type varchar(50),
@@ -105,8 +112,10 @@ create table image (
   modified datetime,
   modifier_id int(10) unsigned,
   primary key (id),
+  key prototype (prototype),
+  key created (created),
   key creator_id (creator_id),
-  key type (name(191), prototype)
+  unique key parent_name (parent_id, parent_type, name(191))
 );
 
 create table layout (
@@ -129,7 +138,9 @@ create table log (
   action varchar(500),
   created datetime,
   creator_id int(10) unsigned,
-  primary key (id)
+  primary key (id),
+  key context (context_id, context_type),
+  key created (created)
 );
 
 create table membership (
@@ -143,6 +154,7 @@ create table membership (
   modifier_id int(10) unsigned,
   primary key (id),
   key site_id (site_id),
+  key role (role),
   key creator_id (creator_id),
   key name (name(191))
 );
@@ -177,6 +189,8 @@ create table poll (
   modifier_id int(10) unsigned,
   primary key (id),
   key site_id (site_id),
+  key status (status),
+  key created (created),
   key creator_id (creator_id)
 );
 
@@ -192,6 +206,8 @@ create table site (
   modifier_id int(10) unsigned,
   primary key (id),
   key name (name(191)),
+  key status (status),
+  key created (created),
   key creator_id (creator_id)
 );
 
@@ -206,6 +222,7 @@ create table skin (
   modified datetime,
   modifier_id int(10) unsigned,
   primary key (id),
+  key created (created),
   key type (layout_id, prototype, name(191))
 );
 
