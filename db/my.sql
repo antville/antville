@@ -159,7 +159,7 @@ create table metadata (
   key parent (parent_type, parent_id),
   key name (name(191)),
   key value (value(191)),
-  fulltext key ft_value (value)
+  fulltext key fulltext_value (value)
 );
 
 #!helma <% #end_of_metadata %>
