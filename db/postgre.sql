@@ -94,7 +94,7 @@ create table file (
   modifier_id int4
 );
 
-create index file_name_idx on file (name);
+create unique index file_parent_name_idx on file (parent_id, parent_type, name);
 create index file_site_idx on file (site_id);
 create index file_requests_idx on file (requests);
 create index file_created_idx on file (created);
@@ -112,9 +112,8 @@ create table image (
   modifier_id int4
 );
 
-create index image_name_idx on image (name);
+create unique index image_parent_name_idx on image (parent_id, parent_type, name);
 create index image_prototype_idx on image (prototype);
-create index image_parent_idx on image (parent_id, parent_type);
 create index image_created_idx on image (created);
 create index image_creator_idx on image (creator_id);
 

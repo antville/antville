@@ -88,8 +88,8 @@ create table file (
   modifier_id int(10) unsigned,
   primary key (id),
   key site_id (site_id),
-  key name (name(191)),
-  key creator_id (creator_id)
+  key creator_id (creator_id),
+  unique key parent_name (parent_id, parent_type, name(191))
 );
 
 create table image (
@@ -104,7 +104,7 @@ create table image (
   modifier_id int(10) unsigned,
   primary key (id),
   key creator_id (creator_id),
-  key type (name(191), prototype)
+  unique key parent_name (parent_id, parent_type, name(191))
 );
 
 create table layout (
