@@ -243,7 +243,6 @@ create table tag (
 );
 
 create index tag_name_idx on tag (name);
-create index tag_site_idx on tag (site_id);
 create index tag_type_idx on tag (type);
 create index tag_lookup_idx on tag (site_id, type, name);
 

@@ -75,6 +75,7 @@ create table content (
   key requests (requests),
   key created (created),
   key creator_id (creator_id),
+  key site_id (site_id),
   key type (site_id, prototype, status, created, modified, id),
   key modified (site_id, modified, status, prototype,id),
   key prototype_site_id (prototype, site_id, id),
@@ -232,6 +233,8 @@ create table tag (
   site_id int(10) unsigned,
   type varchar(50),
   primary key (id),
+  key name (name(191)),
+  key type (type),
   key tags (site_id, type, name(191))
 );
 
