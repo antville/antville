@@ -79,6 +79,7 @@ create index content_mode_idx on content (mode);
 create index content_requests_idx on content (requests);
 create index content_created_idx on content (created);
 create index content_creator_idx on content (creator_id);
+create index content_prototype_site_idx on content (prototype, site_id, id);
 create index content_prototype_created_site_idx on content (prototype, created, site_id, id);
 
 create table file (
@@ -176,7 +177,7 @@ create table metadata (
   type varchar(255)
 );
 
-create index metadata_parent_idx on metadata (parent_type, parent_id);
+create index metadata_parent_idx on metadata (parent_type, parent_id, name);
 create index metadata_name_idx on metadata (name);
 
 -- This returns an error in H2 database

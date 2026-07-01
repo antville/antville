@@ -72,6 +72,7 @@ create table content (
   key creator_id (creator_id),
   key type (site_id, prototype, status, created, modified, id),
   key modified (site_id, modified, status, prototype,id),
+  key prototype_site_id (prototype, site_id, id),
   key prototype_created_site (prototype, created, site_id, id)
 );
 
@@ -156,7 +157,7 @@ create table metadata (
   value mediumtext,
   type varchar(500),
   primary key (id),
-  key parent (parent_type, parent_id),
+  key parent (parent_type, parent_id, name(191)),
   key name (name(191)),
   key value (value(191)),
   fulltext key fulltext_value (value)
