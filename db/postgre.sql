@@ -2,7 +2,7 @@
 -- The Antville Project
 -- http://code.google.com/p/antville
 --
--- Copyright 2001–2014 by the Workers of
+-- Copyright 2001–2014 by the Workers of Antville.
 --
 -- Licensed under the Apache License, Version 2.0 (the License'');
 -- you may not use this file except in compliance with the License.
@@ -45,7 +45,7 @@ create index account_modified_idx on account (modified);
 create table choice (
   id int4 primary key,
   poll_id int4,
-  title varchar(255),
+  title text,
   created timestamp,
   modified timestamp
 );
@@ -79,6 +79,8 @@ create index content_mode_idx on content (mode);
 create index content_requests_idx on content (requests);
 create index content_created_idx on content (created);
 create index content_creator_idx on content (creator_id);
+create index content_type_idx on content (site_id, prototype, status, created, modified, id);
+create index content_modified_idx on content (site_id, modified, status, prototype, id);
 
 create table file (
   id int4 primary key,
@@ -220,7 +222,7 @@ create index site_creator_idx on site (creator_id);
 create table skin (
   id int4 primary key,
   name varchar(255),
-  prototype varchar(30),
+  prototype varchar(50),
   source text,
   layout_id int4,
   created timestamp,
@@ -229,8 +231,8 @@ create table skin (
   modifier_id int4
 );
 
-create index skin_layout_index on skin (layout_id);
-create index skin_created_index on site (created);
+create index skin_layout_index on skin (layout_id, prototype, name);
+create index skin_created_index on skin (created);
 
 create table tag (
   id int4 primary key,
@@ -242,6 +244,7 @@ create table tag (
 create index tag_name_idx on tag (name);
 create index tag_site_idx on tag (site_id);
 create index tag_type_idx on tag (type);
+create index tag_lookup_idx on tag (site_id, type, name);
 
 create table tag_hub (
   id int4 primary key,
@@ -250,7 +253,7 @@ create table tag_hub (
   tagged_type varchar(20)
 );
 
-create index tagged_idx on tag_hub (tag_id, tagged_id, tagged_type);
+create index tagged_idx on tag_hub (tag_id, tagged_type, tagged_id);
 
 create table vote (
   id int4 primary key,
@@ -262,7 +265,10 @@ create table vote (
   modified timestamp
 );
 
-create index vote_poll_idx on vote (poll_id, choice_id);
+create index vote_poll_idx on vote (poll_id);
+create index vote_choice_idx on vote (choice_id);
+create index vote_creator_idx on vote (creator_id);
+create index vote_creator_name_idx on vote (creator_name);
 
 insert into layout (id, site_id, mode) values ('1', '1', 'default');
 
