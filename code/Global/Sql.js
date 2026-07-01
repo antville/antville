@@ -241,7 +241,7 @@ Sql.ARCHIVESIZE = 'select count(*) as count from content where site_id = $0 ' +
  * @see Archive#getFilter
  * @constant
  */
-Sql.ARCHIVEPART = ' and created >= $0 and created < $1';
+Sql.ARCHIVEPART = ' and created >= from_unixtime($0) and created < from_unixtime($1)';
 
 /**
  * SQL part for applying an order to the archive query.

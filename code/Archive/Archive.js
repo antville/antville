@@ -234,10 +234,10 @@ Archive.prototype.getFilter = function() {
   var sql = new Sql;
   var year = buffer[0], month = buffer[1], day = buffer[2];
   sql.retrieve(Sql.ARCHIVEPART,
-      new Date(year, (month || 1) - 1, day || 1),
-      day   ? new Date(year, month - 1, day + 1) :
-      month ? new Date(year, month, 1) :
-              new Date(year + 1, 0, 1));
+      new Date(year, (month || 1) - 1, day || 1).getTime() / 1000,
+      (day   ? new Date(year, month - 1, day + 1) :
+       month ? new Date(year, month, 1) :
+               new Date(year + 1, 0, 1)).getTime() / 1000);
   res.write(sql);
   return res.pop();
 }
