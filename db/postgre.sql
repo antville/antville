@@ -103,6 +103,7 @@ create index file_site_idx on file (site_id);
 create index file_requests_idx on file (requests);
 create index file_created_idx on file (created);
 create index file_creator_idx on file (creator_id);
+create index file_files_idx on file (parent_id, parent_type, created);
 
 create table image (
   id int4 primary key,
@@ -120,6 +121,7 @@ create unique index image_parent_name_idx on image (parent_id, parent_type, name
 create index image_prototype_idx on image (prototype);
 create index image_created_idx on image (created);
 create index image_creator_idx on image (creator_id);
+create index image_images_idx on image (parent_id, parent_type, created);
 
 create table layout (
   id int4 primary key,
@@ -150,6 +152,8 @@ alter sequence log_id_seq owned by log.id;
 
 create index log_context_idx on log (context_id, context_type);
 create index log_created_idx on log (created);
+create index log_entries_idx on log (context_type, action, created);
+create index log_requests_idx on log (context_type, context_id, created, action);
 
 create table membership (
   id int4 primary key,
@@ -166,6 +170,8 @@ create index membership_name_idx on membership (name);
 create index membership_site_idx on membership (site_id);
 create index membership_role_idx on membership (role);
 create index membership_creator_idx on membership (creator_id);
+create index membership_memberships_idx on membership (creator_id, site_id, role);
+create index membership_roles_idx on membership (name, site_id, role);
 
 --!helma <% #metadata %>
 
@@ -202,6 +208,7 @@ create index poll_site_idx on poll (site_id);
 create index poll_status_idx on poll (status);
 create index poll_created_idx on poll (created);
 create index poll_creator_idx on poll (creator_id);
+create index poll_polls_idx on poll (site_id, creator_id, created);
 
 create table site (
   id int4 primary key,
@@ -218,7 +225,9 @@ create table site (
 create index site_name_idx on site (name);
 create index site_status_idx on site (status);
 create index site_created_idx on site (created);
+create index site_modified_idx on site (modified);
 create index site_creator_idx on site (creator_id);
+create index site_sites_idx on site (name, mode, status);
 
 create table skin (
   id int4 primary key,
@@ -234,6 +243,7 @@ create table skin (
 
 create index skin_layout_index on skin (layout_id, prototype, name);
 create index skin_created_index on skin (created);
+create index skin_skins_idx on skin (name, layout_id, prototype);
 
 create table tag (
   id int4 primary key,
@@ -254,6 +264,7 @@ create table tag_hub (
 );
 
 create index tagged_idx on tag_hub (tag_id, tagged_type, tagged_id);
+create index tag_hub_item_idx on tag_hub (tagged_id, tagged_type);
 
 create table vote (
   id int4 primary key,
@@ -269,6 +280,7 @@ create index vote_poll_idx on vote (poll_id);
 create index vote_choice_idx on vote (choice_id);
 create index vote_creator_idx on vote (creator_id);
 create index vote_creator_name_idx on vote (creator_name);
+create index vote_votes_idx on vote (creator_name, poll_id);
 
 insert into layout (id, site_id, mode) values ('1', '1', 'default');
 

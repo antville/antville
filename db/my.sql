@@ -99,7 +99,8 @@ create table file (
   key requests (requests),
   key created (created),
   key creator_id (creator_id),
-  unique key parent_name (parent_id, parent_type, name(191))
+  unique key parent_name (parent_id, parent_type, name(191)),
+  key files (parent_id, parent_type, created)
 );
 
 create table image (
@@ -116,7 +117,8 @@ create table image (
   key prototype (prototype),
   key created (created),
   key creator_id (creator_id),
-  unique key parent_name (parent_id, parent_type, name(191))
+  unique key parent_name (parent_id, parent_type, name(191)),
+  key images (parent_id, parent_type, created)
 );
 
 create table layout (
@@ -141,7 +143,9 @@ create table log (
   creator_id int(10) unsigned,
   primary key (id),
   key context (context_id, context_type),
-  key created (created)
+  key created (created),
+  key entries (context_type, action, created),
+  key requests (context_type, context_id, created, action)
 );
 
 create table membership (
@@ -157,7 +161,9 @@ create table membership (
   key site_id (site_id),
   key role (role),
   key creator_id (creator_id),
-  key name (name(191))
+  key name (name(191)),
+  key memberships (creator_id, site_id, role),
+  key roles (name(191), site_id, role)
 );
 
 #!helma <% #metadata %>
@@ -192,7 +198,8 @@ create table poll (
   key site_id (site_id),
   key status (status),
   key created (created),
-  key creator_id (creator_id)
+  key creator_id (creator_id),
+  key polls (site_id, creator_id, created)
 );
 
 create table site (
@@ -209,7 +216,9 @@ create table site (
   key name (name(191)),
   key status (status),
   key created (created),
-  key creator_id (creator_id)
+  key modified (modified),
+  key creator_id (creator_id),
+  key sites (name(191), mode, status)
 );
 
 create table skin (
@@ -224,7 +233,8 @@ create table skin (
   modifier_id int(10) unsigned,
   primary key (id),
   key created (created),
-  key type (layout_id, prototype, name(191))
+  key type (layout_id, prototype, name(191)),
+  key skins (name(191), layout_id, prototype)
 );
 
 create table tag (
@@ -244,7 +254,8 @@ create table tag_hub (
   tagged_id int(10) unsigned,
   tagged_type varchar(50),
   primary key (id),
-  key tagged (tag_id, tagged_type, tagged_id)
+  key tagged (tag_id, tagged_type, tagged_id),
+  key item (tagged_id, tagged_type)
 );
 
 create table vote (
@@ -259,7 +270,8 @@ create table vote (
   key poll_id (poll_id),
   key creator_id (creator_id),
   key choice_id (choice_id),
-  key creator_name (creator_name(191))
+  key creator_name (creator_name(191)),
+  key votes (creator_name(191), poll_id)
 );
 
 set foreign_key_checks = 1;
