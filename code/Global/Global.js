@@ -1048,8 +1048,8 @@ function renderLink(param, url, text, handler) {
 // for an n-label hostname on any failing match, locking request threads permanently.
 // Fix: exclude '.' from label char classes so each '.' has exactly one role (separator).
 // This also retains full Unicode/IDN support since [^\s@.] passes all non-ASCII through.
-var SAFE_EMAIL_PATTERN = /^[^\s@]+@[^\s@.]+(?:\.[^\s@.]+)+$/;
-var SAFE_URL_PATTERN   = /^(?:https?|ftp):\/\/(?:[^\s@\/?#]+@)?[^\s.\/\?#:]+(?:\.[^\s.\/\?#:]+)*(?::\d+)?(?:\/[^\s]*)?(?:\?[^\s]*)?(?:#[^\s]*)?$/i;
+var SAFE_EMAIL_PATTERN = /^[^\s@]+@[^\s@.!]+(?:\.[^\s@.!]+)+$/;
+var SAFE_URL_PATTERN   = /^(?:https?|ftp):\/\/(?:[^\s@\/?#]+@)?[^\s.\/\?#:!]+(?:\.[^\s.\/\?#:!]+)*(?::\d+)?(?:\/[^\s]*)?(?:\?[^\s]*)?(?:#[^\s]*)?$/i;
 
 /**
  * Validates if a string is suitable for e-mail messaging.
