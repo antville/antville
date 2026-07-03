@@ -1042,17 +1042,23 @@ function renderLink(param, url, text, handler) {
   return;
 }
 
+// Safe email/URL patterns: avoids catastrophic backtracking in Rhino's NFA regex engine.
+// The original Helma patterns (String.EMAILPATTERN / URLPATTERN) allowed '.' in domain
+// label middle-chars, making the label-separator '.' ambiguous — Rhino explored 2ⁿ paths
+// for an n-label hostname on any failing match, locking request threads permanently.
+// Fix: exclude '.' from label char classes so each '.' has exactly one role (separator).
+// This also retains full Unicode/IDN support since [^\s@.] passes all non-ASCII through.
+var SAFE_EMAIL_PATTERN = /^[^\s@]+@[^\s@.!]+(?:\.[^\s@.!]+)+$/;
+var SAFE_URL_PATTERN   = /^(?:https?|ftp):\/\/(?:[^\s@\/?#]+@)?[^\s.\/\?#:!]+(?:\.[^\s.\/\?#:!]+)*(?::\d+)?(?:\/[^\s]*)?(?:\?[^\s]*)?(?:#[^\s]*)?$/i;
+
 /**
  * Validates if a string is suitable for e-mail messaging.
- * @see String#isEmail
  * @param {String} str The string to be validated.
  * @returns {String|null} The e-mail string if valid, null otherwise.
  */
 function validateEmail(str) {
-	if (str) {
-    if (str.isEmail()) {
-      return str;
-    }
+  if (str && str.length <= 254 && SAFE_EMAIL_PATTERN.test(str)) {
+    return str;
   }
   return null;
 }
@@ -1064,12 +1070,10 @@ function validateEmail(str) {
  */
 function validateUrl(str) {
   if (str) {
-    if (str.isUrl()) {
+    if (str.length <= 2083 && SAFE_URL_PATTERN.test(str)) {
       return str;
-    } else if (str.isEmail()) {
+    } else if (str.length <= 254 && SAFE_EMAIL_PATTERN.test(str)) {
       return 'mailto:' + str;
-    } else {
-      return null;
     }
   }
   return null;
