@@ -37,7 +37,8 @@ create table account (
   key email (email(191)),
   key status (status),
   key created (created),
-  key modified (modified)
+  key modified (modified),
+  key status_modified (status, modified)
 );
 
 create table choice (

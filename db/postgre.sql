@@ -41,6 +41,7 @@ create index account_email_idx on account (email);
 create index account_status_idx on account (status);
 create index account_created_idx on account (created);
 create index account_modified_idx on account (modified);
+create index account_status_modified_idx on account (status, modified);
 
 create table choice (
   id int4 primary key,
