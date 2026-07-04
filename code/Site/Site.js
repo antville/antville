@@ -973,7 +973,7 @@ Site.prototype.search = function (type, term, limit) {
   } else if (term) {
     var counter = 0;
     var sql = new Sql({prepared: true});
-    sql.retrieve(query, parseInt(this._id, 10), '%' + term + '%', limit + 1);
+    sql.retrieve(query, parseInt(this._id, 10), term, limit + 1);
     sql.traverse(function () {
       if (counter < limit) {
         search.result.push(Story.getById(this.id));
