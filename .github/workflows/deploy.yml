@@ -20,6 +20,15 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
+      - name: Compute variables
+        run: |
+          date=$(git show -s --format=%ch $GITHUB_SHA)
+          message="Deployment $GITHUB_RUN_ID of $GITHUB_REPOSITORY at $GITHUB_SHA ($date)"
+          echo "message=$message" >> $GITHUB_ENV
+
+      - name: Save local changes
+        run: ssh ${{ inputs.hostname }} save "$message"
+
       - name: Build with Gradle
         run: ./gradlew :build
 
@@ -43,6 +52,8 @@ jobs:
             --filter '+ /styles' \
             --filter '- /*'
 
+      - name: Commit deployed changes
+        run: ssh ${{ inputs.hostname }} commit "$message"
+
       - name: Restart Helma
         run: ssh ${{ inputs.hostname }} restart
-
