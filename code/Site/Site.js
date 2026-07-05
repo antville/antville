@@ -984,7 +984,6 @@ Site.prototype.search = function (type, term, limit) {
       searchTerm = '%' + term + '%';
     }
     if (!searchTerm || searchTerm === '*') {
-      search.message = gettext('Please enter a query in the search form.');
       return search;
     }
     sql.retrieve(query, parseInt(this._id, 10), searchTerm, limit + 1);
