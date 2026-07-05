@@ -977,7 +977,7 @@ Site.prototype.search = function (type, term, limit) {
     if (Sql.dbType === 'mysql') {
       searchTerm = term.trim().split(/[\s+\-><()~*"@]+/).filter(Boolean).join(' ') + '*';
     } else if (Sql.dbType === 'postgresql') {
-      searchTerm = term.trim().split(/[\s&|!():]+/).filter(Boolean).map(function(t) {
+      searchTerm = term.trim().split(/[\s&|!():+\-*"@]+/).filter(Boolean).map(function(t) {
         return t + ':*';
       }).join(' & ');
     } else {
