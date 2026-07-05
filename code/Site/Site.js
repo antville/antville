@@ -985,6 +985,10 @@ Site.prototype.search = function (type, term, limit) {
     } else {
       searchTerm = '%' + term + '%';
     }
+    if (!searchTerm) {
+      search.message = gettext('Please enter a query in the search form.');
+      return search;
+    }
     sql.retrieve(query, parseInt(this._id, 10), searchTerm, limit + 1);
     sql.traverse(function () {
       if (counter < limit) {
