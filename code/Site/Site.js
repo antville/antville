@@ -975,9 +975,11 @@ Site.prototype.search = function (type, term, limit) {
     var sql = new Sql({prepared: true});
     var searchTerm;
     if (Sql.dbType === 'mysql') {
-      searchTerm = term.trim().split(/[\s+\-><()~*"@]+/).filter(Boolean).join(' ') + '*';
+      searchTerm = term.trim().split(/[\s+\-><()~*"@]+/).filter(Boolean).map(function(t) {
+        return t + '*';
+      }).join(' ');
     } else if (Sql.dbType === 'postgresql') {
-      searchTerm = term.trim().split(/[\s&|!():+\-*"@]+/).filter(Boolean).map(function(t) {
+      searchTerm = term.trim().split(/[\s&|!():+\-*"@']+/).filter(Boolean).map(function(t) {
         return t + ':*';
       }).join(' & ');
     } else {
@@ -989,7 +991,7 @@ Site.prototype.search = function (type, term, limit) {
     sql.retrieve(query, parseInt(this._id, 10), searchTerm, limit + 1);
     sql.traverse(function () {
       if (counter < limit) {
-        search.result.push(Story.getById(this.id));
+        search.result.push(type.getById(this.id));
       }
       counter += 1;
     });
