@@ -978,8 +978,10 @@ Site.prototype.search = function (type, term, limit) {
       searchTerm = term.replace(/[+\-><()~*"@]/g, '') + '*';
     } else if (Sql.dbType === 'postgresql') {
       searchTerm = term.trim().split(/\s+/).map(function(t) {
-        return t.replace(/[&|!():]/g, '') + ':*';
-      }).filter(Boolean).join(' & ');
+        return t.replace(/[&|!():]/g, '');
+      }).filter(Boolean).map(function(t) {
+        return t + ':*';
+      }).join(' & ');
     } else {
       searchTerm = '%' + term + '%';
     }
