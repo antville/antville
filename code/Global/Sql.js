@@ -281,16 +281,9 @@ Sql.ARCHIVESIZE = 'select count(*) as count from content where site_id = $0 ' +
  * @see Archive#getFilter
  * @constant
  */
-Sql.ARCHIVEPART = (function() {
-  switch (Sql.dbType) {
-    case 'mysql':
-      return ' and created >= from_unixtime($0) and created < from_unixtime($1)';
-    case 'postgresql':
-      return ' and created >= to_timestamp($0) and created < to_timestamp($1)';
-    default:
-      return ' and created >= from_unixtime($0) and created < from_unixtime($1)';
-  }
-})();
+Sql.ARCHIVEPART = Sql.dbType === 'postgresql'
+    ? ' and created >= to_timestamp($0) and created < to_timestamp($1)'
+    : ' and created >= from_unixtime($0) and created < from_unixtime($1)';
 
 /**
  * SQL part for applying an order to the archive query.
