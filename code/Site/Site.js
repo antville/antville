@@ -975,11 +975,9 @@ Site.prototype.search = function (type, term, limit) {
     var sql = new Sql({prepared: true});
     var searchTerm;
     if (Sql.dbType === 'mysql') {
-      searchTerm = term.replace(/[+\-><()~*"@]/g, '') + '*';
+      searchTerm = term.trim().split(/[\s+\-><()~*"@]+/).filter(Boolean).join(' ') + '*';
     } else if (Sql.dbType === 'postgresql') {
-      searchTerm = term.trim().split(/\s+/).map(function(t) {
-        return t.replace(/[&|!():]/g, '');
-      }).filter(Boolean).map(function(t) {
+      searchTerm = term.trim().split(/[\s&|!():]+/).filter(Boolean).map(function(t) {
         return t + ':*';
       }).join(' & ');
     } else {
