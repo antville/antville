@@ -1129,7 +1129,7 @@ Site.prototype.getStaticUrl = function(href) {
  */
 Site.prototype.callback = function(ref) {
    if (this.callbackMode === Site.ENABLED && this.callbackUrl) {
-    app.data.callbacks.push({
+    app.data.callbacks.add({
       site: this._id,
       handler: ref.constructor,
       id: ref._id
