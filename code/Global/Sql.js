@@ -188,7 +188,10 @@ var Sql = function(options) {
 
 Sql.dbType = (function() {
   try {
-    var name = String(getDBConnection('antville').getMetaData().getDatabaseProductName()).toLowerCase();
+    var db = getDBConnection('antville');
+    var name = db.getMetaData()
+        .getDatabaseProductName()
+        .toLowerCase();
     if (name.indexOf('maria') >= 0 || name.indexOf('mysql') >= 0) return 'mysql';
     if (name.indexOf('postgres') >= 0) return 'postgresql';
   } catch (e) {

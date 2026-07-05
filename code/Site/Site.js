@@ -973,7 +973,14 @@ Site.prototype.search = function (type, term, limit) {
   } else if (term) {
     var counter = 0;
     var sql = new Sql({prepared: true});
-    var searchTerm = Sql.dbType === 'mysql' ? term + '*' : Sql.dbType === 'postgresql' ? term : '%' + term + '%';
+    var searchTerm;
+    if (Sql.dbType === 'mysql') {
+      searchTerm = term + '*';
+    } else if (Sql.dbType === 'postgresql') {
+      searchTerm = term;
+    } else {
+      searchTerm = '%' + term + '%';
+    }
     sql.retrieve(query, parseInt(this._id, 10), searchTerm, limit + 1);
     sql.traverse(function () {
       if (counter < limit) {
