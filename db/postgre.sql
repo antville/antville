@@ -190,6 +190,7 @@ create index metadata_name_idx on metadata (name);
 
 -- This returns an error in H2 database
 create index metadata_value_idx on metadata using hash (value);
+create index metadata_value_fts_idx on metadata using gin (to_tsvector('simple', value));
 
 --!helma <% #end_of_metadata %>
 

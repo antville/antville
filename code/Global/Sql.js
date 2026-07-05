@@ -237,7 +237,7 @@ Sql.STORY_SEARCH = (function() {
     case 'mysql':
       return base + "MATCH(metadata.value) AGAINST(? IN BOOLEAN MODE)" + tail;
     case 'postgresql':
-      return base + "to_tsvector('simple', metadata.value) @@ plainto_tsquery('simple', ?)" + tail;
+      return base + "to_tsvector('simple', metadata.value) @@ to_tsquery('simple', ?)" + tail;
     default:
       return base + "lower(metadata.value) like lower(?)" + tail;
   }
@@ -250,7 +250,7 @@ Sql.COMMENT_SEARCH = (function() {
     case 'mysql':
       return base + "MATCH(metadata.value) AGAINST(? IN BOOLEAN MODE)" + tail;
     case 'postgresql':
-      return base + "to_tsvector('simple', metadata.value) @@ plainto_tsquery('simple', ?)" + tail;
+      return base + "to_tsvector('simple', metadata.value) @@ to_tsquery('simple', ?)" + tail;
     default:
       return base + "lower(metadata.value) like lower(?)" + tail;
   }
@@ -281,9 +281,14 @@ Sql.ARCHIVESIZE = 'select count(*) as count from content where site_id = $0 ' +
  * @see Archive#getFilter
  * @constant
  */
-Sql.ARCHIVEPART = Sql.dbType === 'postgresql'
-    ? ' and created >= to_timestamp($0) and created < to_timestamp($1)'
-    : ' and created >= from_unixtime($0) and created < from_unixtime($1)';
+Sql.ARCHIVEPART = (function() {
+  switch (Sql.dbType) {
+    case 'postgresql':
+      return ' and created >= to_timestamp($0) and created < to_timestamp($1)';
+    default:
+      return ' and created >= from_unixtime($0) and created < from_unixtime($1)';
+  }
+})();
 
 /**
  * SQL part for applying an order to the archive query.

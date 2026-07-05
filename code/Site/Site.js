@@ -975,9 +975,11 @@ Site.prototype.search = function (type, term, limit) {
     var sql = new Sql({prepared: true});
     var searchTerm;
     if (Sql.dbType === 'mysql') {
-      searchTerm = term + '*';
+      searchTerm = term.replace(/[+\-><()~*"@]/g, '') + '*';
     } else if (Sql.dbType === 'postgresql') {
-      searchTerm = term;
+      searchTerm = term.trim().split(/\s+/).map(function(t) {
+        return t + ':*';
+      }).join(' & ');
     } else {
       searchTerm = '%' + term + '%';
     }
