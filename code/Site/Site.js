@@ -983,7 +983,7 @@ Site.prototype.search = function (type, term, limit) {
     } else {
       searchTerm = '%' + term + '%';
     }
-    if (!searchTerm) {
+    if (!searchTerm || searchTerm === '*') {
       search.message = gettext('Please enter a query in the search form.');
       return search;
     }
