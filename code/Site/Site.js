@@ -965,9 +965,6 @@ Site.prototype.search = function (type, term, limit) {
     return search;
   }
   term = String(term || String.EMPTY).trim();
-  // FIXME: Is this still necessary?
-  // Remove single and double ticks (aka false quotes)
-  //term = term.replace(/(?:\x22|\x27)/g, String.EMPTY);
   if (term === '') {
     search.message = gettext('Please enter a query in the search form.');
   } else if (term) {
@@ -975,13 +972,19 @@ Site.prototype.search = function (type, term, limit) {
     var sql = new Sql({prepared: true});
     var searchTerm;
     if (Sql.dbType === 'mysql') {
-      searchTerm = term.trim().split(/[\s+\-><()~*"@]+/).filter(Boolean).map(function(t) {
-        return t + '*';
-      }).join(' ');
+      searchTerm = term
+        .trim()
+        .split(/[\s+\-><()~*"@]+/)
+        .filter(Boolean)
+        .map(term => term + '*')
+        .join(' ');
     } else if (Sql.dbType === 'postgresql') {
-      searchTerm = term.trim().split(/[\s&|!():+\-*"@']+/).filter(Boolean).map(function(t) {
-        return t + ':*';
-      }).join(' & ');
+      searchTerm = term
+        .trim()
+        .split(/[\s&|!():+\-*"@']+/)
+        .filter(Boolean)
+        .map(term => term + ':*')
+        .join(' & ');
     } else {
       searchTerm = '%' + term + '%';
     }
