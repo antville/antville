@@ -22,9 +22,9 @@ jobs:
 
       - name: Compute variables
         run: |
-          date=$(git show -s --format=%ch $GITHUB_SHA)
-          message="Deployment $GITHUB_RUN_ID of $GITHUB_REPOSITORY at $GITHUB_SHA ($date)"
-          echo "message=$message" >> $GITHUB_ENV
+          date="$(TZ=UTC git show --no-patch --format='%ad' --date=format-local:'%-d %b %Y, %H:%M:%S %Z' $GITHUB_SHA)"
+          sha="$(git rev-parse --short HEAD)"
+          message="Deployment $GITHUB_RUN_NUMBER of $GITHUB_REPOSITORY at $sha ($date)"               echo "message=$message" >> $GITHUB_ENV
 
       - name: Save local changes
         run: ssh ${{ inputs.hostname }} save "$message"
