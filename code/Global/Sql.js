@@ -192,8 +192,12 @@ Sql.dbType = (function() {
     var name = db.getMetaData()
         .getDatabaseProductName()
         .toLowerCase();
-    if (name.indexOf('maria') >= 0 || name.indexOf('mysql') >= 0) return 'mysql';
-    if (name.indexOf('postgres') >= 0) return 'postgresql';
+    if (name.indexOf('maria') >= 0 || name.indexOf('mysql') >= 0) {
+      return 'mysql';
+    }
+    if (name.indexOf('postgres') >= 0) {
+      return 'postgresql';
+    }
   } catch (e) {
     app.log('Sql: could not detect database type: ' + e);
   }
@@ -230,9 +234,12 @@ Sql.STORY_SEARCH = (function() {
   var base = "select content.id from content, site, metadata, account as creator, account as modifier where site.id = ? and content.prototype = 'Story' and site.id = content.site_id and content.status in ('public', 'shared', 'open') and content.creator_id = creator.id and content.modifier_id = modifier.id and creator.status <> 'deleted' and modifier.status <> 'deleted' and content.prototype = metadata.parent_type and content.id = metadata.parent_id and metadata.name in ('title', 'text') and ";
   var tail = " group by content.id, content.created order by content.created desc limit ?";
   switch (Sql.dbType) {
-    case 'mysql': return base + "MATCH(metadata.value) AGAINST(? IN BOOLEAN MODE)" + tail;
-    case 'postgresql': return base + "to_tsvector('simple', metadata.value) @@ plainto_tsquery('simple', ?)" + tail;
-    default: return base + "lower(metadata.value) like lower(?)" + tail;
+    case 'mysql':
+      return base + "MATCH(metadata.value) AGAINST(? IN BOOLEAN MODE)" + tail;
+    case 'postgresql':
+      return base + "to_tsvector('simple', metadata.value) @@ plainto_tsquery('simple', ?)" + tail;
+    default:
+      return base + "lower(metadata.value) like lower(?)" + tail;
   }
 })();
 
@@ -240,9 +247,12 @@ Sql.COMMENT_SEARCH = (function() {
   var base = "select comment.id from content as comment, content as story, site, metadata, account as creator, account as modifier where site.id = ? and comment.prototype = 'Comment' and site.id = comment.site_id and comment.story_id = story.id and story.status in ('public', 'shared', 'open') and story.comment_mode in ('open') and comment.creator_id = creator.id and comment.modifier_id = modifier.id and creator.status <> 'deleted' and modifier.status <> 'deleted' and comment.prototype = metadata.parent_type and comment.id = metadata.parent_id and metadata.name in ('title', 'text') and ";
   var tail = " group by comment.id, comment.created order by comment.created desc limit ?";
   switch (Sql.dbType) {
-    case 'mysql': return base + "MATCH(metadata.value) AGAINST(? IN BOOLEAN MODE)" + tail;
-    case 'postgresql': return base + "to_tsvector('simple', metadata.value) @@ plainto_tsquery('simple', ?)" + tail;
-    default: return base + "lower(metadata.value) like lower(?)" + tail;
+    case 'mysql':
+      return base + "MATCH(metadata.value) AGAINST(? IN BOOLEAN MODE)" + tail;
+    case 'postgresql':
+      return base + "to_tsvector('simple', metadata.value) @@ plainto_tsquery('simple', ?)" + tail;
+    default:
+      return base + "lower(metadata.value) like lower(?)" + tail;
   }
 })();
 
