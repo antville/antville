@@ -80,7 +80,8 @@ create table content (
   key type (site_id, prototype, status, created, modified, id),
   key modified (site_id, modified, status, prototype,id),
   key prototype_site_id (prototype, site_id, id),
-  key prototype_created_site (prototype, created, site_id, id)
+  key prototype_created_site (prototype, created, site_id, id),
+  key prototype_site_created (prototype, site_id, created, id)
 );
 
 create table file (
