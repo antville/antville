@@ -51,9 +51,8 @@ global.Exporter = (function() {
     };
   };
 
-  const addMetadata = (object, Prototype) => {
+  const addMetadata = (object, Prototype, sql) => {
     object.metadata = {};
-    const sql = new Sql();
     sql.retrieve("select name, value, type from metadata where parent_type = '$0' and parent_id = $1 order by lower(name)", Prototype.name, object.id);
     sql.traverse(function() {
       object.metadata[this.name] = global[this.type](this.value).valueOf();
@@ -61,12 +60,12 @@ global.Exporter = (function() {
     return object;
   };
 
-  const addImage = function(type, writer) {
+  const addImage = function(type, writer, sql) {
     app.log('Exporting ' + type + ' image #' + this.id);
     const image = Image.getById(this.id);
     if (image) {
       this.href = image.href();
-      addMetadata(this, Image);
+      addMetadata(this, Image, sql);
       writer.push(this);
     } else {
       app.logger.warn('Could not export Image #' + this.id + '; might be a cache problem');
@@ -103,7 +102,8 @@ global.Exporter = (function() {
   };
 
   Exporter.saveSite = function(site, user) {
-    const sql = new Sql();
+    const sql = new Sql({quote: true});
+    const metadataSql = new Sql({quote: true});
     const zip = new helma.Zip();
 
     const dirName = app.appsProperties['static'] + '/export';
@@ -130,11 +130,11 @@ global.Exporter = (function() {
         const site = Site.getById(this.id);
         this.href = site.href();
         addAssets(site, zip);
-        addMetadata(this, Site);
+        addMetadata(this, Site, metadataSql);
         writer.push(this);
-        const skinsSql = new Sql();
-        sql.retrieve('select * from skin where site_id = $0', this.id);
-        sql.traverse(function() {
+        const skinsSql = new Sql({quote: true});
+        skinsSql.retrieve('select * from skin where site_id = $0', this.id);
+        skinsSql.traverse(function() {
           app.log('Exporting skin #' + this.id);
           skinWriter.push(this);
         });
@@ -164,7 +164,7 @@ global.Exporter = (function() {
         const content = Story.getById(this.id);
         this.href = content.href();
 
-        addMetadata(this, Story);
+        addMetadata(this, Story, metadataSql);
         this.rendered = content.format_filter(this.metadata.text, {}, 'markdown');
 
         if (this.prototype === 'Story') {
@@ -185,7 +185,7 @@ global.Exporter = (function() {
         app.log('Exporting file #' + this.id);
         const file = File.getById(this.id);
         this.href = file.href();
-        addMetadata(this, File);
+        addMetadata(this, File, metadataSql);
         writer.push(this);
       });
 
@@ -196,13 +196,13 @@ global.Exporter = (function() {
       sql.retrieve("select i.*, c.name as creator_name, m.name as modifier_name from image i, account c, account m where i.parent_type = 'Site' and i.parent_id = $0 and i.creator_id = c.id and i.modifier_id = m.id order by created desc", site._id);
 
       sql.traverse(function() {
-        addImage.call(this, 'site', writer);
+        addImage.call(this, 'site', writer, metadataSql);
       });
 
       sql.retrieve("select i.*, c.name as creator_name, m.name as modifier_name from image i, layout l, account c, account m where i.parent_type = 'Layout' and i.parent_id = l.id and l.site_id = $0 and i.creator_id = c.id and i.modifier_id = m.id order by created desc", site._id);
 
       sql.traverse(function() {
-        addImage.call(this, 'layout', writer);
+        addImage.call(this, 'layout', writer, metadataSql);
       });
 
       writer.close();
@@ -222,7 +222,7 @@ global.Exporter = (function() {
             votes: choice.size()
           };
         });
-        addMetadata(this, Poll);
+        addMetadata(this, Poll, metadataSql);
         writer.push(this);
       });
 
@@ -259,7 +259,8 @@ global.Exporter = (function() {
 
   Exporter.saveAccount = account => {
     const zip = new helma.Zip();
-    const sql = new Sql();
+    const sql = new Sql({quote: true});
+    const metadataSql = new Sql({quote: true});
 
     const dirName = app.appsProperties['static'] + '/export';
     const fileName = 'antville-account-' + java.util.UUID.randomUUID() + '.zip';
@@ -283,7 +284,7 @@ global.Exporter = (function() {
 
       sql.traverse(function() {
         app.log('Exporting account #' + this.id + ' (' + this.name + ')');
-        addMetadata(this, User);
+        addMetadata(this, User, metadataSql);
         writer.push(this);
       });
 
@@ -297,7 +298,7 @@ global.Exporter = (function() {
         app.log('Exporting site #' + this.id + ' (' + this.name + ')');
         const site = Site.getById(this.id);
         this.href = site.href();
-        if (this.role === Membership.OWNER) addMetadata(this, Site);
+        if (this.role === Membership.OWNER) addMetadata(this, Site, metadataSql);
         writer.push(this);
       });
 
@@ -337,7 +338,7 @@ global.Exporter = (function() {
         this.href = content.href();
         this.creator_name = account.name;
 
-        addMetadata(this, Story);
+        addMetadata(this, Story, metadataSql);
         this.rendered = content.format_filter(this.metadata.text, {}, 'markdown');
 
         if (this.prototype === 'Story') {
@@ -361,7 +362,7 @@ global.Exporter = (function() {
         if (asset.exists()) zip.add(asset, file.site.name + '/files');
         this.href = file.href();
         this.creator_name = account.name;
-        addMetadata(this, File);
+        addMetadata(this, File, metadataSql);
         writer.push(this);
       });
 
@@ -385,7 +386,7 @@ global.Exporter = (function() {
           }
           this.href = image.href();
           this.creator_name = account.name;
-          addMetadata(this, Image);
+          addMetadata(this, Image, metadataSql);
           writer.push(this);
         } else {
           app.logger.warn('Could not export Image #' + this.id + '; might be a cache problem');
@@ -412,7 +413,7 @@ global.Exporter = (function() {
         });
         const vote = poll.votes.get(account.name);
         if (vote) this.vote = vote.choice._id;
-        addMetadata(this, Poll);
+        addMetadata(this, Poll, metadataSql);
         writer.push(this);
       });
 
