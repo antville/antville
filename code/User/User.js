@@ -26,6 +26,7 @@ markgettext('a account // accusative');
 this.handleMetadata('accepted');
 this.handleMetadata('deleted');
 this.handleMetadata('export');
+this.handleMetadata('exportError');
 this.handleMetadata('hash');
 this.handleMetadata('job');
 this.handleMetadata('notes');
@@ -554,6 +555,7 @@ User.prototype.export_action = function() {
         throw Error(gettext('There is already another job queued for this account: {0}', job.method));
       }
       this.job = Admin.queue(this, 'export');
+      this.exportError = null;
       res.message = gettext('The account is queued for export.');
     } catch (ex) {
       res.message = ex.toString();
@@ -567,6 +569,8 @@ User.prototype.export_action = function() {
 
   if (job.method === 'export') {
     param.status = gettext('The account data will be available for download from here within the next days.');
+  } else if (this.exportError) {
+    param.error = gettext('The last export attempt failed: {0}', this.exportError);
   }
 
   res.data.title = 'Export Account ' + this.name;

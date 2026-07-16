@@ -156,10 +156,11 @@ Admin.dequeue = function() {
           Exporter.run(job.target, job.user);
           break;
         }
-        job.remove(true);
       } catch (ex) {
         app.log('Failed to process job ' + job + ' due to ' + ex);
         app.debug(ex.rhinoException);
+      } finally {
+        job.remove(true);
       }
     }
   }
