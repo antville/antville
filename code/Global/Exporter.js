@@ -257,7 +257,7 @@ global.Exporter = (function() {
 
       writer = getJsonWriter(tempDir, 'tags.json');
 
-      sql.retrieve('select t.name, h.*  from tag t, tag_hub h where t.id = h.tag_id order by t.name');
+      sql.retrieve('select t.name, h.*  from tag t, tag_hub h where t.id = h.tag_id and t.site_id = $0 order by t.name', site._id);
 
       sql.traverse(function() {
         app.log('Exporting tag #' + this.id);
