@@ -1313,6 +1313,21 @@ a.gs-title:hover {
    </div>
 </form>
 
+<% #import_review %>
+<h1><% gettext 'Review Import' %></h1>
+<p><% gettext 'Confirm the author matches below before the import is written. Anything left unmatched becomes a placeholder account, attributed under its original name.' %></p>
+<% param.reviewHtml %>
+<form method="post">
+   <div class='uk-form-row'>
+      <button class='uk-button uk-button-primary' type="submit" name="submit" value="confirm">
+         <% gettext 'Confirm Import' %>
+      </button>
+      <button class='uk-button uk-button-link' type="submit" name="submit" value="stop">
+         <% gettext Cancel %>
+      </button>
+   </div>
+</form>
+
 <% #notify_block %>
 <% gettext 'Hello {0}.' <% membership.name %> %>
 

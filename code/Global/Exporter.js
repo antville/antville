@@ -82,11 +82,33 @@ global.Exporter = (function() {
     if (dir.exists()) zip.add(dir, 'static');
   };
 
+  const generateExportKey = () => {
+    const bytes = java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE, 32);
+    java.security.SecureRandom.getInstance('SHA1PRNG').nextBytes(bytes);
+    return bytes;
+  };
+
   /**
    * The Exporter namespace provides methods for exporting a site.
    * @namespace
    */
   const Exporter = {}
+
+  /**
+   * Computes a keyed digest of a message. Used so an importer can check
+   * whether one of its own accounts’ e-mail addresses matches an exported
+   * account without the export ever carrying a plaintext e-mail address.
+   * @param {byte[]} key
+   * @param {String} message
+   * @returns {String} Base64-encoded HMAC-SHA256 digest.
+   */
+  Exporter.hmac = (key, message) => {
+    const keySpec = new javax.crypto.spec.SecretKeySpec(key, 'HmacSHA256');
+    const mac = javax.crypto.Mac.getInstance('HmacSHA256');
+    mac.init(keySpec);
+    const digest = mac.doFinal(new java.lang.String(message).getBytes('utf-8'));
+    return new java.lang.String(java.util.Base64.getEncoder().encode(digest), 'utf-8');
+  };
 
   /**
    * Exports a site with the specified user’s content
@@ -116,6 +138,17 @@ global.Exporter = (function() {
     const dir = new java.io.File(dirName);
     const file = new java.io.File(dir, fileName);
 
+    // Accumulates every account id referenced anywhere in this export
+    // (as a creator or modifier of anything), so accounts.json only ever
+    // needs to carry one deduped row per account, not one per content row.
+    const accountIds = {};
+    const recordAccount = id => { id && (accountIds[id] = true); };
+
+    // Generated fresh per export and stored in index.json — see
+    // Exporter.hmac. Never shared between exports or installs.
+    const exportKey = generateExportKey();
+    const exportKeyBase64 = new java.lang.String(java.util.Base64.getEncoder().encode(exportKey), 'utf-8');
+
     if (!dir.exists()) dir.mkdirs();
 
     if (site.export) {
@@ -134,13 +167,18 @@ global.Exporter = (function() {
         app.log('Exporting site #' + this.id + ' (' + this.name + ')');
         const site = Site.getById(this.id);
         this.href = site.href();
+        this.exportKey = exportKeyBase64;
+        recordAccount(this.creator_id);
+        recordAccount(this.modifier_id);
         addAssets(site, zip);
         addMetadata(this, Site, metadataSql);
         writer.push(this);
         const skinsSql = new Sql({quote: true});
-        skinsSql.retrieve('select s.* from skin s join layout l on s.layout_id = l.id where l.site_id = $0', this.id);
+        skinsSql.retrieve('select s.*, c.name as creator_name, m.name as modifier_name from skin s join layout l on s.layout_id = l.id left join account c on s.creator_id = c.id left join account m on s.modifier_id = m.id where l.site_id = $0', this.id);
         skinsSql.traverse(function() {
           app.log('Exporting skin #' + this.id);
+          recordAccount(this.creator_id);
+          recordAccount(this.modifier_id);
           skinWriter.push(this);
         });
       });
@@ -154,6 +192,8 @@ global.Exporter = (function() {
 
       sql.traverse(function() {
         app.log('Exporting membership #' + this.creator_id);
+        recordAccount(this.creator_id);
+        recordAccount(this.modifier_id);
         writer.push(this);
       });
 
@@ -171,6 +211,8 @@ global.Exporter = (function() {
           if (!content) throw Error('object not found');
 
           this.href = content.href();
+          recordAccount(this.creator_id);
+          recordAccount(this.modifier_id);
 
           addMetadata(this, Story, metadataSql);
           this.rendered = content.format_filter(this.metadata.text, {}, 'markdown');
@@ -199,6 +241,8 @@ global.Exporter = (function() {
           if (!file) throw Error('object not found');
 
           this.href = file.href();
+          recordAccount(this.creator_id);
+          recordAccount(this.modifier_id);
           addMetadata(this, File, metadataSql);
           writer.push(this);
         } catch (ex) {
@@ -213,12 +257,16 @@ global.Exporter = (function() {
       sql.retrieve("select i.*, c.name as creator_name, m.name as modifier_name from image i left join account c on i.creator_id = c.id left join account m on i.modifier_id = m.id where i.parent_type = 'Site' and i.parent_id = $0 order by i.created desc", site._id);
 
       sql.traverse(function() {
+        recordAccount(this.creator_id);
+        recordAccount(this.modifier_id);
         addImage.call(this, 'site', writer, metadataSql);
       });
 
       sql.retrieve("select i.*, c.name as creator_name, m.name as modifier_name from image i join layout l on i.parent_id = l.id left join account c on i.creator_id = c.id left join account m on i.modifier_id = m.id where i.parent_type = 'Layout' and l.site_id = $0 order by i.created desc", site._id);
 
       sql.traverse(function() {
+        recordAccount(this.creator_id);
+        recordAccount(this.modifier_id);
         addImage.call(this, 'layout', writer, metadataSql);
       });
 
@@ -239,6 +287,8 @@ global.Exporter = (function() {
           }
 
           this.href = poll.href();
+          recordAccount(this.creator_id);
+          recordAccount(this.modifier_id);
           this.choices = poll.list().map(choice => {
             return {
               id: choice._id,
@@ -261,6 +311,7 @@ global.Exporter = (function() {
 
       sql.traverse(function() {
         app.log('Exporting vote #' + this.id);
+        recordAccount(this.creator_id);
         writer.push(this);
       });
 
@@ -274,6 +325,24 @@ global.Exporter = (function() {
         app.log('Exporting tag #' + this.id);
         writer.push(this);
       });
+
+      writer.close();
+
+      writer = getJsonWriter(tempDir, 'accounts.json');
+
+      const accountIdList = Object.keys(accountIds);
+      if (accountIdList.length) {
+        const accountsSql = new Sql({quote: true});
+        accountsSql.retrieve('select id, name, email from account where id in (' + accountIdList.join(',') + ')');
+        accountsSql.traverse(function() {
+          app.log('Exporting account #' + this.id);
+          writer.push({
+            id: this.id,
+            name: this.name,
+            email_hmac: this.email ? Exporter.hmac(exportKey, this.email.trim().toLowerCase()) : null
+          });
+        });
+      }
 
       writer.close();
 

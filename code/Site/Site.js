@@ -34,6 +34,9 @@ this.handleMetadata('exportError');
 this.handleMetadata('imageDimensionLimits');
 this.handleMetadata('import_id');
 this.handleMetadata('importError');
+this.handleMetadata('importReport');
+this.handleMetadata('importTempDir');
+this.handleMetadata('importAccountMap');
 this.handleMetadata('job');
 this.handleMetadata('locale');
 this.handleMetadata('notes');
@@ -793,6 +796,49 @@ Site.prototype.export_action = function() {
   return;
 }
 
+/**
+ * Renders the account-matching report from Importer.preview as an HTML
+ * fragment for the #import_review skin: how many authors matched
+ * automatically, which same-named target accounts need the admin to
+ * confirm they're really the same person (shown with a masked e-mail,
+ * never the full address), and which names had no match at all (with a
+ * field to redirect them to an existing account by username, or leave
+ * blank to fall back to a placeholder account).
+ * @param {Object} report {resolved, ambiguous, unresolved}
+ * @returns {String}
+ */
+Site.renderImportReview = function(report) {
+  var html = [];
+
+  html.push('<p>' + gettext('{0} authors matched automatically.', report.resolved.length) + '</p>');
+
+  if (report.ambiguous.length) {
+    html.push('<h2>' + gettext('Possible matches to confirm') + '</h2>');
+    html.push('<table class="uk-table">');
+    report.ambiguous.forEach(function(entry) {
+      html.push('<tr><td>' + encodeXml(entry.name) + '</td>' +
+          '<td>' + encodeXml(entry.maskedEmail || String.EMPTY) + '</td>' +
+          '<td><label><input type="checkbox" name="override_' + entry.id +
+          '" value="' + encodeXml(entry.name) + '"> ' +
+          gettext('Yes, this is the same person') + '</label></td></tr>');
+    });
+    html.push('</table>');
+  }
+
+  if (report.unresolved.length) {
+    html.push('<h2>' + gettext('No matching account found') + '</h2>');
+    html.push('<table class="uk-table">');
+    report.unresolved.forEach(function(entry) {
+      html.push('<tr><td>' + encodeXml(entry.name) + '</td>' +
+          '<td><input type="text" name="override_' + entry.id + '" placeholder="' +
+          encodeXml(gettext('Existing account username (optional)')) + '"></td></tr>');
+    });
+    html.push('</table>');
+  }
+
+  return html.join(String.EMPTY);
+};
+
 Site.prototype.import_action = function() {
   var job = this.job && new Admin.Job(this.job);
   var file = this.import_id && File.getById(this.import_id);
@@ -811,15 +857,63 @@ Site.prototype.import_action = function() {
         }
       }
       file && File.remove.call(file);
+      this.importTempDir && Importer.deleteRecursively(new java.io.File(this.importTempDir));
+      this.importReport = null;
+      this.importTempDir = null;
+
       data.file_origin = data.file.name;
       file = new File;
       file.site = this;
       file.update(data);
       this.files.add(file);
       file.creator = session.user;
-      this.job = Admin.queue(this, 'import');
       this.import_id = file._id;
       this.importError = null;
+
+      if (Importer.isZipFile(new java.io.File(file.getFile()))) {
+        // Native export: preview the account matches right away and let
+        // the admin review/override them before anything is written —
+        // see #import_review below. The uploaded archive's bytes are
+        // already fully extracted at this point, so it's no longer
+        // needed. If preview throws, this.import_id is left pointing at
+        // it so the next 'start' or 'stop' cleans it up normally.
+        Importer.preview(this, file);
+        File.remove.call(file);
+        this.import_id = null;
+        res.redirect(this.href(req.action));
+      } else {
+        // Legacy Blogger.com path (compat): no account matching to
+        // review, queue the import as before.
+        this.job = Admin.queue(this, 'import');
+        res.message = gettext('Site is scheduled for import.');
+        res.redirect(this.href(req.action));
+      }
+    } catch (ex) {
+      res.message = ex.toString();
+      app.log(res.message);
+    }
+  } else if (data.submit === 'confirm') {
+    try {
+      var report = JSON.parse(this.importReport || 'null');
+      if (!report) {
+        throw Error(gettext('There is no pending import to confirm.'));
+      }
+      var overrides = {};
+      Object.keys(data).forEach(function(key) {
+        var match = key.match(/^override_(\d+)$/);
+        if (!match || !data[key]) {
+          return;
+        }
+        // The admin names an existing target account by username (the one
+        // portable, already-proven lookup — User.getByName); there's no
+        // e-mail-based lookup to resolve an arbitrary typed address against.
+        var account = User.getByName(data[key]);
+        if (account) {
+          overrides[match[1]] = {useExisting: account._id};
+        }
+      });
+      this.importAccountMap = JSON.stringify(Importer.mergeOverrides(report, overrides));
+      this.job = Admin.queue(this, 'import');
       res.message = gettext('Site is scheduled for import.');
       res.redirect(this.href(req.action));
     } catch (ex) {
@@ -828,9 +922,13 @@ Site.prototype.import_action = function() {
     }
   } else if (data.submit === 'stop') {
     file && File.remove.call(file);
+    this.importTempDir && Importer.deleteRecursively(new java.io.File(this.importTempDir));
     job && job.remove();
     this.job = null;
     this.import_id = null;
+    this.importReport = null;
+    this.importTempDir = null;
+    this.importAccountMap = null;
     res.redirect(this.href(req.action));
   }
 
@@ -838,10 +936,15 @@ Site.prototype.import_action = function() {
     param.status = gettext('The site is being imported.');
   } else if (this.importError) {
     param.error = gettext('The last import attempt failed: {0}', this.importError);
+  } else if (this.importReport) {
+    param.report = JSON.parse(this.importReport);
+    param.reviewHtml = Site.renderImportReview(param.report);
   }
 
   res.handlers.file = File.getById(this.import_id) || {};
-  res.data.body = this.renderSkinAsString('$Site#import', param);
+  res.data.body = param.report
+      ? this.renderSkinAsString('$Site#import_review', param)
+      : this.renderSkinAsString('$Site#import', param);
   this.renderSkin('Site#page');
   return;
 }
