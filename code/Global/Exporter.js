@@ -63,12 +63,17 @@ global.Exporter = (function() {
   const addImage = function(type, writer, sql) {
     app.log('Exporting ' + type + ' image #' + this.id);
     const image = Image.getById(this.id);
-    if (image) {
+    if (!image) {
+      app.logger.warn('Could not export Image #' + this.id + '; might be a cache problem');
+      return;
+    }
+
+    try {
       this.href = image.href();
       addMetadata(this, Image, sql);
       writer.push(this);
-    } else {
-      app.logger.warn('Could not export Image #' + this.id + '; might be a cache problem');
+    } catch (ex) {
+      app.logger.warn('Could not export Image #' + this.id + ' (likely a dangling reference to a deleted parent): ' + ex);
     }
   };
 
@@ -189,10 +194,16 @@ global.Exporter = (function() {
 
       sql.traverse(function() {
         app.log('Exporting file #' + this.id);
-        const file = File.getById(this.id);
-        this.href = file.href();
-        addMetadata(this, File, metadataSql);
-        writer.push(this);
+        try {
+          const file = File.getById(this.id);
+          if (!file) throw Error('object not found');
+
+          this.href = file.href();
+          addMetadata(this, File, metadataSql);
+          writer.push(this);
+        } catch (ex) {
+          app.logger.warn('Could not export file #' + this.id + ' (likely a dangling reference to a deleted parent): ' + ex);
+        }
       });
 
       writer.close();
@@ -219,17 +230,23 @@ global.Exporter = (function() {
 
       sql.traverse(function() {
         app.log('Exporting poll #' + this.id);
-        const poll = Poll.getById(this.id);
-        this.href = poll.href();
-        this.choices = poll.list().map(choice => {
-          return {
-            id: choice._id,
-            title: choice.title,
-            votes: choice.size()
-          };
-        });
-        addMetadata(this, Poll, metadataSql);
-        writer.push(this);
+        try {
+          const poll = Poll.getById(this.id);
+          if (!poll) throw Error('object not found');
+
+          this.href = poll.href();
+          this.choices = poll.list().map(choice => {
+            return {
+              id: choice._id,
+              title: choice.title,
+              votes: choice.size()
+            };
+          });
+          addMetadata(this, Poll, metadataSql);
+          writer.push(this);
+        } catch (ex) {
+          app.logger.warn('Could not export poll #' + this.id + ' (likely a dangling reference to a deleted parent): ' + ex);
+        }
       });
 
       writer.close();
@@ -369,13 +386,19 @@ global.Exporter = (function() {
 
       sql.traverse(function() {
         app.log('Exporting file #' + this.id);
-        const file = File.getById(this.id);
-        const asset = file.getFile();
-        if (asset.exists()) zip.add(asset, file.site.name + '/files');
-        this.href = file.href();
-        this.creator_name = account.name;
-        addMetadata(this, File, metadataSql);
-        writer.push(this);
+        try {
+          const file = File.getById(this.id);
+          if (!file) throw Error('object not found');
+
+          const asset = file.getFile();
+          if (asset.exists()) zip.add(asset, file.site.name + '/files');
+          this.href = file.href();
+          this.creator_name = account.name;
+          addMetadata(this, File, metadataSql);
+          writer.push(this);
+        } catch (ex) {
+          app.logger.warn('Could not export file #' + this.id + ' (likely a dangling reference to a deleted parent): ' + ex);
+        }
       });
 
       writer.close();
@@ -387,7 +410,12 @@ global.Exporter = (function() {
       sql.traverse(function() {
         app.log('Exporting image #' + this.id);
         const image = Image.getById(this.id);
-        if (image) {
+        if (!image) {
+          app.logger.warn('Could not export Image #' + this.id + '; might be a cache problem');
+          return;
+        }
+
+        try {
           try {
             const asset = image.getFile();
             const path = this.parent_type === 'Layout' ? image.parent.site.name + '/layout' : image.parent.name + '/images';
@@ -400,8 +428,8 @@ global.Exporter = (function() {
           this.creator_name = account.name;
           addMetadata(this, Image, metadataSql);
           writer.push(this);
-        } else {
-          app.logger.warn('Could not export Image #' + this.id + '; might be a cache problem');
+        } catch (ex) {
+          app.logger.warn('Could not export Image #' + this.id + ' (likely a dangling reference to a deleted parent): ' + ex);
         }
       });
 
@@ -413,20 +441,26 @@ global.Exporter = (function() {
 
       sql.traverse(function() {
         app.log('Exporting poll #' + this.id);
-        const poll = Poll.getById(this.id);
-        this.href = poll.href();
-        this.creator_name = account.name;
-        this.choices = poll.list().map(choice => {
-          return {
-            id: choice._id,
-            title: choice.title,
-            votes: choice.size()
-          };
-        });
-        const vote = poll.votes.get(account.name);
-        if (vote) this.vote = vote.choice._id;
-        addMetadata(this, Poll, metadataSql);
-        writer.push(this);
+        try {
+          const poll = Poll.getById(this.id);
+          if (!poll) throw Error('object not found');
+
+          this.href = poll.href();
+          this.creator_name = account.name;
+          this.choices = poll.list().map(choice => {
+            return {
+              id: choice._id,
+              title: choice.title,
+              votes: choice.size()
+            };
+          });
+          const vote = poll.votes.get(account.name);
+          if (vote) this.vote = vote.choice._id;
+          addMetadata(this, Poll, metadataSql);
+          writer.push(this);
+        } catch (ex) {
+          app.logger.warn('Could not export poll #' + this.id + ' (likely a dangling reference to a deleted parent): ' + ex);
+        }
       });
 
       writer.close();
