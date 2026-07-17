@@ -233,6 +233,10 @@ global.Exporter = (function() {
         try {
           const poll = Poll.getById(this.id);
           if (!poll) throw Error('object not found');
+          if (!poll.site) {
+            app.logger.warn('Could not export poll #' + this.id + '; its site has been deleted');
+            return;
+          }
 
           this.href = poll.href();
           this.choices = poll.list().map(choice => {
@@ -455,6 +459,10 @@ global.Exporter = (function() {
         try {
           const poll = Poll.getById(this.id);
           if (!poll) throw Error('object not found');
+          if (!poll.site) {
+            app.logger.warn('Could not export poll #' + this.id + '; its site has been deleted');
+            return;
+          }
 
           this.href = poll.href();
           this.creator_name = account.name;
