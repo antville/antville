@@ -133,7 +133,7 @@ global.Exporter = (function() {
         addMetadata(this, Site);
         writer.push(this);
         const skinsSql = new Sql();
-        sql.retrieve('select * from skin where site_id = $0', this.id);
+        sql.retrieve('select s.* from skin s join layout l on s.layout_id = l.id where l.site_id = $0', this.id);
         sql.traverse(function() {
           app.log('Exporting skin #' + this.id);
           skinWriter.push(this);
