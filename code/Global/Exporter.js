@@ -128,7 +128,7 @@ global.Exporter = (function() {
       const skinWriter = getJsonWriter(tempDir, 'skins.json');
       let writer = getJsonWriter(tempDir, 'index.json');
 
-      sql.retrieve('select s.*, c.name as creator_name, m.name as modifier_name from site s, account c, account m where s.id = $0 and s.creator_id = c.id and s.modifier_id = m.id order by lower(s.name)', site._id);
+      sql.retrieve('select s.*, c.name as creator_name, m.name as modifier_name from site s left join account c on s.creator_id = c.id left join account m on s.modifier_id = m.id where s.id = $0 order by lower(s.name)', site._id);
 
       sql.traverse(function() {
         app.log('Exporting site #' + this.id + ' (' + this.name + ')');
@@ -138,7 +138,7 @@ global.Exporter = (function() {
         addMetadata(this, Site, metadataSql);
         writer.push(this);
         const skinsSql = new Sql({quote: true});
-        skinsSql.retrieve('select * from skin where site_id = $0', this.id);
+        skinsSql.retrieve('select s.* from skin s join layout l on s.layout_id = l.id where l.site_id = $0', this.id);
         skinsSql.traverse(function() {
           app.log('Exporting skin #' + this.id);
           skinWriter.push(this);
@@ -150,7 +150,7 @@ global.Exporter = (function() {
 
       writer = getJsonWriter(tempDir, 'members.json');
 
-      sql.retrieve('select m.*, c.name as creator_name, mod.name as modifier_name from site s, membership m, account c, account mod where s.id = $0 and s.id = m.site_id and m.creator_id = c.id and m.modifier_id = mod.id order by lower(m.name)', site._id);
+      sql.retrieve('select m.*, c.name as creator_name, modifier.name as modifier_name from membership m left join account c on m.creator_id = c.id left join account modifier on m.modifier_id = modifier.id where m.site_id = $0 order by lower(m.name)', site._id);
 
       sql.traverse(function() {
         app.log('Exporting membership #' + this.creator_id);
@@ -162,7 +162,7 @@ global.Exporter = (function() {
       const storyWriter = getJsonWriter(tempDir, 'stories.json');
       const commentWriter = getJsonWriter(tempDir, 'comments.json');
 
-      sql.retrieve('select c.*, crt.name as creator_name, m.name as modifier_name from content c, account crt, account m where c.site_id = $0 and c.creator_id = crt.id and c.modifier_id = m.id order by created desc', site._id);
+      sql.retrieve('select c.*, crt.name as creator_name, m.name as modifier_name from content c left join account crt on c.creator_id = crt.id left join account m on c.modifier_id = m.id where c.site_id = $0 order by c.created desc', site._id);
 
       sql.traverse(function() {
         app.log('Exporting story #' + this.id);
@@ -190,7 +190,7 @@ global.Exporter = (function() {
 
       writer = getJsonWriter(tempDir, 'files.json');
 
-      sql.retrieve('select f.*, c.name as creator_name, m.name as modifier_name from file f, account c, account m where f.site_id = $0 and f.creator_id = c.id and f.modifier_id = m.id order by created desc', site._id);
+      sql.retrieve('select f.*, c.name as creator_name, m.name as modifier_name from file f left join account c on f.creator_id = c.id left join account m on f.modifier_id = m.id where f.site_id = $0 order by f.created desc', site._id);
 
       sql.traverse(function() {
         app.log('Exporting file #' + this.id);
@@ -210,13 +210,13 @@ global.Exporter = (function() {
 
       writer = getJsonWriter(tempDir, 'images.json');
 
-      sql.retrieve("select i.*, c.name as creator_name, m.name as modifier_name from image i, account c, account m where i.parent_type = 'Site' and i.parent_id = $0 and i.creator_id = c.id and i.modifier_id = m.id order by created desc", site._id);
+      sql.retrieve("select i.*, c.name as creator_name, m.name as modifier_name from image i left join account c on i.creator_id = c.id left join account m on i.modifier_id = m.id where i.parent_type = 'Site' and i.parent_id = $0 order by i.created desc", site._id);
 
       sql.traverse(function() {
         addImage.call(this, 'site', writer, metadataSql);
       });
 
-      sql.retrieve("select i.*, c.name as creator_name, m.name as modifier_name from image i, layout l, account c, account m where i.parent_type = 'Layout' and i.parent_id = l.id and l.site_id = $0 and i.creator_id = c.id and i.modifier_id = m.id order by created desc", site._id);
+      sql.retrieve("select i.*, c.name as creator_name, m.name as modifier_name from image i join layout l on i.parent_id = l.id left join account c on i.creator_id = c.id left join account m on i.modifier_id = m.id where i.parent_type = 'Layout' and l.site_id = $0 order by i.created desc", site._id);
 
       sql.traverse(function() {
         addImage.call(this, 'layout', writer, metadataSql);
@@ -226,7 +226,7 @@ global.Exporter = (function() {
 
       writer = getJsonWriter(tempDir, 'polls.json');
 
-      sql.retrieve('select p.*, c.name as creator_name, m.name as modifier_name from poll p, account c, account m where p.site_id = $0 and p.creator_id = c.id and p.modifier_id = m.id order by created desc', site._id);
+      sql.retrieve('select p.*, c.name as creator_name, m.name as modifier_name from poll p left join account c on p.creator_id = c.id left join account m on p.modifier_id = m.id where p.site_id = $0 order by p.created desc', site._id);
 
       sql.traverse(function() {
         app.log('Exporting poll #' + this.id);
@@ -251,6 +251,17 @@ global.Exporter = (function() {
         } catch (ex) {
           app.logger.warn('Could not export poll #' + this.id + ' (likely a dangling reference to a deleted parent): ' + ex);
         }
+      });
+
+      writer.close();
+
+      writer = getJsonWriter(tempDir, 'votes.json');
+
+      sql.retrieve('select v.* from vote v join poll p on v.poll_id = p.id where p.site_id = $0', site._id);
+
+      sql.traverse(function() {
+        app.log('Exporting vote #' + this.id);
+        writer.push(this);
       });
 
       writer.close();
@@ -319,7 +330,7 @@ global.Exporter = (function() {
 
       writer = getJsonWriter(tempDir, 'sites.json');
 
-      sql.retrieve("select s.*, m.role, c.name as creator_name, mod.name as modifier_name from site s, membership m, account c, account mod where m.creator_id = $0 and m.site_id = s.id and s.creator_id = c.id and s.modifier_id = mod.id order by lower(s.name)", account._id);
+      sql.retrieve("select s.*, m.role, c.name as creator_name, modifier.name as modifier_name from membership m join site s on m.site_id = s.id left join account c on s.creator_id = c.id left join account modifier on s.modifier_id = modifier.id where m.creator_id = $0 order by lower(s.name)", account._id);
 
       sql.traverse(function() {
         app.log('Exporting site #' + this.id + ' (' + this.name + ')');
@@ -333,7 +344,7 @@ global.Exporter = (function() {
 
       writer = getJsonWriter(tempDir, 'skins.json');
 
-      sql.retrieve('select s.*, m.name as modifier_name from skin s, account m where s.creator_id = $0 and s.modifier_id = m.id', account._id);
+      sql.retrieve('select s.*, m.name as modifier_name from skin s left join account m on s.modifier_id = m.id where s.creator_id = $0', account._id);
 
       sql.traverse(function() {
         app.log('Exporting skin #' + this.id);
@@ -344,7 +355,7 @@ global.Exporter = (function() {
 
       writer = getJsonWriter(tempDir, 'memberships.json');
 
-      sql.retrieve('select m.*, mod.name as modifier_name from site s, membership m, account mod where m.creator_id = $0 and s.id = m.site_id and m.modifier_id = mod.id order by lower(m.name)', account._id);
+      sql.retrieve('select m.*, modifier.name as modifier_name from membership m left join account modifier on m.modifier_id = modifier.id where m.creator_id = $0 order by lower(m.name)', account._id);
 
       sql.traverse(function() {
         app.log('Exporting membership #' + this.id);
@@ -357,7 +368,7 @@ global.Exporter = (function() {
       writer = getJsonWriter(tempDir, 'stories.json');
       const commentWriter = getJsonWriter(tempDir, 'comments.json');
 
-      sql.retrieve('select c.*, m.name as modifier_name from content c, account m where creator_id = $0 and c.modifier_id = m.id order by c.created desc', account._id);
+      sql.retrieve('select c.*, m.name as modifier_name from content c left join account m on c.modifier_id = m.id where c.creator_id = $0 order by c.created desc', account._id);
 
       sql.traverse(function() {
         app.log('Exporting story #' + this.id);
@@ -386,7 +397,7 @@ global.Exporter = (function() {
 
       writer = getJsonWriter(tempDir, 'files.json');
 
-      sql.retrieve('select f.*, m.name as modifier_name from file f, account m where f.creator_id = $0 and f.modifier_id = m.id order by f.created desc', account._id);
+      sql.retrieve('select f.*, m.name as modifier_name from file f left join account m on f.modifier_id = m.id where f.creator_id = $0 order by f.created desc', account._id);
 
       sql.traverse(function() {
         app.log('Exporting file #' + this.id);
@@ -409,7 +420,7 @@ global.Exporter = (function() {
 
       writer = getJsonWriter(tempDir, 'images.json');
 
-      sql.retrieve('select i.*, m.name as modifier_name from image i, account m where i.creator_id = $0 and i.modifier_id = m.id order by i.created desc', account._id);
+      sql.retrieve('select i.*, m.name as modifier_name from image i left join account m on i.modifier_id = m.id where i.creator_id = $0 order by i.created desc', account._id);
 
       sql.traverse(function() {
         app.log('Exporting image #' + this.id);
@@ -441,7 +452,7 @@ global.Exporter = (function() {
 
       writer = getJsonWriter(tempDir, 'polls.json');
 
-      sql.retrieve('select p.*, m.name as modifier_name from poll p, account m where p.creator_id = $0 and p.modifier_id = m.id order by p.created desc', account._id);
+      sql.retrieve('select p.*, m.name as modifier_name from poll p left join account m on p.modifier_id = m.id where p.creator_id = $0 order by p.created desc', account._id);
 
       sql.traverse(function() {
         app.log('Exporting poll #' + this.id);
