@@ -33,6 +33,7 @@ this.handleMetadata('export');
 this.handleMetadata('exportError');
 this.handleMetadata('imageDimensionLimits');
 this.handleMetadata('import_id');
+this.handleMetadata('importError');
 this.handleMetadata('job');
 this.handleMetadata('locale');
 this.handleMetadata('notes');
@@ -795,6 +796,7 @@ Site.prototype.export_action = function() {
 Site.prototype.import_action = function() {
   var job = this.job && new Admin.Job(this.job);
   var file = this.import_id && File.getById(this.import_id);
+  var param = {};
 
   var data = req.postParams;
   if (data.submit === 'start') {
@@ -817,6 +819,7 @@ Site.prototype.import_action = function() {
       file.creator = session.user;
       this.job = Admin.queue(this, 'import');
       this.import_id = file._id;
+      this.importError = null;
       res.message = gettext('Site is scheduled for import.');
       res.redirect(this.href(req.action));
     } catch (ex) {
@@ -831,8 +834,14 @@ Site.prototype.import_action = function() {
     res.redirect(this.href(req.action));
   }
 
+  if (this.job && new Admin.Job(this.job).method === 'import') {
+    param.status = gettext('The site is being imported.');
+  } else if (this.importError) {
+    param.error = gettext('The last import attempt failed: {0}', this.importError);
+  }
+
   res.handlers.file = File.getById(this.import_id) || {};
-  res.data.body = this.renderSkinAsString('$Site#import');
+  res.data.body = this.renderSkinAsString('$Site#import', param);
   this.renderSkin('Site#page');
   return;
 }
