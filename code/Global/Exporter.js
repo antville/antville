@@ -51,9 +51,8 @@ global.Exporter = (function() {
     };
   };
 
-  const addMetadata = (object, Prototype) => {
+  const addMetadata = (object, Prototype, sql) => {
     object.metadata = {};
-    const sql = new Sql();
     sql.retrieve("select name, value, type from metadata where parent_type = '$0' and parent_id = $1 order by lower(name)", Prototype.name, object.id);
     sql.traverse(function() {
       object.metadata[this.name] = global[this.type](this.value).valueOf();
@@ -61,15 +60,20 @@ global.Exporter = (function() {
     return object;
   };
 
-  const addImage = function(type, writer) {
+  const addImage = function(type, writer, sql) {
     app.log('Exporting ' + type + ' image #' + this.id);
     const image = Image.getById(this.id);
-    if (image) {
-      this.href = image.href();
-      addMetadata(this, Image);
-      writer.push(this);
-    } else {
+    if (!image) {
       app.logger.warn('Could not export Image #' + this.id + '; might be a cache problem');
+      return;
+    }
+
+    try {
+      this.href = image.href();
+      addMetadata(this, Image, sql);
+      writer.push(this);
+    } catch (ex) {
+      app.logger.warn('Could not export Image #' + this.id + ' (likely a dangling reference to a deleted parent): ' + ex);
     }
   };
 
@@ -103,7 +107,8 @@ global.Exporter = (function() {
   };
 
   Exporter.saveSite = function(site, user) {
-    const sql = new Sql();
+    const sql = new Sql({quote: true});
+    const metadataSql = new Sql({quote: true});
     const zip = new helma.Zip();
 
     const dirName = app.appsProperties['static'] + '/export';
@@ -130,11 +135,11 @@ global.Exporter = (function() {
         const site = Site.getById(this.id);
         this.href = site.href();
         addAssets(site, zip);
-        addMetadata(this, Site);
+        addMetadata(this, Site, metadataSql);
         writer.push(this);
-        const skinsSql = new Sql();
-        sql.retrieve('select s.* from skin s join layout l on s.layout_id = l.id where l.site_id = $0', this.id);
-        sql.traverse(function() {
+        const skinsSql = new Sql({quote: true});
+        skinsSql.retrieve('select s.* from skin s join layout l on s.layout_id = l.id where l.site_id = $0', this.id);
+        skinsSql.traverse(function() {
           app.log('Exporting skin #' + this.id);
           skinWriter.push(this);
         });
@@ -161,16 +166,22 @@ global.Exporter = (function() {
 
       sql.traverse(function() {
         app.log('Exporting story #' + this.id);
-        const content = Story.getById(this.id);
-        this.href = content.href();
+        try {
+          const content = Story.getById(this.id);
+          if (!content) throw Error('object not found');
 
-        addMetadata(this, Story);
-        this.rendered = content.format_filter(this.metadata.text, {}, 'markdown');
+          this.href = content.href();
 
-        if (this.prototype === 'Story') {
-          storyWriter.push(this);
-        } else {
-          commentWriter.push(this);
+          addMetadata(this, Story, metadataSql);
+          this.rendered = content.format_filter(this.metadata.text, {}, 'markdown');
+
+          if (this.prototype === 'Story') {
+            storyWriter.push(this);
+          } else {
+            commentWriter.push(this);
+          }
+        } catch (ex) {
+          app.logger.warn('Could not export ' + this.prototype + ' #' + this.id + ' (likely a dangling reference to a deleted parent): ' + ex);
         }
       });
 
@@ -183,10 +194,16 @@ global.Exporter = (function() {
 
       sql.traverse(function() {
         app.log('Exporting file #' + this.id);
-        const file = File.getById(this.id);
-        this.href = file.href();
-        addMetadata(this, File);
-        writer.push(this);
+        try {
+          const file = File.getById(this.id);
+          if (!file) throw Error('object not found');
+
+          this.href = file.href();
+          addMetadata(this, File, metadataSql);
+          writer.push(this);
+        } catch (ex) {
+          app.logger.warn('Could not export file #' + this.id + ' (likely a dangling reference to a deleted parent): ' + ex);
+        }
       });
 
       writer.close();
@@ -196,13 +213,13 @@ global.Exporter = (function() {
       sql.retrieve("select i.*, c.name as creator_name, m.name as modifier_name from image i left join account c on i.creator_id = c.id left join account m on i.modifier_id = m.id where i.parent_type = 'Site' and i.parent_id = $0 order by i.created desc", site._id);
 
       sql.traverse(function() {
-        addImage.call(this, 'site', writer);
+        addImage.call(this, 'site', writer, metadataSql);
       });
 
       sql.retrieve("select i.*, c.name as creator_name, m.name as modifier_name from image i join layout l on i.parent_id = l.id left join account c on i.creator_id = c.id left join account m on i.modifier_id = m.id where i.parent_type = 'Layout' and l.site_id = $0 order by i.created desc", site._id);
 
       sql.traverse(function() {
-        addImage.call(this, 'layout', writer);
+        addImage.call(this, 'layout', writer, metadataSql);
       });
 
       writer.close();
@@ -213,17 +230,27 @@ global.Exporter = (function() {
 
       sql.traverse(function() {
         app.log('Exporting poll #' + this.id);
-        const poll = Poll.getById(this.id);
-        this.href = poll.href();
-        this.choices = poll.list().map(choice => {
-          return {
-            id: choice._id,
-            title: choice.title,
-            votes: choice.size()
-          };
-        });
-        addMetadata(this, Poll);
-        writer.push(this);
+        try {
+          const poll = Poll.getById(this.id);
+          if (!poll) throw Error('object not found');
+          if (!poll.site) {
+            app.logger.warn('Could not export poll #' + this.id + '; its site has been deleted');
+            return;
+          }
+
+          this.href = poll.href();
+          this.choices = poll.list().map(choice => {
+            return {
+              id: choice._id,
+              title: choice.title,
+              votes: choice.size()
+            };
+          });
+          addMetadata(this, Poll, metadataSql);
+          writer.push(this);
+        } catch (ex) {
+          app.logger.warn('Could not export poll #' + this.id + ' (likely a dangling reference to a deleted parent): ' + ex);
+        }
       });
 
       writer.close();
@@ -241,7 +268,7 @@ global.Exporter = (function() {
 
       writer = getJsonWriter(tempDir, 'tags.json');
 
-      sql.retrieve('select t.name, h.*  from tag t, tag_hub h where t.id = h.tag_id order by t.name');
+      sql.retrieve('select t.name, h.*  from tag t, tag_hub h where t.id = h.tag_id and t.site_id = $0 order by t.name', site._id);
 
       sql.traverse(function() {
         app.log('Exporting tag #' + this.id);
@@ -257,9 +284,12 @@ global.Exporter = (function() {
       zip.save(file);
 
       site.export = app.appsProperties.staticMountpoint + '/export/' + fileName;
-      site.job = null;
+      site.exportError = null;
     } catch (ex) {
-      app.log(ex.rhinoException);
+      app.log('Failed to export site #' + site._id + ' (' + site.name + '): ' + ex);
+      site.exportError = ex.toString();
+    } finally {
+      site.job = null;
     }
 
     return;
@@ -267,7 +297,8 @@ global.Exporter = (function() {
 
   Exporter.saveAccount = account => {
     const zip = new helma.Zip();
-    const sql = new Sql();
+    const sql = new Sql({quote: true});
+    const metadataSql = new Sql({quote: true});
 
     const dirName = app.appsProperties['static'] + '/export';
     const fileName = 'antville-account-' + java.util.UUID.randomUUID() + '.zip';
@@ -281,154 +312,189 @@ global.Exporter = (function() {
       if (archive.exists()) archive['delete']();
     }
 
-    const tempDir = new java.io.File(java.nio.file.Files.createTempDirectory(account.name));
-    let writer = getJsonWriter(tempDir, 'index.json');
+    try {
+      const tempDir = new java.io.File(java.nio.file.Files.createTempDirectory(account.name));
+      let writer = getJsonWriter(tempDir, 'index.json');
 
-    sql.retrieve("select * from account where id = $0", account._id);
-    // Cannot really include other accounts with the same e-mail address because we do not verify e-mail addresses
-    //sql.retrieve("select * from account where email = '$0' order by lower(name)", account.email);
+      sql.retrieve("select * from account where id = $0", account._id);
+      // Cannot really include other accounts with the same e-mail address because we do not verify e-mail addresses
+      //sql.retrieve("select * from account where email = '$0' order by lower(name)", account.email);
 
-    sql.traverse(function() {
-      app.log('Exporting account #' + this.id + ' (' + this.name + ')');
-      addMetadata(this, User);
-      writer.push(this);
-    });
-
-    writer.close();
-
-    writer = getJsonWriter(tempDir, 'sites.json');
-
-    sql.retrieve("select s.*, m.role, c.name as creator_name, modifier.name as modifier_name from membership m join site s on m.site_id = s.id left join account c on s.creator_id = c.id left join account modifier on s.modifier_id = modifier.id where m.creator_id = $0 order by lower(s.name)", account._id);
-
-    sql.traverse(function() {
-      app.log('Exporting site #' + this.id + ' (' + this.name + ')');
-      const site = Site.getById(this.id);
-      this.href = site.href();
-      if (this.role === Membership.OWNER) addMetadata(this, Site);
-      writer.push(this);
-    });
-
-    writer.close();
-
-    writer = getJsonWriter(tempDir, 'skins.json');
-
-    sql.retrieve('select s.*, m.name as modifier_name from skin s left join account m on s.modifier_id = m.id where s.creator_id = $0', account._id);
-
-    sql.traverse(function() {
-      app.log('Exporting skin #' + this.id);
-      writer.push(this);
-    });
-
-    writer.close();
-
-    writer = getJsonWriter(tempDir, 'memberships.json');
-
-    sql.retrieve('select m.*, modifier.name as modifier_name from membership m left join account modifier on m.modifier_id = modifier.id where m.creator_id = $0 order by lower(m.name)', account._id);
-
-    sql.traverse(function() {
-      app.log('Exporting membership #' + this.id);
-      this.creator_name = account.name;
-      writer.push(this);
-    });
-
-    writer.close();
-
-    writer = getJsonWriter(tempDir, 'stories.json');
-    const commentWriter = getJsonWriter(tempDir, 'comments.json');
-
-    sql.retrieve('select c.*, m.name as modifier_name from content c left join account m on c.modifier_id = m.id where c.creator_id = $0 order by c.created desc', account._id);
-
-    sql.traverse(function() {
-      app.log('Exporting story #' + this.id);
-      const content = Story.getById(this.id);
-      this.href = content.href();
-      this.creator_name = account.name;
-
-      addMetadata(this, Story);
-      this.rendered = content.format_filter(this.metadata.text, {}, 'markdown');
-
-      if (this.prototype === 'Story') {
+      sql.traverse(function() {
+        app.log('Exporting account #' + this.id + ' (' + this.name + ')');
+        addMetadata(this, User, metadataSql);
         writer.push(this);
-      } else {
-        commentWriter.push(this);
-      }
-    });
-
-    commentWriter.close();
-    writer.close()
-
-    writer = getJsonWriter(tempDir, 'files.json');
-
-    sql.retrieve('select f.*, m.name as modifier_name from file f left join account m on f.modifier_id = m.id where f.creator_id = $0 order by f.created desc', account._id);
-
-    sql.traverse(function() {
-      app.log('Exporting file #' + this.id);
-      const file = File.getById(this.id);
-      const asset = file.getFile();
-      if (asset.exists()) zip.add(asset, file.site.name + '/files');
-      this.href = file.href();
-      this.creator_name = account.name;
-      addMetadata(this, File);
-      writer.push(this);
-    });
-
-    writer.close()
-
-    writer = getJsonWriter(tempDir, 'images.json');
-
-    sql.retrieve('select i.*, m.name as modifier_name from image i left join account m on i.modifier_id = m.id where i.creator_id = $0 order by i.created desc', account._id);
-
-    sql.traverse(function() {
-      app.log('Exporting image #' + this.id);
-      const image = Image.getById(this.id);
-      if (image) {
-        try {
-          const asset = image.getFile();
-          const path = this.parent_type === 'Layout' ? image.parent.site.name + '/layout' : image.parent.name + '/images';
-          if (asset.exists()) zip.add(asset, path);
-        } catch (ex) {
-          console.warn('Could not export image #' + this.id);
-          console.warn(ex.rhinoException);
-        }
-        this.href = image.href();
-        this.creator_name = account.name;
-        addMetadata(this, Image);
-        writer.push(this);
-      } else {
-        app.logger.warn('Could not export Image #' + this.id + '; might be a cache problem');
-      }
-    });
-
-    writer.close()
-
-    writer = getJsonWriter(tempDir, 'polls.json');
-
-    sql.retrieve('select p.*, m.name as modifier_name from poll p left join account m on p.modifier_id = m.id where p.creator_id = $0 order by p.created desc', account._id);
-
-    sql.traverse(function() {
-      app.log('Exporting poll #' + this.id);
-      const poll = Poll.getById(this.id);
-      this.href = poll.href();
-      this.creator_name = account.name;
-      this.choices = poll.list().map(choice => {
-        return {
-          id: choice._id,
-          title: choice.title,
-          votes: choice.size()
-        };
       });
-      const vote = poll.votes.get(account.name);
-      if (vote) this.vote = vote.choice._id;
-      addMetadata(this, Poll);
-      writer.push(this);
-    });
 
-    writer.close();
-    zip.add(tempDir);
-    zip.save(file);
+      writer.close();
 
-    account.export = app.appsProperties.staticMountpoint + '/export/' + fileName;
-    account.job = null;
+      writer = getJsonWriter(tempDir, 'sites.json');
+
+      sql.retrieve("select s.*, m.role, c.name as creator_name, modifier.name as modifier_name from membership m join site s on m.site_id = s.id left join account c on s.creator_id = c.id left join account modifier on s.modifier_id = modifier.id where m.creator_id = $0 order by lower(s.name)", account._id);
+
+      sql.traverse(function() {
+        app.log('Exporting site #' + this.id + ' (' + this.name + ')');
+        const site = Site.getById(this.id);
+        this.href = site.href();
+        if (this.role === Membership.OWNER) addMetadata(this, Site, metadataSql);
+        writer.push(this);
+      });
+
+      writer.close();
+
+      writer = getJsonWriter(tempDir, 'skins.json');
+
+      sql.retrieve('select s.*, m.name as modifier_name from skin s left join account m on s.modifier_id = m.id where s.creator_id = $0', account._id);
+
+      sql.traverse(function() {
+        app.log('Exporting skin #' + this.id);
+        writer.push(this);
+      });
+
+      writer.close();
+
+      writer = getJsonWriter(tempDir, 'memberships.json');
+
+      sql.retrieve('select m.*, modifier.name as modifier_name from membership m left join account modifier on m.modifier_id = modifier.id where m.creator_id = $0 order by lower(m.name)', account._id);
+
+      sql.traverse(function() {
+        app.log('Exporting membership #' + this.id);
+        this.creator_name = account.name;
+        writer.push(this);
+      });
+
+      writer.close();
+
+      writer = getJsonWriter(tempDir, 'stories.json');
+      const commentWriter = getJsonWriter(tempDir, 'comments.json');
+
+      sql.retrieve('select c.*, m.name as modifier_name from content c left join account m on c.modifier_id = m.id where c.creator_id = $0 order by c.created desc', account._id);
+
+      sql.traverse(function() {
+        app.log('Exporting story #' + this.id);
+        try {
+          const content = Story.getById(this.id);
+          if (!content) throw Error('object not found');
+
+          this.href = content.href();
+          this.creator_name = account.name;
+
+          addMetadata(this, Story, metadataSql);
+          this.rendered = content.format_filter(this.metadata.text, {}, 'markdown');
+
+          if (this.prototype === 'Story') {
+            writer.push(this);
+          } else {
+            commentWriter.push(this);
+          }
+        } catch (ex) {
+          app.logger.warn('Could not export ' + this.prototype + ' #' + this.id + ' (likely a dangling reference to a deleted parent): ' + ex);
+        }
+      });
+
+      commentWriter.close();
+      writer.close();
+
+      writer = getJsonWriter(tempDir, 'files.json');
+
+      sql.retrieve('select f.*, m.name as modifier_name from file f left join account m on f.modifier_id = m.id where f.creator_id = $0 order by f.created desc', account._id);
+
+      sql.traverse(function() {
+        app.log('Exporting file #' + this.id);
+        try {
+          const file = File.getById(this.id);
+          if (!file) throw Error('object not found');
+
+          const asset = file.getFile();
+          if (asset.exists()) zip.add(asset, file.site.name + '/files');
+          this.href = file.href();
+          this.creator_name = account.name;
+          addMetadata(this, File, metadataSql);
+          writer.push(this);
+        } catch (ex) {
+          app.logger.warn('Could not export file #' + this.id + ' (likely a dangling reference to a deleted parent): ' + ex);
+        }
+      });
+
+      writer.close();
+
+      writer = getJsonWriter(tempDir, 'images.json');
+
+      sql.retrieve('select i.*, m.name as modifier_name from image i left join account m on i.modifier_id = m.id where i.creator_id = $0 order by i.created desc', account._id);
+
+      sql.traverse(function() {
+        app.log('Exporting image #' + this.id);
+        const image = Image.getById(this.id);
+        if (!image) {
+          app.logger.warn('Could not export Image #' + this.id + '; might be a cache problem');
+          return;
+        }
+
+        try {
+          try {
+            const asset = image.getFile();
+            const path = this.parent_type === 'Layout' ? image.parent.site.name + '/layout' : image.parent.name + '/images';
+            if (asset.exists()) zip.add(asset, path);
+          } catch (ex) {
+            console.warn('Could not export image #' + this.id);
+            console.warn(ex.rhinoException);
+          }
+          this.href = image.href();
+          this.creator_name = account.name;
+          addMetadata(this, Image, metadataSql);
+          writer.push(this);
+        } catch (ex) {
+          app.logger.warn('Could not export Image #' + this.id + ' (likely a dangling reference to a deleted parent): ' + ex);
+        }
+      });
+
+      writer.close();
+
+      writer = getJsonWriter(tempDir, 'polls.json');
+
+      sql.retrieve('select p.*, m.name as modifier_name from poll p left join account m on p.modifier_id = m.id where p.creator_id = $0 order by p.created desc', account._id);
+
+      sql.traverse(function() {
+        app.log('Exporting poll #' + this.id);
+        try {
+          const poll = Poll.getById(this.id);
+          if (!poll) throw Error('object not found');
+          if (!poll.site) {
+            app.logger.warn('Could not export poll #' + this.id + '; its site has been deleted');
+            return;
+          }
+
+          this.href = poll.href();
+          this.creator_name = account.name;
+          this.choices = poll.list().map(choice => {
+            return {
+              id: choice._id,
+              title: choice.title,
+              votes: choice.size()
+            };
+          });
+          const vote = poll.votes.get(account.name);
+          if (vote) this.vote = vote.choice._id;
+          addMetadata(this, Poll, metadataSql);
+          writer.push(this);
+        } catch (ex) {
+          app.logger.warn('Could not export poll #' + this.id + ' (likely a dangling reference to a deleted parent): ' + ex);
+        }
+      });
+
+      writer.close();
+      zip.add(tempDir);
+      zip.save(file);
+
+      account.export = app.appsProperties.staticMountpoint + '/export/' + fileName;
+      account.exportError = null;
+    } catch (ex) {
+      app.log('Failed to export account #' + account._id + ' (' + account.name + '): ' + ex);
+      account.exportError = ex.toString();
+    } finally {
+      account.job = null;
+    }
+
     return zip;
   };
 

@@ -30,6 +30,7 @@ this.handleMetadata('closed');
 this.handleMetadata('commentMode');
 this.handleMetadata('configured');
 this.handleMetadata('export');
+this.handleMetadata('exportError');
 this.handleMetadata('imageDimensionLimits');
 this.handleMetadata('import_id');
 this.handleMetadata('job');
@@ -766,6 +767,7 @@ Site.prototype.export_action = function() {
         throw Error(gettext('There is already another job queued for this site: {0}', job.method));
       }
       this.job = Admin.queue(this, 'export');
+      this.exportError = null;
       res.message = gettext('The site is queued for export.');
     } catch (ex) {
       res.message = ex.toString();
@@ -779,6 +781,8 @@ Site.prototype.export_action = function() {
 
   if (job.method === 'export') {
     param.status = gettext('The site data will be available for download from here, soon.');
+  } else if (this.exportError) {
+    param.error = gettext('The last export attempt failed: {0}', this.exportError);
   }
 
   res.data.title = 'Export Site ' + this.name;

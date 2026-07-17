@@ -139,7 +139,7 @@
 <% #export %>
 <h1><% gettext "Export Account Data" %></h1>
 <p>
-   <% if <% param.status %> is null then <% if <% this.export %> is null then '' else <% gettext "{0}Download the archive{1} or click “Export” to create a new one." <% this.export prefix="<a href='" suffix="'>" %> "</a>" %> %> else <% param.status %> %>
+   <% if <% param.status %> is null then <% if <% param.error %> is null then <% if <% this.export %> is null then '' else <% gettext "{0}Download the archive{1} or click “Export” to create a new one." <% this.export prefix="<a href='" suffix="'>" %> "</a>" %> %> else <% param.error %> %> else <% param.status %> %>
 </p>
 <form action="<% context.href export %>" method="post">
    <button type="submit" name="submit" value="<% if <% param.status %> is null then export else cancel %>" class='uk-button uk-button-primary'>
