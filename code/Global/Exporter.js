@@ -161,16 +161,22 @@ global.Exporter = (function() {
 
       sql.traverse(function() {
         app.log('Exporting story #' + this.id);
-        const content = Story.getById(this.id);
-        this.href = content.href();
+        try {
+          const content = Story.getById(this.id);
+          if (!content) throw Error('object not found');
 
-        addMetadata(this, Story, metadataSql);
-        this.rendered = content.format_filter(this.metadata.text, {}, 'markdown');
+          this.href = content.href();
 
-        if (this.prototype === 'Story') {
-          storyWriter.push(this);
-        } else {
-          commentWriter.push(this);
+          addMetadata(this, Story, metadataSql);
+          this.rendered = content.format_filter(this.metadata.text, {}, 'markdown');
+
+          if (this.prototype === 'Story') {
+            storyWriter.push(this);
+          } else {
+            commentWriter.push(this);
+          }
+        } catch (ex) {
+          app.logger.warn('Could not export ' + this.prototype + ' #' + this.id + ' (likely a dangling reference to a deleted parent): ' + ex);
         }
       });
 
@@ -345,17 +351,23 @@ global.Exporter = (function() {
 
       sql.traverse(function() {
         app.log('Exporting story #' + this.id);
-        const content = Story.getById(this.id);
-        this.href = content.href();
-        this.creator_name = account.name;
+        try {
+          const content = Story.getById(this.id);
+          if (!content) throw Error('object not found');
 
-        addMetadata(this, Story, metadataSql);
-        this.rendered = content.format_filter(this.metadata.text, {}, 'markdown');
+          this.href = content.href();
+          this.creator_name = account.name;
 
-        if (this.prototype === 'Story') {
-          writer.push(this);
-        } else {
-          commentWriter.push(this);
+          addMetadata(this, Story, metadataSql);
+          this.rendered = content.format_filter(this.metadata.text, {}, 'markdown');
+
+          if (this.prototype === 'Story') {
+            writer.push(this);
+          } else {
+            commentWriter.push(this);
+          }
+        } catch (ex) {
+          app.logger.warn('Could not export ' + this.prototype + ' #' + this.id + ' (likely a dangling reference to a deleted parent): ' + ex);
         }
       });
 
