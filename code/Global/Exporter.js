@@ -228,6 +228,17 @@ global.Exporter = (function() {
 
       writer.close();
 
+      writer = getJsonWriter(tempDir, 'votes.json');
+
+      sql.retrieve('select v.* from vote v join poll p on v.poll_id = p.id where p.site_id = $0', site._id);
+
+      sql.traverse(function() {
+        app.log('Exporting vote #' + this.id);
+        writer.push(this);
+      });
+
+      writer.close();
+
       writer = getJsonWriter(tempDir, 'tags.json');
 
       sql.retrieve('select t.name, h.*  from tag t, tag_hub h where t.id = h.tag_id order by t.name');
