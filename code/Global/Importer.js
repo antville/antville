@@ -398,7 +398,16 @@ Importer.restoreSite = function(site, tempDir, accountMap, user) {
       image.modifier = resolveAccount(row.modifier_id);
       image.created = new Date(row.created);
       image.modified = new Date(row.modified);
-      image.setMetadata(row.metadata);
+      // Deliberately not calling image.setMetadata(row.metadata) here:
+      // every key in it (fileName, contentType, contentLength, width,
+      // height, thumbnail*) is machine-derived and was already correctly
+      // recomputed by Image.add's own update() from the actual
+      // re-uploaded bytes above — re-applying the export's OLD values
+      // would silently overwrite the freshly generated fileName with one
+      // that doesn't exist on disk under this site (confirmed live:
+      // every restored image 404s this way). description, the one
+      // genuinely author-supplied field, was already passed into the
+      // data bag above.
       idMap.images[row.id] = image;
     });
   }
@@ -418,7 +427,11 @@ Importer.restoreSite = function(site, tempDir, accountMap, user) {
       file.modifier = resolveAccount(row.modifier_id);
       file.created = new Date(row.created);
       file.modified = new Date(row.modified);
-      file.setMetadata(row.metadata);
+      // See the matching note in the image restore loop above —
+      // File.add's own update() already correctly regenerated
+      // fileName/contentType/contentLength from the re-uploaded bytes;
+      // re-applying row.metadata here would silently overwrite that with
+      // the export's stale old fileName.
       idMap.files[row.id] = file;
     });
   }
