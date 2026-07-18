@@ -873,13 +873,16 @@ Site.prototype.import_action = function() {
       if (Importer.isZipFile(new java.io.File(file.getFile()))) {
         // Native export: preview the account matches right away and let
         // the admin review/override them before anything is written —
-        // see #import_review below. The uploaded archive's bytes are
-        // already fully extracted at this point, so it's no longer
-        // needed. If preview throws, this.import_id is left pointing at
-        // it so the next 'start' or 'stop' cleans it up normally.
+        // see #import_review below. Deliberately not removing the
+        // uploaded archive here even though its bytes are already fully
+        // extracted and it's no longer needed: File.remove on a File
+        // created and added earlier in this same request throws
+        // (Helma's Node isn't fully realized yet until the transaction
+        // commits). Left in place via this.import_id; the 'confirm'
+        // branch below and the existing top-of-handler cleanup on the
+        // next 'start'/'stop' remove it once it's a committed object
+        // from a prior request.
         Importer.preview(this, file);
-        File.remove.call(file);
-        this.import_id = null;
         res.redirect(this.href(req.action));
       } else {
         // Legacy Blogger.com path (compat): no account matching to
@@ -914,6 +917,12 @@ Site.prototype.import_action = function() {
       });
       this.importAccountMap = JSON.stringify(Importer.mergeOverrides(report, overrides));
       this.job = Admin.queue(this, 'import');
+      // The uploaded archive (from the prior 'start' request, so fully
+      // committed by now — safe to remove here, unlike in 'start' itself)
+      // is no longer needed; its contents were already extracted during
+      // preview.
+      file && File.remove.call(file);
+      this.import_id = null;
       res.message = gettext('Site is scheduled for import.');
       res.redirect(this.href(req.action));
     } catch (ex) {

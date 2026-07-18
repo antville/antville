@@ -107,7 +107,12 @@ global.Exporter = (function() {
     const mac = javax.crypto.Mac.getInstance('HmacSHA256');
     mac.init(keySpec);
     const digest = mac.doFinal(new java.lang.String(message).getBytes('utf-8'));
-    return new java.lang.String(java.util.Base64.getEncoder().encode(digest), 'utf-8');
+    // String(...) here is required, not cosmetic: java.util.Base64's encoder
+    // returns a java.lang.String, and Rhino's === never matches a Java
+    // String against a native JS string even when the content is identical
+    // (confirmed against a live instance — the plain java.lang.String
+    // return value silently broke every same-account match).
+    return String(java.util.Base64.getEncoder().encodeToString(digest));
   };
 
   /**
@@ -147,7 +152,7 @@ global.Exporter = (function() {
     // Generated fresh per export and stored in index.json — see
     // Exporter.hmac. Never shared between exports or installs.
     const exportKey = generateExportKey();
-    const exportKeyBase64 = new java.lang.String(java.util.Base64.getEncoder().encode(exportKey), 'utf-8');
+    const exportKeyBase64 = String(java.util.Base64.getEncoder().encodeToString(exportKey));
 
     if (!dir.exists()) dir.mkdirs();
 

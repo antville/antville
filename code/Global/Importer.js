@@ -258,6 +258,15 @@ Importer.formatDate = function(date) {
  * @param {User} user The user who will become the creator of any content whose original author can't be resolved.
  */
 Importer.restoreSite = function(site, tempDir, accountMap, user) {
+  // Restore runs via Admin.dequeue() (a cron/background invocation, not a
+  // real HTTP request), so res.handlers.site is never populated the way
+  // it would be for a request against this site. Comment.prototype.update
+  // reads res.handlers.site directly (not this.site, unlike Story's own
+  // update) when notifying of a callback — set it explicitly so that
+  // doesn't NPE the first time a restored comment's delta exceeds the
+  // notification threshold.
+  res.handlers.site = site;
+
   var idMap = {skins: {}, content: {}, images: {}, files: {}};
   var accountCache = {};
 
@@ -367,18 +376,23 @@ Importer.restoreSite = function(site, tempDir, accountMap, user) {
   var imagesFile = new java.io.File(tempDir, 'images.json');
   if (imagesFile.exists()) {
     Importer.readJson(imagesFile).forEach(function(row) {
+      // contentType/description/fileName/origin are handleMetadata-backed
+      // (see Image.KEYS in code/Image/Image.js), so — like Story/Comment's
+      // text/title — they live under row.metadata, not as top-level
+      // columns on the export row itself.
       var isLayout = row.parent_type === 'Layout';
-      var asset = readAsset('static/' + (isLayout ? 'layout' : 'images') + '/' + row.fileName);
+      var fileName = row.metadata.fileName;
+      var asset = readAsset('static/' + (isLayout ? 'layout' : 'images') + '/' + fileName);
       if (!asset.exists()) {
-        app.logger.warn('Skipping image #' + row.id + '; asset file ' + row.fileName + ' not found in export');
+        app.logger.warn('Skipping image #' + row.id + '; asset file ' + fileName + ' not found in export');
         return;
       }
-      var mime = Packages.helma.util.MimePart(row.fileName, asset.toByteArray(), row.contentType);
+      var mime = Packages.helma.util.MimePart(fileName, asset.toByteArray(), row.metadata.contentType);
       var image = Image.add({
         name: row.name,
         file: mime,
-        file_origin: row.origin,
-        description: row.description
+        file_origin: row.metadata.origin,
+        description: row.metadata.description
       }, isLayout ? site.layout : site, user);
       image.creator = resolveAccount(row.creator_id);
       image.modifier = resolveAccount(row.modifier_id);
@@ -392,12 +406,13 @@ Importer.restoreSite = function(site, tempDir, accountMap, user) {
   var filesFile = new java.io.File(tempDir, 'files.json');
   if (filesFile.exists()) {
     Importer.readJson(filesFile).forEach(function(row) {
-      var asset = readAsset('static/files/' + row.fileName);
+      var fileName = row.metadata.fileName;
+      var asset = readAsset('static/files/' + fileName);
       if (!asset.exists()) {
-        app.logger.warn('Skipping file #' + row.id + '; asset file ' + row.fileName + ' not found in export');
+        app.logger.warn('Skipping file #' + row.id + '; asset file ' + fileName + ' not found in export');
         return;
       }
-      var mime = Packages.helma.util.MimePart(row.fileName, asset.toByteArray(), row.contentType);
+      var mime = Packages.helma.util.MimePart(fileName, asset.toByteArray(), row.metadata.contentType);
       var file = File.add({name: row.name, file: mime}, site, user);
       file.creator = resolveAccount(row.creator_id);
       file.modifier = resolveAccount(row.modifier_id);
