@@ -267,7 +267,17 @@ Importer.restoreSite = function(site, tempDir, accountMap, user) {
   // notification threshold.
   res.handlers.site = site;
 
-  var idMap = {skins: {}, content: {}, images: {}, files: {}};
+  // Same problem, different symptom: Vote.add hardcodes session.user
+  // directly (no user param at all) to set creator/creator_name — null
+  // here for the same reason. session.user isn't a writable property
+  // (confirmed live: "no public instance field or method named user" —
+  // it's a Java-backed SessionBean), so log the importing user in
+  // properly instead. The actual resolved account gets backfilled onto
+  // each vote right after Vote.add anyway, same as everywhere else, so
+  // this is only ever read transiently.
+  session.login(user);
+
+  var idMap = {skins: {}, content: {}, images: {}, files: {}, polls: {}, choices: {}};
   var accountCache = {};
 
   var resolveAccount = function(oldId) {
@@ -433,6 +443,93 @@ Importer.restoreSite = function(site, tempDir, accountMap, user) {
       // re-applying row.metadata here would silently overwrite that with
       // the export's stale old fileName.
       idMap.files[row.id] = file;
+    });
+  }
+
+  var pollsFile = new java.io.File(tempDir, 'polls.json');
+  if (pollsFile.exists()) {
+    Importer.readJson(pollsFile).forEach(function(row) {
+      // Poll.prototype.update reads status from data.save, not data.status
+      // (a naming quirk of the edit form it was written for), and creates
+      // one Choice per title_array entry, in order — map them back to the
+      // original choices[].id by that same order so votes.json can be
+      // replayed against the right Choice below.
+      var poll = Poll.add({
+        question: row.question,
+        title_array: row.choices.map(function(choice) { return choice.title; }),
+        save: row.status
+      }, site);
+      poll.creator = resolveAccount(row.creator_id);
+      poll.modifier = resolveAccount(row.modifier_id);
+      poll.created = new Date(row.created);
+      poll.modified = new Date(row.modified);
+      // Unlike Site/Story/Comment/Image/File, Poll has no metadata
+      // collection wired up at all (confirmed live: poll.setMetadata
+      // throws "No metadata collection defined for prototype Poll") —
+      // Exporter's addMetadata still queries the raw metadata table
+      // directly for export, but there's nothing to write back on import.
+      row.choices.forEach(function(choice, index) {
+        idMap.choices[choice.id] = poll.get(index);
+      });
+      idMap.polls[row.id] = poll;
+    });
+  }
+
+  var votesFile = new java.io.File(tempDir, 'votes.json');
+  if (votesFile.exists()) {
+    Importer.readJson(votesFile).forEach(function(row) {
+      var choice = idMap.choices[row.choice_id];
+      var poll = idMap.polls[row.poll_id];
+      if (!choice || !poll) {
+        app.logger.warn('Skipping vote #' + row.id + '; its choice or poll was not restored (likely a dangling reference)');
+        return;
+      }
+      var vote = Vote.add(choice, poll);
+      vote.creator = resolveAccount(row.creator_id);
+      vote.creator_name = row.creator_name;
+      vote.created = new Date(row.created);
+      vote.modified = new Date(row.modified);
+    });
+  }
+
+  var tagsFile = new java.io.File(tempDir, 'tags.json');
+  if (tagsFile.exists()) {
+    Importer.readJson(tagsFile).forEach(function(row) {
+      var tagged = row.tagged_type === 'Image' ? idMap.images[row.tagged_id] : idMap.content[row.tagged_id];
+      if (!tagged) {
+        app.logger.warn('Skipping tag #' + row.id + ' (' + row.name + '); its tagged object was not restored (likely a dangling reference)');
+        return;
+      }
+      tagged.addTag(row.name);
+    });
+  }
+
+  var membersFile = new java.io.File(tempDir, 'members.json');
+  if (membersFile.exists()) {
+    Importer.readJson(membersFile).forEach(function(row) {
+      // A membership row's own creator_id/creator_name *is* the member
+      // (see Importer.preview's docs) — Membership.prototype.constructor
+      // already sets creator/name from the user passed in, so there's no
+      // separate matching step here, just the same idMap.accounts lookup
+      // everything else goes through.
+      //
+      // The target site may already have a membership under this same
+      // name — confirmed live: every site created via Root's create
+      // action automatically gets its creating user added as OWNER, so
+      // that name always collides on a freshly created target
+      // (Membership.add throws "already contained in the collection").
+      // Update the existing membership in place instead of adding a
+      // second one with the same name.
+      var member = resolveAccount(row.creator_id);
+      var membership = Membership.getByName(member.name, site);
+      if (membership) {
+        membership.role = row.role;
+      } else {
+        membership = Membership.add(member, row.role, site);
+      }
+      membership.modifier = resolveAccount(row.modifier_id);
+      membership.created = new Date(row.created);
+      membership.modified = new Date(row.modified);
     });
   }
 
