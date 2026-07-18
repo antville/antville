@@ -796,49 +796,6 @@ Site.prototype.export_action = function() {
   return;
 }
 
-/**
- * Renders the account-matching report from Importer.preview as an HTML
- * fragment for the #import_review skin: how many authors matched
- * automatically, which same-named target accounts need the admin to
- * confirm they're really the same person (shown with a masked e-mail,
- * never the full address), and which names had no match at all (with a
- * field to redirect them to an existing account by username, or leave
- * blank to fall back to a placeholder account).
- * @param {Object} report {resolved, ambiguous, unresolved}
- * @returns {String}
- */
-Site.renderImportReview = function(report) {
-  var html = [];
-
-  html.push('<p>' + gettext('{0} authors matched automatically.', report.resolved.length) + '</p>');
-
-  if (report.ambiguous.length) {
-    html.push('<h2>' + gettext('Possible matches to confirm') + '</h2>');
-    html.push('<table class="uk-table">');
-    report.ambiguous.forEach(function(entry) {
-      html.push('<tr><td>' + encodeXml(entry.name) + '</td>' +
-          '<td>' + encodeXml(entry.maskedEmail || String.EMPTY) + '</td>' +
-          '<td><label><input type="checkbox" name="override_' + entry.id +
-          '" value="' + encodeXml(entry.name) + '"> ' +
-          gettext('Yes, this is the same person') + '</label></td></tr>');
-    });
-    html.push('</table>');
-  }
-
-  if (report.unresolved.length) {
-    html.push('<h2>' + gettext('No matching account found') + '</h2>');
-    html.push('<table class="uk-table">');
-    report.unresolved.forEach(function(entry) {
-      html.push('<tr><td>' + encodeXml(entry.name) + '</td>' +
-          '<td><input type="text" name="override_' + entry.id + '" placeholder="' +
-          encodeXml(gettext('Existing account username (optional)')) + '"></td></tr>');
-    });
-    html.push('</table>');
-  }
-
-  return html.join(String.EMPTY);
-};
-
 Site.prototype.import_action = function() {
   var job = this.job && new Admin.Job(this.job);
   var file = this.import_id && File.getById(this.import_id);
@@ -947,7 +904,7 @@ Site.prototype.import_action = function() {
     param.error = gettext('The last import attempt failed: {0}', this.importError);
   } else if (this.importReport) {
     param.report = JSON.parse(this.importReport);
-    param.reviewHtml = Site.renderImportReview(param.report);
+    param.reviewHtml = Importer.renderReviewHtml(param.report);
   }
 
   res.handlers.file = File.getById(this.import_id) || {};

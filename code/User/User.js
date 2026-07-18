@@ -28,6 +28,10 @@ this.handleMetadata('deleted');
 this.handleMetadata('export');
 this.handleMetadata('exportError');
 this.handleMetadata('hash');
+this.handleMetadata('importError');
+this.handleMetadata('importReport');
+this.handleMetadata('importTempDir');
+this.handleMetadata('importAccountMap');
 this.handleMetadata('job');
 this.handleMetadata('notes');
 this.handleMetadata('salt');
@@ -575,6 +579,111 @@ User.prototype.export_action = function() {
 
   res.data.title = 'Export Account ' + this.name;
   res.data.body = this.renderSkinAsString('$User#export', param);
+  res.handlers.site.renderSkin('Site#page');
+};
+
+User.prototype.import_action = function() {
+  if (!res.handlers.context) res.handlers.context = this;
+
+  const data = req.postParams;
+  const param = {};
+  const href = res.handlers.context.href(req.action);
+  let job = this.job && new Admin.Job(this.job);
+
+  if (data.submit === 'start') {
+    try {
+      if (job) {
+        if (job.method === 'import') {
+          job.remove();
+          this.job = null;
+        } else if (job.method) {
+          throw Error(gettext('There is already another job queued for this account: {0}', job.method));
+        }
+      }
+      this.importTempDir && Importer.deleteRecursively(new java.io.File(this.importTempDir));
+      this.importReport = null;
+      this.importTempDir = null;
+      this.importError = null;
+
+      if (!data.file || data.file.contentLength < 1) {
+        throw Error(gettext('Please choose a file to upload.'));
+      }
+
+      // Unlike Site (which has a natural files collection to attach an
+      // uploaded File HopObject to — see Site.prototype.import_action),
+      // User has none, so this follows Layout.prototype.import_action's
+      // simpler precedent instead: write the upload straight to a plain
+      // temp file, no File object at all.
+      const uploadDir = new java.io.File(java.nio.file.Files.createTempDirectory('antville-upload-' + this.name));
+      const uploadName = data.file.writeToFile(uploadDir);
+      const uploadFile = new java.io.File(uploadDir, uploadName);
+
+      try {
+        if (!Importer.isZipFile(uploadFile)) {
+          throw Error(gettext('Unrecognized import file.'));
+        }
+        Importer.preview(this, uploadFile);
+      } finally {
+        uploadFile['delete']();
+        uploadDir['delete']();
+      }
+
+      res.redirect(href);
+    } catch (ex) {
+      res.message = ex.toString();
+      app.log(res.message);
+    }
+  } else if (data.submit === 'confirm') {
+    try {
+      const report = JSON.parse(this.importReport || 'null');
+      if (!report) {
+        throw Error(gettext('There is no pending import to confirm.'));
+      }
+      const overrides = {};
+      Object.keys(data).forEach(function(key) {
+        const match = key.match(/^override_(\d+)$/);
+        if (!match || !data[key]) {
+          return;
+        }
+        // Same as Site's own confirm handling — an existing target
+        // account named by username, not a typed e-mail address (there's
+        // no e-mail-lookup API to resolve one against).
+        const account = User.getByName(data[key]);
+        if (account) {
+          overrides[match[1]] = {useExisting: account._id};
+        }
+      });
+      this.importAccountMap = JSON.stringify(Importer.mergeOverrides(report, overrides));
+      this.job = Admin.queue(this, 'import');
+      res.message = gettext('Account is scheduled for import.');
+      res.redirect(href);
+    } catch (ex) {
+      res.message = ex.toString();
+      app.log(res.message);
+    }
+  } else if (data.submit === 'stop') {
+    this.importTempDir && Importer.deleteRecursively(new java.io.File(this.importTempDir));
+    job && job.remove();
+    this.job = null;
+    this.importReport = null;
+    this.importTempDir = null;
+    this.importAccountMap = null;
+    res.redirect(href);
+  }
+
+  if (this.job && new Admin.Job(this.job).method === 'import') {
+    param.status = gettext('The account is being imported.');
+  } else if (this.importError) {
+    param.error = gettext('The last import attempt failed: {0}', this.importError);
+  } else if (this.importReport) {
+    param.report = JSON.parse(this.importReport);
+    param.reviewHtml = Importer.renderReviewHtml(param.report);
+  }
+
+  res.data.title = 'Import Account ' + this.name;
+  res.data.body = param.report
+      ? this.renderSkinAsString('$User#import_review', param)
+      : this.renderSkinAsString('$User#import', param);
   res.handlers.site.renderSkin('Site#page');
 };
 

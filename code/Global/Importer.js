@@ -20,7 +20,7 @@
  */
 
 /**
- * The Importer namespace provides methods for importing a site.
+ * The Importer namespace provides methods for importing a site or account.
  * @namespace
  */
 var Importer = {};
@@ -63,6 +63,34 @@ Importer.readJson = function(file) {
 };
 
 /**
+ * Reads a named JSON file from a temp dir if it exists, else [].
+ * @param {java.io.File} tempDir
+ * @param {String} name
+ * @returns {Array}
+ */
+Importer.readJsonFile = function(tempDir, name) {
+  var file = new java.io.File(tempDir, name);
+  return file.exists() ? Importer.readJson(file) : [];
+};
+
+/**
+ * Resolves a slash-separated relative path (as recorded in export JSON,
+ * e.g. "static/images/<fileName>" or "<siteName>/images/<fileName>")
+ * against an extracted export's temp dir.
+ * @param {java.io.File} tempDir
+ * @param {String} relativePath
+ * @returns {helma.File}
+ */
+Importer.readAsset = function(tempDir, relativePath) {
+  var parts = relativePath.split('/');
+  var dir = tempDir;
+  for (var i = 0; i < parts.length - 1; i += 1) {
+    dir = new java.io.File(dir, parts[i]);
+  }
+  return new helma.File(dir, parts[parts.length - 1]);
+};
+
+/**
  * Masks an e-mail address for display, keeping just enough to let a human
  * recognize a real match without exposing the full address
  * (e.g. "tobi@antville.org" -> "t***@a***.org").
@@ -92,23 +120,28 @@ Importer.maskEmail = function(email) {
  * matches, via the export's own HMAC key — see Exporter.hmac), ambiguous
  * (same name, but the e-mail doesn't match — likely a coincidental
  * namesake), or unresolved (no account under that name on the target at
- * all). Nothing is written to the site yet; that only happens once the
- * admin reviews and confirms this report (possibly amended with manual
- * overrides) via Importer.restoreSite.
- * @param {Site} site
+ * all). Nothing is written yet; that only happens once the admin reviews
+ * and confirms this report (possibly amended with manual overrides) via
+ * Importer.restoreSite/restoreAccount. Works identically for a site or an
+ * account export — both carry index.json's exportKey and accounts.json.
+ * @param {Site|User} target The site or account metadata gets attached to.
  * @param {File} zipFile The uploaded export archive.
- * @returns {Object} The report, already persisted as site metadata.
+ * @returns {Object} The report, already persisted as target metadata.
  */
-Importer.preview = function(site, zipFile) {
-  var tempDir = new java.io.File(java.nio.file.Files.createTempDirectory('antville-import-' + site.name));
-  var zip = new helma.Zip(new java.io.File(zipFile.getFile()));
+Importer.preview = function(target, zipFile) {
+  // Site's upload flow hands over a File HopObject (it has a natural
+  // files collection to attach one to); User's has no such collection to
+  // attach to (see restoreAccount's own notes) and so hands over an
+  // already-extracted plain java.io.File instead — accept either.
+  var javaFile = typeof zipFile.getFile === 'function' ? new java.io.File(zipFile.getFile()) : zipFile;
+  var tempDir = new java.io.File(java.nio.file.Files.createTempDirectory('antville-import-' + target.name));
+  var zip = new helma.Zip(javaFile);
   zip.extractAll(tempDir);
 
   var index = Importer.readJson(new java.io.File(tempDir, 'index.json'))[0];
   var exportKey = index && index.exportKey && java.util.Base64.getDecoder().decode(index.exportKey);
 
-  var accountsFile = new java.io.File(tempDir, 'accounts.json');
-  var accounts = accountsFile.exists() ? Importer.readJson(accountsFile) : [];
+  var accounts = Importer.readJsonFile(tempDir, 'accounts.json');
 
   var report = {resolved: [], ambiguous: [], unresolved: []};
 
@@ -132,8 +165,8 @@ Importer.preview = function(site, zipFile) {
     }
   });
 
-  site.importReport = JSON.stringify(report);
-  site.importTempDir = tempDir.getPath();
+  target.importReport = JSON.stringify(report);
+  target.importTempDir = tempDir.getPath();
 
   return report;
 };
@@ -141,9 +174,9 @@ Importer.preview = function(site, zipFile) {
 /**
  * Merges the admin's overrides (submitted from the #import_review skin)
  * into a preview report, producing the final old-account-id -> resolution
- * map that Importer.restoreSite uses. An override maps a still-unresolved
- * or ambiguous account name to either an existing target account id
- * ("useExisting") or nothing (falls through to a placeholder).
+ * map that Importer.restoreSite/restoreAccount uses. An override maps a
+ * still-unresolved or ambiguous account name to either an existing target
+ * account id ("useExisting") or nothing (falls through to a placeholder).
  * @param {Object} report From Importer.preview.
  * @param {Object} overrides Plain object keyed by account id (as in the report), e.g. {"<id>": {useExisting: <accountId>}}.
  * @returns {Object} Map of old account id -> {type: 'matched', accountId} | {type: 'placeholder', name}.
@@ -168,8 +201,85 @@ Importer.mergeOverrides = function(report, overrides) {
   return accountMap;
 };
 
-/** @constant Metadata keys that must never be copied from an export onto the target site — all are handleMetadata-backed transient/operational state, not content. */
-Importer.SITE_METADATA_DENYLIST = [
+/**
+ * Renders the account-matching report from Importer.preview as an HTML
+ * fragment for the #import_review skin (used by both Site and User's
+ * import_action): how many authors matched automatically, which
+ * same-named target accounts need the admin to confirm they're really
+ * the same person (shown with a masked e-mail, never the full address),
+ * and which names had no match at all (with a field to redirect them to
+ * an existing account by username, or leave blank to fall back to a
+ * placeholder account).
+ * @param {Object} report {resolved, ambiguous, unresolved}
+ * @returns {String}
+ */
+Importer.renderReviewHtml = function(report) {
+  var html = [];
+
+  html.push('<p>' + gettext('{0} authors matched automatically.', report.resolved.length) + '</p>');
+
+  if (report.ambiguous.length) {
+    html.push('<h2>' + gettext('Possible matches to confirm') + '</h2>');
+    html.push('<table class="uk-table">');
+    report.ambiguous.forEach(function(entry) {
+      html.push('<tr><td>' + encodeXml(entry.name) + '</td>' +
+          '<td>' + encodeXml(entry.maskedEmail || String.EMPTY) + '</td>' +
+          '<td><label><input type="checkbox" name="override_' + entry.id +
+          '" value="' + encodeXml(entry.name) + '"> ' +
+          gettext('Yes, this is the same person') + '</label></td></tr>');
+    });
+    html.push('</table>');
+  }
+
+  if (report.unresolved.length) {
+    html.push('<h2>' + gettext('No matching account found') + '</h2>');
+    html.push('<table class="uk-table">');
+    report.unresolved.forEach(function(entry) {
+      html.push('<tr><td>' + encodeXml(entry.name) + '</td>' +
+          '<td><input type="text" name="override_' + entry.id + '" placeholder="' +
+          encodeXml(gettext('Existing account username (optional)')) + '"></td></tr>');
+    });
+    html.push('</table>');
+  }
+
+  return html.join(String.EMPTY);
+};
+
+/**
+ * Builds a resolveAccount(oldId) function bound to one accountMap: an
+ * already-created User for a 'matched'/'placeholder' entry (creating and
+ * caching the placeholder on first use), or the fallback user if oldId is
+ * absent or its entry is missing.
+ * @param {Object} accountMap Old account id -> {type, accountId|name}.
+ * @param {User} fallbackUser
+ * @returns {Function}
+ */
+Importer.makeAccountResolver = function(accountMap, fallbackUser) {
+  var cache = {};
+  return function(oldId) {
+    if (!oldId) {
+      return fallbackUser;
+    }
+    if (cache[oldId]) {
+      return cache[oldId];
+    }
+    var entry = accountMap[oldId];
+    var resolved;
+    if (entry && entry.type === 'matched') {
+      resolved = User.getById(entry.accountId) || fallbackUser;
+    } else if (entry && entry.type === 'placeholder') {
+      resolved = User.add({name: entry.name});
+      resolved.status = User.BLOCKED;
+    } else {
+      resolved = fallbackUser;
+    }
+    cache[oldId] = resolved;
+    return resolved;
+  };
+};
+
+/** @constant Metadata keys that must never be copied from an export onto the target — all are handleMetadata-backed transient/operational state, not content. Shared by Site and User targets (importAccountMap only applies to Site today, harmless to strip from a User target too). */
+Importer.METADATA_DENYLIST = [
   'job', 'import_id', 'importError', 'importReport', 'importTempDir',
   'importAccountMap', 'export', 'exportError'
 ];
@@ -192,6 +302,38 @@ Importer.deleteRecursively = function(file) {
 };
 
 /**
+ * Formats a Date (or ISO date string, as found in export JSON) the way
+ * Story.prototype.update expects it.
+ * @param {String|Date} date
+ * @returns {String}
+ */
+Importer.formatDate = function(date) {
+  return new Date(date).format('yyyy-MM-dd HH:mm');
+};
+
+/**
+ * Dispatches a queued import job by target type — mirrors Exporter.run's
+ * exact pattern, since Admin.dequeue calls this one entry point
+ * unconditionally regardless of whether job.target is a Site or a User.
+ * @param {Site|User} target
+ * @param {User} user The user who queued the job (job.user — defaults to
+ * whoever was logged in at confirm time). Only meaningful for a Site
+ * target; an account import's fallback/owner is the target itself.
+ */
+Importer.run = function(target, user) {
+  switch (target.constructor) {
+    case Site:
+    Importer.runSite(target, user);
+    break;
+
+    case User:
+    Importer.runAccount(target);
+    break;
+  }
+  return;
+};
+
+/**
  * Imports a site and its content for the specified user. Dispatches on
  * whether a preview/confirm round has already prepared a native restore
  * (site.importTempDir set): if so, resumes straight into
@@ -203,7 +345,7 @@ Importer.deleteRecursively = function(file) {
  * @param {Site} site The site to import.
  * @param {User} user The user who will become the creator of any content whose original author can't be resolved.
  */
-Importer.run = function(site, user) {
+Importer.runSite = function(site, user) {
   var tempDirPath = site.importTempDir;
   var upload = !tempDirPath && File.getById(site.import_id);
 
@@ -237,21 +379,307 @@ Importer.run = function(site, user) {
 };
 
 /**
- * Formats a Date (or ISO date string, as found in export JSON) the way
- * Story.prototype.update expects it.
- * @param {String|Date} date
- * @returns {String}
+ * Same dispatch as Importer.run, for an account-level import queued via
+ * User.prototype.import_action.
+ * @param {User} user The account to import into.
  */
-Importer.formatDate = function(date) {
-  return new Date(date).format('yyyy-MM-dd HH:mm');
+Importer.runAccount = function(user) {
+  var tempDirPath = user.importTempDir;
+
+  try {
+    if (!tempDirPath) {
+      throw Error(gettext('Unrecognized import file.'));
+    }
+    var accountMap = JSON.parse(user.importAccountMap || '{}');
+    Importer.restoreAccount(user, new java.io.File(tempDirPath), accountMap);
+    user.importError = null;
+  } catch (ex) {
+    app.log('Failed to import account #' + user._id + ' (' + user.name + '): ' + ex);
+    user.importError = ex.toString();
+  } finally {
+    if (tempDirPath) {
+      Importer.deleteRecursively(new java.io.File(tempDirPath));
+    }
+    user.job = null;
+    user.importTempDir = null;
+    user.importReport = null;
+    user.importAccountMap = null;
+  }
+
+  return;
 };
 
 /**
- * Restores a site's core content (site fields, skins, stories, comments,
- * images, files) from an already-extracted export archive, using an
+ * @typedef {Object} RestoreContext
+ * @property {Site} site The site being restored into.
+ * @property {Object} idMap Old id -> new object, per entity type (skins, content, images, files, polls, choices).
+ * @property {Function} resolveAccount See Importer.makeAccountResolver.
+ * @property {User} user The importing user (creator/parent fallback).
+ * @property {java.io.File} tempDir The extracted export's root.
+ * @property {String} assetPrefix Path prefix under tempDir where this site's static assets live ("static" for a site export, the original site name for an account export — see Exporter.saveAccount's differing zip layout).
+ */
+
+/**
+ * Restores skins.json rows into ctx.site.layout.
+ * @param {Array} rows
+ * @param {RestoreContext} ctx
+ */
+Importer.restoreSkins = function(rows, ctx) {
+  rows.forEach(function(row) {
+    var skin = Skin.add(row.prototype, row.name, ctx.site.layout);
+    skin.setSource(row.source);
+    skin.creator = ctx.resolveAccount(row.creator_id);
+    skin.modifier = ctx.resolveAccount(row.modifier_id);
+    skin.created = new Date(row.created);
+    skin.modified = new Date(row.modified);
+    ctx.idMap.skins[row.id] = skin;
+  });
+};
+
+/**
+ * Restores stories.json rows into ctx.site.
+ * @param {Array} rows
+ * @param {RestoreContext} ctx
+ */
+Importer.restoreStories = function(rows, ctx) {
+  rows.forEach(function(row) {
+    var story = Story.add({
+      title: row.metadata.title,
+      text: row.metadata.text,
+      created: Importer.formatDate(row.created),
+      status: row.status,
+      mode: row.mode,
+      commentMode: row.comment_mode
+    }, ctx.site, ctx.user);
+    story.creator = ctx.resolveAccount(row.creator_id);
+    story.modifier = ctx.resolveAccount(row.modifier_id);
+    story.modified = new Date(row.modified);
+    story.setMetadata(row.metadata);
+    ctx.idMap.content[row.id] = story;
+  });
+};
+
+/**
+ * Restores comments.json rows, threaded under stories/comments already in
+ * ctx.idMap.content — processed in creation order so a reply's parent
+ * comment already exists by the time it's restored.
+ * @param {Array} rows
+ * @param {RestoreContext} ctx
+ */
+Importer.restoreComments = function(rows, ctx) {
+  rows.slice().sort(function(a, b) {
+    return new Date(a.created) - new Date(b.created);
+  }).forEach(function(row) {
+    var parent = ctx.idMap.content[row.parent_id];
+    if (!parent) {
+      app.logger.warn('Skipping comment #' + row.id + '; its parent was not restored (likely a dangling reference)');
+      return;
+    }
+    var comment = Comment.add({
+      title: row.metadata.title,
+      text: row.metadata.text,
+      created: Importer.formatDate(row.created),
+      status: row.status
+    }, parent);
+    comment.creator = ctx.resolveAccount(row.creator_id);
+    comment.modifier = ctx.resolveAccount(row.modifier_id);
+    comment.modified = new Date(row.modified);
+    comment.setMetadata(row.metadata);
+    ctx.idMap.content[row.id] = comment;
+  });
+};
+
+/**
+ * Restores images.json rows (both Site- and Layout-parented) from the
+ * extracted static asset tree.
+ * @param {Array} rows
+ * @param {RestoreContext} ctx
+ */
+Importer.restoreImages = function(rows, ctx) {
+  rows.forEach(function(row) {
+    // contentType/description/fileName/origin are handleMetadata-backed
+    // (see Image.KEYS in code/Image/Image.js), so — like Story/Comment's
+    // text/title — they live under row.metadata, not as top-level columns
+    // on the export row itself.
+    var isLayout = row.parent_type === 'Layout';
+    var fileName = row.metadata.fileName;
+    var asset = Importer.readAsset(ctx.tempDir, ctx.assetPrefix + '/' + (isLayout ? 'layout' : 'images') + '/' + fileName);
+    if (!asset.exists()) {
+      app.logger.warn('Skipping image #' + row.id + '; asset file ' + fileName + ' not found in export');
+      return;
+    }
+    var mime = Packages.helma.util.MimePart(fileName, asset.toByteArray(), row.metadata.contentType);
+    var image = Image.add({
+      name: row.name,
+      file: mime,
+      file_origin: row.metadata.origin,
+      description: row.metadata.description
+    }, isLayout ? ctx.site.layout : ctx.site, ctx.user);
+    image.creator = ctx.resolveAccount(row.creator_id);
+    image.modifier = ctx.resolveAccount(row.modifier_id);
+    image.created = new Date(row.created);
+    image.modified = new Date(row.modified);
+    // Deliberately not calling image.setMetadata(row.metadata) here: every
+    // key in it (fileName, contentType, contentLength, width, height,
+    // thumbnail*) is machine-derived and was already correctly recomputed
+    // by Image.add's own update() from the actual re-uploaded bytes above
+    // — re-applying the export's OLD values would silently overwrite the
+    // freshly generated fileName with one that doesn't exist on disk
+    // under this site (confirmed live: every restored image/file 404s
+    // this way). description, the one genuinely author-supplied field,
+    // was already passed into the data bag above.
+    ctx.idMap.images[row.id] = image;
+  });
+};
+
+/**
+ * Restores files.json rows from the extracted static asset tree.
+ * @param {Array} rows
+ * @param {RestoreContext} ctx
+ */
+Importer.restoreFiles = function(rows, ctx) {
+  rows.forEach(function(row) {
+    var fileName = row.metadata.fileName;
+    var asset = Importer.readAsset(ctx.tempDir, ctx.assetPrefix + '/files/' + fileName);
+    if (!asset.exists()) {
+      app.logger.warn('Skipping file #' + row.id + '; asset file ' + fileName + ' not found in export');
+      return;
+    }
+    var mime = Packages.helma.util.MimePart(fileName, asset.toByteArray(), row.metadata.contentType);
+    var file = File.add({name: row.name, file: mime}, ctx.site, ctx.user);
+    file.creator = ctx.resolveAccount(row.creator_id);
+    file.modifier = ctx.resolveAccount(row.modifier_id);
+    file.created = new Date(row.created);
+    file.modified = new Date(row.modified);
+    // See the matching note in restoreImages — File.add's own update()
+    // already correctly regenerated fileName/contentType/contentLength
+    // from the re-uploaded bytes; re-applying row.metadata here would
+    // silently overwrite that with the export's stale old fileName.
+    ctx.idMap.files[row.id] = file;
+  });
+};
+
+/**
+ * Restores polls.json rows: choices are created from title_array, in
+ * order, and mapped back to the original choices[].id by that same order
+ * (Poll.prototype.update creates one Choice per entry, in order) so
+ * Importer.restoreVotes can replay ballots against the right Choice
+ * afterward. A row.vote (a single choice id — as saveAccount embeds,
+ * scoped to just the exporting account's own ballot) is replayed directly
+ * here instead, since account exports carry no separate votes.json.
+ * @param {Array} rows
+ * @param {RestoreContext} ctx
+ */
+Importer.restorePolls = function(rows, ctx) {
+  rows.forEach(function(row) {
+    var poll = Poll.add({
+      question: row.question,
+      title_array: row.choices.map(function(choice) { return choice.title; }),
+      save: row.status
+    }, ctx.site);
+    poll.creator = ctx.resolveAccount(row.creator_id);
+    poll.modifier = ctx.resolveAccount(row.modifier_id);
+    poll.created = new Date(row.created);
+    poll.modified = new Date(row.modified);
+    // Unlike Site/Story/Comment/Image/File, Poll has no metadata
+    // collection wired up at all (confirmed live: poll.setMetadata throws
+    // "No metadata collection defined for prototype Poll") — Exporter's
+    // addMetadata still queries the raw metadata table directly for
+    // export, but there's nothing to write back on import.
+    row.choices.forEach(function(choice, index) {
+      ctx.idMap.choices[choice.id] = poll.get(index);
+    });
+    ctx.idMap.polls[row.id] = poll;
+
+    if (row.vote && ctx.idMap.choices[row.vote]) {
+      var vote = Vote.add(ctx.idMap.choices[row.vote], poll);
+      vote.creator = ctx.resolveAccount(row.creator_id);
+      vote.creator_name = row.creator_name;
+      // The account export only ever records the choice id, not the
+      // ballot's own timestamps — reusing the poll's is the closest
+      // available approximation, not a bug to chase.
+      vote.created = new Date(row.created);
+      vote.modified = new Date(row.modified);
+    }
+  });
+};
+
+/**
+ * Restores votes.json rows (site exports only — see Importer.restorePolls
+ * for the account-export single-ballot case) against choices/polls already
+ * in ctx.idMap.
+ * @param {Array} rows
+ * @param {RestoreContext} ctx
+ */
+Importer.restoreVotes = function(rows, ctx) {
+  rows.forEach(function(row) {
+    var choice = ctx.idMap.choices[row.choice_id];
+    var poll = ctx.idMap.polls[row.poll_id];
+    if (!choice || !poll) {
+      app.logger.warn('Skipping vote #' + row.id + '; its choice or poll was not restored (likely a dangling reference)');
+      return;
+    }
+    var vote = Vote.add(choice, poll);
+    vote.creator = ctx.resolveAccount(row.creator_id);
+    vote.creator_name = row.creator_name;
+    vote.created = new Date(row.created);
+    vote.modified = new Date(row.modified);
+  });
+};
+
+/**
+ * Restores tags.json rows against content/images already in ctx.idMap
+ * (site exports only — account exports carry no tags.json at all, since
+ * tags aren't meaningfully scoped to a single creator).
+ * @param {Array} rows
+ * @param {RestoreContext} ctx
+ */
+Importer.restoreTags = function(rows, ctx) {
+  rows.forEach(function(row) {
+    var tagged = row.tagged_type === 'Image' ? ctx.idMap.images[row.tagged_id] : ctx.idMap.content[row.tagged_id];
+    if (!tagged) {
+      app.logger.warn('Skipping tag #' + row.id + ' (' + row.name + '); its tagged object was not restored (likely a dangling reference)');
+      return;
+    }
+    tagged.addTag(row.name);
+  });
+};
+
+/**
+ * Restores members.json rows (site exports only — see restoreAccount's
+ * own handling of the owner membership for a freshly created site).
+ * Updates an existing membership in place rather than assuming the target
+ * never has one under this name (it may well already — restore-in-place,
+ * or a target the importing user already belongs to).
+ * @param {Array} rows
+ * @param {RestoreContext} ctx
+ */
+Importer.restoreMemberships = function(rows, ctx) {
+  rows.forEach(function(row) {
+    // A membership row's own creator_id/creator_name *is* the member (see
+    // Importer.preview's docs) — Membership.prototype.constructor already
+    // sets creator/name from the user passed in, so there's no separate
+    // matching step here, just the same idMap.accounts lookup everything
+    // else goes through.
+    var member = ctx.resolveAccount(row.creator_id);
+    var membership = Membership.getByName(member.name, ctx.site);
+    if (membership) {
+      membership.role = row.role;
+    } else {
+      membership = Membership.add(member, row.role, ctx.site);
+    }
+    membership.modifier = ctx.resolveAccount(row.modifier_id);
+    membership.created = new Date(row.created);
+    membership.modified = new Date(row.modified);
+  });
+};
+
+/**
+ * Restores a site's core content and long-tail entities (site fields,
+ * skins, stories, comments, images, files, polls with vote replay, tags,
+ * membership) from an already-extracted export archive, using an
  * already-finalized account resolution map (see Importer.preview /
- * Importer.mergeOverrides). Polls, tags and membership are handled
- * separately (Phase 2).
+ * Importer.mergeOverrides).
  * @param {Site} site The site to restore into.
  * @param {java.io.File} tempDir The already-extracted export contents.
  * @param {Object} accountMap Old account id -> {type: 'matched', accountId} | {type: 'placeholder', name}.
@@ -278,28 +706,7 @@ Importer.restoreSite = function(site, tempDir, accountMap, user) {
   session.login(user);
 
   var idMap = {skins: {}, content: {}, images: {}, files: {}, polls: {}, choices: {}};
-  var accountCache = {};
-
-  var resolveAccount = function(oldId) {
-    if (!oldId) {
-      return user;
-    }
-    if (accountCache[oldId]) {
-      return accountCache[oldId];
-    }
-    var entry = accountMap[oldId];
-    var resolved;
-    if (entry && entry.type === 'matched') {
-      resolved = User.getById(entry.accountId) || user;
-    } else if (entry && entry.type === 'placeholder') {
-      resolved = User.add({name: entry.name});
-      resolved.status = User.BLOCKED;
-    } else {
-      resolved = user;
-    }
-    accountCache[oldId] = resolved;
-    return resolved;
-  };
+  var resolveAccount = Importer.makeAccountResolver(accountMap, user);
 
   var index = Importer.readJson(new java.io.File(tempDir, 'index.json'))[0];
 
@@ -311,227 +718,130 @@ Importer.restoreSite = function(site, tempDir, accountMap, user) {
   // table) — these must never be copied onto the target, which has its
   // own in-flight import state.
   var metadata = index.metadata || {};
-  Importer.SITE_METADATA_DENYLIST.forEach(function(key) {
+  Importer.METADATA_DENYLIST.forEach(function(key) {
     delete metadata[key];
   });
   site.setMetadata(metadata);
 
-  var skinsFile = new java.io.File(tempDir, 'skins.json');
-  if (skinsFile.exists()) {
-    Importer.readJson(skinsFile).forEach(function(row) {
-      var skin = Skin.add(row.prototype, row.name, site.layout);
-      skin.setSource(row.source);
-      skin.creator = resolveAccount(row.creator_id);
-      skin.modifier = resolveAccount(row.modifier_id);
-      skin.created = new Date(row.created);
-      skin.modified = new Date(row.modified);
-      idMap.skins[row.id] = skin;
-    });
-  }
-
-  var storiesFile = new java.io.File(tempDir, 'stories.json');
-  if (storiesFile.exists()) {
-    Importer.readJson(storiesFile).forEach(function(row) {
-      var story = Story.add({
-        title: row.metadata.title,
-        text: row.metadata.text,
-        created: Importer.formatDate(row.created),
-        status: row.status,
-        mode: row.mode,
-        commentMode: row.comment_mode
-      }, site, user);
-      story.creator = resolveAccount(row.creator_id);
-      story.modifier = resolveAccount(row.modifier_id);
-      story.modified = new Date(row.modified);
-      story.setMetadata(row.metadata);
-      idMap.content[row.id] = story;
-    });
-  }
-
-  var commentsFile = new java.io.File(tempDir, 'comments.json');
-  if (commentsFile.exists()) {
-    var comments = Importer.readJson(commentsFile);
-    comments.sort(function(a, b) {
-      return new Date(a.created) - new Date(b.created);
-    });
-    comments.forEach(function(row) {
-      var parent = idMap.content[row.parent_id];
-      if (!parent) {
-        app.logger.warn('Skipping comment #' + row.id + '; its parent was not restored (likely a dangling reference)');
-        return;
-      }
-      var comment = Comment.add({
-        title: row.metadata.title,
-        text: row.metadata.text,
-        created: Importer.formatDate(row.created),
-        status: row.status
-      }, parent);
-      comment.creator = resolveAccount(row.creator_id);
-      comment.modifier = resolveAccount(row.modifier_id);
-      comment.modified = new Date(row.modified);
-      comment.setMetadata(row.metadata);
-      idMap.content[row.id] = comment;
-    });
-  }
-
-  var readAsset = function(relativePath) {
-    var parts = relativePath.split('/');
-    var dir = tempDir;
-    for (var i = 0; i < parts.length - 1; i += 1) {
-      dir = new java.io.File(dir, parts[i]);
-    }
-    return new helma.File(dir, parts[parts.length - 1]);
+  var ctx = {
+    site: site,
+    idMap: idMap,
+    resolveAccount: resolveAccount,
+    user: user,
+    tempDir: tempDir,
+    assetPrefix: 'static'
   };
 
-  var imagesFile = new java.io.File(tempDir, 'images.json');
-  if (imagesFile.exists()) {
-    Importer.readJson(imagesFile).forEach(function(row) {
-      // contentType/description/fileName/origin are handleMetadata-backed
-      // (see Image.KEYS in code/Image/Image.js), so — like Story/Comment's
-      // text/title — they live under row.metadata, not as top-level
-      // columns on the export row itself.
-      var isLayout = row.parent_type === 'Layout';
-      var fileName = row.metadata.fileName;
-      var asset = readAsset('static/' + (isLayout ? 'layout' : 'images') + '/' + fileName);
-      if (!asset.exists()) {
-        app.logger.warn('Skipping image #' + row.id + '; asset file ' + fileName + ' not found in export');
-        return;
-      }
-      var mime = Packages.helma.util.MimePart(fileName, asset.toByteArray(), row.metadata.contentType);
-      var image = Image.add({
-        name: row.name,
-        file: mime,
-        file_origin: row.metadata.origin,
-        description: row.metadata.description
-      }, isLayout ? site.layout : site, user);
-      image.creator = resolveAccount(row.creator_id);
-      image.modifier = resolveAccount(row.modifier_id);
-      image.created = new Date(row.created);
-      image.modified = new Date(row.modified);
-      // Deliberately not calling image.setMetadata(row.metadata) here:
-      // every key in it (fileName, contentType, contentLength, width,
-      // height, thumbnail*) is machine-derived and was already correctly
-      // recomputed by Image.add's own update() from the actual
-      // re-uploaded bytes above — re-applying the export's OLD values
-      // would silently overwrite the freshly generated fileName with one
-      // that doesn't exist on disk under this site (confirmed live:
-      // every restored image 404s this way). description, the one
-      // genuinely author-supplied field, was already passed into the
-      // data bag above.
-      idMap.images[row.id] = image;
-    });
-  }
+  Importer.restoreSkins(Importer.readJsonFile(tempDir, 'skins.json'), ctx);
+  Importer.restoreStories(Importer.readJsonFile(tempDir, 'stories.json'), ctx);
+  Importer.restoreComments(Importer.readJsonFile(tempDir, 'comments.json'), ctx);
+  Importer.restoreImages(Importer.readJsonFile(tempDir, 'images.json'), ctx);
+  Importer.restoreFiles(Importer.readJsonFile(tempDir, 'files.json'), ctx);
+  Importer.restorePolls(Importer.readJsonFile(tempDir, 'polls.json'), ctx);
+  Importer.restoreVotes(Importer.readJsonFile(tempDir, 'votes.json'), ctx);
+  Importer.restoreTags(Importer.readJsonFile(tempDir, 'tags.json'), ctx);
+  Importer.restoreMemberships(Importer.readJsonFile(tempDir, 'members.json'), ctx);
 
-  var filesFile = new java.io.File(tempDir, 'files.json');
-  if (filesFile.exists()) {
-    Importer.readJson(filesFile).forEach(function(row) {
-      var fileName = row.metadata.fileName;
-      var asset = readAsset('static/files/' + fileName);
-      if (!asset.exists()) {
-        app.logger.warn('Skipping file #' + row.id + '; asset file ' + fileName + ' not found in export');
-        return;
-      }
-      var mime = Packages.helma.util.MimePart(fileName, asset.toByteArray(), row.metadata.contentType);
-      var file = File.add({name: row.name, file: mime}, site, user);
-      file.creator = resolveAccount(row.creator_id);
-      file.modifier = resolveAccount(row.modifier_id);
-      file.created = new Date(row.created);
-      file.modified = new Date(row.modified);
-      // See the matching note in the image restore loop above —
-      // File.add's own update() already correctly regenerated
-      // fileName/contentType/contentLength from the re-uploaded bytes;
-      // re-applying row.metadata here would silently overwrite that with
-      // the export's stale old fileName.
-      idMap.files[row.id] = file;
-    });
-  }
+  return;
+};
 
-  var pollsFile = new java.io.File(tempDir, 'polls.json');
-  if (pollsFile.exists()) {
-    Importer.readJson(pollsFile).forEach(function(row) {
-      // Poll.prototype.update reads status from data.save, not data.status
-      // (a naming quirk of the edit form it was written for), and creates
-      // one Choice per title_array entry, in order — map them back to the
-      // original choices[].id by that same order so votes.json can be
-      // replayed against the right Choice below.
-      var poll = Poll.add({
-        question: row.question,
-        title_array: row.choices.map(function(choice) { return choice.title; }),
-        save: row.status
-      }, site);
-      poll.creator = resolveAccount(row.creator_id);
-      poll.modifier = resolveAccount(row.modifier_id);
-      poll.created = new Date(row.created);
-      poll.modified = new Date(row.modified);
-      // Unlike Site/Story/Comment/Image/File, Poll has no metadata
-      // collection wired up at all (confirmed live: poll.setMetadata
-      // throws "No metadata collection defined for prototype Poll") —
-      // Exporter's addMetadata still queries the raw metadata table
-      // directly for export, but there's nothing to write back on import.
-      row.choices.forEach(function(choice, index) {
-        idMap.choices[choice.id] = poll.get(index);
-      });
-      idMap.polls[row.id] = poll;
-    });
-  }
+/**
+ * Restores every site the exporting account owned (per sites.json's role
+ * column) as a brand-new site — this is why restore-in-place and
+ * cross-install migration are the same code path for a site export but
+ * NOT for an account export: an account can never be restored "in place"
+ * onto its own pre-existing sites, since those still exist and are what
+ * was exported from. Sites the account was only a non-owner member of are
+ * skipped entirely — no site metadata was ever exported for those (see
+ * Exporter.saveAccount), so there's nothing to restore, and re-creating
+ * someone else's site would make no sense anyway.
+ * @param {User} user The account being restored into — becomes the owner
+ * of every restored site, and the creator/parent fallback within them.
+ * @param {java.io.File} tempDir The already-extracted export contents.
+ * @param {Object} accountMap Old account id -> {type: 'matched', accountId} | {type: 'placeholder', name}.
+ */
+Importer.restoreAccount = function(user, tempDir, accountMap) {
+  session.login(user);
 
-  var votesFile = new java.io.File(tempDir, 'votes.json');
-  if (votesFile.exists()) {
-    Importer.readJson(votesFile).forEach(function(row) {
-      var choice = idMap.choices[row.choice_id];
-      var poll = idMap.polls[row.poll_id];
-      if (!choice || !poll) {
-        app.logger.warn('Skipping vote #' + row.id + '; its choice or poll was not restored (likely a dangling reference)');
-        return;
-      }
-      var vote = Vote.add(choice, poll);
-      vote.creator = resolveAccount(row.creator_id);
-      vote.creator_name = row.creator_name;
-      vote.created = new Date(row.created);
-      vote.modified = new Date(row.modified);
-    });
-  }
+  var idMap = {skins: {}, content: {}, images: {}, files: {}, polls: {}, choices: {}, sites: {}};
+  var resolveAccount = Importer.makeAccountResolver(accountMap, user);
 
-  var tagsFile = new java.io.File(tempDir, 'tags.json');
-  if (tagsFile.exists()) {
-    Importer.readJson(tagsFile).forEach(function(row) {
-      var tagged = row.tagged_type === 'Image' ? idMap.images[row.tagged_id] : idMap.content[row.tagged_id];
-      if (!tagged) {
-        app.logger.warn('Skipping tag #' + row.id + ' (' + row.name + '); its tagged object was not restored (likely a dangling reference)');
-        return;
-      }
-      tagged.addTag(row.name);
+  var groupBySite = function(rows) {
+    var groups = {};
+    rows.forEach(function(row) {
+      (groups[row.site_id] || (groups[row.site_id] = [])).push(row);
     });
-  }
+    return groups;
+  };
 
-  var membersFile = new java.io.File(tempDir, 'members.json');
-  if (membersFile.exists()) {
-    Importer.readJson(membersFile).forEach(function(row) {
-      // A membership row's own creator_id/creator_name *is* the member
-      // (see Importer.preview's docs) — Membership.prototype.constructor
-      // already sets creator/name from the user passed in, so there's no
-      // separate matching step here, just the same idMap.accounts lookup
-      // everything else goes through.
-      //
-      // The target site may already have a membership under this same
-      // name — confirmed live: every site created via Root's create
-      // action automatically gets its creating user added as OWNER, so
-      // that name always collides on a freshly created target
-      // (Membership.add throws "already contained in the collection").
-      // Update the existing membership in place instead of adding a
-      // second one with the same name.
-      var member = resolveAccount(row.creator_id);
-      var membership = Membership.getByName(member.name, site);
-      if (membership) {
-        membership.role = row.role;
-      } else {
-        membership = Membership.add(member, row.role, site);
+  var sites = Importer.readJsonFile(tempDir, 'sites.json');
+  var skinsBySite = groupBySite(Importer.readJsonFile(tempDir, 'skins.json'));
+  var storiesBySite = groupBySite(Importer.readJsonFile(tempDir, 'stories.json'));
+  var commentsBySite = groupBySite(Importer.readJsonFile(tempDir, 'comments.json'));
+  var imagesBySite = groupBySite(Importer.readJsonFile(tempDir, 'images.json'));
+  var filesBySite = groupBySite(Importer.readJsonFile(tempDir, 'files.json'));
+  var pollsBySite = groupBySite(Importer.readJsonFile(tempDir, 'polls.json'));
+
+  sites.forEach(function(row) {
+    if (row.role !== Membership.OWNER) {
+      app.log('Skipping site #' + row.id + ' (' + row.name + '); the exporting account was only a ' + row.role + ' there, not the owner');
+      return;
+    }
+
+    // Site names must be unique instance-wide; the original name may
+    // already be taken (by the very site this was exported from, if
+    // restoring into the same instance, or by an unrelated site). Fall
+    // back to a numbered suffix rather than silently dropping the site.
+    var newSite;
+    for (var attempt = 0; ; attempt += 1) {
+      var name = attempt ? row.name + '-imported-' + attempt : row.name;
+      try {
+        newSite = Site.add({name: name}, user);
+        break;
+      } catch (ex) {
+        if (attempt > 20) {
+          throw ex;
+        }
       }
-      membership.modifier = resolveAccount(row.modifier_id);
-      membership.created = new Date(row.created);
-      membership.modified = new Date(row.modified);
+    }
+
+    Membership.add(user, Membership.OWNER, newSite);
+    res.handlers.site = newSite;
+
+    newSite.mode = row.mode;
+    var metadata = row.metadata || {};
+    Importer.METADATA_DENYLIST.forEach(function(key) {
+      delete metadata[key];
     });
-  }
+    newSite.setMetadata(metadata);
+
+    var ctx = {
+      site: newSite,
+      idMap: idMap,
+      resolveAccount: resolveAccount,
+      user: user,
+      tempDir: tempDir,
+      // Exporter.saveAccount zips assets under "<siteName>/..." (using
+      // the ORIGINAL site's name), not under "static/..." like saveSite
+      // does — the two export types lay out their static assets
+      // differently, so restoreAccount needs its own prefix per site.
+      assetPrefix: row.name
+    };
+
+    Importer.restoreSkins(skinsBySite[row.id] || [], ctx);
+    Importer.restoreStories(storiesBySite[row.id] || [], ctx);
+    Importer.restoreComments(commentsBySite[row.id] || [], ctx);
+    Importer.restoreImages(imagesBySite[row.id] || [], ctx);
+    Importer.restoreFiles(filesBySite[row.id] || [], ctx);
+    Importer.restorePolls(pollsBySite[row.id] || [], ctx);
+    // No tags/separate votes/memberships restore here — saveAccount
+    // exports neither tags.json nor votes.json at all (a poll's own vote,
+    // if any, is embedded on the poll row and replayed by restorePolls
+    // above), and the owner membership was already established when the
+    // site was created, a few lines up.
+
+    idMap.sites[row.id] = newSite;
+  });
 
   return;
 };

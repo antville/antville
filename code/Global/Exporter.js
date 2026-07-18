@@ -379,6 +379,15 @@ global.Exporter = (function() {
     const dir = new java.io.File(dirName);
     const file = new java.io.File(dir, fileName);
 
+    // Same accounts.json/exportKey mechanism as saveSite — see
+    // Exporter.hmac and the account-resolution notes there. Without this,
+    // Importer.preview would have nothing to match against and every
+    // creator/modifier reference in this export would need a placeholder.
+    const accountIds = {};
+    const recordAccount = id => { id && (accountIds[id] = true); };
+    const exportKey = generateExportKey();
+    const exportKeyBase64 = String(java.util.Base64.getEncoder().encodeToString(exportKey));
+
     if (!dir.exists()) dir.mkdirs();
 
     if (account.export) {
@@ -396,6 +405,7 @@ global.Exporter = (function() {
 
       sql.traverse(function() {
         app.log('Exporting account #' + this.id + ' (' + this.name + ')');
+        this.exportKey = exportKeyBase64;
         addMetadata(this, User, metadataSql);
         writer.push(this);
       });
@@ -410,6 +420,8 @@ global.Exporter = (function() {
         app.log('Exporting site #' + this.id + ' (' + this.name + ')');
         const site = Site.getById(this.id);
         this.href = site.href();
+        recordAccount(this.creator_id);
+        recordAccount(this.modifier_id);
         if (this.role === Membership.OWNER) addMetadata(this, Site, metadataSql);
         writer.push(this);
       });
@@ -422,6 +434,8 @@ global.Exporter = (function() {
 
       sql.traverse(function() {
         app.log('Exporting skin #' + this.id);
+        recordAccount(this.creator_id);
+        recordAccount(this.modifier_id);
         writer.push(this);
       });
 
@@ -434,6 +448,8 @@ global.Exporter = (function() {
       sql.traverse(function() {
         app.log('Exporting membership #' + this.id);
         this.creator_name = account.name;
+        recordAccount(this.creator_id);
+        recordAccount(this.modifier_id);
         writer.push(this);
       });
 
@@ -452,6 +468,8 @@ global.Exporter = (function() {
 
           this.href = content.href();
           this.creator_name = account.name;
+          recordAccount(this.creator_id);
+          recordAccount(this.modifier_id);
 
           addMetadata(this, Story, metadataSql);
           this.rendered = content.format_filter(this.metadata.text, {}, 'markdown');
@@ -483,6 +501,8 @@ global.Exporter = (function() {
           if (asset.exists()) zip.add(asset, file.site.name + '/files');
           this.href = file.href();
           this.creator_name = account.name;
+          recordAccount(this.creator_id);
+          recordAccount(this.modifier_id);
           addMetadata(this, File, metadataSql);
           writer.push(this);
         } catch (ex) {
@@ -515,6 +535,8 @@ global.Exporter = (function() {
           }
           this.href = image.href();
           this.creator_name = account.name;
+          recordAccount(this.creator_id);
+          recordAccount(this.modifier_id);
           addMetadata(this, Image, metadataSql);
           writer.push(this);
         } catch (ex) {
@@ -540,6 +562,8 @@ global.Exporter = (function() {
 
           this.href = poll.href();
           this.creator_name = account.name;
+          recordAccount(this.creator_id);
+          recordAccount(this.modifier_id);
           this.choices = poll.list().map(choice => {
             return {
               id: choice._id,
@@ -555,6 +579,24 @@ global.Exporter = (function() {
           app.logger.warn('Could not export poll #' + this.id + ' (likely a dangling reference to a deleted parent): ' + ex);
         }
       });
+
+      writer.close();
+
+      writer = getJsonWriter(tempDir, 'accounts.json');
+
+      const accountIdList = Object.keys(accountIds);
+      if (accountIdList.length) {
+        const accountsSql = new Sql({quote: true});
+        accountsSql.retrieve('select id, name, email from account where id in (' + accountIdList.join(',') + ')');
+        accountsSql.traverse(function() {
+          app.log('Exporting account #' + this.id);
+          writer.push({
+            id: this.id,
+            name: this.name,
+            email_hmac: this.email ? Exporter.hmac(exportKey, this.email.trim().toLowerCase()) : null
+          });
+        });
+      }
 
       writer.close();
       zip.add(tempDir);
