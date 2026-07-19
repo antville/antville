@@ -268,7 +268,24 @@ Importer.makeAccountResolver = function(accountMap, fallbackUser) {
     if (entry && entry.type === 'matched') {
       resolved = User.getById(entry.accountId) || fallbackUser;
     } else if (entry && entry.type === 'placeholder') {
-      resolved = User.add({name: entry.name});
+      // entry.name may already belong to a real, different account on this
+      // instance — that's precisely why an ambiguous match can end up here
+      // unconfirmed (the admin declined to say they're the same person).
+      // User.add's underlying root.users.add(user) enforces name-uniqueness
+      // instance-wide, so a blind add would throw. Disambiguate with a
+      // numbered suffix instead, same pattern as Importer.run's site-name
+      // collision handling below.
+      for (var attempt = 0, name = entry.name; ; attempt += 1) {
+        try {
+          resolved = User.add({name: name});
+          break;
+        } catch (ex) {
+          if (attempt > 20) {
+            throw ex;
+          }
+          name = entry.name + '-imported-' + (attempt + 1);
+        }
+      }
       resolved.status = User.BLOCKED;
     } else {
       resolved = fallbackUser;
