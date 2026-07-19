@@ -272,20 +272,19 @@ Importer.makeAccountResolver = function(accountMap, fallbackUser) {
       // instance — that's precisely why an ambiguous match can end up here
       // unconfirmed (the admin declined to say they're the same person).
       // User.add's underlying root.users.add(user) enforces name-uniqueness
-      // instance-wide, so a blind add would throw. Disambiguate with a
-      // numbered suffix instead, same pattern as Importer.run's site-name
-      // collision handling below.
-      for (var attempt = 0, name = entry.name; ; attempt += 1) {
-        try {
-          resolved = User.add({name: name});
-          break;
-        } catch (ex) {
-          if (attempt > 20) {
-            throw ex;
-          }
-          name = entry.name + '-imported-' + (attempt + 1);
+      // instance-wide, so a blind add would throw. Check first rather than
+      // catching the collision after the fact: User.add's user.map({...})
+      // persists the account row immediately, before root.users.add(user)
+      // ever runs, so a try/catch retry leaves a stray unblocked orphan
+      // account behind for every name it had to give up on.
+      var name = entry.name;
+      for (var attempt = 1; User.getByName(name); attempt += 1) {
+        if (attempt > 20) {
+          throw Error('Could not find a free placeholder name for “' + entry.name + '”.');
         }
+        name = entry.name + '-imported-' + attempt;
       }
+      resolved = User.add({name: name});
       resolved.status = User.BLOCKED;
     } else {
       resolved = fallbackUser;
