@@ -116,6 +116,7 @@
     script.src = settings.b + 'main.js';
     document.body.appendChild(script);
 
+    let _bearer;
     let _currentIndex;
     let _images;
     let _siteUri;
@@ -151,6 +152,13 @@
       event.currentTarget.disabled = true;
       const imageUri = global.image.hidden ? _images[_currentIndex].src : null;
       post(_sourceUri, imageUri);
+    };
+
+    const fetchBearer = callback => {
+      jsonp(settings.b + 'bearer', {}, data => {
+        _bearer = data || null;
+        callback();
+      });
     };
 
     const main = () => {
@@ -340,6 +348,8 @@
           'og:image': imageUrl
         }
 
+        if (_bearer) data.antvilleBearer = JSON.stringify(_bearer);
+
         return jsonp(_siteUri + '/stories/create', data, (res, error) => {
           restore();
 
@@ -368,6 +378,8 @@
           maxWidth: settings.w || '',
           maxHeight: settings.h || ''
         };
+
+        if (_bearer) data.antvilleBearer = JSON.stringify(_bearer);
 
         jsonp(_siteUri + '/images/create', data, (res, error) => {
           restore();
@@ -446,6 +458,6 @@
       document.body.append(script);
     }
 
-    main();
+    fetchBearer(main);
   })();
 </script>

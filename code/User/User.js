@@ -313,20 +313,66 @@ User.autoLogin = function() {
   var name = req.cookies[User.COOKIE];
   var hash = req.cookies[User.HASHCOOKIE];
 
-  if (!name || !hash) {
-    return;
+  if (name && hash) {
+    var user = User.getByName(name);
+    if (user && User.getAutoLoginHash(user.hash) === hash) {
+      session.login(user);
+      user.touch();
+      res.message = gettext('Welcome to {0}, {1}. Have fun!', res.handlers.site.title, user.name);
+      return;
+    }
   }
 
-  var user = User.getByName(name);
-
-  if (!user || User.getAutoLoginHash(user.hash) !== hash) {
-    return;
+  // Cross-site fallback for the Formica bookmarklet (static/formica.html),
+  // which cannot rely on the cookies above since it always runs as a
+  // top-level document on the root install's domain, not the target site's.
+  var bearerUser = User.verifyBearerToken(req.data.antvilleBearer);
+  if (bearerUser) {
+    session.login(bearerUser);
+    bearerUser.touch();
   }
-
-  session.login(user);
-  user.touch();
-  res.message = gettext('Welcome to {0}, {1}. Have fun!', res.handlers.site.title, user.name);
   return;
+}
+
+/** @constant */
+User.BEARER_TTL = 60; // seconds a Formica bearer token stays valid
+
+/**
+ * Issues a short-lived bearer token proving `user` is logged in, for use by
+ * the Formica bookmarklet's cross-site requests (see static/formica.html
+ * and Root.prototype.bearer_action).
+ * @param {User} user
+ * @returns {Object}
+ */
+User.getBearerToken = function(user) {
+  var token = User.getSalt();
+  var expires = Date.now() + User.BEARER_TTL * 1000;
+  return {
+    name: user.name,
+    token: token,
+    expires: expires,
+    digest: user.getDigest(token + expires)
+  };
+}
+
+/**
+ * Verifies a JSON-encoded bearer token produced by getBearerToken().
+ * @param {String} raw
+ * @returns {User} the authenticated user, or null
+ */
+User.verifyBearerToken = function(raw) {
+  if (!raw) return null;
+  var data;
+  try {
+    data = JSON.parse(raw);
+  } catch (ex) {
+    return null;
+  }
+  if (!data || !data.name || !data.token || !data.expires || !data.digest) return null;
+  if (Date.now() > Number(data.expires)) return null;
+  var user = User.getByName(data.name);
+  if (!user || user.getDigest(data.token + data.expires) !== data.digest) return null;
+  return user;
 }
 
 User.getAutoLoginHash = function(salt) {

@@ -94,6 +94,7 @@ Root.prototype.getPermission = function(action) {
   switch (action) {
     case '.':
     case 'main':
+    case 'bearer':
     case 'cookie':
     case 'debug':
     case 'default.hook':
@@ -376,6 +377,14 @@ Root.prototype.cookie_action = function() {
     });
   }
   res.redirect(req.data.location || req.data.http_referer || root.href());
+};
+
+// Issue a short-lived bearer token for the Formica bookmarklet, so it can
+// authenticate its cross-site requests to the target site. See
+// User.getBearerToken() and User.verifyBearerToken().
+Root.prototype.bearer_action = function() {
+  JSON.sendPaddedResponse(session.user ? User.getBearerToken(session.user) : null);
+  return;
 };
 
 /**
