@@ -151,11 +151,14 @@
       feedback(false);
       event.currentTarget.disabled = true;
       const imageUri = global.image.hidden ? _images[_currentIndex].src : null;
-      post(_sourceUri, imageUri);
+      // Fetch a fresh bearer token right before publishing, rather than at
+      // page load, since writing a post can take much longer than the
+      // token's TTL.
+      fetchBearer(() => post(_sourceUri, imageUri));
     };
 
     const fetchBearer = callback => {
-      jsonp(settings.b + 'bearer', {}, data => {
+      jsonp(settings.b + 'bearer', {site: _siteUri}, data => {
         _bearer = data || null;
         callback();
       });
@@ -458,6 +461,6 @@
       document.body.append(script);
     }
 
-    fetchBearer(main);
+    main();
   })();
 </script>

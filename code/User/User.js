@@ -338,25 +338,29 @@ User.autoLogin = function() {
 User.BEARER_TTL = 60; // seconds a Formica bearer token stays valid
 
 /**
- * Issues a short-lived bearer token proving `user` is logged in, for use by
- * the Formica bookmarklet's cross-site requests (see static/formica.html
- * and Root.prototype.bearer_action).
+ * Issues a short-lived bearer token proving `user` is logged in, scoped to
+ * `site`, for use by the Formica bookmarklet's cross-site requests (see
+ * static/formica.html and Root.prototype.bearer_action). Binding the digest
+ * to `site` means a token minted for one site cannot be replayed against
+ * another, even though minting always happens on the root install's domain.
  * @param {User} user
+ * @param {String} site
  * @returns {Object}
  */
-User.getBearerToken = function(user) {
+User.getBearerToken = function(user, site) {
   var token = User.getSalt();
   var expires = Date.now() + User.BEARER_TTL * 1000;
   return {
     name: user.name,
     token: token,
     expires: expires,
-    digest: user.getDigest(token + expires)
+    digest: user.getDigest(token + expires + site)
   };
 }
 
 /**
- * Verifies a JSON-encoded bearer token produced by getBearerToken().
+ * Verifies a JSON-encoded bearer token produced by getBearerToken(), scoped
+ * to the site currently handling the request.
  * @param {String} raw
  * @returns {User} the authenticated user, or null
  */
@@ -371,7 +375,9 @@ User.verifyBearerToken = function(raw) {
   if (!data || !data.name || !data.token || !data.expires || !data.digest) return null;
   if (Date.now() > Number(data.expires)) return null;
   var user = User.getByName(data.name);
-  if (!user || user.getDigest(data.token + data.expires) !== data.digest) return null;
+  if (!user) return null;
+  var site = res.handlers.site.href();
+  if (user.getDigest(data.token + data.expires + site) !== data.digest) return null;
   return user;
 }
 

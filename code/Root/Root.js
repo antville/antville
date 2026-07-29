@@ -383,7 +383,7 @@ Root.prototype.cookie_action = function() {
 // authenticate its cross-site requests to the target site. See
 // User.getBearerToken() and User.verifyBearerToken().
 Root.prototype.bearer_action = function() {
-  JSON.sendPaddedResponse(session.user ? User.getBearerToken(session.user) : null);
+  JSON.sendPaddedResponse(session.user ? User.getBearerToken(session.user, req.data.site) : null);
   return;
 };
 
