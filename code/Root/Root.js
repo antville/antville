@@ -368,13 +368,14 @@ Root.prototype.mrtg_action = function() {
 // Login to the root site if Members#login_action() redirects here
 // This way custom domains are getting the default domain cookie, too
 Root.prototype.cookie_action = function() {
-  if (req.data.name && session.data.token) {
-    const user = User.getByName(req.data.name);
-    User.login({
-      digest: user.getDigest(session.data.token),
-      name: req.data.name,
-      remember: req.data.remember
-    });
+  const user = User.verifyBearerToken(req.data.bearer);
+  if (user) {
+    if (req.data.remember) {
+      res.setCookie(User.COOKIE, user.name, 365);
+      res.setCookie(User.HASHCOOKIE, User.getAutoLoginHash(user.hash), 365);
+    }
+    user.touch();
+    session.login(user);
   }
   res.redirect(req.data.location || req.data.http_referer || root.href());
 };

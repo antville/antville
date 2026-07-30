@@ -206,12 +206,10 @@ Members.prototype.login_action = function() {
 
       // If the requested host is outside of the cookie domain, redirect and login to the root site, too
       if (this._parent !== root && !req.getHeader("Host").includes(app.appsProperties.cookieDomain)) {
-        const token = session.data.token = java.util.UUID.randomUUID();
-        const digest = session.user.getDigest(token);
+        const bearer = User.getBearerToken(session.user, root.href());
         res.redirect(
           root.href('cookie')
-          + '?digest=' + encodeURIComponent(digest)
-          + '&name=' + encodeURIComponent(req.postParams.name)
+          + '?bearer=' + encodeURIComponent(JSON.stringify(bearer))
           + '&location=' + encodeURIComponent(location)
           + (req.postParams.remember ? '&remember=1' : '')
         );
