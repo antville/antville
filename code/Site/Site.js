@@ -896,19 +896,21 @@ Site.prototype.import_action = function() {
         // rather than queuing something Importer.run can only fail on
         // asynchronously during the next cron run.
         //
-        // Setting param.error directly here (rather than throwing and
-        // relying on this.import_id = null, or on this.importError) is
-        // required: import_id doesn't reliably clear within the same
-        // request (the File node isn't fully realized until the
-        // transaction commits — the same constraint documented above
-        // for File.remove), so the #import skin's own message logic
-        // still saw a "pending" file and rendered the "scheduled for
-        // import" branch — including a file.skin File#main call —
-        // against the rejected upload instead of showing an error.
-        // param.error is checked first, ahead of that branch, so it
-        // takes priority regardless of what import_id ends up holding.
-        param.error = gettext('Unrecognized import file. Please upload an Antville export (.zip) or a Blogger.com export (.xml).');
+        // Redirecting (like both branches above already do) rather than
+        // falling through to render in the same request matters here for
+        // two reasons: the File node isn't fully realized until the
+        // transaction commits (same constraint documented above for
+        // File.remove), so a same-request re-render still saw import_id
+        // as set; and req.data.file — the raw uploaded MimePart — is
+        // still populated for the rest of this same request, which
+        // site.upload's getFormValue('file') echoes straight into the
+        // file_origin field's value, rendering as a bare
+        // "helma.util.MimePart@..." toString. A fresh GET after the
+        // redirect has neither problem. this.importError is already
+        // wired up below to become param.error on that next render.
         this.import_id = null;
+        this.importError = gettext('Unrecognized import file. Please upload an Antville export (.zip) or a Blogger.com export (.xml).');
+        res.redirect(this.href(req.action));
       }
     } catch (ex) {
       res.message = ex.toString();
