@@ -53,6 +53,32 @@ Importer.isZipFile = function(file) {
 };
 
 /**
+ * Cheaply sniffs whether a file could plausibly be XML (an Atom/RSS feed,
+ * as Importer.blogger expects), so an obviously-wrong upload (an image, a
+ * corrupt/truncated zip, etc.) can be rejected immediately instead of
+ * being queued to fail asynchronously during the next cron run. Not a
+ * real parse — just checks that the content starts with a '<' once
+ * leading whitespace/BOM is stripped, same spirit as Importer.isZipFile's
+ * magic-byte check.
+ * @param {java.io.File} file
+ * @returns {Boolean}
+ */
+Importer.isXmlFile = function(file) {
+  var stream = new java.io.FileInputStream(file);
+  try {
+    var buf = java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE, 256);
+    var read = stream.read(buf);
+    if (read < 1) {
+      return false;
+    }
+    var text = String(new java.lang.String(buf, 0, read, 'utf-8')).trim();
+    return text.charAt(0) === '<';
+  } finally {
+    stream.close();
+  }
+};
+
+/**
  * Reads and parses a whole JSON file produced by Exporter.
  * @param {java.io.File} file
  * @returns {Object}

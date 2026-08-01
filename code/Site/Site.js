@@ -884,12 +884,19 @@ Site.prototype.import_action = function() {
         // from a prior request.
         Importer.preview(this, file);
         res.redirect(this.href(req.action));
-      } else {
+      } else if (typeof Importer.blogger === 'function' && Importer.isXmlFile(new java.io.File(file.getFile()))) {
         // Legacy Blogger.com path (compat): no account matching to
         // review, queue the import as before.
         this.job = Admin.queue(this, 'import');
         res.message = gettext('Site is scheduled for import.');
         res.redirect(this.href(req.action));
+      } else {
+        // Neither a zip nor anything that could plausibly be a Blogger
+        // feed (an image, a corrupt archive, etc.) — reject immediately
+        // rather than queuing something Importer.run can only fail on
+        // asynchronously during the next cron run.
+        this.import_id = null;
+        throw Error(gettext('Unrecognized import file. Please upload an Antville export (.zip) or a Blogger.com export (.xml).'));
       }
     } catch (ex) {
       res.message = ex.toString();
