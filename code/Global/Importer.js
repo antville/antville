@@ -237,16 +237,6 @@ Importer.run = function(site, user) {
 };
 
 /**
- * Formats a Date (or ISO date string, as found in export JSON) the way
- * Story.prototype.update expects it.
- * @param {String|Date} date
- * @returns {String}
- */
-Importer.formatDate = function(date) {
-  return new Date(date).format('yyyy-MM-dd HH:mm');
-};
-
-/**
  * Restores a site's core content (site fields, skins, stories, comments,
  * images, files) from an already-extracted export archive, using an
  * already-finalized account resolution map (see Importer.preview /
@@ -319,21 +309,36 @@ Importer.restoreSite = function(site, tempDir, accountMap, user) {
     });
   }
 
+  // title/text are already persisted by Story/Comment's own update() (see
+  // their reservedKeys lists) the moment they're passed into .add()'s data
+  // bag below — re-applying them via a plain setMetadata() call afterward
+  // writes a second, redundant copy of each into the metadata table
+  // (confirmed live: every restored story/comment ended up with two rows
+  // apiece for title and text). Strip them before the setMetadata() call
+  // so only genuinely-custom metadata keys, if any, get written.
+  var customMetadata = function(metadata) {
+    var result = {};
+    for (var key in metadata) {
+      if (key !== 'title' && key !== 'text') result[key] = metadata[key];
+    }
+    return result;
+  };
+
   var storiesFile = new java.io.File(tempDir, 'stories.json');
   if (storiesFile.exists()) {
     Importer.readJson(storiesFile).forEach(function(row) {
       var story = Story.add({
         title: row.metadata.title,
         text: row.metadata.text,
-        created: Importer.formatDate(row.created),
         status: row.status,
         mode: row.mode,
         commentMode: row.comment_mode
       }, site, user);
       story.creator = resolveAccount(row.creator_id);
       story.modifier = resolveAccount(row.modifier_id);
+      story.created = new Date(row.created);
       story.modified = new Date(row.modified);
-      story.setMetadata(row.metadata);
+      story.setMetadata(customMetadata(row.metadata));
       idMap.content[row.id] = story;
     });
   }
@@ -350,16 +355,22 @@ Importer.restoreSite = function(site, tempDir, accountMap, user) {
         app.logger.warn('Skipping comment #' + row.id + '; its parent was not restored (likely a dangling reference)');
         return;
       }
+      // Comment.prototype.update, unlike Story's, never reads data.created
+      // at all — passing it through the data bag here silently did
+      // nothing for the real column (every restored comment got "now" as
+      // its created timestamp) while still leaking into metadata via
+      // setCustomContent (created isn't in Story/Comment's reservedKeys
+      // list). Set it directly afterward instead, same as modified below.
       var comment = Comment.add({
         title: row.metadata.title,
         text: row.metadata.text,
-        created: Importer.formatDate(row.created),
         status: row.status
       }, parent);
       comment.creator = resolveAccount(row.creator_id);
       comment.modifier = resolveAccount(row.modifier_id);
+      comment.created = new Date(row.created);
       comment.modified = new Date(row.modified);
-      comment.setMetadata(row.metadata);
+      comment.setMetadata(customMetadata(row.metadata));
       idMap.content[row.id] = comment;
     });
   }
