@@ -906,10 +906,20 @@ Site.prototype.import_action = function() {
         // site.upload's getFormValue('file') echoes straight into the
         // file_origin field's value, rendering as a bare
         // "helma.util.MimePart@..." toString. A fresh GET after the
-        // redirect has neither problem. this.importError is already
-        // wired up below to become param.error on that next render.
+        // redirect has neither problem.
+        //
+        // res.message rather than this.importError: importError is a
+        // persisted "the last actual import attempt failed" indicator
+        // (read elsewhere to render "The last import attempt failed:
+        // {0}" on every subsequent page view until the next success),
+        // meant for genuine async Importer.run() failures during cron.
+        // Nothing was ever attempted here — this is a synchronous
+        // upload-time validation rejection, so it belongs as a one-time
+        // flash message like every other action in this file already
+        // uses, which Site#page renders in the same uk-alert box as
+        // every other message/warning in the app.
         this.import_id = null;
-        this.importError = gettext('Unrecognized import file. Please upload an Antville export (.zip) or a Blogger.com export (.xml).');
+        res.message = gettext('Unrecognized import file. Please upload an Antville export (.zip) or a Blogger.com export (.xml).');
         res.redirect(this.href(req.action));
       }
     } catch (ex) {
