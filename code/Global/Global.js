@@ -236,6 +236,29 @@ var lessParser = (function() {
     }
   };
 
+  // The scripts are compiled only once; executing them in a fresh scope is what costs time later.
+  // Compiled scripts are immutable and can be shared between threads.
+  // Since Rhino 1.8 compiled scripts are Scriptable and thus not wrapped as Java objects,
+  // so `Script.exec()` has to be called by reflection to work with Rhino 1.8 and 1.9 alike.
+  var exec = (function() {
+    var method = java.lang.Class.forName('org.mozilla.javascript.Script').getMethod('exec',
+        java.lang.Class.forName('org.mozilla.javascript.Context'),
+        java.lang.Class.forName('org.mozilla.javascript.Scriptable'));
+    return function(script, cx, scope) {
+      return method.invoke(script, cx, scope);
+    };
+  })();
+  var scripts;
+  var getScripts = function(cx) {
+    if (!scripts) {
+      scripts = {
+        less: cx.compileString(readScript('less-rhino-1.7.0.js'), 'less', 1, null),
+        lessc: cx.compileString(readScript('lessc-rhino-1.7.0.js'), 'lessc', 1, null)
+      };
+    }
+    return scripts;
+  };
+
   var compile = function(lessCode) {
     var file = Files.createTempFile('tmp', 'less.tmp');
     var cx = Context.enter();
@@ -264,12 +287,13 @@ var lessParser = (function() {
       args[0] = entry;
       args[1] = '--no-js';
       scope.arguments = args;
-      cx.evaluateString(scope, readScript('less-rhino-1.7.0.js'), 'less', 1, null);
+      var compiled = getScripts(cx);
+      exec(compiled.less, cx, scope);
       // Functions like data-uri() read files directly with Java, bypassing `readFile`
       scope.less.modules.fs.readFileSync = function(name) {
         throw new Error('Reading ' + name + ' is not allowed.');
       };
-      cx.evaluateString(scope, readScript('lessc-rhino-1.7.0.js'), 'lessc', 1, null);
+      exec(compiled.lessc, cx, scope);
       return output.join('');
     } finally {
       cx.setLanguageVersion(languageVersion);
