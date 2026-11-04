@@ -140,7 +140,14 @@ Admin.dequeue = function() {
   var jobs = Admin.getJobs('desc');
   var max = Math.min(jobs.length, Admin.MAXBATCHSIZE);
   for (let i=0; i<max; i+=1) {
-    let job = new Admin.Job(jobs[i].name);
+    let job;
+    try {
+      job = new Admin.Job(jobs[i].name);
+    } catch (ex) {
+      // An unreadable job file must not block the jobs behind it
+      app.log('Failed to read job file ' + jobs[i].name + ' due to ' + ex);
+      continue;
+    }
     if (job.target) {
       try {
         app.log('Processing queued job ' + (i + 1) + ' of ' + max);
