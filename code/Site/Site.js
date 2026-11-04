@@ -493,10 +493,23 @@ Site.prototype.main_css_action = function() {
   var css = res.pop()
     .replace(/<(\/?style|!).*/g, ''); // TODO: Actually, a compatibility fix (earlier CSS skins contained the <style> element)
 
+  // The rendered text contains every input of the compilation, so comparing it is all the
+  // invalidation needed. Failed compilations are not cached.
+  var site = this;
+  var cached = site.cache.css;
+  if (cached && cached.source === css) {
+    res.write(cached.result);
+    return;
+  }
+
   try {
     lessParser.parse(css, function(error, less) {
-      if (error) throw error;
-      res.write(less.toCSS());
+      if (error) {
+        throw error;
+      }
+      var result = less.toCSS();
+      site.cache.css = {source: css, result: result};
+      res.write(result);
     });
   } catch (ex) {
     var message = [ex.type, 'error in line', ex.line, 'column', ex.column, 'of', ex.filename + ':', ex.message/*, '/', ex.extract[1]*/].join(String.SPACE);

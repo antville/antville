@@ -213,22 +213,109 @@ var html = new helma.Html();
 
 /**
  * An instance of the LESS parser.
+ *
+ * It runs the less.js scripts bundled with the lesscss JAR directly instead of using
+ * `org.lesscss.LessCompiler`, which casts a compiled script to a function and therefore
+ * fails to initialize with Rhino 1.9 (where scripts and functions are separate classes).
+ * The scripts expect the functions of the Rhino shell; only the three they use are provided.
+ * As the CSS is provided by users, inline JavaScript and reading any other file are disabled.
  * @type less.Parser
  */
-var lessParser = {
-  parse: function(lessCode, callback) {
-    var less = new Packages.org.lesscss.LessCompiler();
+var lessParser = (function() {
+  var Context = Packages.org.mozilla.javascript.Context;
+  var LessCompiler = Packages.org.lesscss.LessCompiler;
+  var Files = java.nio.file.Files;
+  var Paths = java.nio.file.Paths;
+
+  var readScript = function(name) {
+    var stream = new LessCompiler().getClass().getResourceAsStream('/META-INF/' + name);
     try {
-      callback(null, {
-        toCSS: function() {
-          return less.compile(lessCode);
-        }
-      });
-    } catch (error) {
-      callback(error);
+      return String(new java.lang.String(stream.readAllBytes(), 'UTF-8'));
+    } finally {
+      stream.close();
     }
-  }
-};
+  };
+
+  // The scripts are compiled only once; executing them in a fresh scope is what costs time later.
+  // Compiled scripts are immutable and can be shared between threads.
+  // Since Rhino 1.8 compiled scripts are Scriptable and thus not wrapped as Java objects,
+  // so `Script.exec()` has to be called by reflection to work with Rhino 1.8 and 1.9 alike.
+  var exec = (function() {
+    var method = java.lang.Class.forName('org.mozilla.javascript.Script').getMethod('exec',
+        java.lang.Class.forName('org.mozilla.javascript.Context'),
+        java.lang.Class.forName('org.mozilla.javascript.Scriptable'));
+    return function(script, cx, scope) {
+      return method.invoke(script, cx, scope);
+    };
+  })();
+  var scripts;
+  var getScripts = function(cx) {
+    if (!scripts) {
+      scripts = {
+        less: cx.compileString(readScript('less-rhino-1.7.0.js'), 'less', 1, null),
+        lessc: cx.compileString(readScript('lessc-rhino-1.7.0.js'), 'lessc', 1, null)
+      };
+    }
+    return scripts;
+  };
+
+  var compile = function(lessCode) {
+    var file = Files.createTempFile('tmp', 'less.tmp');
+    var cx = Context.enter();
+    var languageVersion = cx.getLanguageVersion();
+    try {
+      Files.write(file, new java.lang.String(lessCode).getBytes('UTF-8'));
+      cx.setLanguageVersion(170);
+      // A fresh scope per compilation, never shared between threads
+      var scope = cx.initStandardObjects();
+      var entry = String(file.toAbsolutePath());
+      var output = [];
+      scope.print = function() {
+        output.push(Array.prototype.join.call(arguments, ' ') + '\n');
+      };
+      scope.readFile = function(path, encoding) {
+        // The CSS is user-provided: never let it @import (or inline) any other file
+        if (String(path) !== entry) {
+          throw new Error('Reading ' + path + ' is not allowed.');
+        }
+        var bytes = Files.readAllBytes(Paths.get(entry));
+        return String(new java.lang.String(bytes, encoding || 'UTF-8'));
+      };
+      scope.quit = function() {};
+      // Inline JavaScript (backticks) would give user-provided CSS access to the JVM
+      var args = cx.newArray(scope, 2);
+      args[0] = entry;
+      args[1] = '--no-js';
+      scope.arguments = args;
+      var compiled = getScripts(cx);
+      exec(compiled.less, cx, scope);
+      // Functions like data-uri() read files directly with Java, bypassing `readFile`
+      scope.less.modules.fs.readFileSync = function(name) {
+        throw new Error('Reading ' + name + ' is not allowed.');
+      };
+      exec(compiled.lessc, cx, scope);
+      return output.join('');
+    } finally {
+      cx.setLanguageVersion(languageVersion);
+      Context.exit();
+      Files.deleteIfExists(file);
+    }
+  };
+
+  return {
+    parse: function(lessCode, callback) {
+      try {
+        callback(null, {
+          toCSS: function() {
+            return compile(lessCode);
+          }
+        });
+      } catch (error) {
+        callback(error);
+      }
+    }
+  };
+})();
 
 /**
  * A collection of Java classes and namespaces required for parsing and generating RSS.
