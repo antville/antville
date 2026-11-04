@@ -175,6 +175,13 @@ Site.remove = function() {
 
   sql.execute('delete from site where id = $0', id);
 
+  // The metadata has to go first because it is found through the rows of its owners
+  sql.execute("delete from metadata where parent_type = 'Story' and parent_id in (select id from content where site_id = $0)", id);
+  sql.execute("delete from metadata where parent_type = 'Comment' and parent_id in (select id from content where site_id = $0)", id);
+  sql.execute("delete from metadata where parent_type = 'File' and parent_id in (select id from file where site_id = $0)", id);
+  sql.execute("delete from metadata where parent_type = 'Image' and parent_id in (select id from image where parent_type = 'Site' and parent_id = $0)", id);
+  sql.execute("delete from metadata where parent_type = 'Layout' and parent_id in (select id from layout where site_id = $0)", id);
+
   sql.execute('delete from content where site_id = $0', id);
   sql.execute('delete from file where site_id = $0', id);
   sql.execute('delete from membership where site_id = $0', id);
