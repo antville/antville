@@ -119,9 +119,8 @@ User.remove = function() {
   sql.execute('delete from poll where creator_id = $0', id);
   sql.execute('update poll set modifier_id = creator_id where modifier_id = $0', id);
 
-  // Remove and re-assign stories and comments
+  // Remove and re-assign stories and comments (the metadata of comments has the parent type 'Story', too)
   deleteMetadata('Story', 'content', id);
-  deleteMetadata('Comment', 'content', id);
   sql.execute('delete from content where creator_id = $0', id);
   sql.execute('update content set modifier_id = creator_id where modifier_id = $0', id);
 
