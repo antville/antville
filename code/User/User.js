@@ -121,6 +121,7 @@ User.remove = function() {
 
   // Remove and re-assign stories and comments
   deleteMetadata('Story', 'content', id);
+  deleteMetadata('Comment', 'content', id);
   sql.execute('delete from content where creator_id = $0', id);
   sql.execute('update content set modifier_id = creator_id where modifier_id = $0', id);
 
