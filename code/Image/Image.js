@@ -297,7 +297,6 @@ Image.prototype.update = function(data) {
     }
 
     var mimeName = mime.normalizeFilename(mime.name);
-    this.contentLength = mime.contentLength;
     this.contentType = mime.contentType;
     File.prototype.setOrigin.call(this, origin);
 
